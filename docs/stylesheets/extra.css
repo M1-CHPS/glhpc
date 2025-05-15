@@ -1,0 +1,114 @@
+/* Base shared layout */
+.box-section {
+    border-top: 2px dashed #ccc;
+    border-bottom: 2px dashed #ccc;
+    background-color: #f9f9f9;
+    margin: 1.5em 0;
+    border-radius: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.box-section::before {
+    display: block;
+    padding: 0.3em 1em;
+    font-weight: bold;
+    font-size: 0.9em;
+    border-bottom: 1px solid;
+    margin-bottom: 0;
+}
+
+.box-section > *:first-child {
+    margin-top: 1em;
+}
+
+.box-section > * {
+    padding: 0 1em 0.5em 0.5em;
+    margin-bottom: 0;
+}
+
+
+/* Optional */
+.optional-section {
+    border-color: #ccc;
+    background-color: #f9f9f9;
+}
+.optional-section::before {
+    content: "📘 Optional Content";
+    background-color: #e0e0e0;
+    color: #333;
+    border-color: #ccc;
+}
+
+/* Going Further */
+.goingfurther-section {
+    border-color: #007acc;
+    background-color: #f0f8ff;
+}
+.goingfurther-section::before {
+    content: "⚙️ Going Further";
+    background-color: #dbeeff;
+    color: #003c6b;
+    border-color: #007acc;
+}
+
+/* Going Further */
+.summary-section {
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #319751;
+    background-color: #e6f4ea;
+    margin-top: 5em;
+}
+.summary-section::before {
+    content: "✅ Lab Summary";
+    background-color: #d0edd8;
+    color: #225c3c;
+    border-color: #319751;
+}
+
+.summary-section > *:first-child {
+    margin-top: 1em;
+}
+
+.toc-title {
+    display: none;
+    margin: 0;
+    padding: 0;
+    height: 0;
+    line-height: 0;
+}
+
+.hidden-title {
+    position: absolute;
+    left: -10000px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+}
+
+/* Base collapsible section styling */
+.md-typeset details.optional-section {
+    border-top: 2px dashed #bbb;
+    border-bottom: 2px dashed #bbb;
+    border-left: 0;
+    border-right: 0;
+    background-color: #f9f9f9;
+    margin: 1.5em 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Style the clickable summary header */
+.md-typeset details.optional-section > summary {
+    background-color: #e0e0e0;
+    padding: 0.4em 4em;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    border-bottom: 1px solid #bbb;
+}
+
+/* Inner content padding */
+.md-typeset details.optional-section > *:not(summary) {
+    padding: 0.8em 1.2em;
+}

@@ -1,0 +1,57 @@
+site_name: OBHPC - Remise a niveau Informatique
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: "deep purple"
+      accent: red
+  features:
+    - navigation.path
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.expand
+    - navigation.sections
+    - toc.integrate
+    - content.code.annotate
+    - content.tabs.link
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - toc:
+      permalink: true
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - md_in_html
+
+nav:
+  - Home: index.md
+  - Course:
+    - CM1 - Introduction au Génie Logiciel pour HPC/IA, Environnement de Développement: lecture1.md
+    - L1 - Prerequisites: lab1.md
+    - CM2 - Maîtrise du C pour la Performance et le HPC: lecture2.md
+    - L2 - C Programming: lab2.md
+    - CM3 - Construction, Test et Débogage de Logiciels Scientifiques: lecture3.md
+    - L3 - More C Programming: lab3.md
+    - L4 - Experimental Design: lab4.md
+    - CM4 - Design Expérimental, Profilage et Optimisation de Performance / Énergie: lecture4.md
+    - L5 - Profiling and Optimization: lab5.md
+    - CM5 - HPC pour l’IA: lecture5.md
+    - L6 - Projet IA - [Partie 1] Optimisation d’un noyau SGEMM: lab6.md
+    - L7 - Projet IA - Suite: lab7.md
+  - Exams:
+    - Guide de soutenance: guide_soutenance.md
+  - Annex:
+    - Bash cheatsheet: annex/bash_cheatsheet.md
+    - Installing fedora: annex/install_fedora.md
+    - Installing oh-my-zsh: annex/oh-my-zsh.md
+
+extra_css:
+  - stylesheets/extra.css
+
