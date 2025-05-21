@@ -2,7 +2,19 @@ site_name: OBHPC - Remise a niveau Informatique
 theme:
   name: material
   palette:
+    # Palette toggle for light mode
     - scheme: default
+      toggle:
+        icon: material/brightness-7 
+        name: Switch to dark mode
+      primary: "deep purple"
+      accent: red
+
+    # Palette toggle for dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
       primary: "deep purple"
       accent: red
   features:
@@ -10,8 +22,15 @@ theme:
     - navigation.instant
     - navigation.instant.progress
     - navigation.expand
-    - navigation.sections
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.footer
+
+    - header.autohide
+
     - toc.integrate
+    - toc.follow
     - content.code.annotate
     - content.tabs.link
     - content.code.copy
@@ -57,7 +76,6 @@ nav:
     - CM5 - HPC pour l’IA: lecture5.md
     - L6 - Projet IA - [Partie 1] Optimisation d’un noyau SGEMM: lab6.md
     - L7 - Projet IA - Suite: lab7.md
-    - CM Test: lecture_test.md
   - Exams:
     - Guide de soutenance: guide_soutenance.md
   - Annex:
@@ -67,4 +85,6 @@ nav:
 
 extra_css:
   - stylesheets/extra.css
+
+copyright:  CC BY-NC 4.0; 2025 - Pablo Oliveira, Mathys Jam
 

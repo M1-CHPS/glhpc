@@ -2,7 +2,7 @@
 .box-section {
     border-top: 2px dashed #ccc;
     border-bottom: 2px dashed #ccc;
-    background-color: #f9f9f9;
+    background-color: #f9f9f924;
     margin: 1.5em 0;
     border-radius: 0;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -30,24 +30,22 @@
 /* Optional */
 .optional-section {
     border-color: #ccc;
-    background-color: #f9f9f9;
+    background-color: #3d435324;
 }
 .optional-section::before {
     content: "📘 Optional Content";
-    background-color: #e0e0e0;
-    color: #333;
+    background-color: #3d435324;
     border-color: #ccc;
 }
 
 /* Going Further */
 .goingfurther-section {
     border-color: #007acc;
-    background-color: #f0f8ff;
+    background-color: #3d435324;
 }
 .goingfurther-section::before {
     content: "⚙️ Going Further";
-    background-color: #dbeeff;
-    color: #003c6b;
+    background-color: #3d435324;
     border-color: #007acc;
 }
 
@@ -55,15 +53,14 @@
 .summary-section {
     border-top: 1px solid;
     border-bottom: 1px solid;
-    border-color: #319751;
-    background-color: #e6f4ea;
+    border-color: #31975124;
+    background-color: #31975124;
     margin-top: 5em;
 }
 .summary-section::before {
     content: "✅ Lab Summary";
-    background-color: #d0edd8;
-    color: #225c3c;
-    border-color: #319751;
+    background-color: #31975124;
+    border-color: #31975124;
 }
 
 .summary-section > *:first-child {
