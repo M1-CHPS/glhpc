@@ -95,7 +95,7 @@ a) Do you see any performans gains ?
 
 b) Rerun the provided experiments, and compare with your previous sequential result.
 
-```bash
+``` bash title="Running the experiment(s)"
 ./run_all.sh parallel
 ```
 
@@ -103,20 +103,23 @@ Is your program faster using OpenMP ? If not, ensure you are correctly running m
 
 c) Is the performance stable ? Is there any impact on the accuracy of your estimator ?
 
-d) Verify your implementation strong scaling:
+d) Verify your implementation's strong scaling:
 
-```
+``` bash title="Strong Scaling"
 OMP_NUM_THREADS=1 ./piestimator 1000000
 OMP_NUM_THREADS=2 ./piestimator 1000000
 OMP_NUM_THREADS=4 ./piestimator 1000000
 OMP_NUM_THREADS=8 ./piestimator 1000000
 ```
 
-e) Verify your implementation weak-scaling:
+e) Verify your implementation's weak-scaling:
 
-```
+``` bash title="Weak scaling"
 OMP_NUM_THREADS=1 ./piestimator 1000000
 OMP_NUM_THREADS=2 ./piestimator 2000000
 OMP_NUM_THREADS=4 ./piestimator 4000000
 OMP_NUM_THREADS=8 ./piestimator 8000000
 ```
+
+[Week 2 Slides](revealjs/test_slides.html)
+<iframe src="/revealjs/test_slides.html" width="100%" height="800px" style="border: none;"></iframe>

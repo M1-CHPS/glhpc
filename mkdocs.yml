@@ -14,10 +14,12 @@ theme:
     - toc.integrate
     - content.code.annotate
     - content.tabs.link
+    - content.code.copy
 
 markdown_extensions:
   - admonition
   - codehilite
+  - attr_list
   - toc:
       permalink: true
   - pymdownx.superfences
@@ -26,6 +28,10 @@ markdown_extensions:
   - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.snippets
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.emoji:
       emoji_generator: !!python/name:pymdownx.emoji.to_svg
   - md_in_html
@@ -51,6 +57,7 @@ nav:
     - CM5 - HPC pour l’IA: lecture5.md
     - L6 - Projet IA - [Partie 1] Optimisation d’un noyau SGEMM: lab6.md
     - L7 - Projet IA - Suite: lab7.md
+    - CM Test: lecture_test.md
   - Exams:
     - Guide de soutenance: guide_soutenance.md
   - Annex:
