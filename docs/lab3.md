@@ -120,6 +120,3 @@ OMP_NUM_THREADS=2 ./piestimator 2000000
 OMP_NUM_THREADS=4 ./piestimator 4000000
 OMP_NUM_THREADS=8 ./piestimator 8000000
 ```
-
-[Week 2 Slides](revealjs/test_slides.html)
-<iframe src="/revealjs/test_slides.html" width="100%" height="800px" style="border: none;"></iframe>
