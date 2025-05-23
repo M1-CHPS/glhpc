@@ -1,13 +1,14 @@
-# OBHPC - Remise a niveau informatique
+# GLHPC - Introduction
 
-This course is intended for M1CHPS students as a computer-science crash course. 
-We will cover the very basics that you will need to thrive during the Master, including a dense introduction to programming,
-experimental design, and performance analysis of HPC kernels.
+This course is intended for M1 Calcul Haute Performance et simulation (M1CHPS) students as a crash course for programming techniques specific to High Performance Computing and Artificial Intelligence applications.
+This course will cover programming basics in C and shell, and will gradually move on to more complex notions such as parallelism, performance profiling, experimental design, and the implementation of a Neural Network from scratch.
 
 ## Organisation
 
-This course is organized in labs contaning a mix of lessons and exercises that you will need to complete.
+This course is organised as a mixture of lectures and labs. The lectures are available online in the Course section of this website, and may be provided as slides by your professor.
+
+The labs subjects are contained in the same section, but code snippets and other ressources will be provided via github classroom.
 
 ## Advanced content
 
-Some you may come from a CS background, and may find the content of this course trivial: this is normal, and I do expect you to still complete the exercises. However, the course also includes **[Going-Further]** sections that you may find more interesting.
+Some of you may come from a CS background and already have strong notions of C programming. This course includes Advanced and optionnal sections to keep you busy during class hours.

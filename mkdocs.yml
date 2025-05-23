@@ -1,4 +1,4 @@
-site_name: OBHPC - Remise a niveau Informatique
+site_name: GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
 theme:
   name: material
   palette:
@@ -56,6 +56,8 @@ markdown_extensions:
   - md_in_html
   - pymdownx.arithmatex:
       generic: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
 
 extra_javascript:
   - javascripts/mathjax.js
@@ -64,18 +66,20 @@ extra_javascript:
 nav:
   - Home: index.md
   - Course:
-    - CM1 - Introduction au Génie Logiciel pour HPC/IA, Environnement de Développement: lecture1.md
-    - L1 - Prerequisites: lab1.md
-    - CM2 - Maîtrise du C pour la Performance et le HPC: lecture2.md
-    - L2 - C Programming: lab2.md
-    - CM3 - Construction, Test et Débogage de Logiciels Scientifiques: lecture3.md
-    - L3 - More C Programming: lab3.md
-    - L4 - Experimental Design: lab4.md
-    - CM4 - Design Expérimental, Profilage et Optimisation de Performance / Énergie: lecture4.md
-    - L5 - Profiling and Optimization: lab5.md
-    - CM5 - HPC pour l’IA: lecture5.md
-    - L6 - Projet IA - [Partie 1] Optimisation d’un noyau SGEMM: lab6.md
-    - L7 - Projet IA - Suite: lab7.md
+      - Lectures:
+        - L1 - Introduction to Software Engineering for HPC/AI, Development Environment: lecture1.md
+        - L2 - Mastering C for High-Performance Computing": lecture2.md
+        - L3 - Building, Testing, and Debugging Scientific Software: lecture3.md
+        - L4 - Experimental Design, Profiling, and Performance/Energy Optimization: lecture4.md
+        - L5 - HPC for AI: lecture5.md
+      - Labs:
+        - Lab 1 - Prerequisites: lab1.md
+        - Lab 2 - C Programming and Memory Management: lab2.md
+        - Lab 3 - Monte-Carlo sampling: lab3.md
+        - Lab 4 - Experimental Methodology and Scientific Reporting: lab4.md
+        - Lab 5 - Profiling and Optimization: lab5.md
+        - Lab 6 - AI Project (1) SGEMM Kernel Optimization: lab6.md
+        - Lab 7 - AI Project (2) Neural Network Inference: lab7.md
   - Exams:
     - Guide de soutenance: guide_soutenance.md
   - Annex:
