@@ -270,10 +270,10 @@ We will dive into git later. For now, do the following:
 
 Upon completing this first lab, you should:
 
-- Have a working programming environment
-- Know how to navigate the file system with the shell
-- Know how to use basic file operations
-- Know how to use VSCode to write and edit files
-- Be ready to use git with Github
+- [x] Have a working programming environment
+- [x] Know how to navigate the file system with the shell
+- [x] Know how to use basic file operations
+- [x] Know how to use VSCode to write and edit files
+- [x] Be ready to use git with Github
 
 </div>
