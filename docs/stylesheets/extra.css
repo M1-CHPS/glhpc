@@ -10,7 +10,7 @@
 
 .box-section::before {
     display: block;
-    padding: 0.3em 1em;
+    padding: 0.3em 0.3em;
     font-weight: bold;
     font-size: 0.9em;
     border-bottom: 1px solid;
@@ -22,8 +22,20 @@
 }
 
 .box-section > * {
-    padding: 0 1em 0.5em 0.5em;
+    padding: 0.5em 1em 0.1em 1em;
     margin-bottom: 0;
+}
+
+/*By default MKDOCS introduces margins around each html block
+This causes the content to be spaced out too much
+This is a workaround to remove the margins around the content when inside a box-section*/
+.box-section pre,
+.box-section blockquote,
+.box-section ul,
+.box-section ol,
+.box-section p {
+    margin-bottom: 0.05em; /* Or adjust as needed */
+    margin-top: 0.05em;
 }
 
 
@@ -65,6 +77,18 @@
 
 .summary-section > *:first-child {
     margin-top: 1em;
+}
+
+.summary-section > * {
+    padding: 0.5em 1em 0.5em 1.5em; /* top, right, bottom, left */
+}
+
+.summary-section p,
+.summary-section ul,
+.summary-section ol,
+.summary-section pre,
+.summary-section blockquote {
+    padding: 0.5em 1em 0.5em 1.5em; /* top, right, bottom, left */
 }
 
 .toc-title {
