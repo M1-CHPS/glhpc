@@ -92,13 +92,15 @@ If needed, fix your measurements so that the execution time is mostly normally d
 <div class="goingfurther-section box-section" markdown>
 ## 2.5 - <span class="toc-title"> (Going-Further)</span> Understanding the scripts
 
-1) Look at `run_all.sh`, and try to understand each line.
+### 1) Look at `run_all.sh`, and try to understand each line.
 
-a) What does `set -e`, `set -o pipefail` and `2>&1 | tee ...` do ?
+#### a) What does `set -e`, `set -o pipefail` and `2>&1 | tee ...` do ?
 
-b) What is the purpose of the `run_label` argument (Why should we label our data) ? What files are generated, and what's the purpose of every one of them ?
+#### b) What is the purpose of the `run_label` argument (Why should we label our data) ? 
+What files are generated, and what's the purpose of every one of them ?
 
-2) Look at `scripts/analyse.py` and try to understand how each plot is built. Try to link every components of `convergence.png` and `stability.png` (The titles, the axis label, the axis ticks, the distributions, the grid, ...) with the code that generates it.
+### 2) Look at `scripts/analyse.py` and try to understand how each plot is built. 
+Try to link every components of `convergence.png` and `stability.png` (The titles, the axis label, the axis ticks, the distributions, the grid, ...) with the code that generates it.
 
 
 </div>
@@ -204,6 +206,11 @@ taskset -cp 0,2,4,6,8,10,12,14 $$
 From now on, all the executable run in this shell will inherit this thread affinity.
 Feel free to create an alias for this command inside your `.bashrc` for future use.
 
+You can also use the following variable for OpenMP:
+```sh title="OMP Places for E/P cores"
+OMP_PLACES="{0, 2, 4, 6, 8, 10, 12, 14}"
+```
+
 </div>
 
 #### f) Verify your implementation's strong scaling:
@@ -239,6 +246,6 @@ Upon completing this third lab, you should know how to:
 - [x] Account for variability and noise in timing benchmarks
 - [x] Use OpenMP to parallelize a minimal compute-bound code and understand implications for thread safety
 - [x] Perform simple analysis of scaling behavior (strong/weak scaling)
-- [x] Care for thread placement and measurements issues arising from the underlying hardware
+- [x] Understand thread affinity and hardware topology impacts on performance and timing stability
 
 </div>

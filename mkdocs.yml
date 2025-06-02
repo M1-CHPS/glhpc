@@ -68,7 +68,7 @@ nav:
   - Course:
       - Lectures:
         - L1 - Introduction to Software Engineering for HPC/AI, Development Environment: lecture1.md
-        - L2 - Mastering C for High-Performance Computing": lecture2.md
+        - L2 - Performance Aware C Computing: lecture2.md
         - L3 - Building, Testing, and Debugging Scientific Software: lecture3.md
         - L4 - Experimental Design, Profiling, and Performance/Energy Optimization: lecture4.md
         - L5 - HPC for AI: lecture5.md

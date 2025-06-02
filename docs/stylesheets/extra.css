@@ -133,3 +133,19 @@ This is a workaround to remove the margins around the content when inside a box-
 .md-typeset details.optional-section > *:not(summary) {
     padding: 0.8em 1.2em;
 }
+
+hr.gradient {
+  position: relative;
+  height: 4px;
+  border: none;
+  margin: 2.5em 0;
+  border-radius: 2px;
+
+  /* Base gradient line */
+  background: linear-gradient(
+    to right,
+    #f9f9f9 0%,
+    #9400FF 50%,
+    #f9f9f9 100%
+  );
+}
