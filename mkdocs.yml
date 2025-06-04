@@ -76,8 +76,8 @@ nav:
         - Lab 1 - Prerequisites: lab1.md
         - Lab 2 - C Programming and Memory Management: lab2.md
         - Lab 3 - Monte-Carlo sampling: lab3.md
-        - Lab 4 - Experimental Methodology and Scientific Reporting: lab4.md
-        - Lab 5 - Profiling and Optimization: lab5.md
+        - Lab 4 - CMake, Unit Tests, Good practices: lab4.md
+        - Lab 5 - Experimental Methodology and Scientific Reporting: lab5.md
         - Lab 6 - AI Project (1) SGEMM Kernel Optimization: lab6.md
         - Lab 7 - AI Project (2) Neural Network Inference: lab7.md
   - Exams:
