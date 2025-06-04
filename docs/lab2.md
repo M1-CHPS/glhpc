@@ -1,4 +1,6 @@
 # Lab 2: Performance Aware C Computing
+<hr class="gradient" />
+
 
 ### Objective
 
@@ -22,9 +24,11 @@ The line `1 0 quantize 8` declares the node 1, whose parent is the node 0, and p
   <figcaption>Example Processing pipeline you will have to implement</figcaption>
 </figure>
 
+---
+
 ### Provided Files
 
-The parsing and pipeline execution logic have already been implemented so you can focus on managing memory and kernel implementations. You only need to implement the actual transformations. You are provided with a starter codebase containing the following directories and files:
+The parsing and pipeline execution logic have already been implemented so you can focus on managing memory and kernel implementations. The starter codebase contains the following directories and files:
 
 | Path                | Description                                                                 |
 |---------------------|-----------------------------------------------------------------------------|
@@ -50,22 +54,22 @@ Ensure this library is located at the root of your project, then run:
 export LD_LIBRARY_PATH=$(pwd):$LD_LIBRARY_PATH
 ```
 
-This updates the `LD_LIBRARY_PATH` environment variable to help the kernel locate dynamic library dependencies at runtime. 
-Ensure that you run this command everytime you create a new shell for this project.
+This updates the `LD_LIBRARY_PATH` environment variable so the compiler can find the dependency.
+You may need to re-run this command when creating a new shell.
 
-#### a) First, write a `Makefile` that:
+#### a) Write a `Makefile` that:
 
 - Compiles `main.c`, `image.c` and `transformation.c` using `gcc`
 - Links against `libparser.so`
-- Produces a binary named `mystransform`
-- Includes a `clean` target that removes compiled artifacts
+- Produces a binary named `mystransform` at the root of the project
+- Exposes a `clean` target that removes compiled artifacts
 
 !!! Danger
     The output binary **must** be named `mystransform`, or later parts of the lab may not work correctly.
 
 #### b) Define a `CFLAGS` variable inside the `Makefile`
 
-To get started, you should use `-Og -g -Wall -Wextra` as compilation flags. We will update this later. Make sure these flags are used when compiling `mytransform`.
+To get started, you should use `-Og -g -Wall -Wextra` as compilation flags. We will update this later. Ensure the flags are in effect.
 
 #### c) Try running your program
 
@@ -75,13 +79,15 @@ Execute the following:
 ```
 
 ```sh title="Expected Output"
-Grayscale - Not Implemented
-Invert - Not Implemented
-Save - Missing function
-Quantize - Not Implemented
-Save - Missing function
-Invert - Not implemented
-Save - Missing function
+create_image - Not implemented yet
+Could not allocate image for load
+convert_to_grayscale - Not implemented yet
+invert_image - Not implemented yet
+Node 3 requested to save an image from node 2, which did not produce an image
+quantize_image_naive - Not implemented yet
+Node 5 requested to save an image from node 4, which did not produce an image
+invert_image - Not implemented yet
+Node 7 requested to save an image from node 6, which did not produce an image
 ```
 
 This indicates that your build works correctly and you can continue the lab. If needed, fix your `Makefile` until you obtain the same results.
@@ -111,7 +117,7 @@ Make sure you can free both **grayscale** and **RGB** images. **Note**: you must
 
 Compile your program and fix any errors until none are left. Run the following:
 ```sh title="Memory Test"
-./mytransform --memory-test
+./mytransform --memory-check
 ```
 
 You should get the following:
@@ -120,6 +126,7 @@ Memory Allocations tests completed successfully
 <Lots of error about copy failure>
 ```
 
+---
 
 ### 2) Image Copying
 
@@ -144,12 +151,9 @@ Memory Allocations tests completed in 5 seconds
 Copy Test: 3000x3000x3 image -> 3524.74 MIOPS, 3.52 GB/s
 ```
 
-<div class="goingfurther-section box-section" markdown>
+<div class="optional-section box-section" markdown>
 
-#### c) Try different compilation flags
-How many GB/s did you get with `-Og` as a compilation flag ? Do you notice a difference with `-O2` ? `-O3` ?
-
-#### d) Implement 2d copy loops
+#### c) Implement 2d copy loops
 
 When copying, we have to deal with three dimensions: the channels, the width and the height.
 
@@ -169,7 +173,7 @@ for c in channels
 
 Now, try swapping out the loop. First iterate on `y`, then `x`, then`c`. Try all possible combinations to find which one is faster. Can you explain why ?
 
-#### e) Implement the linear versions
+#### d) Implement the linear versions
 
 While images are 3D structures (When taking the channels into account), you may have noticed that we have stored them as 2D arrays (One linear array per channel). 
 Each channel is stored in ROW-MAJOR.
@@ -177,7 +181,7 @@ Each channel is stored in ROW-MAJOR.
 - Implement two nested loops: the upper levels iterating on the channels, the inner loop iterating over each pixel.
 - Implement one loop: iterate only over the pixel, copying RGB in a single loop.
 
-Compare the performance by running the `--memory-test` option. Which loops give you the best performance ? Do you understand why ?
+Compare the performance by running the `--memory-check` option. Which loops give you the best performance ? Do you understand why ?
 
 </div>
 
@@ -212,6 +216,7 @@ mkdir -p ./output
 
 At this stage, `output/test_grayscale.png` should contain the grayscale of `images/test.png`
 
+---
 
 ### 2) Implementing Inversion
 
@@ -222,6 +227,8 @@ C_{out} = 255 - C_{in}
 $$
 
 Where C is one of the input image channels (RGB or Grayscale). Implement this kernel in `transformation.c:invert_image(...)`.
+
+---
 
 ### 3) Implementing Quantization
 
@@ -251,7 +258,7 @@ We are trading **memory overhead for performance**, which is a very common patte
 
 Implement this method in `transformation.c:quantize_image_lut(...)`, and be sure to correctly allocate and free the LUT.
 
-### c) Compare performance
+#### c) Compare performance
 
 Modify `transformation.c:quantize_image(...)` to either use the LUT or the naive version, and run the following code:
 ```title="Benchmarking"
@@ -267,7 +274,7 @@ Which version is faster ? What's the speedup of the LUT method over the naive ve
 At this stage, your code should be able to execute all pipelines in the `pipelines/` directory. 
 Validate your implementation by checking that output images are generated and appear visually correct.
 
-### 1) Improving performance
+### Improving performance
 
 Once your implementation is functionally correct, your next goal is to **optimize performance**.
 
@@ -275,10 +282,13 @@ Use the provided script:
 
 ```sh
 # run_all.sh <run_label>
-./run_all.sh baseline
+./run_all.sh first_version
 ```
 
-Check the resulting plots in `./results/baseline/`. Take a look at `./results/baseline/pipeline.pipeline` to understand which operations are being evaluated.
+!!! Tip
+    You should run the previous script with both the LUT and naive implementation of quantization to compare.
+
+Check the resulting plots in `./results/first_version/`. Take a look at `./results/first_version/pipeline.pipeline` to understand which operations are being evaluated.
 Re-run the benchmark after every meaningful optimization, and check `./results/comparisons.png` to see if you improved performance or not. **Tip**: play around with compilation flags.
 
 To remove a version, remove the corresponding folder in `./results`
@@ -288,6 +298,8 @@ To remove a version, remove the corresponding folder in `./results`
     ```sh title="Installing python on fedora"
     sudo dnf install python3 python3-pip python3-virtualenv
     ```
+
+<hr class="gradient" />
 
 <div class="summary-section box-section" markdown>
 

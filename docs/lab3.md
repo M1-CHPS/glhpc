@@ -1,5 +1,8 @@
 # Lab 3: Monte-Carlo Sampling
 
+<hr class="gradient" />
+
+
 Monte-Carlo methods are useful for approximating quantities that are difficult or computationally expensive to determine analytically or through deterministic algorithms. These methods introduce randomness into the computations in order to obtain a statistically meaningful estimate over multiple repetitions of the same routine.
 
 In this lab, we explore the approximation of π using Monte-Carlo sampling. To do this, we consider a unit circle (radius 1) inscribed within a square of side length 2, centered at the origin. By generating random points uniformly within the square and counting how many fall inside the circle, we can estimate the ratio of the areas of the two shapes. 
@@ -11,6 +14,8 @@ Since the area of the circle is $\pi \cdot r^2 = \pi$, and the area of the squar
   <figcaption>Monte-Carlo Pi</figcaption>
 </figure>
 
+<hr class="gradient" />
+
 ## 1 - Implementing the MC Method
 
 Implement your own version of the $\pi$ estimator inside `src/compute_pi.c` using the Monte-Carlo method. This method receives $n$ the number of Monte-Carlo samples to take as arguments, and must return the approximation of $\pi$ in `double` precision.
@@ -20,6 +25,8 @@ Build your program using `make` and validate your implementation. The program ca
 # piestimator <nsamples>
 piestimator 1000000
 ```
+
+<hr class="gradient" />
 
 ## 2 - Timing and serialization
 
@@ -90,6 +97,7 @@ If needed, fix your measurements so that the execution time is mostly normally d
 
 
 <div class="goingfurther-section box-section" markdown>
+
 ## 2.5 - <span class="toc-title"> (Going-Further)</span> Understanding the scripts
 
 ### 1) Look at `run_all.sh`, and try to understand each line.
@@ -97,14 +105,15 @@ If needed, fix your measurements so that the execution time is mostly normally d
 #### a) What does `set -e`, `set -o pipefail` and `2>&1 | tee ...` do ?
 
 #### b) What is the purpose of the `run_label` argument (Why should we label our data) ? 
+
 What files are generated, and what's the purpose of every one of them ?
 
 ### 2) Look at `scripts/analyse.py` and try to understand how each plot is built. 
 Try to link every components of `convergence.png` and `stability.png` (The titles, the axis label, the axis ticks, the distributions, the grid, ...) with the code that generates it.
 
-
 </div>
 
+<hr class="gradient" />
 
 ## 3 - Optimization
 
@@ -234,6 +243,8 @@ OMP_NUM_THREADS=8 ./piestimator 8000000
 ```
 
 What results do you expect to see ? Does that match your empirical observations ? Propose an explanation.
+
+<hr class="gradient" />
 
 <div class="summary-section box-section" markdown>
 
