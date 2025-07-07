@@ -1,4 +1,4 @@
-# Lab 0 - Prerequisites - Linux, the shell, Git
+# Lab 1 - Prerequisites - Linux, the shell, Git
 
 ## 0 - Linux
 

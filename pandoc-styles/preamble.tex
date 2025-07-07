@@ -1,0 +1,39 @@
+% preamble.tex for Pandoc Beamer (Metropolis) with Comfortaa/Helvetica
+
+% Metropolis tweaks
+\metroset{numbering=fraction}
+\setbeamerfont{title}{series=\bfseries}
+\setbeamertemplate{section in toc}[sections numbered]
+
+% Code blocks (listings)
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,  % smaller than \footnotesize
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  keepspaces=true,
+  tabsize=2,
+  showstringspaces=false,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{orange}
+}
+
+% Typography
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{csquotes}
+
+\usepackage{etoolbox}
+\AtBeginEnvironment{tabular}{\begingroup\tiny}
+\AtEndEnvironment{tabular}{\endgroup}
+
+\usepackage{mathtools}
+\usepackage{unicode-math}
+
+\defaultfontfeatures{Scale=MatchLowercase}
+\setmainfont{Comfortaa} 
+\setsansfont{Latin Modern Mono}
+\setmathfont{Fira Math}
+\setmathrm{Fira Math}[Ligatures={Common,TeX}]

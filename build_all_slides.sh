@@ -3,7 +3,7 @@
 set -e
 set -o pipefail
 
-PDF_ENGINE="pdflatex"
+PDF_ENGINE="xelatex"
 OUTPUT_DIR=$(realpath ./slides)
 mkdir -p $OUTPUT_DIR
 
@@ -19,10 +19,16 @@ find . -type f -name "lecture*.md" | while read -r src; do
     echo "Converting $src -> $pdf"
 
     pandoc "$src" -t beamer -o "$pdf" \
+        --pdf-engine=${PDF_ENGINE} \
+        -H preamble.tex \
+        --resource-path=.:$(pwd)/../pandoc-styles \
         -V theme=metropolis \
-        --pdf-engine="$PDF_ENGINE" \
         -V colortheme=orchid \
-        -V fonttheme=structurebold \
+        --listings \
+        -V lang=fr \
+        -V fontsize=9pt \
+        -V mainfont="Comfortaa Medium" \
+        -V monofont="Latin Modern Mono"
 
 done
 
