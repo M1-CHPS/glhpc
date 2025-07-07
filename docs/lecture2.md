@@ -441,7 +441,7 @@ The assembly instructions are stored in a separate (L1i) instruction cache
 
 ![CPU Latency and Cache](image/lecture2/cache_diagram.png){ width=100% }
 
-We speak of **Memory Hierarchy**: the same memory accesses can have different latency depending on where the data resides !
+We speak of **Heterogeneous Memory Hierarchy**: the same memory accesses can have different latency depending on where the data resides !
 
 
 [**Live example: LSTOPO**]
@@ -541,6 +541,8 @@ With AoS more load fail in the L1, leading to LLC accesses.
 
 Most LLC loads still results in misses, leading to DRAM access.
 
+---
+
 # Compilation & Assembly
 
 C is a compiled language: we must translate the source code to assembly for the CPU
@@ -551,6 +553,8 @@ C is a compiled language: we must translate the source code to assembly for the 
     - More flexible but **significanlty slower**
 - C# and Java are compiled to intermediary bytecode and then executed via a virtual machine (or JIT-ed)
     - Balances performance and productivity
+
+---
 
 # Compilation & Assembly - Simple Loop
 
@@ -583,6 +587,8 @@ main:
 
 `gcc ./main.c -o main -OO`
 
+---
+
 # Compilation & Assembly
 
 Assembly is as close to the machine we can get, and is architecture dependant:
@@ -593,6 +599,8 @@ Assembly is as close to the machine we can get, and is architecture dependant:
   - Our binaries are not portable
   - But we can use dedicated instructions
 - Other instructions set exists (ARM, Risc V, etc.)
+
+---
 
 # Compilation & Assembly - Optimization passes
 
@@ -606,6 +614,8 @@ The compiler is not *just* a translator:
 Those optimizations are enable through flags such as `-O1`, `-O2`, -`O3` which are predefined sets of optimization passes.
 The flag `-march=native` allows the compiler to target the current machine for compilation and use all the available ASM extensions.
 
+---
+
 # Compilation & Assembly - Compiler Pipeline
 
 ![C Compiler Workflow](image/lecture2/compiler_pipeline.png){ width=105% }
@@ -614,6 +624,8 @@ There are several compilers with varying performance and features:
 
 - GCC and Clang-LLVM (The classic)
 - MSVC (Microsoft), mingw-LLVM, arm-clang (For ARM) and many, many others.
+
+---
 
 # Introduction to parallelism
 
@@ -627,6 +639,8 @@ If you remember; we saw in `LSTOPO` that our CPU has many cores:
 
 Every process has at least one "thread of execution", which is an ordered sequence of instructions executed by the CPU.
 
+---
+
 # Introduction to parallelism
 
 What if we could split our programs into multiple threads ?
@@ -635,6 +649,8 @@ What if we could split our programs into multiple threads ?
 - If we have 2 threads, we can potentially double throughput, assuming minimal overhead and no dependencies.
 
 In practice, there is some slight overhead, we must handle dependencies between instructions, etc.
+
+---
 
 # Introduction to parallelism - Types of parallelism
 
@@ -648,6 +664,8 @@ We consider three main types of parallelism
   - Communications are slower, but this model enables scaling across multiple machines.
 
 For this course, we will only focus on SIMD and Shared Memory parallelism.
+
+---
 
 # Introduction to parallelism - Shared Memory
 
@@ -663,6 +681,8 @@ We can slice the iteration space in multiple chunks:
 
 ![Iteration slicing with 4 threads](image/lecture2/simple_reduction_omp.png){ width=100% }
 
+---
+
 # Introduction to parallelism - Shared Memory
 
 We split the program into multiple instruction sequences running in parallel.
@@ -674,6 +694,8 @@ We split the program into multiple instruction sequences running in parallel.
 
 It's a simple to use library/compiler pass to parallelize trivial loops.
 
+---
+
 # Introduction to parallelism - `OpenMP`
 
 ```c
@@ -683,9 +705,12 @@ int sum = 0;
 for (int i = 0; i < 100; i++)
   sum += i;
 ```
+`gcc ./main.c -fopenmp -O3 -march=native`
 
 This directive automatically distributes the loop iterations across all available CPU cores, 
 performing a thread-safe reduction on sum.
+
+---
 
 # Introduction to parallelism - `OpenMP` details
 
@@ -698,17 +723,17 @@ performing a thread-safe reduction on sum.
 
 This code will be enough for most cases; but `OpenMP` allows for significantly more complex operations.
 
+---
+
 # Introduction to parallelism - Advanced `OpenMP` Example
 
 ```c
 float global_min = FLT_MAX;
 int global_min_index = -1;
-
 #pragma omp parallel
 {
   float min_value = FLT_MAX;
   int min_index = -1;
-
 #pragma omp for nowait schedule(dynamic)
   for (int i = 0; i < N; i++) {
     if (T[i] < min_value) {
@@ -716,7 +741,6 @@ int global_min_index = -1;
       min_index = i;
     }
   }
-
 #pragma omp critical
   {
     if (min_value < global_min) {
@@ -726,3 +750,20 @@ int global_min_index = -1;
   }
 }
 ```
+
+---
+
+# Naive NBody 3D Strong Scaling - Setup
+
+On augmente le nombre de threads en gardant la charge de travail constante.
+
+`OMP_PLACES={0,2,4,6,8,10,12,14} OMP_PROC_BIND=True OMP_NUM_THREADS=8 ./nbody 10000`
+`sudo cpupower frequency-set -g performance`
+
+5 Meta repetitions par run, 13th Gen Intel(R) Core(TM) i7-13850HX @5.30 GHz, 32KB/2MB/30MB:L1/L2/L3 15GB DDR5.
+
+# Naive NBody 3D Strong Scaling - Results
+
+![Speedup of Naive Gravitationnal NBody 3D](./image/lecture2/naive_nbody_scaling.png){ width=80% }
+
+Speedup is limited by runtime overhead, concurrency, memory bandwidth, data size, etc.
