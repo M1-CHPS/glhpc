@@ -85,7 +85,7 @@ int main() {
 
   // Print the result to the console
   printf("(5+4)**2: %d\n", c);
-  printf("(3+9)**2): %d\n", d);
+  printf("(3+9)**2: %d\n", d);
   return 0;
 }
 ```
@@ -223,13 +223,13 @@ for (int i = 0; i < 3; i++)
 
 # C Programming - Trading Abstraction for performance
 
-In C, we must manually take care of very low level concepts:
+## In C, we must manually take care of very low level concepts {.alert}
 
 - We care about data layout, memory addresses, pointers, etc.
 - The language doesn't provide linked lists, dynamic arrays, dictionaries, etc.
 - No basic algorithms like sorting
 
-On the flip side, we can:
+## On the flip side, we can {.example}
 
 - Manually lay out data to maximize efficiency
 - Remove any abstractions and overhead to maximize performance
@@ -273,24 +273,30 @@ That's a speedup of ~235.
 
 We will see later in this course how this is possible thanks to the compiler.
 
+
+## Numpy and other libraries  {.alert}
+
 Note that we could use `numpy` or the `sum` python function: but those are actually implemented in `C`
 
 ---
 
 # Managing Memory - Concept
 
-In High-level languages:
+## In High-level languages {.alert}
 
 - We operate on abstracted data structures (lists, dictionaries, etc.)
 - Memory is managed automatically (allocation, resizing, deallocation)
 - We don't care about memory alignment, stack vs. heap, page size, Numa effects, etc.
 
-But in C:
+## In C  {.example}
 
 - We perform directly with primitive data and raw memory
-- We are reponsible for allocation, layout, and cleanup
+- We are responsible for allocation, layout, and cleanup
 - We can only request chunks of raw memory, and fill it however we choose
 - This is critical for performance
+
+
+
 
 This low level control is critical for performance; hence we must understand how memory works under the hood !
 
@@ -356,7 +362,7 @@ In Python (and Java, C#, etc.); memory is managed by the garbage collector (GC):
 
 In C/C++, **the user must deallocate memory** using `free(ptr)`. 
 
-## Memory leak
+## Memory leak {.alert}
 
 If memory is not freed (memory leak) the computer can run out:
 
@@ -411,13 +417,13 @@ Note that GPU(s) also have their own separate memory !
 
 # Memory Hierarchy
 
-CPUs are fast; the memory has to keep up !
+* CPU computations are extremely fast, and memory access can be a bottleneck
+  - Registers have the lowest latency
+  - CPU caches (L1, L2, L3) act as fast buffers for memory
+* DRAM (main memory) is much slower, but cheaper and larger
+  - Accessing DRAM causes significant delays compared to cache
 
-* The CPU has significantly lower latency than DRAM
-  - We use registers to store variables, and cache to quicken access to the same data.
-* DRAM is cheap; registers and cache are exponentially costlier
-
-To achieve high performance, we must keep frequently accessed data in registers or caches to avoid costly DRAM access.
+To achieve high performance, we must maximize data reuse in registers or caches, and minimize DRAM access.
 
 ---
 
@@ -431,7 +437,7 @@ Most CPU have 3 levels of cache
 
 Some cache level are per-core (L1, often L2) whereas others are shared between multiple cores (L3).
 
-## Instruction Cache
+## Instruction Cache {.alert}
 
 The assembly instructions are stored in a separate (L1i) instruction cache
 
@@ -439,7 +445,7 @@ The assembly instructions are stored in a separate (L1i) instruction cache
 
 # CPU Caches
 
-![CPU Latency and Cache](image/lecture2/cache_diagram.png){ width=100% }
+![CPU Latency and Cache](image/lecture2/cache_diagram.png){ width=95% }
 
 We speak of **Heterogeneous Memory Hierarchy**: the same memory accesses can have different latency depending on where the data resides !
 
@@ -467,7 +473,7 @@ for (int i = 0; i < n; i++) {
 
 # CPU Caches - In practice
 
-In reality:
+In practice:
 
 - The CPU fetches entire **cache line** (Often 64 Bytes) at once (If float: $64B / 4B = 16$ values at once) 
 - The CPU can **prefetch** data: it learns data access patterns and anticipates future memory access.
@@ -489,6 +495,7 @@ float* positions = malloc(sizeof(float) * N * 3);
 **Structure Of Array (SoA)**
 
 ```c
+// We allocate separate arrays for each components
 float* x = malloc(sizeof(float) * N);
 float* y = malloc(sizeof(float) * N);
 float* z = malloc(sizeof(float) * N);
@@ -525,7 +532,7 @@ Which access pattern makes better use of cache lines ?
 
 # Caches CPU - Strided Access
 
-`Perf` results cumulated over 100 runs:
+`Perf` results summed across 100 runs:
 
 |  | Time   | # Instr | # L1 Loads   | # L1 Miss  | # LLC Loads | # LLC Miss |
 |--------|--------|---------------|--------------|------------|-------------|------------|
@@ -550,9 +557,11 @@ C is a compiled language: we must translate the source code to assembly for the 
 `gcc ./main.c -o main (<flags>)`
 
 - Python is interpreted
-    - More flexible but **significanlty slower**
+  - More flexible but **significantly slower**
 - C# and Java are compiled to intermediary bytecode and then executed via a virtual machine (or JIT-ed)
-    - Balances performance and productivity
+  - Balances performance and productivity
+- C/C++/Rust are compiled to assembly code
+  - Poor portability, but not intermediary.
 
 ---
 
@@ -591,7 +600,7 @@ main:
 
 # Compilation & Assembly
 
-Assembly is as close to the machine we can get, and is architecture dependant:
+Assembly is as close to the metal we usually get, and is architecture dependant:
 
 - Intel and AMD use the x86 Instruction Set 
 - x86 has multiple extensions (FMA, sse, avx, avx512, etc.)
@@ -612,6 +621,7 @@ The compiler is not *just* a translator:
 - Many, many more optimizations
 
 Those optimizations are enable through flags such as `-O1`, `-O2`, -`O3` which are predefined sets of optimization passes.
+
 The flag `-march=native` allows the compiler to target the current machine for compilation and use all the available ASM extensions.
 
 ---
@@ -622,7 +632,7 @@ The flag `-march=native` allows the compiler to target the current machine for c
 
 There are several compilers with varying performance and features:
 
-- GCC and Clang-LLVM (The classic)
+- GCC and Clang-LLVM (The classics)
 - MSVC (Microsoft), mingw-LLVM, arm-clang (For ARM) and many, many others.
 
 ---
@@ -637,6 +647,7 @@ If you remember; we saw in `LSTOPO` that our CPU has many cores:
 - Multiple process (Google, vscode, firefox, excel) can run **simultaneously** on different cores.
 - The kernel manages execution through thread scheduling and time-slicing
 
+## Main Thread {.example}
 Every process has at least one "thread of execution", which is an ordered sequence of instructions executed by the CPU.
 
 ---
@@ -646,9 +657,9 @@ Every process has at least one "thread of execution", which is an ordered sequen
 What if we could split our programs into multiple threads ?
 
 - If we have 1 thread only one computation happens at a time
-- If we have 2 threads, we can potentially double throughput, assuming minimal overhead and no dependencies.
+- If we have 2 threads, we can potentially double throughput !
 
-In practice, there is some slight overhead, we must handle dependencies between instructions, etc.
+In practice, there is some overhead, we must handle dependencies between instructions, etc.
 
 ---
 
@@ -717,8 +728,8 @@ performing a thread-safe reduction on sum.
 `OpenMP` defines a set of `clause` which are operations followed by a set of modifiers.
 
 - `#pragma omp`: is the start of all OpenMP clauses
-- `parallel:` is the clause to enable the creations of multiple threads
-- `for`: toggle the automatic slicing of immediatly next loop
+- `parallel:` enable the creations of multiple threads
+- `for`: toggle the automatic slicing of following loop
 - `reduction(sum: +)`: toggles a reductions clause for sum using the `+` operation.
 
 This code will be enough for most cases; but `OpenMP` allows for significantly more complex operations.
@@ -755,12 +766,12 @@ int global_min_index = -1;
 
 # Naive NBody 3D Strong Scaling - Setup
 
-On augmente le nombre de threads en gardant la charge de travail constante.
+We increase the number of threads while keeping the work size constant.
 
 `OMP_PLACES={0,2,4,6,8,10,12,14} OMP_PROC_BIND=True OMP_NUM_THREADS=8 ./nbody 10000`
 `sudo cpupower frequency-set -g performance`
 
-5 Meta repetitions par run, 13th Gen Intel(R) Core(TM) i7-13850HX @5.30 GHz, 32KB/2MB/30MB:L1/L2/L3 15GB DDR5.
+5 Meta repetitions per run, 13th Gen Intel(R) Core(TM) i7-13850HX @5.30 GHz, 32KB/2MB/30MB:L1/L2/L3 15GB DDR5.
 
 # Naive NBody 3D Strong Scaling - Results
 
