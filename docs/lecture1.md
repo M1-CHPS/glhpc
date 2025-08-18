@@ -105,6 +105,66 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 
 /section{Introduction aux systèmes de contrôle de version}
 
+# HPC Architectures
+
+## CPU & Instruction Set (ISA) — quick review
+
+- CPU core executes instructions; machine state = registers, program counter and flags.
+- Assembly encodes the instructions; compilers translate high-level code into the ISA.
+  - types: arithmetic/logical, load/store (memory), control flow (branches, calls), system calls
+- Registers are the fastest storage; register pressure influence performance.
+
+## Example: Intel Core2 Architecture
+ 
+![Intel Core2 Architecture (CC-by-SA, Wikipedia)](image/lecture1/Intel_Core2_arch.svg)
+
+## Pipeline, Memory Hierarchy & Interrupts
+
+- **Pipeline** increases instruction throughput, classic 5-stages:
+  - Fetch → Decode → Execute → Memory → Write-back
+- **Hazards**: data hazards (dependencies), control hazards (branch prediction), resource conflicts.
+- **Memory hierarchy**: registers → L1/L2/L3 caches → DRAM → persistent storage; spatial and temporal locality drive cache effectiveness.
+- Buses, **coherence and NUMA**: cross-socket memory access has higher latency; cache coherence and memory bandwidth limit scalability.
+- **Interrupts and exceptions**: asynchronous interrupts signal external events; exceptions/traps handle synchronous faults; the OS performs context switching and servicing.
+
+## Multicore memory hierarchy (more in next lecture ...)
+![Memory hierarchy](image/lecture1/multi-proc-memory.png)
+
+## System hierarchy (physical view)
+
+- Rack → chassis → node → socket → core → hardware thread: a multi-level physical organization.
+- Nodes often include accelerators (GPUs, TPUs, FPGAs) and have their own memory (DRAM, sometimes HBM).
+- Heterogeneous hardware and multi-level parallelism are the norm in modern HPC systems.
+
+## Interconnects and I/O
+
+### Interconnects
+- Two key metrics: latency (small-message cost) and bandwidth (sustained transfer rate).
+- Fabrics: Ethernet, InfiniBand, Omni-Path; features to note: RDMA, kernel bypass, hardware offloads.
+- Network topology affects routing, contention and scalability.
+
+### Storage and I/O
+- Parallel file systems provide shared high-throughput storage for HPC jobs.
+- Design I/O to avoid bottlenecks and to fit checkpoint/analysis cadence (collective I/O, buffer in NVMe).
+
+
+## Levels of parallelism & mapping
+
+- Inter-node (distributed memory) via MPI; intra-node threading via OpenMP/pthreads; SIMD/vector units for data-level parallelism.
+- Accelerator offload (CUDA/HIP/OpenCL) creates hybrid MPI+X application patterns.
+- Choose mapping to match algorithm characteristics (communication-heavy vs compute-dense).
+
+### Software stack, operations & current trends
+
+- Typical stack: compilers, MPI/libfabric, math libraries, system libs
+- Job schedulers (Slurm/PBS) handle resource allocation, queues and batch workflows
+
+
+
+# Shell and scripting
+
+# Package Management
+
 # Version Control Systems
 
 ## What is Version Control?
@@ -115,37 +175,27 @@ Each version is associated with a date, an author, and a message. Developers can
 
 ## Objectives
 
--   **Enhance communication** among developers (track code evolution, messages).
--   **Isolate experimental developments** (work branches).
--   **Ensure code stability** (stable version on the main branch, ability to revert to a stable version).
--   **Manage releases** (tags for specific versions).
+- **Enhance communication** among developers (track code evolution, messages).
+- **Isolate experimental developments** (work branches).
+- **Ensure code stability** (stable version on the main branch, ability to revert to a stable version).
+- **Manage releases** (tags for specific versions).
 
-## Vocabulary Related to Versions
+## Vocabulary for Versions
 
-- **Version**: A stage in the progress of software development (*revision* in English).
-- **Modification**: A set of additions and deletions applied to one or more files.
-- **Version Change**: Applying a modification to a version creates a new version.
+- **Version** — a recorded state or revision in the project's history.
+- **Commit** — a snapshot of the project at a given version with metadata.
+- **Branch** — an independent line of development (use one branch per feature/experiment).
+- **Tag** — a stable label pointing to a specific commit (e.g., releases).
+- **Diff / Patch** — textual representation of changes between versions.
+- **Conflict** — incompatible concurrent edits that must be resolved manually.
 
-## Vocabulary Related to Storage
+## Vocabulary for Storage
 
-- **Repository**: A public storage space containing versioned files.
-- **Clone**: A copy of the project and its version control data. Cloning a repository provides a local working copy.
-- **Working Copy**: A private local copy of the repository or part of it, where developers can make changes.
-
-## Vocabulary Related to Changes
-
-- **Commit**: 
-  - *Noun*: A modification to one or more files in the project.
-  - *Verb*: To apply a modification to the project.
-- **Update**: Incorporate commits made by other developers into your working copy.
-- **Diff**: A textual representation of changes between the project file and the local copy (e.g., `+++` for additions, `---` for deletions).
-
-## Vocabulary Related to Branches
-
-- **Branch**: A set of modifications originating from a specific version. The main branch (e.g., `main` or `master`) contains the primary project changes. Branches diverge from the main branch or other branches.
-- **Merge**: Combine two branches into one.
-- **Conflict**: Contradictory changes to the same file. Occurs when two developers modify the same part of a file differently or during branch merging.
-- **Tag**: A label assigned to a specific version (e.g., `release-0.1.1`).
+- **Repository** — storage of the project's history (local `.git` and metadata).
+- **Clone** — a full local copy of the repository including history.
+- **Working copy** — editable files checked out from a repository.
+- **Index / Staging area** — area to stage selected changes for the next commit.
+- **Remote** — hosted repository (e.g., `origin` on GitHub/GitLab) for collaboration.
 
 ## Centralized VCS
 
@@ -153,10 +203,12 @@ Centralized Version Control System (VCS)
 
 - **Single repository** for all versions.
 
-### Advantages:
+### Advantages
+
 - Simplified centralized management.
 
-### Examples:
+### Examples
+
 - CVS (1990) *(OpenBSD)*
 - Subversion SVN (2000) *(Apache, Redmine, Struts)*
 
@@ -164,16 +216,18 @@ Centralized Version Control System (VCS)
 
 Distributed Version Control System (DVCS)
 
-### Advantages:
+### Advantages
+
 - **Multiple repositories** can exist.
 - Version control can be performed **locally**.
 - No need for network connectivity.
 
-### Examples:
+### Examples
+
 - Mercurial (2005) *(Mozilla, Python, OpenOffice.org)*
 - Bazaar (2005) *(Ubuntu, MySQL)*
 - Git (2005) *(Linux Kernel, Debian, VLC, Android, Gnome, Qt)*
-    
+
 ## Introduction to DVCS: Git
 
 ### History
@@ -194,31 +248,28 @@ Distributed Version Control System (DVCS)
 - These snapshots are based on **hierarchical structures of objects**.
 - Git operations revolve around manipulating these objects.
 
+### Hash
 
-## Hash
 - Each object has a unique hash (SHA1).
-- Files describing history are referenced by a 40-character encrypted object name (SHA1).
-
-### Advantages
 - Git identifies identical objects by comparing their hashes.
 - The same content stored in different repositories will always have the same hash.
 
-## Git Principles: Object States
-- **Size**: The size of the content.
-- **Content**: The actual data of the object.
-- **Type**: Object types include "blob", "tree", "commit", "tag".
+## Git Objects
 
-## Git Principles: Object Types
+Object types include:
+
 - **Blob**: Stores file data.
 - **Tree**: References a list of other trees or blobs.
-- **Commit**: Points to a single tree, representing the project at a specific point in time. Includes metadata like timestamp, author, and parent commits.
+- **Commit**: Points to a single tree, representing a project snapshot. Includes metadata like timestamp, author, and parent commits.
 - **Tag**: Labels a specific commit for easy reference.
 
 ## Commit Representation
+
 *(Git Community Book, p13)*  
 ![Commit Representation](image/lecture1/modele_obj1.png)
 
 ## Commit Structure
+
 *(Git Community Book, p14)*  
 ![Commit Structure](image/lecture1/modele_obj2.png)
 
@@ -236,12 +287,12 @@ Distributed Version Control System (DVCS)
 - Current version of project files.  
 - Files are replaced or removed by Git during branch or version changes.
 
-## Index
+### Index / Staging Area
 
-- **Staging Area**:  
-  - Bridge between the working directory and the repository.  
-  - Used to group changes for a single commit.  
+- Bridge between the working directory and the repository.  
+- Used to group changes for a single commit.  
 - Only the **index content** is committed, not the working directory.
+
 ## Basic Commands
 
 - `git init`: Initialize a Git repository.
@@ -294,7 +345,7 @@ Distributed Version Control System (DVCS)
 ### Warning
 
 - **Rewriting History:** Interactive rebasing is risky. Only rewrite commits that haven't been pushed to a remote repository. Prefer branch-based corrections for safer handling.
-    
+
 ## Centralized Collaboration
 
 ![Interactions with a centralized system](image/lecture1/CentralizedVCS.png)
