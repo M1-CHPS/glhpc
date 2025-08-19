@@ -17,20 +17,19 @@ header-includes:
 
 ## Syllabus
 
-- Lecture 1: Introduction & Development Environment
-- Lecture 2: Mastering C for Performance and HPC
-- Lecture 3: Building, Testing and Debugging Scientific Software
-- Lecture 4: Experimental Design, Profiling and Performance/Energy Optimization
-- Lecture 5: HPC for AI
+- **Lecture 1**: Introduction & Development Environment
+- **Lecture 2**: Mastering C for Performance and HPC
+- **Lecture 3**: Building, Testing and Debugging Scientific Software
+- **Lecture 4**: Experimental Design, Profiling and Performance/Energy Optimization
+- **Lecture 5**: HPC for AI
 
 *Project*: Inference Engine for a Deep Network
 
 ## Introduction & Development Environment
 
-- Principles of software engineering applied to HPC and AI.
-- Introduction to computing architectures.
-- Software engineering: lifecycle, quality, maintainability, reproducibility, collaboration.
-- Development tools: shell scripts, dependency management, Git, IDEs, etc.
+- Principles of **software engineering applied to HPC and AI**.
+- Introduction to **computing architectures**.
+- **Development tools**: shell scripts, package management, Git, IDEs, etc.
 
 ## Analytical solution to the 2-Body Problem
 
@@ -89,11 +88,11 @@ for (int i = 0; i < num_particles; i++) {
 
 ## High Performance Computing
 
-Fugaku (2020, 442 petaflops, 7.3 million cores)
+**Fugaku (2020, 442 petaflops, 7.3 million cores)**
 
   - n-body: integrates **1.45 trillion** particules per second.
 
-How to achieve such performance?
+**How to achieve such performance?**
 
 - Algorithmic improvements:
   - Use tree-based methods (Barnes-Hut) to reduce complexity from $O(n^2)$ to $O(n \log n)$ or better.
@@ -159,11 +158,150 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 - Typical stack: compilers, MPI/libfabric, math libraries, system libs
 - Job schedulers (Slurm/PBS) handle resource allocation, queues and batch workflows
 
+# Shell Basics and Scripting
+
+## What is the Shell?
+
+- **Definition**: A shell is a command-line interface to interact with the operating system.
+- **Purpose**: Execute commands, run programs, and automate tasks.
+- **Common Shells**: `bash`, `zsh`, `fish`, `sh`.
+- **Why Learn It?**
+  - Essential for HPC environments.
+  - Enables automation and efficient system interaction.
+
+## Basic Shell Commands
+
+- **File and Directory Management**:
+  - `ls`: List files and directories.
+  - `cd <directory>`: Change directory.
+  - `pwd`: Print current working directory.
+  - `mkdir <directory>`: Create a new directory.
+  - `rm <file>`: Remove a file.
+- **File Viewing**:
+  - `cat <file>`: Display file contents.
+  - `less <file>`: View file contents interactively.
+  - `head <file>`: Show the first 10 lines.
+  - `tail <file>`: Show the last 10 lines.
+
+## Redirections
+
+- **Standard Input/Output**:
+  - `<`: Redirect input from a file.
+  - `>`: Redirect output to a file (overwrite).
+  - `>>`: Append output to a file.
+- **Examples**:
+  - `cat file.txt > output.txt`: Save contents of `file.txt` to `output.txt`.
+  - `grep "error" log.txt >> errors.txt`: Append lines containing "error" to `errors.txt`.
 
 
-# Shell and scripting
+## Pipes
+
+- **Definition**: Pipes (`|`) connect the output of one command to the input of another.
+- **Examples**:
+  - `ls | grep ".txt"`: List `.txt` files.
+  - `cat file.txt | wc -l`: Count the number of lines in `file.txt`.
+- **Why Use Pipes?**
+  - Combine simple commands to perform complex tasks.
+  - Avoid creating intermediate files.
+
+## Variables and Environment
+
+- **Variables**:
+  - `VAR=value`: Define a variable.
+  - `$VAR`: Access the variable's value.
+- **Environment Variables**:
+  - `echo $HOME`: Display the home directory.
+  - `export PATH=$PATH:/new/path`: Add a directory to the `PATH`.
+
+- **Example**:
+- 
+  ```bash
+  NODES=4
+  PROGRAM="my_hpc_program"
+  echo "Running $PROGRAM on $NODES MPI nodes..."
+  mpirun -np $NODES ./$PROGRAM
+  ```
+
+## Writing a Simple Script
+
+- **What is a Script?**
+  - A file containing a sequence of shell commands.
+- **Creating a Script**:
+  1. Create a file: `vim script.sh`.
+  2. Add commands:
+
+     ```bash
+     #!/bin/bash
+     echo "Hello, World!"
+     ```
+
+  3. Make it executable: `chmod +x script.sh`.
+  4. Run it: `./script.sh`.
+
+## Conditional Statements
+
+  ```bash
+  if [ -f "config.json" ]; then
+    echo "config.json exists. Running the HPC program..."
+    ./my_hpc_program --config=config.json
+  else
+    echo "Error: config.json does not exist."
+  fi
+  ```
+
+## Loops
+
+  ```bash
+  for i in {1..5}; do
+    echo "Running simulation with parameter set $i..."
+    ./my_hpc_program --config=config_$i.json
+  done
+  ```
+
+## Functions in Shell Scripts
+
+```bash
+run_simulation() {
+  echo "Starting with config file: $1 and $2 nodes..."
+  mpirun -np $2 ./simulation_program --config=$1
+  echo "Simulation completed."
+}
+run_simulation "simulation_config.json" 8
+```
+
+## Debugging and Best Practices
+
+- **Debugging**:
+  - Run with `bash -x script.sh` to trace execution.
+  - Use `set -e` to exit on errors as the first command.
+- **Best Practices**:
+  - Use comments (`#`) to explain code.
+  - Write reusable functions.
+  - Check for errors (`if [ $? -ne 0 ]; then`).
+  - Test scripts on small inputs before scaling up.
 
 # Package Management
+
+## Package Management: Overview
+
+- **Problem Solved**: Simplifies software installation, updates, and dependency management.
+- Ensures compatibility between libraries and applications.
+- Tracks installed software versions for easy upgrades or rollbacks.
+- Examples: `dnf` (Fedora/RHEL), `apt` (Debian/Ubuntu).
+
+## Package Managers for HPC
+
+- **Cluster-Specific Tools**: `spack`, `guix` enable software installation without root privileges.
+- Useful in HPC environments where users lack admin rights.
+- Manage multiple versions of libraries and tools for reproducibility.
+- Facilitate deployment of complex scientific software stacks.
+
+## Language-Specific & Containers
+
+- **Language-Specific Managers**: `pip` (Python), `cargo` (Rust) simplify language ecosystem management.
+- **Containers**: Tools like Docker/Singularity encapsulate software and dependencies.
+- Enable portability across systems and reproducible environments.
+- Virtualization/containerization is becoming popular in modern HPC workflows.
 
 # Version Control Systems
 
@@ -196,21 +334,6 @@ Each version is associated with a date, an author, and a message. Developers can
 - **Working copy** — editable files checked out from a repository.
 - **Index / Staging area** — area to stage selected changes for the next commit.
 - **Remote** — hosted repository (e.g., `origin` on GitHub/GitLab) for collaboration.
-
-## Centralized VCS
-
-Centralized Version Control System (VCS)
-
-- **Single repository** for all versions.
-
-### Advantages
-
-- Simplified centralized management.
-
-### Examples
-
-- CVS (1990) *(OpenBSD)*
-- Subversion SVN (2000) *(Apache, Redmine, Struts)*
 
 ## Distributed VCS
 
@@ -377,16 +500,11 @@ Object types include:
 - **Regularly update** your working copy.
 - **Share updates** with team members.
 
-## Tools
-
-### Useful Tools
-
-- **Platforms**: GitHub, Bitbucket, GitLab.
-- **Visualization Tools**: gitk, qgit.
-- **Commit Editing Tools**: git gui.
-
 ## References
 
-- [*The Git Community Book* (French version)](http://alx.github.io/gitbook/book.pdf)
-- [Wikipedia: Git (Software)](http://en.wikipedia.org/wiki/Git_(software))
+- [*The Art of HPC* by Victor Eijkhout](https://theartofhpc.com/)
+- [*What Every Programmer Should Know About Memory* by Ulrich Drepper](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)
+- [*The Git Community Book*](https://shafiul.github.io/gitbook/index.html)
 - [Tech Talk: Linus Torvalds on Git (YouTube)](http://www.youtube.com/watch?v=4XpnKHJAok8)
+- [*TOP500 Supercomputers*](http://www.top500.org/)
+- *Modern Operating Systems* by Andrew S. Tanenbaum
