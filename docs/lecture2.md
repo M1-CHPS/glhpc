@@ -101,8 +101,8 @@ Implementation C de $\sum_{i=1}^{100}{i}$
 
 int sum_range(const int start, const int end) {
   int sum = 0;
-  // Consider start = 0; end = 99
-  // For i starting at 0; while i <= 99; increment i by one
+  // Consider start = 0; end = 100
+  // For i starting at 0; while i <= 100; increment i by one
   for (int i = start; i <= end; i = i + 1) {
     sum += i;
   }
@@ -147,7 +147,7 @@ printf("a: %d; b: %d; c: %d\n", a, b , *c);
 ```
 `c` contains the address of `a`; so `*c = *c + b` write in `a` the sum of `a` and `b`.
 
-| Adresse      | Value       | Variable |
+| Adress      | Value       | Variable |
 |--------------|--------------|----------|
 | 0x004 | 0            | a        |
 | 0x008 | 5            | b        |
@@ -257,7 +257,7 @@ for (unsigned int i = 0; i < ub; i++){
 printf("Sum of first %llu integers is: %llu\n", ub, sum);
 ```
 
-Where ub is a very large number (100 Million in this example).
+Where ub is a very large number (100 Millions in this example).
 Which one is faster, and by how much ?
 
 ---
@@ -269,7 +269,7 @@ Results:
 - `C` version: 0.024s
 - `Python` version: 5.650s
 
-That's a speedup of ~235. 
+That's a speedup of $\times 235$. 
 
 We will see later in this course how this is possible thanks to the compiler.
 
@@ -374,11 +374,11 @@ If memory is not freed (memory leak) the computer can run out:
 
 # Virtual And Physical Memory - Problem
 
-- How can the kernel guarantee that memory is always contiguous ?
-- Can I acess memory from another program and steal their data ?
-- How can multiple applications share the same memory ?
-  - Some variables have hard-coded addresses !
-- How to handle (Internal/External) fragmentation (Empty slot slot) ? 
+- How can the kernel guarantee that memory is always contiguous?
+- Can I acess memory from another program and steal their data?
+- How can multiple applications share the same memory?
+  - Some variables have hard-coded addresses!
+- How to handle (Internal/External) fragmentation (Empty slot slot)? 
 
 ---
 
@@ -561,7 +561,7 @@ C is a compiled language: we must translate the source code to assembly for the 
 - C# and Java are compiled to intermediary bytecode and then executed via a virtual machine (or JIT-ed)
   - Balances performance and productivity
 - C/C++/Rust are compiled to assembly code
-  - Poor portability, but not intermediary.
+  - Poor portability, but no intermediary.
 
 ---
 
