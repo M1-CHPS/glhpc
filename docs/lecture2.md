@@ -1,7 +1,7 @@
 ---
 title: "CM2: Maîtrise du C pour la Performance et le HPC"
 institute: "Master Calcul Haute Performance et Simulation - GLHPC | UVSQ"
-author: "M. Jam, P. Oliveira"
+author: "M. Jam, P. de Oliveira Castro"
 date: \today
 theme: metropolis
 colortheme: orchid
