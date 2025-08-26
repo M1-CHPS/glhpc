@@ -1,10 +1,12 @@
 # Lab 1 - Prerequisites - Linux, the shell, Git
 
+<hr class="gradient" />
+
 ## 0 - Linux
 
 [Linux](https://en.wikipedia.org/wiki/Linux) is a family of Operating Systems (like Windows or MacOS) that are suited for programming. Most High-Performance clusters will run a version of linux, and as such **it is mandatory that you learn how to use it.**
 
-If you have a personal laptop, I **highly** recommend you to setup linux on it. Alternatively, you can use [Docker](https://hub.docker.com/_/ubuntu/) or a [virtual machine](https://www.virtualbox.org/) on Windows, but note that this is highly impractical. Lastly, you can setup and use WSL.
+If you have a personal laptop, I **highly** recommend you to setup linux (Or MacOS) on it. Alternatively, you can use [Docker](https://hub.docker.com/_/ubuntu/) or a [virtual machine](https://www.virtualbox.org/) on Windows, but note that this is highly impractical. Lastly, you can setup and use WSL.
 
 !!! tip
     The university may be able to lend laptops while you're on-site, but you likely won't be able to bring them home for assignments.
@@ -17,11 +19,13 @@ If you want to install Linux on your personal laptop but aren’t sure where to 
 
 [**Fedora**](https://getfedora.org/) is a modern, open-source Linux distribution sponsored by Red Hat. It ships with the GNOME 3 desktop environment by default and uses `dnf` as its package manager.
 
-If you're new to Linux and want something clean, modern, and close to industry defaults, Fedora is a great place to start.
-If you prefer something that feels a bit closer to Windows, consider using the KDE Plasma or XFCE **spins** of Fedora. KDE Plasma offers a highly customizable and polished desktop, while XFCE is lightweight and simple. Note, however, that KDE can be heavier than GNOME in some configurations, whereas XFCE is generally more resource-friendly.
+If you're new to Linux and want something simple to use, Fedora is a great place to start.
+
 </div>
 
-## 2 - The linux Shell
+<hr class="gradient" />
+
+## 2 - The linux Shell and Bash
 
 On Windows/MacOS, you most likely use the file manager or other graphical interfaces to interact with your computer. On linux however, we use the **Linux Shell** via a terminal/console.
 
@@ -29,7 +33,9 @@ On Windows/MacOS, you most likely use the file manager or other graphical interf
 
 The shell is a very powerful tool that allows you to interact with your computer in many ways. We will only cover the basics in this lab.
 
-First, try starting a new terminal. Look for an app called `terminal`, `console` or even `konsole`. In some OS, `CTRL+ALT+T` will open a new terminal.
+#### a) First, try starting a new terminal
+
+Look for an app called `terminal`, `console` or even `konsole`. In some linux distribution, `CTRL+ALT+T` will open a new terminal.
 
 - A `terminal` is the graphical application displaying the text.
 - A `shell` is the underlying program that interprets and executes commands that you provide. By default, your shell will probably be `bash`, which is one of the most basic shells available. All shells serve the same function, but some come with plugins and other tools to make your life easier.
@@ -40,12 +46,12 @@ First, try starting a new terminal. Look for an app called `terminal`, `console`
 
     If you press `CTRL+S`, this will put the terminal on hold. Nothing will display anymore. Press `CTRL+Q` to re-enable your terminal
 
-### 2.1) Exercises
+### 2.1 - Basic Exercices
 
 We will now dive in the very basics on how to use the shell. Note that the exercices presented here are minimal, and there's much to discover.
 Lines starting with a `#` are comments and should not be executed.
 
-1) Try inputing the following commands. What does the `ls` command do ?
+#### a) Try inputing the following commands. What does the `ls` command do ?
 ```bash
 # Don't worry about this yet
 cd ~
@@ -54,7 +60,7 @@ ls -lh
 ls -lah
 ```
 
-2) Run the following commands **step-by-step** and try to understand what is happening:
+#### b) Run the following commands **step-by-step** and try to understand what is happening:
 ```bash
 ls
 mkdir obhpc
@@ -67,18 +73,18 @@ ls
 ```
 What does `mkdir` do ? `cd` ?
 
-3) Based on the previous question, could you give a definition for the term "Current Working Directory" (CWD) ?
+#### c) Based on the previous question, could you give a definition for the term "Current Working Directory" (CWD) ?
 Execute the following to confirm your definition:
 
 ```bash
 pwd
 ```
 
-4) Execute the following step-by-step:
+#### d) Execute the following step-by-step:
 ```bash
-echo "Bonjour !"
-echo "Bonjour, mon username est $USER et mon home est dans $HOME !"
-echo "Bonjour !" > bonjour.txt
+echo "Bonjour"
+echo "Bonjour, mon username est $USER et mon home est dans $HOME"
+echo "Bonjour" > bonjour.txt
 ls
 cat ./bonjour.txt
 ls -lah > ./bonjour.txt
@@ -90,7 +96,7 @@ cat ./bonjour.txt
 * What does `cat` do ?
 
 
-5) Execute the following:
+#### e) Execute the following:
 ```bash
 pwd
 cd ..
@@ -99,9 +105,9 @@ mkdir lab0
 
 * Did the last command (`mkdir lab0`) work ? Why not ?
 * What does `cd ..` do ? What does `..` mean ? 
-* Execute these commands: `pwd`, `realpath .`, `realpath ..`
+* Execute these commands: `pwd`, `realpath .`, `realpath ..`, `realpath ~/obhpc/lab0/..`
 
-6) Run the following:
+#### f) Run the following:
 ```bash
 man mkdir
 ```
@@ -114,18 +120,16 @@ Press the `q` key to exit `man`.
     What you just saw is called a `man page`. `man` is short for `manual`. It's an offline documentation that is always available on all shells. 
     Some tools also provide `man pages` when installed, so that you can always search for documentation. You can even search `man man` !
 
-    If you're ever stuck on a problem/bug (and you will), you should always read the documentation, or the man pages, for solutions. Googling a bug or an error message is not cheating. This is commonly referred as `Read The F*cking Manual` (RTFM).
+    If you're ever stuck on a problem/bug (and you will), you should always read the documentation, or the man pages, for solutions. Googling a bug or an error message is not cheating. This is commonly referred to as `Read The F*cking Manual` (RTFM).
 
-7) Run this command:
+### 2.2 - More Exercices
+
+#### a) Find what `~` is the shortcut for
 ```bash
 cd ~
 ```
-Using your knowledge, you should be able to find out what `~` means.
 
-To complete this exercise, you must:
-
-- Navigate to `obhpc/lab0/`
-- Create the following file structure:
+#### b) Create the following file structure using only your terminal:
 ```
 exo7/
     readme.md # With the text "Bonjour !"
@@ -135,11 +139,14 @@ exo7/
         test.txt # With the text "test1"
 ```
 
+This directory should be located inside `~/obhpc/lab0/exo7`
+
+
 It should look something like this (the `tree` command may not be available on your shell):
 
 ![Final output](image/lab0/tree_exo7.png)
 
-8) Finally, run the following from `/obhpc/lab0`
+#### c) Finally, run the following from `~/obhpc/lab0`
 
 ```bash
 cp -r ./exo7 ./exo7_copy
@@ -161,6 +168,8 @@ rm -rf ./exo7_copy
 
     **Thought experiment**: what would happen if you were to run `rm -rf /`, where `/` is the root of your filesystem ? In modern shells, it will probably show an error, or ask for confirmation, but **yes, this could instantly erase all of your files, including your operating system, and crash your computer.**
 
+---
+
 ### 2.2) Cheatsheet 🐍 
 
 | **Goal**                     | **Command**           | **Variants**                                                                       |
@@ -178,6 +187,8 @@ rm -rf ./exo7_copy
 | **Create empty file**        | `touch <path>`        |                                                                                    |
 | **Copy a file**              | `cp <input> <output>` | `cp -r <input> <output>` to copy folders recursively                               |
 
+<hr class="gradient" />
+
 <div class="goingfurther-section box-section" markdown>
 
 ### 2.3) <span class="toc-title"> (Going-Further)</span> Upgrading bash
@@ -190,7 +201,10 @@ A minimalist `oh-my-zsh` setup is described [here](annex/oh-my-zsh.md). `fish` i
 
 </div>
 
+<hr class="gradient" />
+
 <div class="optional-section box-section" markdown>
+
 
 ## 3 - <span class="toc-title"> (Optional) </span> Code Editor (VSCode)
 
@@ -244,6 +258,9 @@ From there, try creating a file, installing extensions (Python, C++, cmake, etc.
 
 </div>
 
+<hr class="gradient" />
+
+
 ## 4 - Getting ready for git
 
 A critical part of programming is called "versionning" or "Version Control System" (VCS). This answers the following questions:
@@ -263,6 +280,194 @@ We will dive into git later. For now, do the following:
 
 2) Follow the [official guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to generate and add an ssh key to your github account.
 
+<hr class="gradient" />
+
+## 5 - First C Project
+
+### 1) Creating the project
+
+#### a) Create the following file structure:
+
+```
+lab1/
+    first_c_project/
+        build.sh # Empty text file
+        src/
+            main.c # Empty text file
+```
+
+Try to do this only using the shell. If you're using **VSCode** you can `cd` into `first_c_project` and run `code .`.
+
+#### b) Modify `main.c` so that it contains:
+
+```c title="main.c"
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(int argc, char** argv) {
+    printf("Hello World !");
+    return 0;
+}
+```
+
+#### c) Create a .gitignore text file inside the lab1 folder, with the content:
+
+```gitignore title=".gitignore"
+*.o
+*.a
+*.so
+*.out
+main
+```
+
+A `.gitignore` file act as a recursive filter for git: all files that match a pattern contained in the `.gitignore` will be ignored and invisible to git.
+
+The `*` character is called a wildcard: it matches everything. For example, the `*.o` pattern will filter the files `main.o`, `aaababa.o`, etc.
+
+### 2) Setup git
+
+Please refer to Lecture 1 for all the git commands you will need in this section.
+
+#### a) Initialize a new git repository inside the lab1 folder.
+#### b) Run `git status`, then stage all files from `first_c_project` as well as `.gitignore` in git.
+#### c) Create a first commit with the message "My first commit"
+#### d) Ensure the commit worked:
+
+`git log` should display the previous commit, and `git status` should no longer display the content of `first_c_project`. Feel free to commit files from the previous exercises of the lab if you want.
+
+### 3) Compiling and running C code
+
+We will now try to run our first program, but before that we need to install a few tools.
+
+#### a) Install GCC
+
+First, we need a *C compiler* to transform the `main.c` file into an executable. We will see in future courses what this does.
+
+For now, install the following packages:
+
+```sh title="Fedora"
+sudo dnf install gcc glibc-devel make gdb valgrind
+```
+
+```sh title="Ubuntu"
+sudo apt update
+sudo apt install gcc libc6-dev make gdb valgrind
+```
+
+#### b) Check GCC is working
+
+Run the following `gcc --version`. You should see something akin to:
+
+```
+gcc (GCC) 14.3.1 20250808 (Red Hat 14.3.1-3)
+Copyright (C) 2024 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+```
+
+#### c) Compiling `main.c`
+
+You can now compile your first program by running
+
+```
+gcc src/main.c -o main -g 
+```
+
+You should see that a `main` file has been created for you.
+
+#### d) Run main
+
+Run the program by using `./main`
+
+
+### 4) First compilation script
+
+#### a) Create a `build.sh` script that contains the compilation command.
+
+#### b) Try to run `./build.sh`. Does it work ?
+
+Linux uses a concept of **file permissions**: some files can be read, written to, executed, or a mix of the previous.
+These permissions are user dependent: you are allowed to read your own files, but this privilege should not extend to other users.
+
+Run the following:
+
+```sh
+ls -lah
+```
+
+```sh title="output"
+-rw-r--r--.  1 user user   0 Aug 26 9:48 build.sh
+```
+
+`rw-r--r--` can be read as: 
+
+- The user can Read and Write
+- The group can Read
+- Others can Read
+
+#### c) Make `build.sh` executable
+
+Run the following:
+
+```sh
+chmod +x ./build.sh
+```
+
+`chmod` is a command to modify the permissions of a file. `x` designates the eXecution permission, so this command can be read as *add execution permission to build.sh*.
+
+You should see that the file now has permissions `rwxr-xr-x`. This can be read as:
+
+- The user can Read, Write, and eXecute
+- The Group can Read and eXecute
+- Others can Read and eXecute
+
+
+#### d) Restrict permissions so that only you (the owner) can read, write, and execute build.sh. Neither the group nor others should have any permissions.
+
+In binary:
+- `rwx` = 111 = 7
+- `r-x` = 101 = 5
+- `r--` = 100 = 4
+
+One can write `chmod 444 ./build.sh` which translates to `r--r--r--` (100 100 100). 
+
+Use this to find the command needed to only give permissions to yourself.
+
+
+### 5) Uploading to GitHub
+
+#### a) Commit all changes you've made so far to git
+
+!!! Tip
+    Git is recursive: it doesn't matter whether you run the git commands from `lab1` or `first_c_project`: git knows whether the `cwd` is contained inside a git repository.
+
+#### b) Create an **empty** repository on the GitHub website
+
+Make sure the repository is empty, or you'll have to force push later on to overwrite it.
+
+#### c) Setup the remote on your local repository
+
+On the github website, you should see a green `code` button with an `ssh` option. Copy the link here. It should look something like:
+
+```
+git@github.com:user/lab1_repository.git
+```
+
+Then run:
+```sh
+git remote add origin <Your github link here>
+```
+This registers the GitHub repository repository as the remote repository. Origin is the name of the remote.
+
+
+#### d) Push on GitHub
+
+The first time you push on the repository, git might:
+
+- Ask you to setup your email/username: Follow git instructions and make sure to use the same as the one you've used on GitHub.
+- Set the upstream branch using `--set-upstream`: Follow git instructions
+
+<hr class="gradient" />
 
 <div class="summary-section box-section" markdown>
 
