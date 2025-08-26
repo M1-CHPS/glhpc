@@ -1,5 +1,5 @@
 ---
-title: "CM2: Maîtrise du C pour la Performance et le HPC"
+title: "CM2: C for High Performance"
 institute: "Master Calcul Haute Performance et Simulation - GLHPC | UVSQ"
 author: "M. Jam, P. de Oliveira Castro"
 date: \today
@@ -151,7 +151,7 @@ printf("a: %d; b: %d; c: %d\n", a, b , *c);
 |--------------|--------------|----------|
 | 0x004 | 0            | a        |
 | 0x008 | 5            | b        |
-| 0x00c | 0x04         | c        |
+| 0x00c | 0x004         | c        |
 | ...          | ...          | ...      |
 
 ---
@@ -378,7 +378,7 @@ If memory is not freed (memory leak) the computer can run out:
 - Can I acess memory from another program and steal their data?
 - How can multiple applications share the same memory?
   - Some variables have hard-coded addresses!
-- How to handle (Internal/External) fragmentation (Empty slot slot)? 
+- How to handle (Internal/External) fragmentation (Empty slot)? 
 
 ---
 

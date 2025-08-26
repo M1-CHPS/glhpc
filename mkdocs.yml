@@ -84,8 +84,10 @@ nav:
     - Guide de soutenance: guide_soutenance.md
   - Annex:
     - Bash cheatsheet: annex/bash_cheatsheet.md
-    - Installing fedora: annex/install_fedora.md
-    - Installing oh-my-zsh: annex/oh-my-zsh.md
+    - Linux Environment:
+      - Installing fedora: annex/install_fedora.md
+      - Installing packages: annex/install_packages.md
+      - Installing oh-my-zsh: annex/oh-my-zsh.md
 
 extra_css:
   - stylesheets/extra.css
