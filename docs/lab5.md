@@ -21,7 +21,7 @@ The provided source code includes:
 
 ---
 
-### K-Nearest Neighbors implementation
+### 1. K-Nearest Neighbors implementation
 
 The KNN application can be run like so:
 ```sh title="Running the KNN"
@@ -39,7 +39,7 @@ By default, if no output path is provided, the application will output inside `.
 
 ---
 
-### Broken Experiment
+### 2. Broken Experiment
 
 The script `/scripts/lgbm_vs_knn.py` objective is to measure the timing and accuracy of LightGBM and KNN when increasing the number of training samples.
 The gathered data should look something like this:
@@ -64,7 +64,7 @@ However, the person writing it never finished it. When fixing this script, you s
 
 ---
 
-### Provided Files
+### 3. Provided Files
 
 | Path                       | Description                                               |
 |----------------------------|-----------------------------------------------------------|
@@ -86,7 +86,7 @@ However, the person writing it never finished it. When fixing this script, you s
 
 **Linux Perf** is a very powerful tool to collect a variety of performance indicators. Its capable of capturing a list of CPU-events provided by the user, perform automatic meta-repetitions, and aggregate results in a nice JSON format.
 
-### 1) Setup your environment
+### 1. Setup your environment
 
 Run the following to setup your lab:
 
@@ -97,7 +97,7 @@ source ./setup_env.sh
 ---
 
 
-### 2) Stabilize your machine
+### 2. Stabilize your machine
 
 Run `./scripts/stability.py` and check the results in `results/stability.png`. Take the necessary actions to make your machine relatively stable:
 
@@ -113,7 +113,7 @@ Run `./scripts/stability.py` and check the results in `results/stability.png`. T
 ---
 
 
-### 3) Measuring Energy
+### 3. Measuring Energy
 
 What does the following command do ?
 ```sh title="Idle Energy Consumption"
@@ -139,7 +139,7 @@ Compute the effective power and energy consumption of the `knn` application. Rem
 ---
 
 
-### 3) Measuring performance metrics
+### 4. Measuring performance metrics
 
 What does the following command do ?
 ```sh title="Measuring performance"
@@ -166,7 +166,7 @@ Could you explain why ?
 
 ---
 
-### 4) Simple Profiling
+### 5. Simple Profiling
 
 Modify the `CMakeLists.txt` to add the `-pg -g` compilation flag, then rerun the application:
 
@@ -196,7 +196,7 @@ Where is most of the time spent in the application ?
 
 You are tasked to write a **maximum three page scientific report** with the following sections:
 
-#### 1. Stability and Environment
+#### a) Stability and Environment
 
 - Document CPU model, number of cores, Cache(s) size, Ram, OS version, compilers / python version
     - The dataset `datasets/samples.csv` contains $\text{ncols} * \text{nrows}$ floating point values, stored as 32 bits floats in `myknn`.
@@ -205,7 +205,7 @@ You are tasked to write a **maximum three page scientific report** with the foll
 - A stability plot generated through `scripts/stability.py`. 
 - Make sure to add a table with the mean and standard deviation of each metric.
 
-#### 2. A corrected and improved version of the provided experiment comparing KNN regression with LightGBM
+#### b) A corrected and improved version of the provided experiment comparing KNN regression with LightGBM
 
 - A paragraph describing the goal of the experiment
 - A paragraph explaining your protocol
@@ -215,7 +215,7 @@ You are tasked to write a **maximum three page scientific report** with the foll
     - Make sure to include confidence intervals.
 - Your observations and conclusions
 
-#### 3. An experiment of your choosing
+#### c) An experiment of your choosing
 
 - Formulate a specific question of your choice about energy consumption. Examples:
     - How does the $\text{efficiency} = \frac{E}{\text{# of predictions}}$ scale with the number of threads for both KNN and LightGBM ?

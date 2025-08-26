@@ -36,11 +36,11 @@ The parsing and pipeline execution logic have already been implemented so you ca
 | `pipelines/`        | Sample transformation pipelines to test your implementation.                |
 | `src/`              | C source code for this lab. Contains the files listed below:                |
 | `src/main.c`        | Parses the transformation graph and executes it.                            |
+| `src/parser.c`      | Parser for the graph and the pipeline executor                              |
 | `src/parser.h`      | DAG representation for the image processing pipeline.                       |
 | `src/image.c/h`     | Image structure and utilities for memory allocation and management.         |
 | `src/stb_image.h`   | Public domain header-only image I/O library (from GitHub).                  |
 | `src/transformation.c/h` | Implementation of image processing kernels. Most functions are missing and must be implemented by you. |
-| `libparser.so`      | Precompiled dynamic library for pipeline parsing and execution.             |
 
 
 <hr class="gradient" />
@@ -101,7 +101,7 @@ Look at `image.c` and `image.h`, and try to understand the provided structure.
 - Pixels are stored as `unsigned char* pixels[3]`: what does that mean in practice ? How many arrays do we have to allocate to store an **RGB** Image ? What's the size of each arrray ? What happens if we have a **grayscale** image (black & white).
 - How do we distinguish between **grayscale** and **RGB** images ?
 
-### 1) Implement Memory Allocation
+### 1. Implement Memory Allocation
 
 #### a) Implement image allocation
 You must implement the function `image.c:create_image(...)`.
@@ -128,7 +128,7 @@ Memory Allocations tests completed successfully
 
 ---
 
-### 2) Image Copying
+### 2. Image Copying
 
 #### a) Implement image copy
 
@@ -191,7 +191,7 @@ Compare the performance by running the `--memory-check` option. Which loops give
 
 Look at `src/parser.h` and try to understand the different structures of the parser. Do the same for `src/transformation.c`
 
-### 1) Implementing Grayscale
+### 1. Implementing Grayscale
 
 The grayscale transform receives an RGB image and converts it into a black and white, single channel image.
 The formula for the transformation is:
@@ -218,7 +218,7 @@ At this stage, `output/test_grayscale.png` should contain the grayscale of `imag
 
 ---
 
-### 2) Implementing Inversion
+### 2. Implementing Inversion
 
 The inversion transform is a simple one
 
@@ -230,7 +230,7 @@ Where C is one of the input image channels (RGB or Grayscale). Implement this ke
 
 ---
 
-### 3) Implementing Quantization
+### 3. Implementing Quantization
 
 We will implement a **uniform quantization** transform, which uniformly reduces the number of possible values in each component of the image.
 
@@ -274,7 +274,9 @@ Which version is faster ? What's the speedup of the LUT method over the naive ve
 At this stage, your code should be able to execute all pipelines in the `pipelines/` directory. 
 Validate your implementation by checking that output images are generated and appear visually correct.
 
-### Improving performance
+---
+
+### 1. Improving performance
 
 Once your implementation is functionally correct, your next goal is to **optimize performance**.
 

@@ -30,13 +30,15 @@ piestimator 1000000
 
 ## 2 - Timing and serialization
 
-### 1) Modify the function `src/main.c:mc_harness(...)` to measure the execution time of your method. 
+### 1. Implementing timing
+
+#### a) Modify the function `src/main.c:mc_harness(...)` to measure the execution time of your method. 
 
 You must repeat the measurements `nmeta` times, and record the values of Pi as well as the execution time for every execution.
 
 What function did you use to measure time ? How accurate is it ? Is it monotonic ?
 
-### 2) Modify the function `src/main.c:print_results(...)` to print a table with the following values:
+#### b) Modify the function `src/main.c:print_results(...)` to print a table with the following values:
 
 | Avg. Pi             | Std Pi                   | Avg. Time              | Std Time                             | Min Time           | Max Time           |
 |---------------------|--------------------------|------------------------|--------------------------------------|--------------------|--------------------|
@@ -44,7 +46,7 @@ What function did you use to measure time ? How accurate is it ? Is it monotonic
 
 You may need to modify other functions or the provided structure(s) to achieve this.
 
-### 3) Implement csv serialization inside the program. 
+#### c) Implement csv serialization inside the program. 
 
 You must exactly match this format and header:
 
@@ -65,7 +67,7 @@ Check that you can run the following:
 !!! Warning
     The following questions will reuse this CSV serialization. Be sure that you match exactly the prescribed format. Be careful not to introduce blank spaces in the header name (e.g. `NMeta,Pi,Time` rather than `NMeta,   Pi,   Time`)
 
-### 4) Run the provided experiments
+### 2. Run the provided experiments
 
 If you correctly implemented csv serialization, this will generate plots inside the `results` folder.
 
@@ -100,7 +102,7 @@ If needed, fix your measurements so that the execution time is mostly normally d
 
 ## 2.5 - <span class="toc-title"> (Going-Further)</span> Understanding the scripts
 
-### 1) Look at `run_all.sh`, and try to understand each line.
+### 1. Look at `run_all.sh`, and try to understand each line.
 
 #### a) What does `set -e`, `set -o pipefail` and `2>&1 | tee ...` do ?
 
@@ -108,7 +110,7 @@ If needed, fix your measurements so that the execution time is mostly normally d
 
 What files are generated, and what's the purpose of every one of them ?
 
-### 2) Look at `scripts/analyse.py` and try to understand how each plot is built. 
+### 2. Look at `scripts/analyse.py` and try to understand how each plot is built. 
 Try to link every components of `convergence.png` and `stability.png` (The titles, the axis label, the axis ticks, the distributions, the grid, ...) with the code that generates it.
 
 </div>
@@ -117,13 +119,15 @@ Try to link every components of `convergence.png` and `stability.png` (The title
 
 ## 3 - Optimization
 
-### 1) Modify the `makefile` and play around with compilation flags and different compilers.  
+### 1) Setting up Makefile
+
+#### a) Modify the `makefile` and play around with compilation flags and different compilers.  
 
 Remember that you can run `run_all.sh <run_label>` to compare the different runs later.  
 
 What configuration gives you the fastest execution time ? Can you understand why ?
 
-### 2) Use OpenMP to parallelize your Monte-Carlo algorithm. 
+### 2. Use OpenMP to parallelize your Monte-Carlo algorithm. 
 
 You may need to modify the `makefile` to link to OpenMP.  
 

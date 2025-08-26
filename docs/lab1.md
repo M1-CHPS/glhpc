@@ -2,6 +2,14 @@
 
 <hr class="gradient" />
 
+### Objective
+
+In this lab, you will get familliar with the very basics of using the linux shell, using and installing a code editor, and setup git.
+
+The final section of this lab will have you combine all this tools to setup a simple project for a Hello World program in C.
+
+---
+
 ## 0 - Linux
 
 [Linux](https://en.wikipedia.org/wiki/Linux) is a family of Operating Systems (like Windows or MacOS) that are suited for programming. Most High-Performance clusters will run a version of linux, and as such **it is mandatory that you learn how to use it.**
@@ -29,7 +37,7 @@ If you're new to Linux and want something simple to use, Fedora is a great place
 
 On Windows/MacOS, you most likely use the file manager or other graphical interfaces to interact with your computer. On linux however, we use the **Linux Shell** via a terminal/console.
 
-![The Shell](image/lab0/the_shell.png)
+![The Shell](image/lab1/the_shell.png)
 
 The shell is a very powerful tool that allows you to interact with your computer in many ways. We will only cover the basics in this lab.
 
@@ -46,7 +54,9 @@ Look for an app called `terminal`, `console` or even `konsole`. In some linux di
 
     If you press `CTRL+S`, this will put the terminal on hold. Nothing will display anymore. Press `CTRL+Q` to re-enable your terminal
 
-### 2.1 - Basic Exercices
+---
+
+### 1. Basic Exercices
 
 We will now dive in the very basics on how to use the shell. Note that the exercices presented here are minimal, and there's much to discover.
 Lines starting with a `#` are comments and should not be executed.
@@ -67,8 +77,8 @@ mkdir obhpc
 ls
 cd ./obhpc
 ls
-mkdir lab0
-cd ./lab0
+mkdir lab1
+cd ./lab1
 ls
 ```
 What does `mkdir` do ? `cd` ?
@@ -100,19 +110,19 @@ cat ./bonjour.txt
 ```bash
 pwd
 cd ..
-mkdir lab0
+mkdir lab1
 ```
 
-* Did the last command (`mkdir lab0`) work ? Why not ?
+* Did the last command (`mkdir lab1`) work ? Why not ?
 * What does `cd ..` do ? What does `..` mean ? 
-* Execute these commands: `pwd`, `realpath .`, `realpath ..`, `realpath ~/obhpc/lab0/..`
+* Execute these commands: `pwd`, `realpath .`, `realpath ..`, `realpath ~/obhpc/lab1/..`
 
 #### f) Run the following:
 ```bash
 man mkdir
 ```
 
-What do you see ? Try to find the `mkdir` flag to disable errors on existing folders, so that `mkdir lab0` runs succesfully.
+What do you see ? Try to find the `mkdir` flag to disable errors on existing folders, so that `mkdir lab1` runs succesfully.
 
 Press the `q` key to exit `man`. 
 
@@ -122,7 +132,9 @@ Press the `q` key to exit `man`.
 
     If you're ever stuck on a problem/bug (and you will), you should always read the documentation, or the man pages, for solutions. Googling a bug or an error message is not cheating. This is commonly referred to as `Read The F*cking Manual` (RTFM).
 
-### 2.2 - More Exercices
+---
+
+### 2. More Exercices
 
 #### a) Find what `~` is the shortcut for
 ```bash
@@ -139,14 +151,14 @@ exo7/
         test.txt # With the text "test1"
 ```
 
-This directory should be located inside `~/obhpc/lab0/exo7`
+This directory should be located inside `~/obhpc/lab1/exo7`
 
 
 It should look something like this (the `tree` command may not be available on your shell):
 
-![Final output](image/lab0/tree_exo7.png)
+![Final output](image/lab1/tree_exo7.png)
 
-#### c) Finally, run the following from `~/obhpc/lab0`
+#### c) Finally, run the following from `~/obhpc/lab1`
 
 ```bash
 cp -r ./exo7 ./exo7_copy
@@ -170,7 +182,7 @@ rm -rf ./exo7_copy
 
 ---
 
-### 2.2) Cheatsheet 🐍 
+### 3. Cheatsheet 🐍 
 
 | **Goal**                     | **Command**           | **Variants**                                                                       |
 |------------------------------|-----------------------|------------------------------------------------------------------------------------|
@@ -187,11 +199,11 @@ rm -rf ./exo7_copy
 | **Create empty file**        | `touch <path>`        |                                                                                    |
 | **Copy a file**              | `cp <input> <output>` | `cp -r <input> <output>` to copy folders recursively                               |
 
-<hr class="gradient" />
+---
 
 <div class="goingfurther-section box-section" markdown>
 
-### 2.3) <span class="toc-title"> (Going-Further)</span> Upgrading bash
+### 4. <span class="toc-title"> (Going-Further)</span> Upgrading bash
 
 While powerful, `bash` is a very basic shell. Some shells like `fish` or `oh-my-zsh` come with extensions/plugins that can significantly improve your workflow, with auto-completion, coloring, suggestions and many other.
 
@@ -210,14 +222,14 @@ A minimalist `oh-my-zsh` setup is described [here](annex/oh-my-zsh.md). `fish` i
 
 We are now going to see the second most critical tool you will use during the Master, second only to the shell: a code editor. Modern code editors allow you to open source files, images, pdf, or even videos. You use your editor to create programs, and the shell to execute them. 
 
-![vscode](image/lab0/vscode.png)
+![vscode](image/lab1/vscode.png)
 
 As a starting point, you should download `VSCode` which will cover most of your needs in the future. Do NOT listen to your obnoxious classmates telling you to "just use vim". They cannot be saved.
 
 
-### 3.1) Installation:
+### 1. Installation:
 
-#### 3.1.1) Direct download
+#### a) Direct download
 
 Go to the [VSCode Website](https://code.visualstudio.com/download) and select the option matching your OS. For Fedora, click on the `.rpm` button. 
 
@@ -229,7 +241,7 @@ You can achieve the same effect using:
 sudo dnf install ./code-1.99.3-1744761644.el8.x86_64.rpm
 ```
 
-#### 3.1.2) Snap install
+#### b) Snap install
 
 Snap is a very helpful application to automatically install, update, and manage third-party tools (VSCode, pycharm, Spotify, etc.)
 
@@ -239,7 +251,7 @@ sudo dnf install snap
 snap install code
 ```
 
-### 3.2) Usage
+#### c) Usage
 
 Using your shell navigate to the directory you wish to open in VSCode:
 
@@ -271,20 +283,24 @@ A critical part of programming is called "versionning" or "Version Control Syste
 
 We will dive into git later. For now, do the following:
 
-1) Create a [Github account](https://github.com/signup) if you don't already have one. You may wish to keep this account after the master: you should use your personal email so you won't lose acces to it. You should setup two factor authentication (2FA) ASAP.
+#### a) Create a [Github account](https://github.com/signup) if you don't already have one. 
+
+You may wish to keep this account after the master: you should use your personal email so you won't lose acces to it.
+
+You should setup two factor authentication (2FA) ASAP.
 
 !!! Note
     Your github page is your portfolio. Your recruiter may look it up, or you may be able to bring it up during interviews to show projects you worked on previously. 
     
     You should take care of it, and have a few clean projects to show !
 
-2) Follow the [official guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to generate and add an ssh key to your github account.
+#### b) Follow the [official guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to generate and add an ssh key to your github account.
 
 <hr class="gradient" />
 
 ## 5 - First C Project
 
-### 1) Creating the project
+### 1. Creating the project
 
 #### a) Create the following file structure:
 
@@ -324,7 +340,9 @@ A `.gitignore` file act as a recursive filter for git: all files that match a pa
 
 The `*` character is called a wildcard: it matches everything. For example, the `*.o` pattern will filter the files `main.o`, `aaababa.o`, etc.
 
-### 2) Setup git
+---
+
+### 2. Setup git
 
 Please refer to Lecture 1 for all the git commands you will need in this section.
 
@@ -335,7 +353,9 @@ Please refer to Lecture 1 for all the git commands you will need in this section
 
 `git log` should display the previous commit, and `git status` should no longer display the content of `first_c_project`. Feel free to commit files from the previous exercises of the lab if you want.
 
-### 3) Compiling and running C code
+---
+
+### 3. Compiling and running C code
 
 We will now try to run our first program, but before that we need to install a few tools.
 
@@ -379,8 +399,9 @@ You should see that a `main` file has been created for you.
 
 Run the program by using `./main`
 
+---
 
-### 4) First compilation script
+### 4. First compilation script
 
 #### a) Create a `build.sh` script that contains the compilation command.
 
@@ -433,8 +454,9 @@ One can write `chmod 444 ./build.sh` which translates to `r--r--r--` (100 100 10
 
 Use this to find the command needed to only give permissions to yourself.
 
+---
 
-### 5) Uploading to GitHub
+### 5. Uploading to GitHub
 
 #### a) Commit all changes you've made so far to git
 
