@@ -12,11 +12,354 @@
 ### Provided Files
 
 This lab is a continuation of [lab 2](/lab2/). The structure of the project is the same.
-A new transformation `rotate_image_90_clockwise`, which you will analyse in the [third part of this lab](#C-debugging-with-gdb-and-valgrind), has been added to the `transformations.h` and `transformations.c` files.
+A new transformation `rotate_image_90_clockwise`, which you will analyze in the [third part of this lab](#C-debugging-with-gdb-and-valgrind), has been added to the `transformations.h` and `transformations.c` files.
 
 ## A - CMake
 
+In this first part, you will learn how to write a `CMakeLists.txt` file for a C project, starting from a provided `Makefile`. The goal is to progressively build a robust and maintainable CMake configuration for an HPC project.
+
+### 1. Minimal Build
+
+Create a minimal `CMakeLists.txt` that builds the shared library `libparser.so` and the executable `mytransform`.
+
+#### a. Set the minimum required CMake version and project name
+
+```cmake title="CMakeLists.txt"
+cmake_minimum_required(VERSION 3.15)
+project(parser LANGUAGES C)
+```
+
+#### b. Add include directories
+
+```cmake title="CMakeLists.txt"
+include_directories(src include)
+```
+
+The `include_directories` command specifies the directories to search for header files during compilation. Here, `include` contains the public header of the parser library, and `src` contains the private headers used internally by the library and the executable.
+
+#### c. Add the shared library target
+
+```cmake title="CMakeLists.txt"
+add_library(parser SHARED src/parser.c)
+```
+
+In Linux a shared library has the extension `.so` (shared object). The `add_library` command creates a target named `parser` that builds a shared library from the source file `src/parser.c`. The final library will be named `libparser.so` by default.
+
+#### d. Add the executable target
+
+```cmake title="CMakeLists.txt"
+add_executable(mytransform src/main.c src/transformation.c src/image.c)
+```
+
+The `add_executable` command builds an executable `mytransform` from the specified source files. Header files were included before.
+
+#### e. Link the shared library to the executable
+
+```cmake
+target_link_libraries(mytransform PRIVATE parser m)
+```
+
+This command ensures that the `mytransform` executable is linked against the `parser` shared library and the math library `m`. 
+
+!!! Note
+    The `PRIVATE` keyword indicates that the dependency is only required for building the `mytransform` target and does not propagate to other targets that may link against `mytransform`.
+
+#### f. Generate the build system
+
+```bash
+$ cmake -B build .
+```
+
+Here `-B` specifies the build directory (a new directory named `build`).
+
+#### g. Build the project
+
+```bash
+$ make -C build/
+```
+
+!!! Note
+    By default, CMake generates a Makefile as the build system on Unix-like systems. Sometimes, it can be useful to call directly the `make` command to build the project.
+    You can also use `cmake --build build` to build the project, which is more portable across different platforms and build systems.
+
+#### h. Answer the following questions
+
+- Where are the generated files located?
+- Can you find the `libparser.so` library? the `mytransform` executable?
+- Can you run the program? 
+
+### 2. Build Configurations
+
+We want to enable different build configurations (e.g., Debug, Release) and set appropriate compiler options.
+
+#### a. Configure the C standard used
+
+```cmake title="CMakeLists.txt"
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+```
+
+This ensures that the C11 standard is used for compiling the project.
+
+#### b. Enable different build types
+
+Define common compiler flags for different build types:
+
+```cmake title="CMakeLists.txt"
+set(COMMON_COMPILE_FLAGS
+    $<$<CONFIG:Debug>:-Wall -Wextra -g>
+    $<$<CONFIG:Release>:-Wall -Wextra -O3 -DNDEBUG>
+)
+```
+
+Apply the flags to the targets:
+
+```cmake title="CMakeLists.txt"
+target_compile_options(parser PRIVATE ${COMMON_COMPILE_FLAGS})
+target_compile_options(mytransform PRIVATE ${COMMON_COMPILE_FLAGS})
+```
+
+Rebuild the project and test different configurations:
+
+```bash
+$ cmake -B build -DCMAKE_BUILD_TYPE=Debug .
+$ 
+```
+
+You can check that the debug symbols are included in the binary using `file`:
+
+```bash
+$ file build/mytransform 
+build/mytransform: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=0d2cbaa0cf08a42b916e2edffe9940ce828b2bd9, for GNU/Linux 3.2.0, with debug_info, not stripped
+```
+
+### 3. Enable Installation
+
+Now we will add installation rules to install the shared library, executable, and headers.
+
+#### a. Give your project a version number
+
+Modify the `project` command as below:
+
+```cmake title="CMakeLists.txt"
+project(parser VERSION 1.0.0 LANGUAGES C)
+```
+
+#### b. Include the `GNUInstallDirs` module:
+
+```cmake title="CMakeLists.txt"
+include(GNUInstallDirs)
+```
+
+This module provides standard installation directory variables like `CMAKE_INSTALL_BINDIR`, `CMAKE_INSTALL_LIBDIR`, and `CMAKE_INSTALL_INCLUDEDIR`.
+
+#### c. Add installation rules for the shared library:
+
+```cmake title="CMakeLists.txt"
+install(TARGETS parser
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+```
+
+#### d. Add installation rules for the executable:
+
+```cmake title="CMakeLists.txt"
+install(TARGETS mytransform
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+```
+
+#### e. Test the installation:
+
+```bash
+mkdir install_dir
+$ cmake -B build -DCMAKE_INSTALL_PREFIX=install_dir . 
+$ make -C build/ install
+```
+
+Since `install_dir` is not a standard system directory, you need to set the `LD_LIBRARY_PATH` environment variable to include the path to the installed shared library before running the program.
+
+
+!!! Note
+    We can also call `cmake --install build --prefix <install_directory>` to install the project.
+
+#### f. Install the public header file
+
+As you can see, the public header file `parser.h` is not installed.
+To inform CMake about the public headers, you should add the following command:
+
+```cmake title="CMakeLists.txt"
+set_target_properties(parser PROPERTIES
+    VERSION ${PROJECT_VERSION}
+    SOVERSION ${PROJECT_VERSION_MAJOR}
+    PUBLIC_HEADER include/parser.h
+)
+```
+
+Rebuild and install the project again, you should see the `parser.h` file in the `include` directory of the installation prefix. Additionally, the shared library should now have a versioned name like `libparser.so.1.0.0`.
+
+### 3. Better handling of include directories
+
+Our current way of handling include directories is not ideal. We will improve it by using `target_include_directories` which keeps the include directories scoped to each target.
+
+#### a. Remove the global `include_directories` command
+
+#### b. Add the following commands to specify include directories for each target
+
+```cmake title="CMakeLists.txt"
+target_include_directories(parser 
+    PUBLIC 
+        $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+    PRIVATE
+        ${PROJECT_SOURCE_DIR}/src
+    )
+
+target_include_directories(mytransform PRIVATE ${PROJECT_SOURCE_DIR}/src)
+```
+
+The library target disinguishes between `PUBLIC` and `PRIVATE` include directories. `PUBLIC` directories are needed both when building the library and when using it, while `PRIVATE` directories are only needed when building the library itself.
+
+The `BUILD_INTERFACE` generator expression specifies the include directory to use when building the project, while the `INSTALL_INTERFACE` generator expression specifies the include directory to use when the library is installed. This ensures that users of the installed library can include the header files correctly.
+
 ## B - Unit Tests
+
+In this part, you will learn how to integrate unit tests into your CMake project using the [Unity testing framework](https://www.throwtheswitch.org/unity).
+
+### 1. Fetch the Unity framework
+
+Fetch the Unity framework:
+
+```cmake title="CMakeLists.txt"
+# Fetch and build the Unity testing framework
+include(FetchContent)
+FetchContent_Declare(
+    unity
+    GIT_REPOSITORY  https://github.com/ThrowTheSwitch/Unity.git
+    GIT_TAG         v2.6.1
+    GIT_SHALLOW TRUE # Only download the specific tag, not full history
+)
+
+# Make Unity available but don't add to ALL target by default
+# This is important to avoid installing unity dependencies which are only needed for testing 
+# but are not required in the release version of the project
+FetchContent_GetProperties(unity)
+if(NOT unity_POPULATED)
+    FetchContent_Populate(unity)
+    add_subdirectory(${unity_SOURCE_DIR} ${unity_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+```
+
+Set up the Unity include directory and library:
+
+```cmake title="CMakeLists.txt"
+set(UNITY_INCLUDE_DIR "${unity_SOURCE_DIR}/src")
+set(UNITY_LIBRARY "${unity_BINARY_DIR}/libunity.a")
+```
+
+CMake fetches and builds the Unity framework, making it available for use in your project.
+
+### 2. Write a first unit test
+
+We currently have a set of hard-coded tests in `main.c`:
+
+- `check_grayscale`
+- `check_rgb` 
+- `check_copy`
+
+Read carefully these tests to understand what they do.
+
+To convert them into unit tests, we will create a new source file `tests/test_image.c` and move the test functions there. The `check_memory` function which ran all the files will be replaced by a test runner in `tests/test_runner.c`.
+
+We will start first by writing the test runner.
+Create a new file `tests/test_runner.c` with the following content:
+
+```c title="tests/test_runner.c"
+#include "unity.h"
+
+extern void test_grayscale_image_creation(void);
+
+void setUp(void) {}
+void tearDown(void) {}
+
+int main(void)
+{
+    UNITY_BEGIN();
+    RUN_TEST(test_grayscale_image_creation);
+    return UNITY_END();
+}
+```
+
+!!! Note
+    The `setUp` and `tearDown` functions are called before and after each test, respectively. They can be used to set up and clean up test fixtures if needed.
+
+Now create the `tests/test_image.c` file and move the `check_grayscale` function there, renaming it to `test_grayscale_image_creation`:
+
+```c title="tests/test_image.c"
+#include "unity.h"
+#include "transformation.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
+
+void test_grayscale_image_creation(void)
+{
+    Image *img = create_image(100, 100, 1);
+    TEST_ASSERT_NOT_NULL(img);
+    TEST_ASSERT_EQUAL(100, img->width);
+    TEST_ASSERT_EQUAL(100, img->height);
+    TEST_ASSERT_EQUAL(1, img->channels);
+    TEST_ASSERT_NOT_NULL(img->pixels[0]);
+    TEST_ASSERT_NULL(img->pixels[1]);
+    TEST_ASSERT_NULL(img->pixels[2]);
+    free_image(img);
+}
+```
+
+As you can see, we are using systematically the Unity assertion macros to check conditions.
+
+### 3. Add the test runner executable
+
+To run our tests, we need to create a new executable target for the test runner in our `CMakeLists.txt` file.
+
+```cmake title="CMakeLists.txt"
+add_executable(test_runner tests/test_runner.c tests/test_image.c src/transformation.c src/image.c)
+target_include_directories(test_runner 
+    PRIVATE 
+        ${UNITY_INCLUDE_DIR} 
+        ${PROJECT_SOURCE_DIR}/src
+)
+target_link_libraries(test_runner ${UNITY_LIBRARY} m parser)
+```
+
+Observe that we link the `test_runner` target against the Unity library, the math library `m`, and our `parser` library.
+
+### 4. Add a custom target to run the tests
+To facilitate running the tests, we can add a custom target in our `CMakeLists.txt` file that will execute the `test_runner` executable.
+
+```cmake title="CMakeLists.txt"
+add_custom_target(test test_runner 
+    DEPENDS $<TARGET_FILE:test_runner>
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Running unit tests..."
+)
+```
+
+Check that everything works by building the project and running the tests:
+
+```bash
+$ cmake --build build
+$ make -C build test
+```
+
+### 5. Add the remaining tests 
+
+*Write unit tests for the `check_rgb` and `check_copy` functions in the `tests/test_image.c` file.* 
+
+!!! Tip 
+    For bonus point, separate the logic of the `check_copy` test into two different tests: `test_image_copy`, that check the code validity, and `test_image_copy_performance` that measures and displays the performance.
+
 
 ## C - Debugging with GDB and Valgrind
 
@@ -31,20 +374,20 @@ Debugging symbols are metadata embedded in a program's binary during compilation
 
 #### a. Run the `cmake` command with the `Debug` build type
 
-```bash
-cmake -B build/ -DCMAKE_BUILD_TYPE=Debug .
+```sh
+$ cmake -B build/ -DCMAKE_BUILD_TYPE=Debug .
 ```
 
 #### b. Build the project
 
-```bash
-make -C build/
+```sh
+$ make -C build/
 ```
 
 #### c. Run the program using the rotate transformation
 
-```bash
-build/mytransform pipelines/rotate.pipeline
+```sh
+$ build/mytransform pipelines/rotate.pipeline
 Loaded image: images/image0.bmp (259x194, 3 channels)
 Segmentation fault (core dumped)
 ```
@@ -63,8 +406,8 @@ GDB is the GNU Project Debugger, a powerful tool for debugging programs. It allo
 
 #### a. Start gdb with the program and its arguments
 
-```bash
-gdb --args build/mytransform pipelines/rotate.pipeline
+```sh
+$ gdb --args build/mytransform pipelines/rotate.pipeline
 
 GNU gdb (Ubuntu 15.0.50.20240403-0ubuntu1) 15.0.50.20240403-git
 ... [output truncated] ...
@@ -77,8 +420,8 @@ GNU gdb (Ubuntu 15.0.50.20240403-0ubuntu1) 15.0.50.20240403-git
 
 #### b. Run the program inside gdb
 
-```bash
-(dgb) run
+```sh
+(gdb) run
 Starting program: lab3/build/mytransform pipelines/rotate.pipeline
 [Thread debugging using libthread_db enabled]
 Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
@@ -97,7 +440,7 @@ GDB has caught the segmentation fault and shows you the exact line where the err
 
 You can use the `backtrace` command to see the function call stack leading to the crash:
 
-```bash
+```sh
 (gdb) backtrace
 #0  rotate_image_90_clockwise (node=0x5555555802f0)
     at lab3/src/transformation.c:105
@@ -119,7 +462,7 @@ Here everything appears normal.
 
 You can inspect the values of variables at the point of the crash. For example, to check the values of `x`, `y`, `c`, `width`, and `height`, you can use the `print` command:
 
-```bash
+```sh
 (gdb) print x 
 $1 = 0
 ```
@@ -141,7 +484,7 @@ Unfortunately, there is still a second bug that we will fix in the next section.
 
 #### a. Run the program with GDB again
 
-```bash
+```sh
 (gdb) run
 Starting program: lab3/build/mytransform pipelines/rotate.pipeline
 [Thread debugging using libthread_db enabled]
@@ -187,7 +530,7 @@ The program crashes again, but this time with a different error message: `malloc
 
 Valgrind is a programming tool for memory debugging, memory leak detection, and profiling. It can help you identify memory-related issues in your program, such as invalid memory accesses, memory leaks, and uninitialized memory usage.
 
-```bash
+```sh
 valgrind build/mytransform pipelines/rotate.pipeline
 
 ==241843== Memcheck, a memory error detector
@@ -211,7 +554,7 @@ Here valgrind provides a detailed report of the memory error, including the exac
 
 #### c. Set a breakpoint at the faulty line
 
-```bash
+```sh
 (gdb) break transformation.c:105
 (gdb) run
 ... [output truncated] ...
@@ -225,7 +568,7 @@ Observe that gdb stops at the breakpoint you set and allows inspecting the point
 
 #### d. Inspect the values of `x`, `y`, `width`, `height`, and the computed index:
 
-```bash
+```sh
 print x
 print y
 print width
