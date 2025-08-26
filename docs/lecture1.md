@@ -36,6 +36,7 @@ header-includes:
 Consider two particles with masses $m_1$ and $m_2$ at positions $x_1$ and $x_2$ under gravitational interaction.
 
 $$m_1.a_1 = -\frac{G.m_1.m_2}{\|x_1 - x_2\|^3} (x_2 - x_1)$$
+
 $$m_2.a_2 = -\frac{G.m_1.m_2}{\|x_1 - x_2\|^3} (x_1 - x_2)$$
 
 Solved by Bernoulli in 1734, $x_1$ and $x_2$ can be expressed as simple equations that depend on time, masses, and initial conditions.
@@ -102,7 +103,6 @@ for (int i = 0; i < num_particles; i++) {
 
 Compiler optimizations, performance tuning, hardware acceleration are also crucial.
 
-/section{Introduction aux systèmes de contrôle de version}
 
 # HPC Architectures
 
@@ -114,7 +114,7 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 - Registers are the fastest storage; register pressure influence performance.
 
 ## Example: Intel Core2 Architecture
- 
+
 ![Intel Core2 Architecture (CC-by-SA, Wikipedia)](image/lecture1/Intel_Core2_arch.svg)
 
 ## Pipeline, Memory Hierarchy & Interrupts
@@ -127,6 +127,7 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 - **Interrupts and exceptions**: asynchronous interrupts signal external events; exceptions/traps handle synchronous faults; the OS performs context switching and servicing.
 
 ## Multicore memory hierarchy (more in next lecture ...)
+
 ![Memory hierarchy](image/lecture1/multi-proc-memory.png)
 
 ## System hierarchy (physical view)
@@ -145,7 +146,6 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 ### Storage and I/O
 - Parallel file systems provide shared high-throughput storage for HPC jobs.
 - Design I/O to avoid bottlenecks and to fit checkpoint/analysis cadence (collective I/O, buffer in NVMe).
-
 
 ## Levels of parallelism & mapping
 
@@ -193,7 +193,6 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
   - `cat file.txt > output.txt`: Save contents of `file.txt` to `output.txt`.
   - `grep "error" log.txt >> errors.txt`: Append lines containing "error" to `errors.txt`.
 
-
 ## Pipes
 
 - **Definition**: Pipes (`|`) connect the output of one command to the input of another.
@@ -214,7 +213,7 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
   - `export PATH=$PATH:/new/path`: Add a directory to the `PATH`.
 
 - **Example**:
-- 
+
   ```bash
   NODES=4
   PROGRAM="my_hpc_program"
