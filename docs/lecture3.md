@@ -24,12 +24,15 @@ header-includes:
   - Importance of testing for regression prevention and validation.
 - Code documentation: Doxygen.
 
-# Build Systems
+# Makefiles 
 
 ## Dependency Management
 
 - How to determine which files have changed?
-- **Source dependencies**: `main.cpp` depends on changes in `foo.h`
+
+![makefile-dependencies](image/lecture3/build-deps.svg)
+
+- **dependencies**: `main.o` depends on changes in `lib.h`
 
 ## Makefile
 
@@ -45,7 +48,7 @@ header-includes:
 
 ```Makefile
 prog: main.c lib.c lib.h
-  clang-6.0 -o prog main.c lib.c -lm
+  clang -o prog main.c lib.c -lm
 
 target: dependencies
 \t  command to build the target from the dependencies
@@ -55,13 +58,13 @@ target: dependencies
 
 ```Makefile
 prog: main.o lib.o
-  clang-6.0 -o prog main.o lib.o -lm
+  clang -o prog main.o lib.o -lm
 
 main.o: main.c lib.h
-  clang-6.0 -c -o main.o main.c
+  clang -c -o main.o main.c
 
 lib.o: lib.c lib.h
-  clang-6.0 -c -o lib.o lib.c
+  clang -c -o lib.o lib.c
 ```
 
 If `lib.c` is modified, which commands will be executed?
@@ -98,7 +101,7 @@ prog: ...
 ## Variables
 
 ```Makefile
-CC=clang-6.0
+CC=clang
 CFLAGS=-O2
 LDFLAGS=-lm
 
@@ -163,3 +166,231 @@ lib.o: lib.h
 - **automake / autoconf**: automatic generation of complex makefiles and management of system-specific configurations.
 
 - **cmake, scons**: successors to Makefile, offering more elegant syntax and new features.
+
+# CMake
+
+## Why CMake?
+
+- **Advantages of Makefiles:**
+  - Simplicity and transparency.
+  - No additional tools required.
+  - Direct control over the build process.
+
+- **Advantages of CMake:**
+  - Cross-platform support (Linux, Windows, macOS).
+  - Generates build files for multiple build systems (Make, Ninja, etc.).
+  - Modular and target-based design.
+  - Built-in support for testing, installation, and packaging.
+
+## General Design of CMake
+
+- **CMake as a Meta-Build System:**
+  - Generates build files for different generators (e.g., Make, Ninja).
+  - Abstracts platform-specific details.
+
+- **Workflow:**
+  1. Write `CMakeLists.txt` to define the project.
+  2. Configure the project:
+
+     ```sh
+     cmake -B build
+     ```
+
+  3. Build the project:
+
+     ```sh
+     cmake --build build
+     # or when using Make as backend
+     make -C build
+     ```
+
+## Basic Structure of `CMakeLists.txt`
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(MyProject LANGUAGES C)
+```
+
+- **`cmake_minimum_required`:** Specifies the minimum version of CMake required.
+- **`project`:** Defines the project name and the programming language(s) used.
+
+## Adding an Executable
+
+```cmake
+add_executable(my_executable src/main.c)
+```
+
+- Creates an executable named `my_executable`.
+
+## Adding a Shared Library
+
+```cmake
+add_library(my_library SHARED src/library.c)
+```
+
+- Creates a shared library named `libmy_library.so` (on Linux).
+
+## Linking Libraries to Executables
+
+```cmake
+add_library(my_library SHARED src/library.c)
+add_executable(my_executable src/main.c)
+target_link_libraries(my_executable PRIVATE my_library)
+```
+
+- **`add_library`:** Creates a shared library.
+- **`add_executable`:** Creates an executable.
+- **`target_link_libraries`:** Links the library to the executable.
+
+PRIVATE means that `my_executable` uses `my_library`, but `my_library` does not need to be linked when other targets link to `my_executable`.
+
+## Library dependency transitivity
+
+```cmake
+add_library(libA SHARED src/libA.c)
+add_library(libB SHARED src/libB.c)
+target_link_libraries(libB PUBLIC libA)
+add_executable(my_executable src/main.c)
+target_link_libraries(my_executable PRIVATE libB)
+```
+
+- `my_executable` is linked to `libB` and also to `libA` because `libB` links to `libA` with `PUBLIC`.
+- If `libB` linked to `libA` with `PRIVATE`, `my_executable` would not be linked to `libA`.
+- If `libB` linked to `libA` with `INTERFACE`, `my_executable` would be linked to `libA` but not `libB`.
+- See [this reference](https://cmake.org/cmake/help/latest/command/target_link_libraries.html) for more details.
+
+## Global Include Directories
+
+```cmake
+include_directories(include)
+```
+
+- Adds the `include` directory globally for all targets.
+- **Limitation:** Can lead to conflicts in larger projects.
+
+## Target-Specific Include Directories
+
+```cmake
+target_include_directories(my_library
+    PUBLIC include
+)
+```
+
+- **PUBLIC:** Include directory is needed when building and using the library.
+- **PRIVATE:** Include directory is needed only when building the library.
+- **INTERFACE:** Include directory is needed only when using the library.
+
+## Debug vs Release Builds
+
+- **Debug Build:**
+  - Includes debug symbols for debugging.
+  - Example flags: `-g`, `-O0`.
+
+- **Release Build:**
+  - Optimized for performance.
+  - Example flags: `-O3`, `-DNDEBUG`.
+
+## Setting Build Types in CMake
+
+```cmake
+set(CMAKE_BUILD_TYPE Debug)
+```
+
+- Build types: `Debug`, `Release`, `RelWithDebInfo`, `MinSizeRel`.
+
+## Adding Compiler Flags
+
+```cmake
+target_compile_options(my_library PRIVATE
+    $<$<CONFIG:Debug>:-g -Wall>
+    $<$<CONFIG:Release>:-O3 -DNDEBUG>
+)
+```
+
+- **Generator Expressions:** `$<CONFIG:Debug>` applies flags only for Debug builds.
+
+## Installing Targets
+
+```cmake
+install(TARGETS my_library
+    LIBRARY DESTINATION lib
+    PUBLIC_HEADER DESTINATION include
+)
+```
+
+- Installs the shared library to the `lib` directory.
+- Installs public headers to the `include` directory.
+
+## Using GNUInstallDirs
+
+```cmake
+include(GNUInstallDirs)
+
+install(TARGETS my_library
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+```
+
+- Defines standard GNU library and include directories paths.
+
+## Generating and Building the Project
+
+1. **Configure the Project:**
+
+   ```sh
+   cmake -B build
+   ```
+
+   - Generates build files in the `build` directory.
+
+2. **Build the Project:**
+
+   ```sh
+   cmake --build build
+   # or when using Make as backend
+   make -C build
+   ```
+
+3. **Run the Program:**
+
+   ```sh
+   ./build/my_executable
+   ```
+
+## Best Practices for CMake
+
+- **Use Target-Based Commands:**
+  - Prefer `target_include_directories` over `include_directories`.
+  - Prefer `target_link_libraries` over global linking.
+
+- **Organize `CMakeLists.txt`:**
+  - Group related targets together.
+  - Use comments to explain sections.
+
+- **Avoid Global Commands:**
+  - Avoid `include_directories` and `link_libraries` globally.
+
+- **Use Modern CMake Features:**
+  - Generator expressions for conditional configurations.
+  - `FetchContent` for managing external dependencies.
+
+## Porting our minimal Makefile example to CMake
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(MyProject LANGUAGES C)
+
+# Add the executable target
+add_executable(prog main.c lib.c)
+
+# Specify include directories for the target
+target_include_directories(prog 
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Add compile options
+target_compile_options(prog PRIVATE ${CFLAGS})
+
+# Link libraries if needed
+target_link_libraries(prog PRIVATE m)
+```
