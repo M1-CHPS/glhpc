@@ -604,3 +604,19 @@ Check that the program runs correctly now!
 Now that you have fixed both bugs, it's important to ensure that the bugs will not reappear in the future. To do this, you will write non-regression tests using the Unity testing framework.
 
 Add tests that specifically target the scenarios that led to the bugs you fixed. For example, you can create tests that rotate images of various sizes and shapes, including non-square images, to ensure that the `rotate_image_90_clockwise` function behaves correctly.
+
+<hr class="gradient" />
+
+<div class="summary-section box-section" markdown>
+
+<h2 class="hidden-title"> 4 - Summary</h2>
+
+Upon completing this third lab, you should know how to:
+
+- [x] Use CMake to build and install a shared library and an executable.
+- [x] Configure CMake for different build types and compiler options.
+- [x] Integrate and run unit tests using the Unity testing framework.
+- [x] Debug segmentation faults and memory issues using GDB and Valgrind.
+- [x] Write non-regression tests to prevent reintroducing fixed bugs.
+
+</div>
