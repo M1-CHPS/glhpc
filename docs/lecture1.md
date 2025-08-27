@@ -1,5 +1,5 @@
 ---
-title: "CM1: Software Engineering for HPC and AI -- Introduction & Development Environment"
+title: "L1: Software Engineering for HPC and AI -- Introduction & Development Environment"
 institute: "Master Calcul Haute Performance et Simulation - GLHPC | UVSQ"
 author: "P. de Oliveira Castro, M. Jam"
 date: \today

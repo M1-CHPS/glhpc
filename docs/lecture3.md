@@ -1,5 +1,5 @@
 ---
-title: "CM3: Construction, Test et Débogage de Logiciels Scientifiques"
+title: "L3: Building, Testing and Debugging Scientific Software"
 institute: "Master Calcul Haute Performance et Simulation - GLHPC | UVSQ"
 author: "P. de Oliveira Castro, M. Jam"
 date: \today
@@ -11,8 +11,6 @@ toc-depth: 2
 header-includes:
   - \metroset{sectionpage=progressbar}
 ---
-
-# CM3: Construction, Test et Débogage de Logiciels Scientifiques
 
 ## Objectives
 
