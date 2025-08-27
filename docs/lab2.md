@@ -47,22 +47,12 @@ The parsing and pipeline execution logic have already been implemented so you ca
 
 ## 1 - Compiling the program
 
-You are provided with the dynamic library `libparser.so`, which contains the parsing and execution logic.
-
-Ensure this library is located at the root of your project, then run:
-```sh title="Adding the library to the path"
-export LD_LIBRARY_PATH=$(pwd):$LD_LIBRARY_PATH
-```
-
-This updates the `LD_LIBRARY_PATH` environment variable so the compiler can find the dependency.
-You may need to re-run this command when creating a new shell.
-
 #### a) Write a `Makefile` that:
 
-- Compiles `main.c`, `image.c` and `transformation.c` using `gcc`
-- Links against `libparser.so`
+- Compiles `main.c`, `image.c`, `parser.c` and `transformation.c` using `gcc`
 - Produces a binary named `mystransform` at the root of the project
 - Exposes a `clean` target that removes compiled artifacts
+    - This includes any `.o`, `.so`, `.out`, as well as the `mytransform` binary
 
 !!! Danger
     The output binary **must** be named `mystransform`, or later parts of the lab may not work correctly.
