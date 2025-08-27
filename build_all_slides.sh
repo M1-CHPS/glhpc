@@ -25,7 +25,7 @@ find . -type f -name "lecture*.md" | while read -r src; do
         -V theme=metropolis \
         -V colortheme=orchid \
         --listings \
-        -V lang=fr \
+        -V lang=en \
         -V fontsize=9pt \
         -V mainfont="Comfortaa Medium" \
         -V monofont="Latin Modern Mono"

@@ -86,7 +86,6 @@ nav:
     - Bash cheatsheet: annex/bash_cheatsheet.md
     - Linux Environment:
       - Installing fedora: annex/install_fedora.md
-      - Installing packages: annex/install_packages.md
       - Installing oh-my-zsh: annex/oh-my-zsh.md
 
 extra_css:
