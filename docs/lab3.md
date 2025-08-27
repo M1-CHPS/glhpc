@@ -11,10 +11,10 @@
 
 ### Provided Files
 
-This lab is a continuation of [lab 2](/lab2/). The structure of the project is the same.
-A new transformation `rotate_image_90_clockwise`, which you will analyze in the [third part of this lab](#C-debugging-with-gdb-and-valgrind), has been added to the `transformations.h` and `transformations.c` files.
+This lab is a continuation of [lab 2](../lab2). The structure of the project is the same.
+A new transformation `rotate_image_90_clockwise`, which you will analyze in the [third part of this lab](#3-debugging-with-gdb-and-valgrind), has been added to the `transformations.h` and `transformations.c` files.
 
-## A - CMake
+## 1 - CMake
 
 In this first part, you will learn how to write a `CMakeLists.txt` file for a C project, starting from a provided `Makefile`. The goal is to progressively build a robust and maintainable CMake configuration for an HPC project.
 
@@ -22,14 +22,14 @@ In this first part, you will learn how to write a `CMakeLists.txt` file for a C 
 
 Create a minimal `CMakeLists.txt` that builds the shared library `libparser.so` and the executable `mytransform`.
 
-#### a. Set the minimum required CMake version and project name
+#### a) Set the minimum required CMake version and project name
 
 ```cmake title="CMakeLists.txt"
 cmake_minimum_required(VERSION 3.15)
 project(parser LANGUAGES C)
 ```
 
-#### b. Add include directories
+#### b) Add include directories
 
 ```cmake title="CMakeLists.txt"
 include_directories(src include)
@@ -37,7 +37,7 @@ include_directories(src include)
 
 The `include_directories` command specifies the directories to search for header files during compilation. Here, `include` contains the public header of the parser library, and `src` contains the private headers used internally by the library and the executable.
 
-#### c. Add the shared library target
+#### c) Add the shared library target
 
 ```cmake title="CMakeLists.txt"
 add_library(parser SHARED src/parser.c)
@@ -45,7 +45,7 @@ add_library(parser SHARED src/parser.c)
 
 In Linux a shared library has the extension `.so` (shared object). The `add_library` command creates a target named `parser` that builds a shared library from the source file `src/parser.c`. The final library will be named `libparser.so` by default.
 
-#### d. Add the executable target
+#### d) Add the executable target
 
 ```cmake title="CMakeLists.txt"
 add_executable(mytransform src/main.c src/transformation.c src/image.c)
@@ -53,7 +53,7 @@ add_executable(mytransform src/main.c src/transformation.c src/image.c)
 
 The `add_executable` command builds an executable `mytransform` from the specified source files. Header files were included before.
 
-#### e. Link the shared library to the executable
+#### e) Link the shared library to the executable
 
 ```cmake
 target_link_libraries(mytransform PRIVATE parser m)
@@ -64,17 +64,17 @@ This command ensures that the `mytransform` executable is linked against the `pa
 !!! Note
     The `PRIVATE` keyword indicates that the dependency is only required for building the `mytransform` target and does not propagate to other targets that may link against `mytransform`.
 
-#### f. Generate the build system
+#### f) Generate the build system
 
-```bash
+```sh
 $ cmake -B build .
 ```
 
 Here `-B` specifies the build directory (a new directory named `build`).
 
-#### g. Build the project
+#### g) Build the project
 
-```bash
+```sh
 $ make -C build/
 ```
 
@@ -82,7 +82,7 @@ $ make -C build/
     By default, CMake generates a Makefile as the build system on Unix-like systems. Sometimes, it can be useful to call directly the `make` command to build the project.
     You can also use `cmake --build build` to build the project, which is more portable across different platforms and build systems.
 
-#### h. Answer the following questions
+#### h) Answer the following questions
 
 - Where are the generated files located?
 - Can you find the `libparser.so` library? the `mytransform` executable?
@@ -92,7 +92,7 @@ $ make -C build/
 
 We want to enable different build configurations (e.g., Debug, Release) and set appropriate compiler options.
 
-#### a. Configure the C standard used
+#### a) Configure the C standard used
 
 ```cmake title="CMakeLists.txt"
 set(CMAKE_C_STANDARD 11)
@@ -101,7 +101,7 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 
 This ensures that the C11 standard is used for compiling the project.
 
-#### b. Enable different build types
+#### b) Enable different build types
 
 Define common compiler flags for different build types:
 
@@ -121,14 +121,13 @@ target_compile_options(mytransform PRIVATE ${COMMON_COMPILE_FLAGS})
 
 Rebuild the project and test different configurations:
 
-```bash
+```sh
 $ cmake -B build -DCMAKE_BUILD_TYPE=Debug .
-$ 
 ```
 
 You can check that the debug symbols are included in the binary using `file`:
 
-```bash
+```sh
 $ file build/mytransform 
 build/mytransform: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=0d2cbaa0cf08a42b916e2edffe9940ce828b2bd9, for GNU/Linux 3.2.0, with debug_info, not stripped
 ```
@@ -137,7 +136,7 @@ build/mytransform: ELF 64-bit LSB pie executable, x86-64, version 1 (SYSV), dyna
 
 Now we will add installation rules to install the shared library, executable, and headers.
 
-#### a. Give your project a version number
+#### a) Give your project a version number
 
 Modify the `project` command as below:
 
@@ -145,7 +144,7 @@ Modify the `project` command as below:
 project(parser VERSION 1.0.0 LANGUAGES C)
 ```
 
-#### b. Include the `GNUInstallDirs` module:
+#### b) Include the `GNUInstallDirs` module
 
 ```cmake title="CMakeLists.txt"
 include(GNUInstallDirs)
@@ -153,7 +152,7 @@ include(GNUInstallDirs)
 
 This module provides standard installation directory variables like `CMAKE_INSTALL_BINDIR`, `CMAKE_INSTALL_LIBDIR`, and `CMAKE_INSTALL_INCLUDEDIR`.
 
-#### c. Add installation rules for the shared library:
+#### c) Add installation rules for the shared library
 
 ```cmake title="CMakeLists.txt"
 install(TARGETS parser
@@ -162,7 +161,7 @@ install(TARGETS parser
 )
 ```
 
-#### d. Add installation rules for the executable:
+#### d) Add installation rules for the executable
 
 ```cmake title="CMakeLists.txt"
 install(TARGETS mytransform
@@ -170,9 +169,9 @@ install(TARGETS mytransform
 )
 ```
 
-#### e. Test the installation:
+#### e) Test the installation
 
-```bash
+```sh
 mkdir install_dir
 $ cmake -B build -DCMAKE_INSTALL_PREFIX=install_dir . 
 $ make -C build/ install
@@ -184,7 +183,7 @@ Since `install_dir` is not a standard system directory, you need to set the `LD_
 !!! Note
     We can also call `cmake --install build --prefix <install_directory>` to install the project.
 
-#### f. Install the public header file
+#### f) Install the public header file
 
 As you can see, the public header file `parser.h` is not installed.
 To inform CMake about the public headers, you should add the following command:
@@ -203,9 +202,9 @@ Rebuild and install the project again, you should see the `parser.h` file in the
 
 Our current way of handling include directories is not ideal. We will improve it by using `target_include_directories` which keeps the include directories scoped to each target.
 
-#### a. Remove the global `include_directories` command
+#### a) Remove the global `include_directories` command
 
-#### b. Add the following commands to specify include directories for each target
+#### b) Add the following commands to specify include directories for each target
 
 ```cmake title="CMakeLists.txt"
 target_include_directories(parser 
@@ -223,7 +222,7 @@ The library target disinguishes between `PUBLIC` and `PRIVATE` include directori
 
 The `BUILD_INTERFACE` generator expression specifies the include directory to use when building the project, while the `INSTALL_INTERFACE` generator expression specifies the include directory to use when the library is installed. This ensures that users of the installed library can include the header files correctly.
 
-## B - Unit Tests
+## 2 - Unit Tests
 
 In this part, you will learn how to integrate unit tests into your CMake project using the [Unity testing framework](https://www.throwtheswitch.org/unity).
 
@@ -336,6 +335,7 @@ target_link_libraries(test_runner ${UNITY_LIBRARY} m parser)
 Observe that we link the `test_runner` target against the Unity library, the math library `m`, and our `parser` library.
 
 ### 4. Add a custom target to run the tests
+
 To facilitate running the tests, we can add a custom target in our `CMakeLists.txt` file that will execute the `test_runner` executable.
 
 ```cmake title="CMakeLists.txt"
@@ -348,12 +348,12 @@ add_custom_target(test test_runner
 
 Check that everything works by building the project and running the tests:
 
-```bash
+```sh
 $ cmake --build build
 $ make -C build test
 ```
 
-### 5. Add the remaining tests 
+### 5. Add the remaining tests
 
 *Write unit tests for the `check_rgb` and `check_copy` functions in the `tests/test_image.c` file.* 
 
@@ -361,7 +361,7 @@ $ make -C build test
     For bonus point, separate the logic of the `check_copy` test into two different tests: `test_image_copy`, that check the code validity, and `test_image_copy_performance` that measures and displays the performance.
 
 
-## C - Debugging with GDB and Valgrind
+## 3 - Debugging with GDB and Valgrind
 
 In this last part, you will learn how to debug two types of bugs in a C program using `gdb` and `valgrind`. These bugs are intentionally introduced in the `rotate_image_90_clockwise` function. The goal is to identify, understand, and fix these bugs while reflecting on the debugging process.
 
@@ -372,19 +372,19 @@ Debugging symbols are metadata embedded in a program's binary during compilation
 !!! Note
     To enable debugging symbols, you need to configure CMake to include the `-g` flag in the compilation process. This can be achieved by setting the `CMAKE_BUILD_TYPE` to `Debug`.
 
-#### a. Run the `cmake` command with the `Debug` build type
+#### a) Run the `cmake` command with the `Debug` build type
 
 ```sh
 $ cmake -B build/ -DCMAKE_BUILD_TYPE=Debug .
 ```
 
-#### b. Build the project
+#### b) Build the project
 
 ```sh
 $ make -C build/
 ```
 
-#### c. Run the program using the rotate transformation
+#### c) Run the program using the rotate transformation
 
 ```sh
 $ build/mytransform pipelines/rotate.pipeline
@@ -394,7 +394,7 @@ Segmentation fault (core dumped)
 
 You should get an error as above.
 
-#### d. Analyze carefully the error message
+#### d) Analyze carefully the error message
 
 - What does `Segmentation fault` mean?
 - What does `(core dumped)` mean?
@@ -404,7 +404,7 @@ You should get an error as above.
 
 GDB is the GNU Project Debugger, a powerful tool for debugging programs. It allows you to run your program step by step, inspect variables, set breakpoints, and analyze the program's flow to identify and fix bugs.
 
-#### a. Start gdb with the program and its arguments
+#### a) Start gdb with the program and its arguments
 
 ```sh
 $ gdb --args build/mytransform pipelines/rotate.pipeline
@@ -418,7 +418,7 @@ GNU gdb (Ubuntu 15.0.50.20240403-0ubuntu1) 15.0.50.20240403-git
     The `--args` option allows you to pass the program's arguments directly to gdb, so you don't have to type them again after starting gdb.
     `(gdb)` is the gdb prompt, where you can enter gdb commands.
 
-#### b. Run the program inside gdb
+#### b) Run the program inside gdb
 
 ```sh
 (gdb) run
@@ -435,8 +435,7 @@ rotate_image_90_clockwise (node=0x5555555802f0)
 
 GDB has caught the segmentation fault and shows you the exact line where the error occurred.
 
-
-#### c. Backtrace the function calls
+#### c) Backtrace the function calls
 
 You can use the `backtrace` command to see the function call stack leading to the crash:
 
@@ -458,7 +457,7 @@ Here everything appears normal.
 !!! Note
     It's possible to change the frame using `up` and `down` commands to navigate through the call stack and inspect their variables.
 
-#### d. Inspect the variables
+#### d) Inspect the variables
 
 You can inspect the values of variables at the point of the crash. For example, to check the values of `x`, `y`, `c`, `width`, and `height`, you can use the `print` command:
 
@@ -469,8 +468,7 @@ $1 = 0
 
 Print each of the variables, do you see anything suspicious at the point of crash?
 
-
-#### e. Fix and explain the first bug
+#### e) Fix and explain the first bug
 
 !!! Tip
     The first bug is a logical error in the loop exit condition at line 109.
@@ -482,7 +480,7 @@ Unfortunately, there is still a second bug that we will fix in the next section.
 
 ### 3. Using Valgrind to Detect Memory Issues
 
-#### a. Run the program with GDB again
+#### a) Run the program with GDB again
 
 ```sh
 (gdb) run
@@ -526,7 +524,7 @@ The program crashes again, but this time with a different error message: `malloc
 
 **The backtrace does not point to the exact line in your code where the corruption occurred. Why?**
 
-#### b. Use Valgrind to pinpoint the memory issue
+#### b) Use Valgrind to pinpoint the memory issue
 
 Valgrind is a programming tool for memory debugging, memory leak detection, and profiling. It can help you identify memory-related issues in your program, such as invalid memory accesses, memory leaks, and uninitialized memory usage.
 
@@ -552,7 +550,7 @@ Loaded image: images/image0.bmp (259x194, 3 channels)
 
 Here valgrind provides a detailed report of the memory error, including the exact line in your code where the invalid write occurred. Now we will use gdb again to inspect the variables at the point of the invalid write.
 
-#### c. Set a breakpoint at the faulty line
+#### c) Set a breakpoint at the faulty line
 
 ```sh
 (gdb) break transformation.c:105
@@ -566,7 +564,7 @@ Breakpoint 1, rotate_image_90_clockwise (node=0x5555555802f0)
 
 Observe that gdb stops at the breakpoint you set and allows inspecting the point of the invalid write.
 
-#### d. Inspect the values of `x`, `y`, `width`, `height`, and the computed index:
+#### d) Inspect the values of `x`, `y`, `width`, `height`, and the computed index:
 
 ```sh
 print x
@@ -577,11 +575,11 @@ print x * width + (height - y - 1)
 ```
 GDB allows you to perform arithmetic operations directly in the `print` command, so you can compute the index and check if it is within bounds. Do you see anything suspicious?
 
-#### e. Set a conditional breakpoint
+#### e) Set a conditional breakpoint
 
 We start to suspect that the index calculation is incorrect. To catch the invalid memory write, set a conditional breakpoint that triggers when the computed index is out of bounds. Start gdb again and run the following commands:
 
-```bash
+```sh
 (gdb) break transformation.c:105
 (gdb) condition 1 x * width + (height - y - 1) >= height * width
 ```
@@ -591,7 +589,7 @@ The condition will trigger when the computed index is greater than or equal to t
 
 Run the program again, do you hit the breakpoint?
 
-#### f. Analyze and fix the bug
+#### f) Analyze and fix the bug
 
 !!! Tip
     Check carefully that the dimensions used in the index calculation are correct. The bug is a mix-up between `width` and `height`.
