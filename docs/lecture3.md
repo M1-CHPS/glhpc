@@ -202,15 +202,20 @@ lib.o: lib.h
      make -C build
      ```
 
+  **Out-of-source builds** are recommended to keep source directories clean.
+
 ## Basic Structure of `CMakeLists.txt`
 
 ```cmake
 cmake_minimum_required(VERSION 3.15)
 project(MyProject LANGUAGES C)
+
+set(CMAKE_C_STANDARD 11)
 ```
 
 - **`cmake_minimum_required`:** Specifies the minimum version of CMake required.
 - **`project`:** Defines the project name and the programming language(s) used.
+- **`set`:** Sets variables, e.g., C standard version.
 
 ## Adding an Executable
 
@@ -278,6 +283,26 @@ target_include_directories(my_library
 - **PRIVATE:** Include directory is needed only when building the library.
 - **INTERFACE:** Include directory is needed only when using the library.
 
+## Porting our minimal Makefile example to CMake
+
+```cmake
+cmake_minimum_required(VERSION 3.15)
+project(MyProject LANGUAGES C)
+
+# Add the executable target
+add_executable(prog main.c lib.c)
+
+# Specify include directories for the target
+target_include_directories(prog 
+  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
+# Add compile options
+target_compile_options(prog PRIVATE ${CFLAGS})
+
+# Link libraries if needed
+target_link_libraries(prog PRIVATE m)
+```
+
 ## Debug vs Release Builds
 
 - **Debug Build:**
@@ -291,10 +316,16 @@ target_include_directories(my_library
 ## Setting Build Types in CMake
 
 ```cmake
-set(CMAKE_BUILD_TYPE Debug)
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE RelWithDebInfo CACHE STRING "Build type" FORCE)
+endif()
 ```
 
 - Build types: `Debug`, `Release`, `RelWithDebInfo`, `MinSizeRel`.
+
+- CACHE: Makes the variable persistent across CMake runs. In out-of-source builds `CMakeLists.txt` is not re-evaluated on subsequent runs.
+- FORCE: Overrides any previous value.
+- STRING: "Build type" provides a description in CMake GUI.
 
 ## Adding Compiler Flags
 
@@ -373,22 +404,3 @@ install(TARGETS my_library
   - Generator expressions for conditional configurations.
   - `FetchContent` for managing external dependencies.
 
-## Porting our minimal Makefile example to CMake
-
-```cmake
-cmake_minimum_required(VERSION 3.15)
-project(MyProject LANGUAGES C)
-
-# Add the executable target
-add_executable(prog main.c lib.c)
-
-# Specify include directories for the target
-target_include_directories(prog 
-  PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
-# Add compile options
-target_compile_options(prog PRIVATE ${CFLAGS})
-
-# Link libraries if needed
-target_link_libraries(prog PRIVATE m)
-```
