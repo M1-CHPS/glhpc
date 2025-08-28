@@ -22,7 +22,7 @@ header-includes:
   - Importance of testing for regression prevention and validation.
 - Code documentation: Doxygen.
 
-# Makefiles 
+# Makefiles
 
 ## Dependency Management
 
@@ -82,9 +82,9 @@ clean:
 ## Default Rule
 
 ```bash
-$ make clean
-$ make prog
-$ make
+make clean
+make prog
+make
 ```
 
 - If `make` is called with a rule, that rule is built.
@@ -114,8 +114,9 @@ lib.o: lib.c lib.h
 ```
 
 Variables can be overridden when calling `make`, e.g.,
+
 ```bash
-$ make CC=gcc
+make CC=gcc
 ```
 
 ## Special Variables
@@ -142,6 +143,7 @@ The last two rules are very similar...
 ## Implicit Rules
 
 ### Before
+
 ```Makefile
 main.o: main.c lib.h
   $(CC) $(CFLAGS) -c -o $@ $<
@@ -151,6 +153,7 @@ lib.o: lib.c lib.h
 ```
 
 ### With Implicit Rule
+
 ```Makefile
 %.o: %.c
   $(CC) $(CFLAGS) -c -o $@ $<
@@ -404,3 +407,159 @@ install(TARGETS my_library
   - Generator expressions for conditional configurations.
   - `FetchContent` for managing external dependencies.
 
+# Debugging Tools
+
+## GDB: GNU Debugger
+
+## Valgrind: memory debugging and leak detection
+
+## Other tools: ASAN, UBSAN
+
+# Software Testing
+
+## Importance of Software Testing
+
+- 1996: Ariane-5 self-destructed due to an unhandled floating-point exception, resulting in a \$500M loss.
+- 1998: Mars Climate Orbiter lost due to navigation data expressed in imperial units, resulting in a \$327.6M loss.
+- 1988-1994: FAA Advanced Automation System project abandoned due to management issues and overly ambitious specifications, resulting in a \$2.6B loss.
+- 1985-1987: Therac-25 medical accelerator malfunctioned due to a thread concurrency issue, causing five deaths and numerous injuries.
+
+# Technical Debt
+
+![Software Costs (Applied Soft. Measurement, Capers Jones)](image/lecture3/cost-software.png)
+
+# Software Costs
+
+![Software Costs (Nancy Leveson)](image/lecture3/cost-software2.png)
+
+# Verification and Validation (V&V)
+
+- **Validation**: Does the software meet the client's needs?  
+  - "Are we building the right product?"
+
+- **Verification**: Does the software work correctly?  
+  - "Are we building the product right?"
+
+## Approaches to Verification
+
+- Formal methods
+- Modeling and simulations
+- Code reviews
+- **Testing**
+
+# Software Testing
+
+![Testing Process (S. Bardin)](image/lecture3/test-pipeline.png)
+
+# V Cycle Model
+
+![V-Model: Validation followed by Verification](image/lecture3/vcycle.svg)
+
+# Different Types of Tests
+
+- **Unit Tests:**
+  - Test individual functions in isolation.
+  - Test-driven development (TDD): Focus on writing maintainable, simple, and decoupled code.
+
+- **Integration Tests:**
+  - Test the correct behavior when combining modules.
+  - Validate only functional correctness.
+
+- **Validation Tests:**
+  - Test compliance with specifications.
+  - Test other characteristics: performance, security, etc.
+
+- **Acceptance Tests:**
+  - Validate requirements with the client.
+
+- **Regression Tests:**
+  - Ensure that fixed bugs do not reappear.
+
+# Black-Box and White-Box Testing
+
+## Black-Box Testing (Functional)
+
+- Tests are generated from specifications.
+- Uses assumptions different from the programmer's.
+- Tests are independent of implementation.
+- Difficult to find programming defects.
+
+## White-Box Testing (Structural)
+
+- Tests are generated from source code.
+- Maximizes coverage by testing all code branches.
+- Difficult to find omission or specification errors.
+
+##
+
+Both approaches are complementary.
+
+# What to Test?
+
+- Running the program on all possible inputs is too costly.
+- Choose a subset of inputs:
+  - Partition inputs into equivalence classes to maximize coverage.
+  - Test all code branches.
+  - Test edge cases.
+  - Test invalid cases.
+  - Test combinations (experimental design).
+
+# Example of Partitioning
+
+## Specification
+
+```c
+/* compare returns:
+ *   0 if a is equal to b
+ *   1 if a is strictly greater than b
+ *  -1 if a is strictly less than b
+ */
+int compare (int a, int b);
+```
+
+##
+
+What inputs should be tested?
+
+## Example of Partitioning
+
+### Equivalence Classes
+
+| Variable | Possible Values            |
+|----------|----------------------------|
+| a        | {positive, negative, zero} |
+| b        | {positive, negative, zero} |
+| result   |                 {0, 1, -1} |
+
+### Example Test Cases
+
+| a   | b   | result |
+|-----|-----|--------|
+| 10  | 10  | 0      |
+| 20  | 5   | 1      |
+| 3   | 7   | -1     |
+| -30 | -30 | 0      |
+| -5  | -10 | 1      |
+| ... | ... | ...    |
+
+
+It is possible to select a subset of classes!
+
+## Boundary Tests
+
+|a          | b  | result
+|-----------|----|-------
+|-2147483648|-1  | -1
+
+# Discussion
+
+- Automatic test generation.
+- Test coverage calculation.
+- Mutation testing.
+- Fuzzing.
+- Importance of using automated testing tools.
+- Importance of using continuous integration tools.
+
+# Credits and Bibliography
+
+- Course "Automated Software Testing," Sébastien Bardin.
