@@ -1,1 +1,1 @@
-# TD7: Projet IA - Suite
+# TD7: Projet IA - Part 2 - Neural Networks Inference Engine 

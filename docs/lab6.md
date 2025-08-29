@@ -1,1 +1,1 @@
-# TD6: Projet IA - Partie 1: Optimisation d’un noyau SGEMM
+# TD6: Projet IA - Part 1 - SGEMM Kernel Optimization

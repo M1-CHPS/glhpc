@@ -1,5 +1,5 @@
 ---
-title: "CM2: C for High Performance"
+title: "L2: C for High Performance"
 institute: "Master Calcul Haute Performance et Simulation - GLHPC | UVSQ"
 author: "M. Jam, P. de Oliveira Castro"
 date: \today
