@@ -122,16 +122,22 @@ int main() {
 
 Numbers of multiple of 3 inside $[0, 99]$ (i.e. $i \mod 3 = 0$)
 ```c
-unsigned int count = 0;
-// For i starting at 0; while i < 100; increment i by one
-for (unsigned int i = 0; i < 100; i++) {
-  // if i % 3 (Remainder of the integer division) is equal to 0
-  if (i % 3 == 0) {
-    count++;
+void count_multiples_of_three() {
+  unsigned int count = 0;
+  // For i starting at 0; while i < 100; increment i by one
+  for (unsigned int i = 0; i < 100; i++) {
+    // if i % 3 (Remainder of the integer division) is equal to 0
+    if (i % 3 == 0) {
+      count++;
+    }
   }
+  printf("Result: %d\n", count);
 }
-printf("Result: %d\n", count);
 ```
+
+## Note {.example}
+
+Here we could also do `for (unsigned int i = 0; i < 100; i += 3)`
 
 ---
 
@@ -271,12 +277,12 @@ Results:
 
 That's a speedup of $\times 235$. 
 
-We will see later in this course how this is possible thanks to the compiler.
+We will see later in this course how this is possible.
 
 
 ## Numpy and other libraries  {.alert}
 
-Note that we could use `numpy` or the `sum` python function: but those are actually implemented in `C`
+Note that we could use `numpy` or the `sum` python function: but those are actually implemented in `C` !
 
 ---
 
@@ -634,6 +640,66 @@ There are several compilers with varying performance and features:
 
 - GCC and Clang-LLVM (The classics)
 - MSVC (Microsoft), mingw-LLVM, arm-clang (For ARM) and many, many others.
+
+---
+
+# Makefile Basics - Introduction
+
+**Make** is a scripting tool to automate complex compilation workflows. It works by defining rules inside **Makefiles**.
+
+```makefile
+CC := gcc
+CFLAGS := -g
+
+main: main.c my_library.c my_library.h
+  $(CC) -o $@ $^ $(CFLAGS)
+```
+
+- `main` is the target (What we want to build)
+- `main.c my_library.c my_library.h` are the dependencies: rule reruns if any change
+- `$(CC) -o $@ $< $(CFLAGS)` is the recipe
+- `$@` expands to the target name
+- `$^` expands to all dependency
+
+---
+
+# Makefile Basics - Phony rules
+
+Makefiles expects that a rule `main` produces a file called `main`. However, not all rules produce files:
+
+```makefile
+.PHONY: all clean
+
+all: main mylibrary
+
+...
+
+clean:
+  rm -rf *.o
+  rm -rf ./main
+```
+
+Here, `make all` will be an alias to build everything, while `make clean` is a custom rule to clean all build artifacts.
+Makefile has many, many other functionalities, outside the scope of this course.
+
+---
+
+# Makefile Basics - Usage
+
+The typical projects looks something like:
+
+```
+Project/
+  src/
+    main.c
+    my_library.c
+  include/
+    my_library.h
+  Makefile # We define the Make rules here
+```
+
+`make` will look for a file in the `cwd` named `Makefile` or `makefile`.
+You can directly call `make all`, `make clean`, etc.
 
 ---
 
