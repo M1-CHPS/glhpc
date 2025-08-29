@@ -36,9 +36,8 @@ The parsing and pipeline execution logic have already been implemented so you ca
 | `pipelines/`        | Sample transformation pipelines to test your implementation.                |
 | `src/`              | C source code for this lab. Contains the files listed below:                |
 | `src/main.c`        | Parses the transformation graph and executes it.                            |
-| `src/parser.c`      | Parser for the graph and the pipeline executor                              |
-| `src/parser.h`      | DAG representation for the image processing pipeline.                       |
-| `src/image.c/h`     | Image structure and utilities for memory allocation and management.         |
+| `src/parser.(c|h)`      | DAG representation for the image processing pipeline.                       |
+| `src/image.(c|h)`     | Image structure and utilities for memory allocation and management.         |
 | `src/stb_image.h`   | Public domain header-only image I/O library (from GitHub).                  |
 | `src/transformation.c/h` | Implementation of image processing kernels. Most functions are missing and must be implemented by you. |
 
@@ -53,6 +52,7 @@ The parsing and pipeline execution logic have already been implemented so you ca
 - Produces a binary named `mystransform` at the root of the project
 - Exposes a `clean` target that removes compiled artifacts
     - This includes any `.o`, `.so`, `.out`, as well as the `mytransform` binary
+- You should link to the math standard library by using the `-lm` compilation flag 
 
 !!! Danger
     The output binary **must** be named `mystransform`, or later parts of the lab may not work correctly.
@@ -61,7 +61,7 @@ The parsing and pipeline execution logic have already been implemented so you ca
 
 To get started, you should use `-Og -g -Wall -Wextra` as compilation flags. We will update this later. Ensure the flags are in effect.
 
-#### c) Try running your program
+#### c) Run `make` then try running `mytransform`
 
 Execute the following:
 ```sh title="Running a simple pipeline"
