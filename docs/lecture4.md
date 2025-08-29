@@ -5,6 +5,9 @@ author: "M. Jam, P. de Oliveira Castro"
 date: \today
 theme: metropolis
 colortheme: orchid
+toc: true
+toc-depth: 2
+slide-level: 2
 header-includes:
   - \metroset{sectionpage=progressbar}
 ---
@@ -15,13 +18,7 @@ header-includes:
   </p>
 </div>
 
-## Course Topics
-
-- Why and how to experimental methodology for HPC
-- Experimental pipeline
-- Profiling
-
----
+# Scientific visualization
 
 ## Plot Example - Intro
 
@@ -42,7 +39,6 @@ Raise your hands when ready to propose an explanation.
 
 **PPN Example** - (No Caption)
 
----
 
 ## Plot Example (2)
 
@@ -50,7 +46,7 @@ Raise your hands when ready to propose an explanation.
 
 **PPN Example** - (No Caption)
 
----
+
 
 ## Plot Example (3)
 
@@ -58,7 +54,7 @@ Raise your hands when ready to propose an explanation.
 
 **PPN Example** - (No Caption)
 
----
+
 
 ## Plot Example (4)
 
@@ -66,7 +62,7 @@ Raise your hands when ready to propose an explanation.
 
 **PPN Example** - "Récapitulatif des optimisations faites"
 
----
+
 
 ## Plot Example (5)
 
@@ -74,7 +70,7 @@ Raise your hands when ready to propose an explanation.
 
 **PPN Example** - "Nouveau tracé de la latence cache"
 
----
+
 
 ## Plot Example (6)
 
@@ -82,7 +78,7 @@ Raise your hands when ready to propose an explanation.
 
 **Prof Example** - (KNM): (a) Speedup map of GA-Adaptive (7k samples) over the Intel MKL hand-tuning for `dgetrf` (LU), higher is better. (b) Analysis of the slowdown region (performance regression). (c) Analysis of the high speedup region. $3,000$ random solutions were evaluated for each distribution.
 
----
+
 
 ## Plot Example (7)
 
@@ -90,7 +86,7 @@ Raise your hands when ready to propose an explanation.
 
 **Prof Example** - (SPR): Geometric mean Speedup (higher is better)  against the MKL reference configuration on `dgetrf` (LU), depending on the sampling algorithm. 46x46 validation grid. 7k/15k/30k denotes the samples count. GA-Adaptive outperforms all other sampling strategies for auto-tuning. With 30k samples it achieves a mean speedup of $\times 1.3$ of the MKL dgetrf kernel.
 
----
+
 
 ## Plot Example - What makes a good plot
 
@@ -102,7 +98,7 @@ Ask yourself:
 - Is my plot self-contained ?
 - Is the context, environment, and methodology clear ?
 
----
+
 
 ## Plot Example - Summary
 
@@ -114,13 +110,13 @@ HPC is a scientific endeavour; data analysis and plotting are essential.
 
 Datasets are large, multi-disciplinary, and often hard to reproduce.
 
----
+# Experimental Methodology
 
 ## Experimental Methodology - Workflow
 
 ![](./image/lecture4/experimental_methodology.png){ width=100% }
 
----
+
 
 ## Statistical significance - Introduction
 
@@ -133,7 +129,7 @@ Computers are noisy, complex systems:
 
 How can we make sure our experimental measurements are reliable and conclusive?
 
----
+
 
 ## Statistical significance - Warm-up effects
 
@@ -145,7 +141,7 @@ Systems need time to reach steady-state:
 
 We need "warm-up" iterations to measure stable performance and skip cold caches, page faults, frequency scaling.
 
----
+
 
 ## Statistical significance - Noise mitigation
 
@@ -153,7 +149,7 @@ Noise can only be mitigated:
 
 - Stop all other background processes (other users)
 - Stabilize CPU Frequency (`sudo cpupower -g performance`)
-    - Make sure laptops are plug to the wall socket to avoid powersaving policies
+    - Make sure laptops are plugged to avoid powersaving policies
 - Pin threads via `taskset`, `OMP_PLACES` and `OMP_PROC_BIND`
 - Consider hyperthreading
 - Use stable compute nodes
@@ -172,7 +168,7 @@ Same experiment on a stabilized benchmarking server:
 ### Note {.example}
   Timing on a laptop is always subpar
 
----
+
 
 ## Statistical significance - Mean, Median, Variance
 
@@ -186,11 +182,11 @@ Single-run measurements are misleading; we need statistics.
 We usually give both the mean and standard deviation when giving performance results.
 Plots usually show $\bar{x} \pm 1 \sigma$ as a shaded region around the mean to represent uncertainty.
 
-## Note {.example}
+### Note {.example}
   Distribution plots can be useful: stable measurements are often close to Gaussian, 
   even if systematic noise may lead to skewed or heavy-tailed distributions.
 
----
+
 
 ## Statistical significance - Confidence Intervals
 
@@ -206,10 +202,10 @@ $$CI_{0.95} \approx \bar{x} \pm 1.96 \cdot \frac{\sigma}{\sqrt{n}}$$
 More repetitions increase confidence, but returns diminish:  
 CI width $\propto \tfrac{1}{\sqrt{n}}$
 
-## Note {.example}
+### Note {.example}
   Confidence intervals are a bit less common in plots than $\pm 1 \sigma$ but can also be used !
 
----
+
 
 ## Statistical significance - p-score & Hypothesis testing
 
@@ -229,61 +225,63 @@ Two-sample t-test with 10 samples $p = 0.02$.
 
 The measured differences between CPU and GPU execution time are **statistically significant**.
 
----
+
 
 ## Experimental Methodology – Reproducibility
 
-Reproducibility is a very hot topic (Reproducibility crisis in science)
+Reproducibility is a very hot topic (Reproducibility crisis in science):
 
 - **Data and protocols are first-class citizens**: as important as the plots themselves  
 - **Transparency** matters: make data, scripts, and parameters accessible  
 - Enables others to **verify, build on, and trust your results**
 
-Beware of your mindset: your results should be credible and honest before being "good".
 
-> "Our results are unstable, we have yet to understand why, this is what we tried"
-> is a completely valid answer
+### Note {.example}
+  Beware of your mindset: your results should be credible and honest before being "good".
+  
+  "Our results are unstable, we have yet to understand why, this is what we tried"
+  is a completely valid answer
 
----
+# Plotting Tools
 
 ## Plotting tools - Cheetsheet
 
----
+
 
 ## Plotting tools - Matplotlib
 
----
+
 
 ## Plotting tools - Seaborn
 
----
+# Profiling
 
 ## Profiling - Time
 
----
+
 
 ## gprof
 
----
+
 
 ## Perf - Introduction
 
----
+
 
 ## Perf - Performance counters
 
----
+
 
 ## Profiling - Energy
 
----
+
 
 ## Perf - Energy
 
----
+
 
 ## Vtune
 
----
+
 
 
