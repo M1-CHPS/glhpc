@@ -1,0 +1,1740 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../lab1/">
+      
+      
+        <link rel="next" href="../lab3/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Lab 2 - C Programming and Memory Management - GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-2-performance-aware-c-computing" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-header__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 2 - C Programming and Memory Management
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../lecture1/" class="md-tabs__link">
+          
+  
+  
+  Course
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../guide_soutenance/" class="md-tabs__link">
+          
+  
+  
+  Exams
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../annex/bash_cheatsheet/" class="md-tabs__link">
+          
+  
+  
+  Annex
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-nav__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Course
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Course
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Lectures
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Lectures
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 - Introduction to Software Engineering for HPC/AI, Development Environment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 - Performance Aware C Computing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 - Building, Testing, and Debugging Scientific Software
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 - Experimental Design, Profiling, and Performance/Energy Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 - HPC for AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Labs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Labs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 1 - Prerequisites
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Lab 2 - C Programming and Memory Management
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 2 - C Programming and Memory Management
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objective" class="md-nav__link">
+    <span class="md-ellipsis">
+      Objective
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provided-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provided Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-compiling-the-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 - Compiling the program
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 - Compiling the program">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-write-a-makefile-that" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Write a Makefile that:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-define-a-cflags-variable-inside-the-makefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Define a CFLAGS variable inside the Makefile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-try-running-your-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Try running your program
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-allocating-manipulating-memory" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 - Allocating &amp; Manipulating memory
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 - Allocating &amp; Manipulating memory">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-implement-memory-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Implement Memory Allocation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Implement Memory Allocation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-implement-image-allocation" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Implement image allocation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-implement-image-deallocaiton" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Implement image deallocaiton
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-execute-the-memory-implementation-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Execute the memory implementation test
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-image-copying" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Image Copying
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Image Copying">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-implement-image-copy" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Implement image copy
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-execute-the-memory-implementation-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Execute the memory implementation test
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-implement-2d-copy-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Implement 2d copy loops
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-implement-the-linear-versions" class="md-nav__link">
+    <span class="md-ellipsis">
+      d) Implement the linear versions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-executing-a-transformation-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 - Executing a transformation pipeline
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 - Executing a transformation pipeline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-implementing-grayscale" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Implementing Grayscale
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Implementing Grayscale">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-implement-this-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Implement this transformation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-implementing-inversion" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Implementing Inversion
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-implementing-quantization" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Implementing Quantization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Implementing Quantization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-implement-this-transformation-using-the-formula-provided-above" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Implement this transformation using the formula provided above.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-optimize-using-a-lookup-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Optimize using a lookup table
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-compare-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Compare performance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      4) Validation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4) Validation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-improving-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Improving performance
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 - Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 3 - CMake, Unit Tests, and Debugging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 4 - Monte-Carlo sampling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 5 - Experimental Methodology and Scientific Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 6 - AI Project (1) SGEMM Kernel Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 7 - AI Project (2) Neural Network Inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Exams
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Exams
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide_soutenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Guide de soutenance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Annex
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Annex
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/bash_cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bash cheatsheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux Environment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Linux Environment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/install_fedora/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing fedora
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/oh-my-zsh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing oh-my-zsh
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-2-performance-aware-c-computing">Lab 2: Performance Aware C Computing<a class="headerlink" href="#lab-2-performance-aware-c-computing" title="Permanent link">&para;</a></h1>
+<hr class="gradient" />
+
+<h3 id="objective">Objective<a class="headerlink" href="#objective" title="Permanent link">&para;</a></h3>
+<p>You are tasked with implementing an efficient image processing pipeline. A pipeline looks like this:</p>
+<div class="language-text highlight"><span class="filename">Example transformation pipeline</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>0 -1 load images/image1.png
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>1 0 quantize 8
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>2 1 invert
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>3 2 save output/image0_transformed.png
+</span></code></pre></div>
+<p>The line <code>1 0 quantize 8</code> declares the node 1, whose parent is the node 0, and performs a quantization transformation with 8 levels. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This structure is a Directed Acyclic Graph (DAG), a type of graph often used in data processing and scheduling.</p>
+</div>
+<figure>
+  <img alt="Processing Example" src="../image/lab2/image1.jpg" />
+<br />
+<figcaption>Example Processing pipeline you will have to implement</figcaption>
+</figure>
+<hr />
+<h3 id="provided-files">Provided Files<a class="headerlink" href="#provided-files" title="Permanent link">&para;</a></h3>
+<p>The parsing and pipeline execution logic have already been implemented so you can focus on managing memory and kernel implementations. The starter codebase contains the following directories and files:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>images/</code></td>
+<td>Image resources for the lab.</td>
+</tr>
+<tr>
+<td><code>pipelines/</code></td>
+<td>Sample transformation pipelines to test your implementation.</td>
+</tr>
+<tr>
+<td><code>src/</code></td>
+<td>C source code for this lab. Contains the files listed below:</td>
+</tr>
+<tr>
+<td><code>src/main.c</code></td>
+<td>Parses the transformation graph and executes it.</td>
+</tr>
+<tr>
+<td><code>src/parser.c</code></td>
+<td>Parser for the graph and the pipeline executor</td>
+</tr>
+<tr>
+<td><code>src/parser.h</code></td>
+<td>DAG representation for the image processing pipeline.</td>
+</tr>
+<tr>
+<td><code>src/image.c/h</code></td>
+<td>Image structure and utilities for memory allocation and management.</td>
+</tr>
+<tr>
+<td><code>src/stb_image.h</code></td>
+<td>Public domain header-only image I/O library (from GitHub).</td>
+</tr>
+<tr>
+<td><code>src/transformation.c/h</code></td>
+<td>Implementation of image processing kernels. Most functions are missing and must be implemented by you.</td>
+</tr>
+</tbody>
+</table>
+<hr class="gradient" />
+
+<h2 id="1-compiling-the-program">1 - Compiling the program<a class="headerlink" href="#1-compiling-the-program" title="Permanent link">&para;</a></h2>
+<h4 id="a-write-a-makefile-that">a) Write a <code>Makefile</code> that:<a class="headerlink" href="#a-write-a-makefile-that" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Compiles <code>main.c</code>, <code>image.c</code>, <code>parser.c</code> and <code>transformation.c</code> using <code>gcc</code></li>
+<li>Produces a binary named <code>mystransform</code> at the root of the project</li>
+<li>Exposes a <code>clean</code> target that removes compiled artifacts<ul>
+<li>This includes any <code>.o</code>, <code>.so</code>, <code>.out</code>, as well as the <code>mytransform</code> binary</li>
+</ul>
+</li>
+</ul>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>The output binary <strong>must</strong> be named <code>mystransform</code>, or later parts of the lab may not work correctly.</p>
+</div>
+<h4 id="b-define-a-cflags-variable-inside-the-makefile">b) Define a <code>CFLAGS</code> variable inside the <code>Makefile</code><a class="headerlink" href="#b-define-a-cflags-variable-inside-the-makefile" title="Permanent link">&para;</a></h4>
+<p>To get started, you should use <code>-Og -g -Wall -Wextra</code> as compilation flags. We will update this later. Ensure the flags are in effect.</p>
+<h4 id="c-try-running-your-program">c) Try running your program<a class="headerlink" href="#c-try-running-your-program" title="Permanent link">&para;</a></h4>
+<p>Execute the following:
+<div class="language-sh highlight"><span class="filename">Running a simple pipeline</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./mytransform<span class="w"> </span>./pipelines/test.pipeline
+</span></code></pre></div></p>
+<div class="language-sh highlight"><span class="filename">Expected Output</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>create_image<span class="w"> </span>-<span class="w"> </span>Not<span class="w"> </span>implemented<span class="w"> </span>yet
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>Could<span class="w"> </span>not<span class="w"> </span>allocate<span class="w"> </span>image<span class="w"> </span><span class="k">for</span><span class="w"> </span>load
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>convert_to_grayscale<span class="w"> </span>-<span class="w"> </span>Not<span class="w"> </span>implemented<span class="w"> </span>yet
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>invert_image<span class="w"> </span>-<span class="w"> </span>Not<span class="w"> </span>implemented<span class="w"> </span>yet
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>Node<span class="w"> </span><span class="m">3</span><span class="w"> </span>requested<span class="w"> </span>to<span class="w"> </span>save<span class="w"> </span>an<span class="w"> </span>image<span class="w"> </span>from<span class="w"> </span>node<span class="w"> </span><span class="m">2</span>,<span class="w"> </span>which<span class="w"> </span>did<span class="w"> </span>not<span class="w"> </span>produce<span class="w"> </span>an<span class="w"> </span>image
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>quantize_image_naive<span class="w"> </span>-<span class="w"> </span>Not<span class="w"> </span>implemented<span class="w"> </span>yet
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>Node<span class="w"> </span><span class="m">5</span><span class="w"> </span>requested<span class="w"> </span>to<span class="w"> </span>save<span class="w"> </span>an<span class="w"> </span>image<span class="w"> </span>from<span class="w"> </span>node<span class="w"> </span><span class="m">4</span>,<span class="w"> </span>which<span class="w"> </span>did<span class="w"> </span>not<span class="w"> </span>produce<span class="w"> </span>an<span class="w"> </span>image
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>invert_image<span class="w"> </span>-<span class="w"> </span>Not<span class="w"> </span>implemented<span class="w"> </span>yet
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>Node<span class="w"> </span><span class="m">7</span><span class="w"> </span>requested<span class="w"> </span>to<span class="w"> </span>save<span class="w"> </span>an<span class="w"> </span>image<span class="w"> </span>from<span class="w"> </span>node<span class="w"> </span><span class="m">6</span>,<span class="w"> </span>which<span class="w"> </span>did<span class="w"> </span>not<span class="w"> </span>produce<span class="w"> </span>an<span class="w"> </span>image
+</span></code></pre></div>
+<p>This indicates that your build works correctly and you can continue the lab. If needed, fix your <code>Makefile</code> until you obtain the same results.</p>
+<hr class="gradient" />
+
+<h2 id="2-allocating-manipulating-memory">2 - Allocating &amp; Manipulating memory<a class="headerlink" href="#2-allocating-manipulating-memory" title="Permanent link">&para;</a></h2>
+<p>Look at <code>image.c</code> and <code>image.h</code>, and try to understand the provided structure.</p>
+<ul>
+<li>Pixels are stored as <code>unsigned char* pixels[3]</code>: what does that mean in practice ? How many arrays do we have to allocate to store an <strong>RGB</strong> Image ? What's the size of each arrray ? What happens if we have a <strong>grayscale</strong> image (black &amp; white).</li>
+<li>How do we distinguish between <strong>grayscale</strong> and <strong>RGB</strong> images ?</li>
+</ul>
+<h3 id="1-implement-memory-allocation">1. Implement Memory Allocation<a class="headerlink" href="#1-implement-memory-allocation" title="Permanent link">&para;</a></h3>
+<h4 id="a-implement-image-allocation">a) Implement image allocation<a class="headerlink" href="#a-implement-image-allocation" title="Permanent link">&para;</a></h4>
+<p>You must implement the function <code>image.c:create_image(...)</code>.</p>
+<p>This function should allocate memory buffers big enough to hold an image of size <span class="arithmatex">\(\text{width} \cdot \text{height}\)</span>. Note for this lab, channels can either be 1 (<strong>grayscale</strong>) or 3 (<strong>RGB</strong>).</p>
+<h4 id="b-implement-image-deallocaiton">b) Implement image deallocaiton<a class="headerlink" href="#b-implement-image-deallocaiton" title="Permanent link">&para;</a></h4>
+<p>You must implement <code>image.c:free_image(...)</code>.</p>
+<p>Make sure you can free both <strong>grayscale</strong> and <strong>RGB</strong> images. <strong>Note</strong>: you must also free the <code>Image</code> structure itself.</p>
+<h4 id="c-execute-the-memory-implementation-test">c) Execute the memory implementation test<a class="headerlink" href="#c-execute-the-memory-implementation-test" title="Permanent link">&para;</a></h4>
+<p>Compile your program and fix any errors until none are left. Run the following:
+<div class="language-sh highlight"><span class="filename">Memory Test</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>./mytransform<span class="w"> </span>--memory-check
+</span></code></pre></div></p>
+<p>You should get the following:
+<div class="language-sh highlight"><span class="filename">Expected Output</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Memory<span class="w"> </span>Allocations<span class="w"> </span>tests<span class="w"> </span>completed<span class="w"> </span>successfully
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>&lt;Lots<span class="w"> </span>of<span class="w"> </span>error<span class="w"> </span>about<span class="w"> </span>copy<span class="w"> </span>failure&gt;
+</span></code></pre></div></p>
+<hr />
+<h3 id="2-image-copying">2. Image Copying<a class="headerlink" href="#2-image-copying" title="Permanent link">&para;</a></h3>
+<h4 id="a-implement-image-copy">a) Implement image copy<a class="headerlink" href="#a-implement-image-copy" title="Permanent link">&para;</a></h4>
+<p>You must implement <code>Image* copy_image(const Image* image)</code> inside <code>src/image.c</code></p>
+<p>This functions receives an <code>Image*</code>, and produces a <strong>deepcopy</strong>, meaning that we are not copying the pointers, but allocating new pixels buffers and duplicating the image in memory.</p>
+<p>You shall not use <code>memcpy</code> or <code>strcpy</code> for this exercise: perform a manual copy.</p>
+<h4 id="b-execute-the-memory-implementation-test">b) Execute the memory implementation test<a class="headerlink" href="#b-execute-the-memory-implementation-test" title="Permanent link">&para;</a></h4>
+<p>Compile again and run:
+<div class="language-sh highlight"><span class="filename">Memory Test</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./mytransform<span class="w"> </span>--memory-test
+</span></code></pre></div></p>
+<p>You should get the following:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Memory Allocations tests completed in 5 seconds
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Copy Test: 3000x3000x3 image -&gt; 3524.74 MIOPS, 3.52 GB/s
+</span></code></pre></div></p>
+<div class="optional-section box-section">
+<h4 id="c-implement-2d-copy-loops">c) Implement 2d copy loops<a class="headerlink" href="#c-implement-2d-copy-loops" title="Permanent link">&para;</a></h4>
+<p>When copying, we have to deal with three dimensions: the channels, the width and the height.</p>
+<p>In which order does your current implementation traverse the pixel buffer ?</p>
+<p>Implement the following loop structure in C:
+<div class="language-python highlight"><span class="filename">3D loop traversal</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">channels</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>  <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">width</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">height</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>      <span class="c1"># Do the copy here</span>
+</span></code></pre></div></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You should make a copy of your current implementation before implementing this structure, so you can compare the different versions. 
+Optionally, make multiple versions of <code>copy_image</code> with different names, and have <code>copy_image</code> call the version you want to test.</p>
+</div>
+<p>Now, try swapping out the loop. First iterate on <code>y</code>, then <code>x</code>, then<code>c</code>. Try all possible combinations to find which one is faster. Can you explain why ?</p>
+<h4 id="d-implement-the-linear-versions">d) Implement the linear versions<a class="headerlink" href="#d-implement-the-linear-versions" title="Permanent link">&para;</a></h4>
+<p>While images are 3D structures (When taking the channels into account), you may have noticed that we have stored them as 2D arrays (One linear array per channel). 
+Each channel is stored in ROW-MAJOR.</p>
+<ul>
+<li>Implement two nested loops: the upper levels iterating on the channels, the inner loop iterating over each pixel.</li>
+<li>Implement one loop: iterate only over the pixel, copying RGB in a single loop.</li>
+</ul>
+<p>Compare the performance by running the <code>--memory-check</code> option. Which loops give you the best performance ? Do you understand why ?</p>
+</div>
+<hr class="gradient" />
+
+<h2 id="3-executing-a-transformation-pipeline">3 - Executing a transformation pipeline<a class="headerlink" href="#3-executing-a-transformation-pipeline" title="Permanent link">&para;</a></h2>
+<p>Look at <code>src/parser.h</code> and try to understand the different structures of the parser. Do the same for <code>src/transformation.c</code></p>
+<h3 id="1-implementing-grayscale">1. Implementing Grayscale<a class="headerlink" href="#1-implementing-grayscale" title="Permanent link">&para;</a></h3>
+<p>The grayscale transform receives an RGB image and converts it into a black and white, single channel image.
+The formula for the transformation is:</p>
+<div class="arithmatex">\[
+C_{out} = 0.299 \cdot R_{in} + 0.587 \cdot G_{in} + 0.114 \cdot B_{in}
+\]</div>
+<p>Where C is the grayscale channel, and R,G,B are the corresponding components of the RGB image.
+ Note: if the grayscale transform receives a grayscale image as input, it should output a (deep) copy of the input.</p>
+<h4 id="a-implement-this-transformation">a) Implement this transformation<a class="headerlink" href="#a-implement-this-transformation" title="Permanent link">&para;</a></h4>
+<p>You should read data from <code>node.input</code>, and <strong>allocate and write data</strong> to <code>node.output</code>. 
+You do not need to free the <code>input</code> and <code>output</code> buffer of any of the nodes: it will be handled for you.</p>
+<p>Test using
+<div class="language-sh highlight"><span class="filename">Test grayscale</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>./output
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>./mytransform<span class="w"> </span>./pipelines/test.pipeline
+</span></code></pre></div></p>
+<p>At this stage, <code>output/test_grayscale.png</code> should contain the grayscale of <code>images/test.png</code></p>
+<hr />
+<h3 id="2-implementing-inversion">2. Implementing Inversion<a class="headerlink" href="#2-implementing-inversion" title="Permanent link">&para;</a></h3>
+<p>The inversion transform is a simple one</p>
+<div class="arithmatex">\[
+C_{out} = 255 - C_{in}
+\]</div>
+<p>Where C is one of the input image channels (RGB or Grayscale). Implement this kernel in <code>transformation.c:invert_image(...)</code>.</p>
+<hr />
+<h3 id="3-implementing-quantization">3. Implementing Quantization<a class="headerlink" href="#3-implementing-quantization" title="Permanent link">&para;</a></h3>
+<p>We will implement a <strong>uniform quantization</strong> transform, which uniformly reduces the number of possible values in each component of the image.</p>
+<div class="arithmatex">\[\begin{aligned}
+\text{step} &amp;= \frac{255}{\text{levels} - 1} \\\\
+C_{out} &amp;= \text{round}\left(\frac{C_{in}}{\text{step}}\right) \cdot \text{step}
+\end{aligned}\]</div>
+<p>Where <span class="arithmatex">\(\text{levels}\)</span> is the target number of discrete values per component. This maps each input color channel value <span class="arithmatex">\(C_{in} \in [0, 255]\)</span> to a quantized output <span class="arithmatex">\(C_{out}\)</span> in the same range.</p>
+<h4 id="a-implement-this-transformation-using-the-formula-provided-above">a) Implement this transformation using the formula provided above.<a class="headerlink" href="#a-implement-this-transformation-using-the-formula-provided-above" title="Permanent link">&para;</a></h4>
+<p>You must implement this method in <code>transformation.c:quantize_image_naive(...)</code></p>
+<h4 id="b-optimize-using-a-lookup-table">b) Optimize using a lookup table<a class="headerlink" href="#b-optimize-using-a-lookup-table" title="Permanent link">&para;</a></h4>
+<p>Division and floating-point operations can be costly. Since <span class="arithmatex">\(C_{in} \in [0, 255]\)</span>, we can easily precompute all possible outputs in a <strong>lookup table (LUT)</strong> of size 256, 
+then convert each pixel using:</p>
+<div class="arithmatex">\[
+C_{out} = LUT[C_{in}]
+\]</div>
+<p>We are trading <strong>memory overhead for performance</strong>, which is a very common pattern.</p>
+<p>Implement this method in <code>transformation.c:quantize_image_lut(...)</code>, and be sure to correctly allocate and free the LUT.</p>
+<h4 id="c-compare-performance">c) Compare performance<a class="headerlink" href="#c-compare-performance" title="Permanent link">&para;</a></h4>
+<p>Modify <code>transformation.c:quantize_image(...)</code> to either use the LUT or the naive version, and run the following code:
+<div class="language-text highlight"><span class="filename">Benchmarking</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>time ./mytransform ./pipelines/quantize_benchmark.pipeline
+</span></code></pre></div></p>
+<p>Which version is faster ? What's the speedup of the LUT method over the naive version ?</p>
+<hr class="gradient" />
+
+<h2 id="4-validation">4) Validation<a class="headerlink" href="#4-validation" title="Permanent link">&para;</a></h2>
+<p>At this stage, your code should be able to execute all pipelines in the <code>pipelines/</code> directory. 
+Validate your implementation by checking that output images are generated and appear visually correct.</p>
+<hr />
+<h3 id="1-improving-performance">1. Improving performance<a class="headerlink" href="#1-improving-performance" title="Permanent link">&para;</a></h3>
+<p>Once your implementation is functionally correct, your next goal is to <strong>optimize performance</strong>.</p>
+<p>Use the provided script:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># run_all.sh &lt;run_label&gt;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>./run_all.sh<span class="w"> </span>first_version
+</span></code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You should run the previous script with both the LUT and naive implementation of quantization to compare.</p>
+</div>
+<p>Check the resulting plots in <code>./results/first_version/</code>. Take a look at <code>./results/first_version/pipeline.pipeline</code> to understand which operations are being evaluated.
+Re-run the benchmark after every meaningful optimization, and check <code>./results/comparisons.png</code> to see if you improved performance or not. <strong>Tip</strong>: play around with compilation flags.</p>
+<p>To remove a version, remove the corresponding folder in <code>./results</code></p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>You need to have python installed for <code>run_all.sh</code> to work. On Fedora:
+<div class="language-sh highlight"><span class="filename">Installing python on fedora</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>sudo<span class="w"> </span>dnf<span class="w"> </span>install<span class="w"> </span>python3<span class="w"> </span>python3-pip<span class="w"> </span>python3-virtualenv
+</span></code></pre></div></p>
+</div>
+<hr class="gradient" />
+
+<div class="summary-section box-section">
+<h2 class="hidden-title" id="5-summary"> 5 - Summary<a class="headerlink" href="#5-summary" title="Permanent link">&para;</a></h2>
+<p>Upon completing this second lab, you should know how to:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Create a makefile, link to a dynamic library.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Explore compilation flags for performance</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Allocate and free memory in C.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Explore the effect of memory layout and loop order on performance.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Implement loop-based algorithms.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Rearrange your algorithm to avoid costly operations.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Understand the basics of the optimization loop.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 1 - Prerequisites">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 1 - Prerequisites
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab3/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 3 - CMake, Unit Tests, and Debugging">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 3 - CMake, Unit Tests, and Debugging
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      CC BY-NC 4.0; 2025 - Pablo Oliveira, Mathys Jam
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "toc.integrate", "toc.follow", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

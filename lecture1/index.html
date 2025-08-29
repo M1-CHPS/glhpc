@@ -1,0 +1,1719 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="P. de Oliveira Castro, M. Jam">
+      
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../lecture2/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>L1: Software Engineering for HPC and AI -- Introduction & Development Environment - GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#introduction-to-software-engineering-for-hpc-and-ai" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-header__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              L1: Software Engineering for HPC and AI -- Introduction & Development Environment
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
+          
+  
+  
+  Course
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../guide_soutenance/" class="md-tabs__link">
+          
+  
+  
+  Exams
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../annex/bash_cheatsheet/" class="md-tabs__link">
+          
+  
+  
+  Annex
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-nav__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Course
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Course
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Lectures
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Lectures
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    L1 - Introduction to Software Engineering for HPC/AI, Development Environment
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 - Introduction to Software Engineering for HPC/AI, Development Environment
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#syllabus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Syllabus
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#introduction-development-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction &amp; Development Environment
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#analytical-solution-to-the-2-body-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Analytical solution to the 2-Body Problem
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-simulate-the-n-body-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      Why Simulate the n-Body Problem?
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naive-n-body-simulation-in-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naive n-Body Simulation in C
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naive-n-body-simulation-in-c_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Naive n-Body Simulation in C
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#high-performance-computing" class="md-nav__link">
+    <span class="md-ellipsis">
+      High Performance Computing
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 - Performance Aware C Computing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 - Building, Testing, and Debugging Scientific Software
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 - Experimental Design, Profiling, and Performance/Energy Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 - HPC for AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Labs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Labs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 1 - Prerequisites
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 2 - C Programming and Memory Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 3 - CMake, Unit Tests, and Debugging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 4 - Monte-Carlo sampling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 5 - Experimental Methodology and Scientific Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 6 - AI Project (1) SGEMM Kernel Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 7 - AI Project (2) Neural Network Inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Exams
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Exams
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide_soutenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Guide de soutenance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Annex
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Annex
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/bash_cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bash cheatsheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux Environment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Linux Environment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/install_fedora/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing fedora
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/oh-my-zsh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing oh-my-zsh
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="introduction-to-software-engineering-for-hpc-and-ai">Introduction to Software Engineering for HPC and AI<a class="headerlink" href="#introduction-to-software-engineering-for-hpc-and-ai" title="Permanent link">&para;</a></h1>
+<div class="mkdocs-only">
+<p align="right">
+  <a href="../slides/lecture1.pdf">Download as slides 📥</a>
+  </p>
+</div>
+<h2 id="syllabus">Syllabus<a class="headerlink" href="#syllabus" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Lecture 1</strong>: Introduction &amp; Development Environment</li>
+<li><strong>Lecture 2</strong>: Mastering C for Performance and HPC</li>
+<li><strong>Lecture 3</strong>: Building, Testing and Debugging Scientific Software</li>
+<li><strong>Lecture 4</strong>: Experimental Design, Profiling and Performance/Energy Optimization</li>
+<li><strong>Lecture 5</strong>: HPC for AI</li>
+</ul>
+<p><em>Project</em>: Inference Engine for a Deep Network</p>
+<h2 id="introduction-development-environment">Introduction &amp; Development Environment<a class="headerlink" href="#introduction-development-environment" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Principles of <strong>software engineering applied to HPC and AI</strong>.</li>
+<li>Introduction to <strong>computing architectures</strong>.</li>
+<li><strong>Development tools</strong>: shell scripts, package management, Git, IDEs, etc.</li>
+</ul>
+<h2 id="analytical-solution-to-the-2-body-problem">Analytical solution to the 2-Body Problem<a class="headerlink" href="#analytical-solution-to-the-2-body-problem" title="Permanent link">&para;</a></h2>
+<p>Consider two particles with masses <span class="arithmatex">\(m_1\)</span> and <span class="arithmatex">\(m_2\)</span> at positions <span class="arithmatex">\(x_1\)</span> and <span class="arithmatex">\(x_2\)</span> under gravitational interaction.</p>
+<div class="arithmatex">\[m_1.a_1 = -\frac{G.m_1.m_2}{\|x_1 - x_2\|^3} (x_2 - x_1)\]</div>
+<div class="arithmatex">\[m_2.a_2 = -\frac{G.m_1.m_2}{\|x_1 - x_2\|^3} (x_1 - x_2)\]</div>
+<p>Solved by Bernoulli in 1734, <span class="arithmatex">\(x_1\)</span> and <span class="arithmatex">\(x_2\)</span> can be expressed as simple equations that depend on time, masses, and initial conditions.</p>
+<h2 id="why-simulate-the-n-body-problem">Why Simulate the n-Body Problem?<a class="headerlink" href="#why-simulate-the-n-body-problem" title="Permanent link">&para;</a></h2>
+<ul>
+<li>For <span class="arithmatex">\(n=3\)</span> or more, no practical analytical solution exists.</li>
+<li>Even advanced mathematical solutions (e.g., Sundman, 1909) are too slow for real use.</li>
+<li><strong>Computer simulations</strong> allow us to study the motion of many interacting particles.</li>
+<li>Efficient algorithms (e.g., Barnes-Hut, Fast Multipole) make large-scale simulations possible.</li>
+<li><strong>HPC is essential</strong> to simulate realistic systems in physics, astronomy, and AI.</li>
+<li>Simulation + HPC = understanding complex systems!</li>
+</ul>
+<h2 id="naive-n-body-simulation-in-c">Naive n-Body Simulation in C<a class="headerlink" href="#naive-n-body-simulation-in-c" title="Permanent link">&para;</a></h2>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Compute accelerations based on gravitational forces</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num_particles</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">ay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">,</span><span class="w"> </span><span class="n">az</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span><span class="p">;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num_particles</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="w"> </span><span class="k">continue</span><span class="p">;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">x</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="p">;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">y</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span><span class="p">;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">dz</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">z</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span><span class="p">;</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">d_sq</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">dz</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dz</span><span class="p">;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">d_sq</span><span class="p">);</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="kt">double</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">G</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">m</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">j</span><span class="p">].</span><span class="n">m</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">d_sq</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="n">ax</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dx</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">m</span><span class="p">;</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="n">ay</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dy</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">m</span><span class="p">;</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">    </span><span class="n">az</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dz</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">m</span><span class="p">;</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ax</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ax</span><span class="p">;</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ay</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ay</span><span class="p">;</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">az</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">az</span><span class="p">;</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="naive-n-body-simulation-in-c_1">Naive n-Body Simulation in C<a class="headerlink" href="#naive-n-body-simulation-in-c_1" title="Permanent link">&para;</a></h2>
+<p>Introduce a time step <code>dt</code> and update positions based on gravitational forces.</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1">// Update positions based on computed accelerations</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">num_particles</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ax</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dt</span><span class="p">;</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">ay</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dt</span><span class="p">;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">p</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">az</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dt</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">dt</span><span class="p">;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="high-performance-computing">High Performance Computing<a class="headerlink" href="#high-performance-computing" title="Permanent link">&para;</a></h2>
+<p><strong>Fugaku (2020, 442 petaflops, 7.3 million cores)</strong></p>
+<ul>
+<li>n-body: integrates <strong>1.45 trillion</strong> particules per second.</li>
+</ul>
+<p><strong>How to achieve such performance?</strong></p>
+<ul>
+<li>Algorithmic improvements:</li>
+<li>Use tree-based methods (Barnes-Hut) to reduce complexity from <span class="arithmatex">\(O(n^2)\)</span> to <span class="arithmatex">\(O(n \log n)\)</span> or better.</li>
+<li>Parallelization: distribute computation accross many cores.</li>
+<li>Vectorization: use SIMD instructions to process multiple data points in parallel.</li>
+<li>Data locality: optimize data access patterns to minimize memory latency and maximize cache usage.</li>
+</ul>
+<p>Compiler optimizations, performance tuning, hardware acceleration are also crucial.</p>
+<h1 id="hpc-architectures">HPC Architectures<a class="headerlink" href="#hpc-architectures" title="Permanent link">&para;</a></h1>
+<h2 id="cpu-instruction-set-isa-quick-review">CPU &amp; Instruction Set (ISA) — quick review<a class="headerlink" href="#cpu-instruction-set-isa-quick-review" title="Permanent link">&para;</a></h2>
+<ul>
+<li>CPU core executes instructions; machine state = registers, program counter and flags.</li>
+<li>Assembly encodes the instructions; compilers translate high-level code into the ISA.</li>
+<li>types: arithmetic/logical, load/store (memory), control flow (branches, calls), system calls</li>
+<li>Registers are the fastest storage; register pressure influence performance.</li>
+</ul>
+<h2 id="example-intel-core2-architecture">Example: Intel Core2 Architecture<a class="headerlink" href="#example-intel-core2-architecture" title="Permanent link">&para;</a></h2>
+<p><img alt="Intel Core2 Architecture (CC-by-SA, Wikipedia)" src="../image/lecture1/Intel_Core2_arch.svg" /></p>
+<h2 id="pipeline-memory-hierarchy-interrupts">Pipeline, Memory Hierarchy &amp; Interrupts<a class="headerlink" href="#pipeline-memory-hierarchy-interrupts" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Pipeline</strong> increases instruction throughput, classic 5-stages:</li>
+<li>Fetch → Decode → Execute → Memory → Write-back</li>
+<li><strong>Hazards</strong>: data hazards (dependencies), control hazards (branch prediction), resource conflicts.</li>
+<li><strong>Memory hierarchy</strong>: registers → L1/L2/L3 caches → DRAM → persistent storage; spatial and temporal locality drive cache effectiveness.</li>
+<li>Buses, <strong>coherence and NUMA</strong>: cross-socket memory access has higher latency; cache coherence and memory bandwidth limit scalability.</li>
+<li><strong>Interrupts and exceptions</strong>: asynchronous interrupts signal external events; exceptions/traps handle synchronous faults; the OS performs context switching and servicing.</li>
+</ul>
+<h2 id="multicore-memory-hierarchy-more-in-next-lecture">Multicore memory hierarchy (more in next lecture ...)<a class="headerlink" href="#multicore-memory-hierarchy-more-in-next-lecture" title="Permanent link">&para;</a></h2>
+<p><img alt="Memory hierarchy" src="../image/lecture1/multi-proc-memory.png" /></p>
+<h2 id="system-hierarchy-physical-view">System hierarchy (physical view)<a class="headerlink" href="#system-hierarchy-physical-view" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Rack → chassis → node → socket → core → hardware thread: a multi-level physical organization.</li>
+<li>Nodes often include accelerators (GPUs, TPUs, FPGAs) and have their own memory (DRAM, sometimes HBM).</li>
+<li>Heterogeneous hardware and multi-level parallelism are the norm in modern HPC systems.</li>
+</ul>
+<h2 id="interconnects-and-io">Interconnects and I/O<a class="headerlink" href="#interconnects-and-io" title="Permanent link">&para;</a></h2>
+<h3 id="interconnects">Interconnects<a class="headerlink" href="#interconnects" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Two key metrics: latency (small-message cost) and bandwidth (sustained transfer rate).</li>
+<li>Fabrics: Ethernet, InfiniBand, Omni-Path; features to note: RDMA, kernel bypass, hardware offloads.</li>
+<li>Network topology affects routing, contention and scalability.</li>
+</ul>
+<h3 id="storage-and-io">Storage and I/O<a class="headerlink" href="#storage-and-io" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Parallel file systems provide shared high-throughput storage for HPC jobs.</li>
+<li>Design I/O to avoid bottlenecks and to fit checkpoint/analysis cadence (collective I/O, buffer in NVMe).</li>
+</ul>
+<h2 id="levels-of-parallelism-mapping">Levels of parallelism &amp; mapping<a class="headerlink" href="#levels-of-parallelism-mapping" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Inter-node (distributed memory) via MPI; intra-node threading via OpenMP/pthreads; SIMD/vector units for data-level parallelism.</li>
+<li>Accelerator offload (CUDA/HIP/OpenCL) creates hybrid MPI+X application patterns.</li>
+<li>Choose mapping to match algorithm characteristics (communication-heavy vs compute-dense).</li>
+</ul>
+<h3 id="software-stack-operations-current-trends">Software stack, operations &amp; current trends<a class="headerlink" href="#software-stack-operations-current-trends" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Typical stack: compilers, MPI/libfabric, math libraries, system libs</li>
+<li>Job schedulers (Slurm/PBS) handle resource allocation, queues and batch workflows</li>
+</ul>
+<h1 id="shell-basics-and-scripting">Shell Basics and Scripting<a class="headerlink" href="#shell-basics-and-scripting" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-the-shell">What is the Shell?<a class="headerlink" href="#what-is-the-shell" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Definition</strong>: A shell is a command-line interface to interact with the operating system.</li>
+<li><strong>Purpose</strong>: Execute commands, run programs, and automate tasks.</li>
+<li><strong>Common Shells</strong>: <code>bash</code>, <code>zsh</code>, <code>fish</code>, <code>sh</code>.</li>
+<li><strong>Why Learn It?</strong></li>
+<li>Essential for HPC environments.</li>
+<li>Enables automation and efficient system interaction.</li>
+</ul>
+<h2 id="basic-shell-commands">Basic Shell Commands<a class="headerlink" href="#basic-shell-commands" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>File and Directory Management</strong>:</li>
+<li><code>ls</code>: List files and directories.</li>
+<li><code>cd &lt;directory&gt;</code>: Change directory.</li>
+<li><code>pwd</code>: Print current working directory.</li>
+<li><code>mkdir &lt;directory&gt;</code>: Create a new directory.</li>
+<li><code>rm &lt;file&gt;</code>: Remove a file.</li>
+<li><strong>File Viewing</strong>:</li>
+<li><code>cat &lt;file&gt;</code>: Display file contents.</li>
+<li><code>less &lt;file&gt;</code>: View file contents interactively.</li>
+<li><code>head &lt;file&gt;</code>: Show the first 10 lines.</li>
+<li><code>tail &lt;file&gt;</code>: Show the last 10 lines.</li>
+</ul>
+<h2 id="redirections">Redirections<a class="headerlink" href="#redirections" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Standard Input/Output</strong>:</li>
+<li><code>&lt;</code>: Redirect input from a file.</li>
+<li><code>&gt;</code>: Redirect output to a file (overwrite).</li>
+<li><code>&gt;&gt;</code>: Append output to a file.</li>
+<li><strong>Examples</strong>:</li>
+<li><code>cat file.txt &gt; output.txt</code>: Save contents of <code>file.txt</code> to <code>output.txt</code>.</li>
+<li><code>grep "error" log.txt &gt;&gt; errors.txt</code>: Append lines containing "error" to <code>errors.txt</code>.</li>
+</ul>
+<h2 id="pipes">Pipes<a class="headerlink" href="#pipes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Definition</strong>: Pipes (<code>|</code>) connect the output of one command to the input of another.</li>
+<li><strong>Examples</strong>:</li>
+<li><code>ls | grep ".txt"</code>: List <code>.txt</code> files.</li>
+<li><code>cat file.txt | wc -l</code>: Count the number of lines in <code>file.txt</code>.</li>
+<li><strong>Why Use Pipes?</strong></li>
+<li>Combine simple commands to perform complex tasks.</li>
+<li>Avoid creating intermediate files.</li>
+</ul>
+<h2 id="variables-and-environment">Variables and Environment<a class="headerlink" href="#variables-and-environment" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Variables</strong>:</li>
+<li><code>VAR=value</code>: Define a variable.</li>
+<li><code>$VAR</code>: Access the variable's value.</li>
+<li><strong>Environment Variables</strong>:</li>
+<li><code>echo $HOME</code>: Display the home directory.</li>
+<li>
+<p><code>export PATH=$PATH:/new/path</code>: Add a directory to the <code>PATH</code>.</p>
+</li>
+<li>
+<p><strong>Example</strong>:</p>
+</li>
+</ul>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nv">NODES</span><span class="o">=</span><span class="m">4</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nv">PROGRAM</span><span class="o">=</span><span class="s2">&quot;my_hpc_program&quot;</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running </span><span class="nv">$PROGRAM</span><span class="s2"> on </span><span class="nv">$NODES</span><span class="s2"> MPI nodes...&quot;</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>mpirun<span class="w"> </span>-np<span class="w"> </span><span class="nv">$NODES</span><span class="w"> </span>./<span class="nv">$PROGRAM</span>
+</span></code></pre></div>
+<h2 id="writing-a-simple-script">Writing a Simple Script<a class="headerlink" href="#writing-a-simple-script" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>What is a Script?</strong></li>
+<li>A file containing a sequence of shell commands.</li>
+<li><strong>Creating a Script</strong>:</li>
+<li>Create a file: <code>vim script.sh</code>.</li>
+<li>
+<p>Add commands:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="ch">#!/bin/bash</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello, World!&quot;</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Make it executable: <code>chmod +x script.sh</code>.</p>
+</li>
+<li>Run it: <code>./script.sh</code>.</li>
+</ul>
+<h2 id="conditional-statements">Conditional Statements<a class="headerlink" href="#conditional-statements" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;config.json&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;config.json exists. Running the HPC program...&quot;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>./my_hpc_program<span class="w"> </span>--config<span class="o">=</span>config.json
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">else</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Error: config.json does not exist.&quot;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">fi</span>
+</span></code></pre></div>
+<h2 id="loops">Loops<a class="headerlink" href="#loops" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">for</span><span class="w"> </span>i<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="o">{</span><span class="m">1</span>..5<span class="o">}</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Running simulation with parameter set </span><span class="nv">$i</span><span class="s2">...&quot;</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span>./my_hpc_program<span class="w"> </span>--config<span class="o">=</span>config_<span class="nv">$i</span>.json
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="k">done</span>
+</span></code></pre></div>
+<h2 id="functions-in-shell-scripts">Functions in Shell Scripts<a class="headerlink" href="#functions-in-shell-scripts" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>run_simulation<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Starting with config file: </span><span class="nv">$1</span><span class="s2"> and </span><span class="nv">$2</span><span class="s2"> nodes...&quot;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span>mpirun<span class="w"> </span>-np<span class="w"> </span><span class="nv">$2</span><span class="w"> </span>./simulation_program<span class="w"> </span>--config<span class="o">=</span><span class="nv">$1</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Simulation completed.&quot;</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="o">}</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>run_simulation<span class="w"> </span><span class="s2">&quot;simulation_config.json&quot;</span><span class="w"> </span><span class="m">8</span>
+</span></code></pre></div>
+<h2 id="debugging-and-best-practices">Debugging and Best Practices<a class="headerlink" href="#debugging-and-best-practices" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Debugging</strong>:</li>
+<li>Run with <code>bash -x script.sh</code> to trace execution.</li>
+<li>Use <code>set -e</code> to exit on errors as the first command.</li>
+<li><strong>Best Practices</strong>:</li>
+<li>Use comments (<code>#</code>) to explain code.</li>
+<li>Write reusable functions.</li>
+<li>Check for errors (<code>if [ $? -ne 0 ]; then</code>).</li>
+<li>Test scripts on small inputs before scaling up.</li>
+</ul>
+<h1 id="package-management">Package Management<a class="headerlink" href="#package-management" title="Permanent link">&para;</a></h1>
+<h2 id="package-management-overview">Package Management: Overview<a class="headerlink" href="#package-management-overview" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Problem Solved</strong>: Simplifies software installation, updates, and dependency management.</li>
+<li>Ensures compatibility between libraries and applications.</li>
+<li>Tracks installed software versions for easy upgrades or rollbacks.</li>
+<li>Examples: <code>dnf</code> (Fedora/RHEL), <code>apt</code> (Debian/Ubuntu).</li>
+</ul>
+<h2 id="package-managers-for-hpc">Package Managers for HPC<a class="headerlink" href="#package-managers-for-hpc" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Cluster-Specific Tools</strong>: <code>spack</code>, <code>guix</code> enable software installation without root privileges.</li>
+<li>Useful in HPC environments where users lack admin rights.</li>
+<li>Manage multiple versions of libraries and tools for reproducibility.</li>
+<li>Facilitate deployment of complex scientific software stacks.</li>
+</ul>
+<h2 id="language-specific-containers">Language-Specific &amp; Containers<a class="headerlink" href="#language-specific-containers" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Language-Specific Managers</strong>: <code>pip</code> (Python), <code>cargo</code> (Rust) simplify language ecosystem management.</li>
+<li><strong>Containers</strong>: Tools like Docker/Singularity encapsulate software and dependencies.</li>
+<li>Enable portability across systems and reproducible environments.</li>
+<li>Virtualization/containerization is becoming popular in modern HPC workflows.</li>
+</ul>
+<h1 id="version-control-systems">Version Control Systems<a class="headerlink" href="#version-control-systems" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-version-control">What is Version Control?<a class="headerlink" href="#what-is-version-control" title="Permanent link">&para;</a></h2>
+<p>Version control involves <strong>tracking and managing</strong> the <strong>changes</strong> made to project files.</p>
+<p>Each version is associated with a date, an author, and a message. Developers can work on a copy corresponding to a specific version.</p>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Enhance communication</strong> among developers (track code evolution, messages).</li>
+<li><strong>Isolate experimental developments</strong> (work branches).</li>
+<li><strong>Ensure code stability</strong> (stable version on the main branch, ability to revert to a stable version).</li>
+<li><strong>Manage releases</strong> (tags for specific versions).</li>
+</ul>
+<h2 id="vocabulary-for-versions">Vocabulary for Versions<a class="headerlink" href="#vocabulary-for-versions" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Version</strong> — a recorded state or revision in the project's history.</li>
+<li><strong>Commit</strong> — a snapshot of the project at a given version with metadata.</li>
+<li><strong>Branch</strong> — an independent line of development (use one branch per feature/experiment).</li>
+<li><strong>Tag</strong> — a stable label pointing to a specific commit (e.g., releases).</li>
+<li><strong>Diff / Patch</strong> — textual representation of changes between versions.</li>
+<li><strong>Conflict</strong> — incompatible concurrent edits that must be resolved manually.</li>
+</ul>
+<h2 id="vocabulary-for-storage">Vocabulary for Storage<a class="headerlink" href="#vocabulary-for-storage" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Repository</strong> — storage of the project's history (local <code>.git</code> and metadata).</li>
+<li><strong>Clone</strong> — a full local copy of the repository including history.</li>
+<li><strong>Working copy</strong> — editable files checked out from a repository.</li>
+<li><strong>Index / Staging area</strong> — area to stage selected changes for the next commit.</li>
+<li><strong>Remote</strong> — hosted repository (e.g., <code>origin</code> on GitHub/GitLab) for collaboration.</li>
+</ul>
+<h2 id="distributed-vcs">Distributed VCS<a class="headerlink" href="#distributed-vcs" title="Permanent link">&para;</a></h2>
+<p>Distributed Version Control System (DVCS)</p>
+<h3 id="advantages">Advantages<a class="headerlink" href="#advantages" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Multiple repositories</strong> can exist.</li>
+<li>Version control can be performed <strong>locally</strong>.</li>
+<li>No need for network connectivity.</li>
+</ul>
+<h3 id="examples">Examples<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Mercurial (2005) <em>(Mozilla, Python, OpenOffice.org)</em></li>
+<li>Bazaar (2005) <em>(Ubuntu, MySQL)</em></li>
+<li>Git (2005) <em>(Linux Kernel, Debian, VLC, Android, Gnome, Qt)</em></li>
+</ul>
+<h2 id="introduction-to-dvcs-git">Introduction to DVCS: Git<a class="headerlink" href="#introduction-to-dvcs-git" title="Permanent link">&para;</a></h2>
+<h3 id="history">History<a class="headerlink" href="#history" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Git was created in <strong>2005</strong> to version the development of the Linux kernel.</li>
+<li>Designed as a <strong>distributed version control system</strong> (replacing BitKeeper).</li>
+</ul>
+<h3 id="context">Context<a class="headerlink" href="#context" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Widely used by projects: Linux Kernel, Debian, VLC, Android, Gnome, Qt, etc.</li>
+<li>Accessible via command-line interface.</li>
+<li>Graphical tools available: gitk, qgit.</li>
+</ul>
+<h2 id="core-principles-of-git">Core Principles of Git<a class="headerlink" href="#core-principles-of-git" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Git does <strong>not store differences</strong> between commits (unlike SVN).</li>
+<li>Instead, Git stores <strong>snapshots</strong> of the project's file hierarchy at each commit.</li>
+<li>These snapshots are based on <strong>hierarchical structures of objects</strong>.</li>
+<li>Git operations revolve around manipulating these objects.</li>
+</ul>
+<h3 id="hash">Hash<a class="headerlink" href="#hash" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Each object has a unique hash (SHA1).</li>
+<li>Git identifies identical objects by comparing their hashes.</li>
+<li>The same content stored in different repositories will always have the same hash.</li>
+</ul>
+<h2 id="git-objects">Git Objects<a class="headerlink" href="#git-objects" title="Permanent link">&para;</a></h2>
+<p>Object types include:</p>
+<ul>
+<li><strong>Blob</strong>: Stores file data.</li>
+<li><strong>Tree</strong>: References a list of other trees or blobs.</li>
+<li><strong>Commit</strong>: Points to a single tree, representing a project snapshot. Includes metadata like timestamp, author, and parent commits.</li>
+<li><strong>Tag</strong>: Labels a specific commit for easy reference.</li>
+</ul>
+<h2 id="commit-representation">Commit Representation<a class="headerlink" href="#commit-representation" title="Permanent link">&para;</a></h2>
+<p><em>(Git Community Book, p13)</em><br />
+<img alt="Commit Representation" src="../image/lecture1/modele_obj1.png" /></p>
+<h2 id="commit-structure">Commit Structure<a class="headerlink" href="#commit-structure" title="Permanent link">&para;</a></h2>
+<p><em>(Git Community Book, p14)</em><br />
+<img alt="Commit Structure" src="../image/lecture1/modele_obj2.png" /></p>
+<h2 id="git-repository">Git Repository<a class="headerlink" href="#git-repository" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>.git directory</strong>:  </li>
+<li>Stores the project's history.  </li>
+<li>Contains metadata for version control.  </li>
+<li>Located at the root of the project.</li>
+</ul>
+<p><img alt="Git Repository Contents" src="../image/lecture1/contenu_git.png" /></p>
+<h2 id="working-directory">Working Directory<a class="headerlink" href="#working-directory" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Current version of project files.  </li>
+<li>Files are replaced or removed by Git during branch or version changes.</li>
+</ul>
+<h3 id="index-staging-area">Index / Staging Area<a class="headerlink" href="#index-staging-area" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Bridge between the working directory and the repository.  </li>
+<li>Used to group changes for a single commit.  </li>
+<li>Only the <strong>index content</strong> is committed, not the working directory.</li>
+</ul>
+<h2 id="basic-commands">Basic Commands<a class="headerlink" href="#basic-commands" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>git init</code>: Initialize a Git repository.</li>
+<li><code>git clone &lt;repository&gt;</code>: Clone a repository.</li>
+<li><code>git status</code>: Check the status of the working directory and staging area.</li>
+<li><code>git add &lt;file&gt;</code>: Stage changes for commit.</li>
+<li><code>git commit</code>: Commit staged changes.</li>
+</ul>
+<h2 id="basic-commands-continued">Basic Commands (Continued)<a class="headerlink" href="#basic-commands-continued" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>git pull</code>: Update local repository from remote.</li>
+<li><code>git push</code>: Push local commits to remote repository.</li>
+<li><code>git log</code>: View commit history.</li>
+<li><code>git checkout &lt;hash&gt;</code>: Switch to a specific commit using its SHA1 hash.</li>
+<li><code>git branch &lt;branchName&gt;</code>: Create a new branch.</li>
+</ul>
+<h2 id="branches-purpose">Branches: Purpose<a class="headerlink" href="#branches-purpose" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Work on changes that diverge from the main branch or another branch.</li>
+<li>Isolate experimental developments.</li>
+<li>Avoid disrupting shared development efforts.</li>
+<li>Version parallel developments with the option to merge later.</li>
+</ul>
+<h2 id="branches-commands">Branches: Commands<a class="headerlink" href="#branches-commands" title="Permanent link">&para;</a></h2>
+<ul>
+<li><code>git branch</code> or <code>git checkout -b &lt;branchName&gt;</code>: Create a new branch.</li>
+<li><code>git checkout &lt;branchName&gt;</code>: Switch to an existing branch.</li>
+<li><code>git merge &lt;branchName&gt;</code>: Merge a branch into the current branch.</li>
+<li><code>git branch -d &lt;branchName&gt;</code>: Delete a branch.</li>
+<li><code>git branch</code>: List all branches and show the current branch.</li>
+</ul>
+<h2 id="conflict-management">Conflict Management<a class="headerlink" href="#conflict-management" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>Conflict:</strong> Occurs during branch merging when two changes affect the same lines.</p>
+</li>
+<li>
+<p><strong>Resolution Steps:</strong></p>
+</li>
+<li>Merge is paused.</li>
+<li>Conflict zones are marked in the file.</li>
+<li>Edit the file to resolve conflicts by choosing one version or combining changes.</li>
+<li>Verify and validate the resolution.</li>
+<li>Commit the resolved conflict.</li>
+</ul>
+<h2 id="correction-methods">Correction Methods<a class="headerlink" href="#correction-methods" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Undo Changes:</strong> Use <code>git reset</code> to discard modifications.</li>
+<li><strong>Amend Last Commit:</strong> Use <code>git commit --amend</code> to modify the previous commit.</li>
+<li><strong>Branch-Based Correction:</strong> Create a new branch from a specific version and work from there.</li>
+<li><strong>Rewrite History:</strong> Use <code>git rebase</code> to edit commits and history.</li>
+</ul>
+<h3 id="warning">Warning<a class="headerlink" href="#warning" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Rewriting History:</strong> Interactive rebasing is risky. Only rewrite commits that haven't been pushed to a remote repository. Prefer branch-based corrections for safer handling.</li>
+</ul>
+<h2 id="centralized-collaboration">Centralized Collaboration<a class="headerlink" href="#centralized-collaboration" title="Permanent link">&para;</a></h2>
+<p><img alt="Interactions with a centralized system" src="../image/lecture1/CentralizedVCS.png" /></p>
+<h2 id="decentralized-with-central-repository">Decentralized with Central Repository<a class="headerlink" href="#decentralized-with-central-repository" title="Permanent link">&para;</a></h2>
+<p><img alt="Constrained interactions with a decentralized system" src="../image/lecture1/DistributedVCS_withCentral.png" /></p>
+<h2 id="fully-decentralized-collaboration">Fully Decentralized Collaboration<a class="headerlink" href="#fully-decentralized-collaboration" title="Permanent link">&para;</a></h2>
+<p><img alt="Interactions with a decentralized system" src="../image/lecture1/DistributedVCS_Complex.png" /></p>
+<h2 id="best-practices-for-collaborative-development">Best Practices for Collaborative Development<a class="headerlink" href="#best-practices-for-collaborative-development" title="Permanent link">&para;</a></h2>
+<h3 id="before-development">Before Development<a class="headerlink" href="#before-development" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Define a <strong>developer charter</strong>:</li>
+<li>Naming conventions for files, functions, variables.</li>
+<li>Standards for technical documentation and comments.</li>
+<li>
+<p>Indentation rules (tabs vs spaces).</p>
+</li>
+<li>
+<p>Establish a <strong>version control strategy</strong>.</p>
+</li>
+</ul>
+<h3 id="during-development">During Development<a class="headerlink" href="#during-development" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Create <strong>isolated commits</strong> (one commit = one coherent change).</li>
+<li>Write <strong>concise commit messages</strong> (max 60 characters summarizing the change).</li>
+<li>Add detailed commit descriptions if necessary.</li>
+<li><strong>Regularly update</strong> your working copy.</li>
+<li><strong>Share updates</strong> with team members.</li>
+</ul>
+<h2 id="references">References<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://theartofhpc.com/"><em>The Art of HPC</em> by Victor Eijkhout</a></li>
+<li><a href="https://people.freebsd.org/~lstewart/articles/cpumemory.pdf"><em>What Every Programmer Should Know About Memory</em> by Ulrich Drepper</a></li>
+<li><a href="https://shafiul.github.io/gitbook/index.html"><em>The Git Community Book</em></a></li>
+<li><a href="http://www.youtube.com/watch?v=4XpnKHJAok8">Tech Talk: Linus Torvalds on Git (YouTube)</a></li>
+<li><a href="http://www.top500.org/"><em>TOP500 Supercomputers</em></a></li>
+<li><em>Modern Operating Systems</em> by Andrew S. Tanenbaum</li>
+</ul>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href=".." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Home
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lecture2/" class="md-footer__link md-footer__link--next" aria-label="Next: L2 - Performance Aware C Computing">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                L2 - Performance Aware C Computing
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      CC BY-NC 4.0; 2025 - Pablo Oliveira, Mathys Jam
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "toc.integrate", "toc.follow", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

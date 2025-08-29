@@ -1,0 +1,2165 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../lab2/">
+      
+      
+        <link rel="next" href="../lab4/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Lab 3 - CMake, Unit Tests, and Debugging - GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-3-cmake-unit-tests-and-debugging" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-header__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 3 - CMake, Unit Tests, and Debugging
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../lecture1/" class="md-tabs__link">
+          
+  
+  
+  Course
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../guide_soutenance/" class="md-tabs__link">
+          
+  
+  
+  Exams
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../annex/bash_cheatsheet/" class="md-tabs__link">
+          
+  
+  
+  Annex
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-nav__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Course
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Course
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Lectures
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Lectures
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 - Introduction to Software Engineering for HPC/AI, Development Environment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 - Performance Aware C Computing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 - Building, Testing, and Debugging Scientific Software
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 - Experimental Design, Profiling, and Performance/Energy Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 - HPC for AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Labs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Labs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 1 - Prerequisites
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 2 - C Programming and Memory Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Lab 3 - CMake, Unit Tests, and Debugging
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 3 - CMake, Unit Tests, and Debugging
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    <span class="md-ellipsis">
+      Objectives
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#provided-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Provided Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-cmake" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 - CMake
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 - CMake">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-minimal-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Minimal Build
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Minimal Build">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-set-the-minimum-required-cmake-version-and-project-name" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Set the minimum required CMake version and project name
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-add-include-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Add include directories
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-add-the-shared-library-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Add the shared library target
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-add-the-executable-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      d) Add the executable target
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-link-the-shared-library-to-the-executable" class="md-nav__link">
+    <span class="md-ellipsis">
+      e) Link the shared library to the executable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f-generate-the-build-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      f) Generate the build system
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#g-build-the-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      g) Build the project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#h-answer-the-following-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      h) Answer the following questions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-build-configurations" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Build Configurations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Build Configurations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-configure-the-c-standard-used" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Configure the C standard used
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-enable-different-build-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Enable different build types
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-enable-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Enable Installation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Enable Installation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-give-your-project-a-version-number" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Give your project a version number
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-include-the-gnuinstalldirs-module" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Include the GNUInstallDirs module
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-add-installation-rules-for-the-shared-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Add installation rules for the shared library
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-add-installation-rules-for-the-executable" class="md-nav__link">
+    <span class="md-ellipsis">
+      d) Add installation rules for the executable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-test-the-installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      e) Test the installation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f-install-the-public-header-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      f) Install the public header file
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-better-handling-of-include-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Better handling of include directories
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Better handling of include directories">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-remove-the-global-include_directories-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Remove the global include_directories command
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-add-the-following-commands-to-specify-include-directories-for-each-target" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Add the following commands to specify include directories for each target
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 - Unit Tests
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 - Unit Tests">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-fetch-the-unity-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Fetch the Unity framework
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-write-a-first-unit-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Write a first unit test
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-add-the-test-runner-executable" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Add the test runner executable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-add-a-custom-target-to-run-the-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Add a custom target to run the tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5-add-the-remaining-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Add the remaining tests
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-debugging-with-gdb-and-valgrind" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 - Debugging with GDB and Valgrind
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 - Debugging with GDB and Valgrind">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-build-the-program-with-debug-symbols" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Build the Program with Debug Symbols
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Build the Program with Debug Symbols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-run-the-cmake-command-with-the-debug-build-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Run the cmake command with the Debug build type
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-build-the-project" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Build the project
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-run-the-program-using-the-rotate-transformation" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Run the program using the rotate transformation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-analyze-carefully-the-error-message" class="md-nav__link">
+    <span class="md-ellipsis">
+      d) Analyze carefully the error message
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-running-the-program-with-gdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Running the program with GDB
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Running the program with GDB">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-start-gdb-with-the-program-and-its-arguments" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Start gdb with the program and its arguments
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-run-the-program-inside-gdb" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Run the program inside gdb
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-backtrace-the-function-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Backtrace the function calls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-inspect-the-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      d) Inspect the variables
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-fix-and-explain-the-first-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      e) Fix and explain the first bug
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-using-valgrind-to-detect-memory-issues" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Using Valgrind to Detect Memory Issues
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Using Valgrind to Detect Memory Issues">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-run-the-program-with-gdb-again" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Run the program with GDB again
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-use-valgrind-to-pinpoint-the-memory-issue" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Use Valgrind to pinpoint the memory issue
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-set-a-breakpoint-at-the-faulty-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Set a breakpoint at the faulty line
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-inspect-the-values-of-x-y-width-height-and-the-computed-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      d) Inspect the values of x, y, width, height, and the computed index:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-set-a-conditional-breakpoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      e) Set a conditional breakpoint
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f-analyze-and-fix-the-bug" class="md-nav__link">
+    <span class="md-ellipsis">
+      f) Analyze and fix the bug
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-non-regression-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Non-regression tests
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      4 - Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 4 - Monte-Carlo sampling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 5 - Experimental Methodology and Scientific Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 6 - AI Project (1) SGEMM Kernel Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 7 - AI Project (2) Neural Network Inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Exams
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Exams
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide_soutenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Guide de soutenance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Annex
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Annex
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/bash_cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bash cheatsheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux Environment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Linux Environment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/install_fedora/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing fedora
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/oh-my-zsh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing oh-my-zsh
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-3-cmake-unit-tests-and-debugging">Lab 3: CMake, Unit Tests, and Debugging<a class="headerlink" href="#lab-3-cmake-unit-tests-and-debugging" title="Permanent link">&para;</a></h1>
+<hr class="gradient" />
+
+<h3 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Learn how to use CMake for building C projects.</li>
+<li>Write and run unit tests using the Unity testing framework.</li>
+<li>Use <code>valgrind</code> to detect memory-related issues and pinpoint invalid memory accesses.</li>
+<li>Learn how to use <code>gdb</code> to debug logical errors in C programs.</li>
+<li>Practice setting breakpoints, inspecting variables, and stepping through code in <code>gdb</code>.</li>
+</ul>
+<h3 id="provided-files">Provided Files<a class="headerlink" href="#provided-files" title="Permanent link">&para;</a></h3>
+<p>This lab is a continuation of <a href="../lab2">lab 2</a>. The structure of the project is the same.
+A new transformation <code>rotate_image_90_clockwise</code>, which you will analyze in the <a href="#3-debugging-with-gdb-and-valgrind">third part of this lab</a>, has been added to the <code>transformations.h</code> and <code>transformations.c</code> files.</p>
+<h2 id="1-cmake">1 - CMake<a class="headerlink" href="#1-cmake" title="Permanent link">&para;</a></h2>
+<p>In this first part, you will learn how to write a <code>CMakeLists.txt</code> file for a C project, starting from a provided <code>Makefile</code>. The goal is to progressively build a robust and maintainable CMake configuration for an HPC project.</p>
+<h3 id="1-minimal-build">1. Minimal Build<a class="headerlink" href="#1-minimal-build" title="Permanent link">&para;</a></h3>
+<p>Create a minimal <code>CMakeLists.txt</code> that builds the shared library <code>libparser.so</code> and the executable <code>mytransform</code>.</p>
+<h4 id="a-set-the-minimum-required-cmake-version-and-project-name">a) Set the minimum required CMake version and project name<a class="headerlink" href="#a-set-the-minimum-required-cmake-version-and-project-name" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span><span class="w"> </span><span class="s">3.15</span><span class="p">)</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nb">project</span><span class="p">(</span><span class="s">parser</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">C</span><span class="p">)</span>
+</span></code></pre></div>
+<h4 id="b-add-include-directories">b) Add include directories<a class="headerlink" href="#b-add-include-directories" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nb">include_directories</span><span class="p">(</span><span class="s">src</span><span class="w"> </span><span class="s">include</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The <code>include_directories</code> command specifies the directories to search for header files during compilation. Here, <code>include</code> contains the public header of the parser library, and <code>src</code> contains the private headers used internally by the library and the executable.</p>
+<h4 id="c-add-the-shared-library-target">c) Add the shared library target<a class="headerlink" href="#c-add-the-shared-library-target" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">add_library</span><span class="p">(</span><span class="s">parser</span><span class="w"> </span><span class="s">SHARED</span><span class="w"> </span><span class="s">src/parser.c</span><span class="p">)</span>
+</span></code></pre></div>
+<p>In Linux a shared library has the extension <code>.so</code> (shared object). The <code>add_library</code> command creates a target named <code>parser</code> that builds a shared library from the source file <code>src/parser.c</code>. The final library will be named <code>libparser.so</code> by default.</p>
+<h4 id="d-add-the-executable-target">d) Add the executable target<a class="headerlink" href="#d-add-the-executable-target" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">add_executable</span><span class="p">(</span><span class="s">mytransform</span><span class="w"> </span><span class="s">src/main.c</span><span class="w"> </span><span class="s">src/transformation.c</span><span class="w"> </span><span class="s">src/image.c</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The <code>add_executable</code> command builds an executable <code>mytransform</code> from the specified source files. Header files were included before.</p>
+<h4 id="e-link-the-shared-library-to-the-executable">e) Link the shared library to the executable<a class="headerlink" href="#e-link-the-shared-library-to-the-executable" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">mytransform</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="s">parser</span><span class="w"> </span><span class="s">m</span><span class="p">)</span>
+</span></code></pre></div>
+<p>This command ensures that the <code>mytransform</code> executable is linked against the <code>parser</code> shared library and the math library <code>m</code>. </p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>PRIVATE</code> keyword indicates that the dependency is only required for building the <code>mytransform</code> target and does not propagate to other targets that may link against <code>mytransform</code>.</p>
+</div>
+<h4 id="f-generate-the-build-system">f) Generate the build system<a class="headerlink" href="#f-generate-the-build-system" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>$<span class="w"> </span>cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>.
+</span></code></pre></div>
+<p>Here <code>-B</code> specifies the build directory (a new directory named <code>build</code>).</p>
+<h4 id="g-build-the-project">g) Build the project<a class="headerlink" href="#g-build-the-project" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>$<span class="w"> </span>make<span class="w"> </span>-C<span class="w"> </span>build/
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By default, CMake generates a Makefile as the build system on Unix-like systems. Sometimes, it can be useful to call directly the <code>make</code> command to build the project.
+You can also use <code>cmake --build build</code> to build the project, which is more portable across different platforms and build systems.</p>
+</div>
+<h4 id="h-answer-the-following-questions">h) Answer the following questions<a class="headerlink" href="#h-answer-the-following-questions" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Where are the generated files located?</li>
+<li>Can you find the <code>libparser.so</code> library? the <code>mytransform</code> executable?</li>
+<li>Can you run the program? </li>
+</ul>
+<h3 id="2-build-configurations">2. Build Configurations<a class="headerlink" href="#2-build-configurations" title="Permanent link">&para;</a></h3>
+<p>We want to enable different build configurations (e.g., Debug, Release) and set appropriate compiler options.</p>
+<h4 id="a-configure-the-c-standard-used">a) Configure the C standard used<a class="headerlink" href="#a-configure-the-c-standard-used" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_STANDARD</span><span class="w"> </span><span class="s">11</span><span class="p">)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_C_STANDARD_REQUIRED</span><span class="w"> </span><span class="s">ON</span><span class="p">)</span>
+</span></code></pre></div>
+<p>This ensures that the C11 standard is used for compiling the project.</p>
+<h4 id="b-enable-different-build-types">b) Enable different build types<a class="headerlink" href="#b-enable-different-build-types" title="Permanent link">&para;</a></h4>
+<p>Define common compiler flags for different build types:</p>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nb">set</span><span class="p">(</span><span class="s">COMMON_COMPILE_FLAGS</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="o">$&lt;</span><span class="nv">$&lt;CONFIG:Debug</span><span class="o">&gt;</span><span class="s">:-Wall</span><span class="w"> </span><span class="s">-Wextra</span><span class="w"> </span><span class="s">-g&gt;</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="o">$&lt;</span><span class="nv">$&lt;CONFIG:Release</span><span class="o">&gt;</span><span class="s">:-Wall</span><span class="w"> </span><span class="s">-Wextra</span><span class="w"> </span><span class="s">-O3</span><span class="w"> </span><span class="s">-DNDEBUG&gt;</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Apply the flags to the targets:</p>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">parser</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="o">${</span><span class="nv">COMMON_COMPILE_FLAGS</span><span class="o">}</span><span class="p">)</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">mytransform</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="o">${</span><span class="nv">COMMON_COMPILE_FLAGS</span><span class="o">}</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Rebuild the project and test different configurations:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>$<span class="w"> </span>cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug<span class="w"> </span>.
+</span></code></pre></div>
+<p>You can check that the debug symbols are included in the binary using <code>file</code>:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>$<span class="w"> </span>file<span class="w"> </span>build/mytransform<span class="w"> </span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>build/mytransform:<span class="w"> </span>ELF<span class="w"> </span><span class="m">64</span>-bit<span class="w"> </span>LSB<span class="w"> </span>pie<span class="w"> </span>executable,<span class="w"> </span>x86-64,<span class="w"> </span>version<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="o">(</span>SYSV<span class="o">)</span>,<span class="w"> </span>dynamically<span class="w"> </span>linked,<span class="w"> </span>interpreter<span class="w"> </span>/lib64/ld-linux-x86-64.so.2,<span class="w"> </span>BuildID<span class="o">[</span>sha1<span class="o">]=</span>0d2cbaa0cf08a42b916e2edffe9940ce828b2bd9,<span class="w"> </span><span class="k">for</span><span class="w"> </span>GNU/Linux<span class="w"> </span><span class="m">3</span>.2.0,<span class="w"> </span>with<span class="w"> </span>debug_info,<span class="w"> </span>not<span class="w"> </span>stripped
+</span></code></pre></div>
+<h3 id="3-enable-installation">3. Enable Installation<a class="headerlink" href="#3-enable-installation" title="Permanent link">&para;</a></h3>
+<p>Now we will add installation rules to install the shared library, executable, and headers.</p>
+<h4 id="a-give-your-project-a-version-number">a) Give your project a version number<a class="headerlink" href="#a-give-your-project-a-version-number" title="Permanent link">&para;</a></h4>
+<p>Modify the <code>project</code> command as below:</p>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nb">project</span><span class="p">(</span><span class="s">parser</span><span class="w"> </span><span class="s">VERSION</span><span class="w"> </span><span class="s">1.0.0</span><span class="w"> </span><span class="s">LANGUAGES</span><span class="w"> </span><span class="s">C</span><span class="p">)</span>
+</span></code></pre></div>
+<h4 id="b-include-the-gnuinstalldirs-module">b) Include the <code>GNUInstallDirs</code> module<a class="headerlink" href="#b-include-the-gnuinstalldirs-module" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="nb">include</span><span class="p">(</span><span class="s">GNUInstallDirs</span><span class="p">)</span>
+</span></code></pre></div>
+<p>This module provides standard installation directory variables like <code>CMAKE_INSTALL_BINDIR</code>, <code>CMAKE_INSTALL_LIBDIR</code>, and <code>CMAKE_INSTALL_INCLUDEDIR</code>.</p>
+<h4 id="c-add-installation-rules-for-the-shared-library">c) Add installation rules for the shared library<a class="headerlink" href="#c-add-installation-rules-for-the-shared-library" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nb">install</span><span class="p">(</span><span class="s">TARGETS</span><span class="w"> </span><span class="s">parser</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="s">LIBRARY</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_LIBDIR</span><span class="o">}</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="s">PUBLIC_HEADER</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_INCLUDEDIR</span><span class="o">}</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="p">)</span>
+</span></code></pre></div>
+<h4 id="d-add-installation-rules-for-the-executable">d) Add installation rules for the executable<a class="headerlink" href="#d-add-installation-rules-for-the-executable" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nb">install</span><span class="p">(</span><span class="s">TARGETS</span><span class="w"> </span><span class="s">mytransform</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="s">RUNTIME</span><span class="w"> </span><span class="s">DESTINATION</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_INSTALL_BINDIR</span><span class="o">}</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="p">)</span>
+</span></code></pre></div>
+<h4 id="e-test-the-installation">e) Test the installation<a class="headerlink" href="#e-test-the-installation" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>mkdir<span class="w"> </span>install_dir
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>$<span class="w"> </span>cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-DCMAKE_INSTALL_PREFIX<span class="o">=</span>install_dir<span class="w"> </span>.<span class="w"> </span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>$<span class="w"> </span>make<span class="w"> </span>-C<span class="w"> </span>build/<span class="w"> </span>install
+</span></code></pre></div>
+<p>Since <code>install_dir</code> is not a standard system directory, you need to set the <code>LD_LIBRARY_PATH</code> environment variable to include the path to the installed shared library before running the program.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We can also call <code>cmake --install build --prefix &lt;install_directory&gt;</code> to install the project.</p>
+</div>
+<h4 id="f-install-the-public-header-file">f) Install the public header file<a class="headerlink" href="#f-install-the-public-header-file" title="Permanent link">&para;</a></h4>
+<p>As you can see, the public header file <code>parser.h</code> is not installed.
+To inform CMake about the public headers, you should add the following command:</p>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nb">set_target_properties</span><span class="p">(</span><span class="s">parser</span><span class="w"> </span><span class="s">PROPERTIES</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">    </span><span class="s">VERSION</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_VERSION</span><span class="o">}</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="s">SOVERSION</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_VERSION_MAJOR</span><span class="o">}</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="s">PUBLIC_HEADER</span><span class="w"> </span><span class="s">include/parser.h</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Rebuild and install the project again, you should see the <code>parser.h</code> file in the <code>include</code> directory of the installation prefix. Additionally, the shared library should now have a versioned name like <code>libparser.so.1.0.0</code>.</p>
+<h3 id="3-better-handling-of-include-directories">3. Better handling of include directories<a class="headerlink" href="#3-better-handling-of-include-directories" title="Permanent link">&para;</a></h3>
+<p>Our current way of handling include directories is not ideal. We will improve it by using <code>target_include_directories</code> which keeps the include directories scoped to each target.</p>
+<h4 id="a-remove-the-global-include_directories-command">a) Remove the global <code>include_directories</code> command<a class="headerlink" href="#a-remove-the-global-include_directories-command" title="Permanent link">&para;</a></h4>
+<h4 id="b-add-the-following-commands-to-specify-include-directories-for-each-target">b) Add the following commands to specify include directories for each target<a class="headerlink" href="#b-add-the-following-commands-to-specify-include-directories-for-each-target" title="Permanent link">&para;</a></h4>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">parser</span><span class="w"> </span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="s">PUBLIC</span><span class="w"> </span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">        </span><span class="o">$&lt;</span><span class="nv">BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include</span><span class="o">&gt;</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">        </span><span class="o">$&lt;</span><span class="nv">INSTALL_INTERFACE:include</span><span class="o">&gt;</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="s">PRIVATE</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">        </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/src</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">    </span><span class="p">)</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">mytransform</span><span class="w"> </span><span class="s">PRIVATE</span><span class="w"> </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/src</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The library target disinguishes between <code>PUBLIC</code> and <code>PRIVATE</code> include directories. <code>PUBLIC</code> directories are needed both when building the library and when using it, while <code>PRIVATE</code> directories are only needed when building the library itself.</p>
+<p>The <code>BUILD_INTERFACE</code> generator expression specifies the include directory to use when building the project, while the <code>INSTALL_INTERFACE</code> generator expression specifies the include directory to use when the library is installed. This ensures that users of the installed library can include the header files correctly.</p>
+<h2 id="2-unit-tests">2 - Unit Tests<a class="headerlink" href="#2-unit-tests" title="Permanent link">&para;</a></h2>
+<p>In this part, you will learn how to integrate unit tests into your CMake project using the <a href="https://www.throwtheswitch.org/unity">Unity testing framework</a>.</p>
+<h3 id="1-fetch-the-unity-framework">1. Fetch the Unity framework<a class="headerlink" href="#1-fetch-the-unity-framework" title="Permanent link">&para;</a></h3>
+<p>Fetch the Unity framework:</p>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c"># Fetch and build the Unity testing framework</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nb">include</span><span class="p">(</span><span class="s">FetchContent</span><span class="p">)</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nb">FetchContent_Declare</span><span class="p">(</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">    </span><span class="s">unity</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="s">GIT_REPOSITORY</span><span class="w">  </span><span class="s">https://github.com/ThrowTheSwitch/Unity.git</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span><span class="s">GIT_TAG</span><span class="w">         </span><span class="s">v2.6.1</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">    </span><span class="s">GIT_SHALLOW</span><span class="w"> </span><span class="s">TRUE</span><span class="w"> </span><span class="c"># Only download the specific tag, not full history</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="p">)</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="c"># Make Unity available but don&#39;t add to ALL target by default</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="c"># This is important to avoid installing unity dependencies which are only needed for testing </span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="c"># but are not required in the release version of the project</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="nb">FetchContent_GetProperties</span><span class="p">(</span><span class="s">unity</span><span class="p">)</span>
+</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="nb">if</span><span class="p">(</span><span class="s">NOT</span><span class="w"> </span><span class="s">unity_POPULATED</span><span class="p">)</span>
+</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="w">    </span><span class="nb">FetchContent_Populate</span><span class="p">(</span><span class="s">unity</span><span class="p">)</span>
+</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="w">    </span><span class="nb">add_subdirectory</span><span class="p">(</span><span class="o">${</span><span class="nv">unity_SOURCE_DIR</span><span class="o">}</span><span class="w"> </span><span class="o">${</span><span class="nv">unity_BINARY_DIR</span><span class="o">}</span><span class="w"> </span><span class="s">EXCLUDE_FROM_ALL</span><span class="p">)</span>
+</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="nb">endif</span><span class="p">()</span>
+</span></code></pre></div>
+<p>Set up the Unity include directory and library:</p>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nb">set</span><span class="p">(</span><span class="s">UNITY_INCLUDE_DIR</span><span class="w"> </span><span class="s2">&quot;${unity_SOURCE_DIR}/src&quot;</span><span class="p">)</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nb">set</span><span class="p">(</span><span class="s">UNITY_LIBRARY</span><span class="w"> </span><span class="s2">&quot;${unity_BINARY_DIR}/libunity.a&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>CMake fetches and builds the Unity framework, making it available for use in your project.</p>
+<h3 id="2-write-a-first-unit-test">2. Write a first unit test<a class="headerlink" href="#2-write-a-first-unit-test" title="Permanent link">&para;</a></h3>
+<p>We currently have a set of hard-coded tests in <code>main.c</code>:</p>
+<ul>
+<li><code>check_grayscale</code></li>
+<li><code>check_rgb</code> </li>
+<li><code>check_copy</code></li>
+</ul>
+<p>Read carefully these tests to understand what they do.</p>
+<p>To convert them into unit tests, we will create a new source file <code>tests/test_image.c</code> and move the test functions there. The <code>check_memory</code> function which ran all the files will be replaced by a test runner in <code>tests/test_runner.c</code>.</p>
+<p>We will start first by writing the test runner.
+Create a new file <code>tests/test_runner.c</code> with the following content:</p>
+<div class="language-c highlight"><span class="filename">tests/test_runner.c</span><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;unity.h&quot;</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="k">extern</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">test_grayscale_image_creation</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setUp</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">tearDown</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{}</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="p">{</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a><span class="w">    </span><span class="n">UNITY_BEGIN</span><span class="p">();</span>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="w">    </span><span class="n">RUN_TEST</span><span class="p">(</span><span class="n">test_grayscale_image_creation</span><span class="p">);</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">UNITY_END</span><span class="p">();</span>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>setUp</code> and <code>tearDown</code> functions are called before and after each test, respectively. They can be used to set up and clean up test fixtures if needed.</p>
+</div>
+<p>Now create the <code>tests/test_image.c</code> file and move the <code>check_grayscale</code> function there, renaming it to <code>test_grayscale_image_creation</code>:</p>
+<div class="language-c highlight"><span class="filename">tests/test_image.c</span><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;unity.h&quot;</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;transformation.h&quot;</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="kt">void</span><span class="w"> </span><span class="nf">test_grayscale_image_creation</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="p">{</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">    </span><span class="n">Image</span><span class="w"> </span><span class="o">*</span><span class="n">img</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">create_image</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">    </span><span class="n">TEST_ASSERT_NOT_NULL</span><span class="p">(</span><span class="n">img</span><span class="p">);</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">    </span><span class="n">TEST_ASSERT_EQUAL</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">img</span><span class="o">-&gt;</span><span class="n">width</span><span class="p">);</span>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">    </span><span class="n">TEST_ASSERT_EQUAL</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="n">img</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">);</span>
+</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="w">    </span><span class="n">TEST_ASSERT_EQUAL</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">img</span><span class="o">-&gt;</span><span class="n">channels</span><span class="p">);</span>
+</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="w">    </span><span class="n">TEST_ASSERT_NOT_NULL</span><span class="p">(</span><span class="n">img</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="w">    </span><span class="n">TEST_ASSERT_NULL</span><span class="p">(</span><span class="n">img</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="w">    </span><span class="n">TEST_ASSERT_NULL</span><span class="p">(</span><span class="n">img</span><span class="o">-&gt;</span><span class="n">pixels</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="w">    </span><span class="n">free_image</span><span class="p">(</span><span class="n">img</span><span class="p">);</span>
+</span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>As you can see, we are using systematically the Unity assertion macros to check conditions.</p>
+<h3 id="3-add-the-test-runner-executable">3. Add the test runner executable<a class="headerlink" href="#3-add-the-test-runner-executable" title="Permanent link">&para;</a></h3>
+<p>To run our tests, we need to create a new executable target for the test runner in our <code>CMakeLists.txt</code> file.</p>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="nb">add_executable</span><span class="p">(</span><span class="s">test_runner</span><span class="w"> </span><span class="s">tests/test_runner.c</span><span class="w"> </span><span class="s">tests/test_image.c</span><span class="w"> </span><span class="s">src/transformation.c</span><span class="w"> </span><span class="s">src/image.c</span><span class="p">)</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="nb">target_include_directories</span><span class="p">(</span><span class="s">test_runner</span><span class="w"> </span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="s">PRIVATE</span><span class="w"> </span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">        </span><span class="o">${</span><span class="nv">UNITY_INCLUDE_DIR</span><span class="o">}</span><span class="w"> </span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">        </span><span class="o">${</span><span class="nv">PROJECT_SOURCE_DIR</span><span class="o">}</span><span class="s">/src</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="p">)</span>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">test_runner</span><span class="w"> </span><span class="o">${</span><span class="nv">UNITY_LIBRARY</span><span class="o">}</span><span class="w"> </span><span class="s">m</span><span class="w"> </span><span class="s">parser</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Observe that we link the <code>test_runner</code> target against the Unity library, the math library <code>m</code>, and our <code>parser</code> library.</p>
+<h3 id="4-add-a-custom-target-to-run-the-tests">4. Add a custom target to run the tests<a class="headerlink" href="#4-add-a-custom-target-to-run-the-tests" title="Permanent link">&para;</a></h3>
+<p>To facilitate running the tests, we can add a custom target in our <code>CMakeLists.txt</code> file that will execute the <code>test_runner</code> executable.</p>
+<div class="language-cmake highlight"><span class="filename">CMakeLists.txt</span><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="nb">add_custom_target</span><span class="p">(</span><span class="s">test</span><span class="w"> </span><span class="s">test_runner</span><span class="w"> </span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">    </span><span class="s">DEPENDS</span><span class="w"> </span><span class="o">$&lt;</span><span class="nv">TARGET_FILE:test_runner</span><span class="o">&gt;</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="s">WORKING_DIRECTORY</span><span class="w"> </span><span class="o">${</span><span class="nv">CMAKE_CURRENT_BINARY_DIR</span><span class="o">}</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">    </span><span class="s">COMMENT</span><span class="w"> </span><span class="s2">&quot;Running unit tests...&quot;</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Check that everything works by building the project and running the tests:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>$<span class="w"> </span>cmake<span class="w"> </span>--build<span class="w"> </span>build
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>$<span class="w"> </span>make<span class="w"> </span>-C<span class="w"> </span>build<span class="w"> </span><span class="nb">test</span>
+</span></code></pre></div>
+<h3 id="5-add-the-remaining-tests">5. Add the remaining tests<a class="headerlink" href="#5-add-the-remaining-tests" title="Permanent link">&para;</a></h3>
+<p><em>Write unit tests for the <code>check_rgb</code> and <code>check_copy</code> functions in the <code>tests/test_image.c</code> file.</em> </p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For bonus point, separate the logic of the <code>check_copy</code> test into two different tests: <code>test_image_copy</code>, that check the code validity, and <code>test_image_copy_performance</code> that measures and displays the performance.</p>
+</div>
+<h2 id="3-debugging-with-gdb-and-valgrind">3 - Debugging with GDB and Valgrind<a class="headerlink" href="#3-debugging-with-gdb-and-valgrind" title="Permanent link">&para;</a></h2>
+<p>In this last part, you will learn how to debug two types of bugs in a C program using <code>gdb</code> and <code>valgrind</code>. These bugs are intentionally introduced in the <code>rotate_image_90_clockwise</code> function. The goal is to identify, understand, and fix these bugs while reflecting on the debugging process.</p>
+<h3 id="1-build-the-program-with-debug-symbols">1. Build the Program with Debug Symbols<a class="headerlink" href="#1-build-the-program-with-debug-symbols" title="Permanent link">&para;</a></h3>
+<p>Debugging symbols are metadata embedded in a program's binary during compilation, providing detailed information about the source code, such as variable names, function names, and line numbers. These symbols allow tools like gdb and valgrind to map the program's execution back to the original source code, making it easier to inspect variables, set breakpoints, and trace errors. Without debugging symbols, these tools would only display raw memory addresses and machine-level details, making debugging significantly harder.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To enable debugging symbols, you need to configure CMake to include the <code>-g</code> flag in the compilation process. This can be achieved by setting the <code>CMAKE_BUILD_TYPE</code> to <code>Debug</code>.</p>
+</div>
+<h4 id="a-run-the-cmake-command-with-the-debug-build-type">a) Run the <code>cmake</code> command with the <code>Debug</code> build type<a class="headerlink" href="#a-run-the-cmake-command-with-the-debug-build-type" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>$<span class="w"> </span>cmake<span class="w"> </span>-B<span class="w"> </span>build/<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Debug<span class="w"> </span>.
+</span></code></pre></div>
+<h4 id="b-build-the-project">b) Build the project<a class="headerlink" href="#b-build-the-project" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>$<span class="w"> </span>make<span class="w"> </span>-C<span class="w"> </span>build/
+</span></code></pre></div>
+<h4 id="c-run-the-program-using-the-rotate-transformation">c) Run the program using the rotate transformation<a class="headerlink" href="#c-run-the-program-using-the-rotate-transformation" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>$<span class="w"> </span>build/mytransform<span class="w"> </span>pipelines/rotate.pipeline
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>Loaded<span class="w"> </span>image:<span class="w"> </span>images/image0.bmp<span class="w"> </span><span class="o">(</span>259x194,<span class="w"> </span><span class="m">3</span><span class="w"> </span>channels<span class="o">)</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>Segmentation<span class="w"> </span>fault<span class="w"> </span><span class="o">(</span>core<span class="w"> </span>dumped<span class="o">)</span>
+</span></code></pre></div>
+<p>You should get an error as above.</p>
+<h4 id="d-analyze-carefully-the-error-message">d) Analyze carefully the error message<a class="headerlink" href="#d-analyze-carefully-the-error-message" title="Permanent link">&para;</a></h4>
+<ul>
+<li>What does <code>Segmentation fault</code> mean?</li>
+<li>What does <code>(core dumped)</code> mean?</li>
+<li>What could be the possible causes of this error?</li>
+</ul>
+<h3 id="2-running-the-program-with-gdb">2. Running the program with GDB<a class="headerlink" href="#2-running-the-program-with-gdb" title="Permanent link">&para;</a></h3>
+<p>GDB is the GNU Project Debugger, a powerful tool for debugging programs. It allows you to run your program step by step, inspect variables, set breakpoints, and analyze the program's flow to identify and fix bugs.</p>
+<h4 id="a-start-gdb-with-the-program-and-its-arguments">a) Start gdb with the program and its arguments<a class="headerlink" href="#a-start-gdb-with-the-program-and-its-arguments" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>$<span class="w"> </span>gdb<span class="w"> </span>--args<span class="w"> </span>build/mytransform<span class="w"> </span>pipelines/rotate.pipeline
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>GNU<span class="w"> </span>gdb<span class="w"> </span><span class="o">(</span>Ubuntu<span class="w"> </span><span class="m">15</span>.0.50.20240403-0ubuntu1<span class="o">)</span><span class="w"> </span><span class="m">15</span>.0.50.20240403-git
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>...<span class="w"> </span><span class="o">[</span>output<span class="w"> </span>truncated<span class="o">]</span><span class="w"> </span>...
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="o">(</span>gdb<span class="o">)</span>
+</span></code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>--args</code> option allows you to pass the program's arguments directly to gdb, so you don't have to type them again after starting gdb.
+<code>(gdb)</code> is the gdb prompt, where you can enter gdb commands.</p>
+</div>
+<h4 id="b-run-the-program-inside-gdb">b) Run the program inside gdb<a class="headerlink" href="#b-run-the-program-inside-gdb" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>run
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>Starting<span class="w"> </span>program:<span class="w"> </span>lab3/build/mytransform<span class="w"> </span>pipelines/rotate.pipeline
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="o">[</span>Thread<span class="w"> </span>debugging<span class="w"> </span>using<span class="w"> </span>libthread_db<span class="w"> </span>enabled<span class="o">]</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>Using<span class="w"> </span>host<span class="w"> </span>libthread_db<span class="w"> </span>library<span class="w"> </span><span class="s2">&quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;</span>.
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>Loaded<span class="w"> </span>image:<span class="w"> </span>images/image0.bmp<span class="w"> </span><span class="o">(</span>259x194,<span class="w"> </span><span class="m">3</span><span class="w"> </span>channels<span class="o">)</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>
+</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>Program<span class="w"> </span>received<span class="w"> </span>signal<span class="w"> </span>SIGSEGV,<span class="w"> </span>Segmentation<span class="w"> </span>fault.
+</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>rotate_image_90_clockwise<span class="w"> </span><span class="o">(</span><span class="nv">node</span><span class="o">=</span>0x5555555802f0<span class="o">)</span>
+</span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/transformation.c:105
+</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="m">105</span><span class="w"> </span>node-&gt;output-&gt;pixels<span class="o">[</span>c<span class="o">][</span>x<span class="w"> </span>*<span class="w"> </span>width<span class="w"> </span>+<span class="w"> </span><span class="o">(</span>height<span class="w"> </span>-<span class="w"> </span>y<span class="w"> </span>-<span class="w"> </span><span class="m">1</span><span class="o">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>node-&gt;input-&gt;pixels<span class="o">[</span>c<span class="o">][</span>y<span class="w"> </span>*<span class="w"> </span>width<span class="w"> </span>+<span class="w"> </span>x<span class="o">]</span><span class="p">;</span>
+</span></code></pre></div>
+<p>GDB has caught the segmentation fault and shows you the exact line where the error occurred.</p>
+<h4 id="c-backtrace-the-function-calls">c) Backtrace the function calls<a class="headerlink" href="#c-backtrace-the-function-calls" title="Permanent link">&para;</a></h4>
+<p>You can use the <code>backtrace</code> command to see the function call stack leading to the crash:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>backtrace
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="c1">#0  rotate_image_90_clockwise (node=0x5555555802f0)</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/transformation.c:105
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="c1">#1  0x0000555555577885 in execute_node (node=0x5555555802f0)</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/transformation.c:222
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="c1">#2  0x00007ffff7fb9c7f in execute_graph (graph=0x5555555802a0)</span>
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/parser.c:174
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="c1">#3  0x0000555555555e4a in main (argc=2, argv=0x7fffffffdae8)</span>
+</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/main.c:165
+</span></code></pre></div>
+<p>Here everything appears normal.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It's possible to change the frame using <code>up</code> and <code>down</code> commands to navigate through the call stack and inspect their variables.</p>
+</div>
+<h4 id="d-inspect-the-variables">d) Inspect the variables<a class="headerlink" href="#d-inspect-the-variables" title="Permanent link">&para;</a></h4>
+<p>You can inspect the values of variables at the point of the crash. For example, to check the values of <code>x</code>, <code>y</code>, <code>c</code>, <code>width</code>, and <code>height</code>, you can use the <code>print</code> command:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>print<span class="w"> </span>x<span class="w"> </span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="nv">$1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+</span></code></pre></div>
+<p>Print each of the variables, do you see anything suspicious at the point of crash?</p>
+<h4 id="e-fix-and-explain-the-first-bug">e) Fix and explain the first bug<a class="headerlink" href="#e-fix-and-explain-the-first-bug" title="Permanent link">&para;</a></h4>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The first bug is a logical error in the loop exit condition at line 109.</p>
+</div>
+<p>Once you have identified and understood the first bug, you can fix it directly in the source code.
+Commit the fix to git and explain the bug and how you fixed it in the commit message.</p>
+<p>Unfortunately, there is still a second bug that we will fix in the next section.</p>
+<h3 id="3-using-valgrind-to-detect-memory-issues">3. Using Valgrind to Detect Memory Issues<a class="headerlink" href="#3-using-valgrind-to-detect-memory-issues" title="Permanent link">&para;</a></h3>
+<h4 id="a-run-the-program-with-gdb-again">a) Run the program with GDB again<a class="headerlink" href="#a-run-the-program-with-gdb-again" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>run
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>Starting<span class="w"> </span>program:<span class="w"> </span>lab3/build/mytransform<span class="w"> </span>pipelines/rotate.pipeline
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="o">[</span>Thread<span class="w"> </span>debugging<span class="w"> </span>using<span class="w"> </span>libthread_db<span class="w"> </span>enabled<span class="o">]</span>
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>Using<span class="w"> </span>host<span class="w"> </span>libthread_db<span class="w"> </span>library<span class="w"> </span><span class="s2">&quot;/lib/x86_64-linux-gnu/libthread_db.so.1&quot;</span>.
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>Loaded<span class="w"> </span>image:<span class="w"> </span>images/image0.bmp<span class="w"> </span><span class="o">(</span>259x194,<span class="w"> </span><span class="m">3</span><span class="w"> </span>channels<span class="o">)</span>
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>malloc<span class="o">()</span>:<span class="w"> </span>corrupted<span class="w"> </span>top<span class="w"> </span>size
+</span><span id="__span-33-7"><a id="__codelineno-33-7" name="__codelineno-33-7" href="#__codelineno-33-7"></a>
+</span><span id="__span-33-8"><a id="__codelineno-33-8" name="__codelineno-33-8" href="#__codelineno-33-8"></a>Program<span class="w"> </span>received<span class="w"> </span>signal<span class="w"> </span>SIGABRT,<span class="w"> </span>Aborted.
+</span><span id="__span-33-9"><a id="__codelineno-33-9" name="__codelineno-33-9" href="#__codelineno-33-9"></a>__pthread_kill_implementation<span class="w"> </span><span class="o">(</span><span class="nv">no_tid</span><span class="o">=</span><span class="m">0</span>,<span class="w"> </span><span class="nv">signo</span><span class="o">=</span><span class="m">6</span>,<span class="w"> </span><span class="nv">threadid</span><span class="o">=</span>&lt;optimized<span class="w"> </span>out&gt;<span class="o">)</span>
+</span><span id="__span-33-10"><a id="__codelineno-33-10" name="__codelineno-33-10" href="#__codelineno-33-10"></a><span class="w">    </span>at<span class="w"> </span>./nptl/pthread_kill.c:44
+</span><span id="__span-33-11"><a id="__codelineno-33-11" name="__codelineno-33-11" href="#__codelineno-33-11"></a>warning:<span class="w"> </span><span class="m">44</span><span class="w"> </span>./nptl/pthread_kill.c:<span class="w"> </span>No<span class="w"> </span>such<span class="w"> </span>file<span class="w"> </span>or<span class="w"> </span>directory
+</span><span id="__span-33-12"><a id="__codelineno-33-12" name="__codelineno-33-12" href="#__codelineno-33-12"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>backtrace
+</span><span id="__span-33-13"><a id="__codelineno-33-13" name="__codelineno-33-13" href="#__codelineno-33-13"></a><span class="c1">#0  __pthread_kill_implementation (no_tid=0, signo=6, threadid=&lt;optimized out&gt;)</span>
+</span><span id="__span-33-14"><a id="__codelineno-33-14" name="__codelineno-33-14" href="#__codelineno-33-14"></a><span class="w">    </span>at<span class="w"> </span>./nptl/pthread_kill.c:44
+</span><span id="__span-33-15"><a id="__codelineno-33-15" name="__codelineno-33-15" href="#__codelineno-33-15"></a><span class="c1">#1  __pthread_kill_internal (signo=6, threadid=&lt;optimized out&gt;) at ./nptl/pthread_kill.c:78</span>
+</span><span id="__span-33-16"><a id="__codelineno-33-16" name="__codelineno-33-16" href="#__codelineno-33-16"></a><span class="c1">#2  __GI___pthread_kill (threadid=&lt;optimized out&gt;, signo=signo@entry=6)</span>
+</span><span id="__span-33-17"><a id="__codelineno-33-17" name="__codelineno-33-17" href="#__codelineno-33-17"></a><span class="w">    </span>at<span class="w"> </span>./nptl/pthread_kill.c:89
+</span><span id="__span-33-18"><a id="__codelineno-33-18" name="__codelineno-33-18" href="#__codelineno-33-18"></a><span class="c1">#3  0x00007ffff7c4527e in __GI_raise (sig=sig@entry=6) at ../sysdeps/posix/raise.c:26</span>
+</span><span id="__span-33-19"><a id="__codelineno-33-19" name="__codelineno-33-19" href="#__codelineno-33-19"></a><span class="c1">#4  0x00007ffff7c288ff in __GI_abort () at ./stdlib/abort.c:79</span>
+</span><span id="__span-33-20"><a id="__codelineno-33-20" name="__codelineno-33-20" href="#__codelineno-33-20"></a><span class="c1">#5  0x00007ffff7c297b6 in __libc_message_impl (fmt=fmt@entry=0x7ffff7dce8d7 &quot;%s\n&quot;)</span>
+</span><span id="__span-33-21"><a id="__codelineno-33-21" name="__codelineno-33-21" href="#__codelineno-33-21"></a><span class="w">    </span>at<span class="w"> </span>../sysdeps/posix/libc_fatal.c:134
+</span><span id="__span-33-22"><a id="__codelineno-33-22" name="__codelineno-33-22" href="#__codelineno-33-22"></a><span class="c1">#6  0x00007ffff7ca8ff5 in malloc_printerr (</span>
+</span><span id="__span-33-23"><a id="__codelineno-33-23" name="__codelineno-33-23" href="#__codelineno-33-23"></a><span class="w">    </span><span class="nv">str</span><span class="o">=</span>str@entry<span class="o">=</span>0x7ffff7dcc6f7<span class="w"> </span><span class="s2">&quot;malloc(): corrupted top size&quot;</span><span class="o">)</span><span class="w"> </span>at<span class="w"> </span>./malloc/malloc.c:5772
+</span><span id="__span-33-24"><a id="__codelineno-33-24" name="__codelineno-33-24" href="#__codelineno-33-24"></a><span class="c1">#7  0x00007ffff7cac2fc in _int_malloc (av=av@entry=0x7ffff7e03ac0 &lt;main_arena&gt;, bytes=150738)</span>
+</span><span id="__span-33-25"><a id="__codelineno-33-25" name="__codelineno-33-25" href="#__codelineno-33-25"></a><span class="w">    </span>at<span class="w"> </span>./malloc/malloc.c:4447
+</span><span id="__span-33-26"><a id="__codelineno-33-26" name="__codelineno-33-26" href="#__codelineno-33-26"></a><span class="c1">#8  0x00007ffff7cad7f2 in __GI___libc_malloc (bytes=&lt;optimized out&gt;)</span>
+</span><span id="__span-33-27"><a id="__codelineno-33-27" name="__codelineno-33-27" href="#__codelineno-33-27"></a><span class="w">    </span>at<span class="w"> </span>./malloc/malloc.c:3328
+</span><span id="__span-33-28"><a id="__codelineno-33-28" name="__codelineno-33-28" href="#__codelineno-33-28"></a><span class="c1">#9  0x0000555555576fd3 in save_image (node=0x555555580320)</span>
+</span><span id="__span-33-29"><a id="__codelineno-33-29" name="__codelineno-33-29" href="#__codelineno-33-29"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/transformation.c:70
+</span><span id="__span-33-30"><a id="__codelineno-33-30" name="__codelineno-33-30" href="#__codelineno-33-30"></a><span class="c1">#10 0x0)</span>
+</span><span id="__span-33-31"><a id="__codelineno-33-31" name="__codelineno-33-31" href="#__codelineno-33-31"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/transformation.c:225
+</span><span id="__span-33-32"><a id="__codelineno-33-32" name="__codelineno-33-32" href="#__codelineno-33-32"></a><span class="c1">#11 0x0a0)</span>
+</span><span id="__span-33-33"><a id="__codelineno-33-33" name="__codelineno-33-33" href="#__codelineno-33-33"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/parser.c:174
+</span><span id="__span-33-34"><a id="__codelineno-33-34" name="__codelineno-33-34" href="#__codelineno-33-34"></a><span class="c1">#12 0x0)</span>
+</span><span id="__span-33-35"><a id="__codelineno-33-35" name="__codelineno-33-35" href="#__codelineno-33-35"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/main.c:165
+</span></code></pre></div>
+<p>The program crashes again, but this time with a different error message: <code>malloc(): corrupted top size</code>. This indicates a memory corruption issue.</p>
+<p><strong>The backtrace does not point to the exact line in your code where the corruption occurred. Why?</strong></p>
+<h4 id="b-use-valgrind-to-pinpoint-the-memory-issue">b) Use Valgrind to pinpoint the memory issue<a class="headerlink" href="#b-use-valgrind-to-pinpoint-the-memory-issue" title="Permanent link">&para;</a></h4>
+<p>Valgrind is a programming tool for memory debugging, memory leak detection, and profiling. It can help you identify memory-related issues in your program, such as invalid memory accesses, memory leaks, and uninitialized memory usage.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>valgrind<span class="w"> </span>build/mytransform<span class="w"> </span>pipelines/rotate.pipeline
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w"> </span>Memcheck,<span class="w"> </span>a<span class="w"> </span>memory<span class="w"> </span>error<span class="w"> </span><span class="nv">detector</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w"> </span>Copyright<span class="w"> </span><span class="o">(</span>C<span class="o">)</span><span class="w"> </span><span class="m">2002</span>-2022,<span class="w"> </span>and<span class="w"> </span>GNU<span class="w"> </span>GPL<span class="err">&#39;</span>d,<span class="w"> </span>by<span class="w"> </span>Julian<span class="w"> </span>Seward<span class="w"> </span>et<span class="w"> </span>al.
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w"> </span>Using<span class="w"> </span>Valgrind-3.22.0<span class="w"> </span>and<span class="w"> </span>LibVEX<span class="p">;</span><span class="w"> </span>rerun<span class="w"> </span>with<span class="w"> </span>-h<span class="w"> </span><span class="k">for</span><span class="w"> </span>copyright<span class="w"> </span><span class="nv">info</span>
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w"> </span>Command:<span class="w"> </span>build/mytransform<span class="w"> </span>pipelines/rotate.pipeline
+</span><span id="__span-34-7"><a id="__codelineno-34-7" name="__codelineno-34-7" href="#__codelineno-34-7"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w"> </span>
+</span><span id="__span-34-8"><a id="__codelineno-34-8" name="__codelineno-34-8" href="#__codelineno-34-8"></a>Loaded<span class="w"> </span>image:<span class="w"> </span>images/image0.bmp<span class="w"> </span><span class="o">(</span>259x194,<span class="w"> </span><span class="m">3</span><span class="w"> </span>channels<span class="o">)</span>
+</span><span id="__span-34-9"><a id="__codelineno-34-9" name="__codelineno-34-9" href="#__codelineno-34-9"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w"> </span>Invalid<span class="w"> </span>write<span class="w"> </span>of<span class="w"> </span>size<span class="w"> </span><span class="nv">1</span>
+</span><span id="__span-34-10"><a id="__codelineno-34-10" name="__codelineno-34-10" href="#__codelineno-34-10"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w">    </span>at<span class="w"> </span>0x12B188:<span class="w"> </span>rotate_image_90_clockwise<span class="w"> </span><span class="o">(</span>transformation.c:105<span class="o">)</span>
+</span><span id="__span-34-11"><a id="__codelineno-34-11" name="__codelineno-34-11" href="#__codelineno-34-11"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w">    </span>by<span class="w"> </span>0x12B87D:<span class="w"> </span>execute_node<span class="w"> </span><span class="o">(</span>transformation.c:222<span class="o">)</span>
+</span><span id="__span-34-12"><a id="__codelineno-34-12" name="__codelineno-34-12" href="#__codelineno-34-12"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w">    </span>by<span class="w"> </span>0x485BC7E:<span class="w"> </span>execute_graph<span class="w"> </span><span class="o">(</span>parser.c:174<span class="o">)</span>
+</span><span id="__span-34-13"><a id="__codelineno-34-13" name="__codelineno-34-13" href="#__codelineno-34-13"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w">    </span>by<span class="w"> </span>0x109E49:<span class="w"> </span>main<span class="w"> </span><span class="o">(</span>main.c:165<span class="o">)</span>
+</span><span id="__span-34-14"><a id="__codelineno-34-14" name="__codelineno-34-14" href="#__codelineno-34-14"></a><span class="o">==</span><span class="nv">241843</span><span class="o">==</span><span class="w">  </span>Address<span class="w"> </span>0x4bf26f7<span class="w"> </span>is<span class="w"> </span><span class="m">119</span><span class="w"> </span>bytes<span class="w"> </span>inside<span class="w"> </span>an<span class="w"> </span>unallocated<span class="w"> </span>block<span class="w"> </span>of<span class="w"> </span>size<span class="w"> </span><span class="m">3</span>,729,760<span class="w"> </span><span class="k">in</span><span class="w"> </span>arena<span class="w"> </span><span class="s2">&quot;client&quot;</span>
+</span><span id="__span-34-15"><a id="__codelineno-34-15" name="__codelineno-34-15" href="#__codelineno-34-15"></a>...<span class="w"> </span><span class="o">[</span>output<span class="w"> </span>truncated<span class="o">]</span><span class="w"> </span>...
+</span></code></pre></div>
+<p><strong>How does Valgrind work? Why is it able to provide more detailed information about memory issues than gdb?</strong></p>
+<p>Here valgrind provides a detailed report of the memory error, including the exact line in your code where the invalid write occurred. Now we will use gdb again to inspect the variables at the point of the invalid write.</p>
+<h4 id="c-set-a-breakpoint-at-the-faulty-line">c) Set a breakpoint at the faulty line<a class="headerlink" href="#c-set-a-breakpoint-at-the-faulty-line" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span><span class="k">break</span><span class="w"> </span>transformation.c:105
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>run
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>...<span class="w"> </span><span class="o">[</span>output<span class="w"> </span>truncated<span class="o">]</span><span class="w"> </span>...
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>Breakpoint<span class="w"> </span><span class="m">1</span>,<span class="w"> </span>rotate_image_90_clockwise<span class="w"> </span><span class="o">(</span><span class="nv">node</span><span class="o">=</span>0x5555555802f0<span class="o">)</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="w">    </span>at<span class="w"> </span>lab3/src/transformation.c:105
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="m">105</span><span class="w"> </span>node-&gt;output-&gt;pixels<span class="o">[</span>c<span class="o">][</span>x<span class="w"> </span>*<span class="w"> </span>width<span class="w"> </span>+<span class="w"> </span><span class="o">(</span>height<span class="w"> </span>-<span class="w"> </span>y<span class="w"> </span>-<span class="w"> </span><span class="m">1</span><span class="o">)]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>node-&gt;input-&gt;pixels<span class="o">[</span>c<span class="o">][</span>y<span class="w"> </span>*<span class="w"> </span>width<span class="w"> </span>+<span class="w"> </span>x<span class="o">]</span><span class="p">;</span>
+</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>
+</span></code></pre></div>
+<p>Observe that gdb stops at the breakpoint you set and allows inspecting the point of the invalid write.</p>
+<h4 id="d-inspect-the-values-of-x-y-width-height-and-the-computed-index">d) Inspect the values of <code>x</code>, <code>y</code>, <code>width</code>, <code>height</code>, and the computed index:<a class="headerlink" href="#d-inspect-the-values-of-x-y-width-height-and-the-computed-index" title="Permanent link">&para;</a></h4>
+<p><div class="language-sh highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>print<span class="w"> </span>x
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>print<span class="w"> </span>y
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>print<span class="w"> </span>width
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>print<span class="w"> </span>height
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>print<span class="w"> </span>x<span class="w"> </span>*<span class="w"> </span>width<span class="w"> </span>+<span class="w"> </span><span class="o">(</span>height<span class="w"> </span>-<span class="w"> </span>y<span class="w"> </span>-<span class="w"> </span><span class="m">1</span><span class="o">)</span>
+</span></code></pre></div>
+GDB allows you to perform arithmetic operations directly in the <code>print</code> command, so you can compute the index and check if it is within bounds. Do you see anything suspicious?</p>
+<h4 id="e-set-a-conditional-breakpoint">e) Set a conditional breakpoint<a class="headerlink" href="#e-set-a-conditional-breakpoint" title="Permanent link">&para;</a></h4>
+<p>We start to suspect that the index calculation is incorrect. To catch the invalid memory write, set a conditional breakpoint that triggers when the computed index is out of bounds. Start gdb again and run the following commands:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span><span class="k">break</span><span class="w"> </span>transformation.c:105
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="o">(</span>gdb<span class="o">)</span><span class="w"> </span>condition<span class="w"> </span><span class="m">1</span><span class="w"> </span>x<span class="w"> </span>*<span class="w"> </span>width<span class="w"> </span>+<span class="w"> </span><span class="o">(</span>height<span class="w"> </span>-<span class="w"> </span>y<span class="w"> </span>-<span class="w"> </span><span class="m">1</span><span class="o">)</span><span class="w"> </span>&gt;<span class="o">=</span><span class="w"> </span>height<span class="w"> </span>*<span class="w"> </span>width
+</span></code></pre></div>
+<p><code>condition</code> 1 sets a condition on breakpoint 1, so it only triggers when the condition is true.
+The condition will trigger when the computed index is greater than or equal to the total number of pixels in the image, which indicates an out-of-bounds access.</p>
+<p>Run the program again, do you hit the breakpoint?</p>
+<h4 id="f-analyze-and-fix-the-bug">f) Analyze and fix the bug<a class="headerlink" href="#f-analyze-and-fix-the-bug" title="Permanent link">&para;</a></h4>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Check carefully that the dimensions used in the index calculation are correct. The bug is a mix-up between <code>width</code> and <code>height</code>.</p>
+</div>
+<p>As before once you have identified and understood the second bug, you can fix it directly in the source code.
+Commit the fix to git and explain the bug and how you fixed it in the commit message.</p>
+<p>Check that the program runs correctly now!</p>
+<h3 id="4-non-regression-tests">4. Non-regression tests<a class="headerlink" href="#4-non-regression-tests" title="Permanent link">&para;</a></h3>
+<p>Now that you have fixed both bugs, it's important to ensure that the bugs will not reappear in the future. To do this, you will write non-regression tests using the Unity testing framework.</p>
+<p>Add tests that specifically target the scenarios that led to the bugs you fixed. For example, you can create tests that rotate images of various sizes and shapes, including non-square images, to ensure that the <code>rotate_image_90_clockwise</code> function behaves correctly.</p>
+<hr class="gradient" />
+
+<div class="summary-section box-section">
+<h2 class="hidden-title" id="4-summary"> 4 - Summary<a class="headerlink" href="#4-summary" title="Permanent link">&para;</a></h2>
+<p>Upon completing this third lab, you should know how to:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Use CMake to build and install a shared library and an executable.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Configure CMake for different build types and compiler options.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Integrate and run unit tests using the Unity testing framework.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Debug segmentation faults and memory issues using GDB and Valgrind.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Write non-regression tests to prevent reintroducing fixed bugs.</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab2/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 2 - C Programming and Memory Management">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 2 - C Programming and Memory Management
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab4/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 4 - Monte-Carlo sampling">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 4 - Monte-Carlo sampling
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      CC BY-NC 4.0; 2025 - Pablo Oliveira, Mathys Jam
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "toc.integrate", "toc.follow", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

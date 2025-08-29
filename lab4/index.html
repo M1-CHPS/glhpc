@@ -1,0 +1,1710 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../lab3/">
+      
+      
+        <link rel="next" href="../lab5/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>Lab 4 - Monte-Carlo sampling - GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lab-4-monte-carlo-sampling" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-header__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Lab 4 - Monte-Carlo sampling
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../lecture1/" class="md-tabs__link">
+          
+  
+  
+  Course
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../guide_soutenance/" class="md-tabs__link">
+          
+  
+  
+  Exams
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../annex/bash_cheatsheet/" class="md-tabs__link">
+          
+  
+  
+  Annex
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-nav__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Course
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Course
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Lectures
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Lectures
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 - Introduction to Software Engineering for HPC/AI, Development Environment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 - Performance Aware C Computing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 - Building, Testing, and Debugging Scientific Software
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 - Experimental Design, Profiling, and Performance/Energy Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 - HPC for AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Labs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Labs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 1 - Prerequisites
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 2 - C Programming and Memory Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 3 - CMake, Unit Tests, and Debugging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Lab 4 - Monte-Carlo sampling
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 4 - Monte-Carlo sampling
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-implementing-the-mc-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 - Implementing the MC Method
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-timing-and-serialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 - Timing and serialization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 - Timing and serialization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-implementing-timing" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Implementing timing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Implementing timing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-modify-the-function-srcmaincmc_harness-to-measure-the-execution-time-of-your-method" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Modify the function src/main.c:mc_harness(...) to measure the execution time of your method.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-modify-the-function-srcmaincprint_results-to-print-a-table-with-the-following-values" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Modify the function src/main.c:print_results(...) to print a table with the following values:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-implement-csv-serialization-inside-the-program" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Implement csv serialization inside the program.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-run-the-provided-experiments" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Run the provided experiments
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Run the provided experiments">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-first-look-at-the-top-figure-in-convergencepng" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) First, look at the top figure in convergence.png
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-look-at-the-bottom-figure-how-does-execution-time-evolve-when-increasing-the-number-of-samples" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Look at the bottom figure: how does execution time evolve when increasing the number of samples ?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-look-at-the-top-figure-in-stabilitypng" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Look at the top figure in stability.png
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-look-at-the-bottom-figure-how-is-the-execution-time-distributed" class="md-nav__link">
+    <span class="md-ellipsis">
+      d) Look at the bottom figure: how is the execution time distributed ?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#25-going-further-understanding-the-scripts" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.5 - (Going-Further) Understanding the scripts
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2.5 - (Going-Further) Understanding the scripts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-look-at-run_allsh-and-try-to-understand-each-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Look at run_all.sh, and try to understand each line.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Look at run_all.sh, and try to understand each line.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-what-does-set-e-set-o-pipefail-and-21-tee-do" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) What does set -e, set -o pipefail and 2&gt;&amp;1 | tee ... do ?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-what-is-the-purpose-of-the-run_label-argument-why-should-we-label-our-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) What is the purpose of the run_label argument (Why should we label our data) ?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-look-at-scriptsanalysepy-and-try-to-understand-how-each-plot-is-built" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Look at scripts/analyse.py and try to understand how each plot is built.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-optimization" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 - Optimization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 - Optimization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-setting-up-makefile" class="md-nav__link">
+    <span class="md-ellipsis">
+      1) Setting up Makefile
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1) Setting up Makefile">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-modify-the-makefile-and-play-around-with-compilation-flags-and-different-compilers" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Modify the makefile and play around with compilation flags and different compilers.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-use-openmp-to-parallelize-your-monte-carlo-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Use OpenMP to parallelize your Monte-Carlo algorithm.
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Use OpenMP to parallelize your Monte-Carlo algorithm.">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-how-are-you-generating-random-numbers-in-the-sampling-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) How are you generating random numbers in the sampling algorithm?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-where-did-you-implement-parallelization" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Where did you implement parallelization?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-do-you-see-any-performans-gains-compared-to-the-sequential-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Do you see any performans gains compared to the sequential version ?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-rerun-the-provided-experiments-and-compare-with-your-previous-sequential-result" class="md-nav__link">
+    <span class="md-ellipsis">
+      d) Rerun the provided experiments, and compare with your previous sequential result.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-is-the-performance-stable-is-there-any-impact-on-the-accuracy-of-your-estimator" class="md-nav__link">
+    <span class="md-ellipsis">
+      e) Is the performance stable? Is there any impact on the accuracy of your estimator?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-bonus-for-students-with-an-heterogeneous-cpu-efficiency-e-cores-and-performance-p-coress" class="md-nav__link">
+    <span class="md-ellipsis">
+      e - Bonus) For students with an heterogeneous CPU (Efficiency (E) Cores and Performance (P) Coress)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#f-verify-your-implementations-strong-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      f) Verify your implementation's strong scaling:
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#g-verify-your-implementations-weak-scaling" class="md-nav__link">
+    <span class="md-ellipsis">
+      g) Verify your implementation's weak-scaling:
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 - Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 5 - Experimental Methodology and Scientific Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 6 - AI Project (1) SGEMM Kernel Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 7 - AI Project (2) Neural Network Inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Exams
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Exams
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide_soutenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Guide de soutenance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Annex
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Annex
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/bash_cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bash cheatsheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux Environment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Linux Environment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/install_fedora/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing fedora
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/oh-my-zsh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing oh-my-zsh
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="lab-4-monte-carlo-sampling">Lab 4: Monte-Carlo Sampling<a class="headerlink" href="#lab-4-monte-carlo-sampling" title="Permanent link">&para;</a></h1>
+<hr class="gradient" />
+
+<p>Monte-Carlo methods are useful for approximating quantities that are difficult or computationally expensive to determine analytically or through deterministic algorithms. These methods introduce randomness into the computations in order to obtain a statistically meaningful estimate over multiple repetitions of the same routine.</p>
+<p>In this lab, we explore the approximation of π using Monte-Carlo sampling. To do this, we consider a unit circle (radius 1) inscribed within a square of side length 2, centered at the origin. By generating random points uniformly within the square and counting how many fall inside the circle, we can estimate the ratio of the areas of the two shapes. </p>
+<p>Since the area of the circle is <span class="arithmatex">\(\pi \cdot r^2 = \pi\)</span>, and the area of the square is 4, we expect the ratio of points falling inside the circle to converge to <span class="arithmatex">\(\pi / 4\)</span>.</p>
+<figure>
+  <img alt="Monte-Carlo Pi" src="../image/lab3/example.png" />
+<br />
+<figcaption>Monte-Carlo Pi</figcaption>
+</figure>
+<hr class="gradient" />
+
+<h2 id="1-implementing-the-mc-method">1 - Implementing the MC Method<a class="headerlink" href="#1-implementing-the-mc-method" title="Permanent link">&para;</a></h2>
+<p>Implement your own version of the <span class="arithmatex">\(\pi\)</span> estimator inside <code>src/compute_pi.c</code> using the Monte-Carlo method. This method receives <span class="arithmatex">\(n\)</span> the number of Monte-Carlo samples to take as arguments, and must return the approximation of <span class="arithmatex">\(\pi\)</span> in <code>double</code> precision.</p>
+<p>Build your program using <code>make</code> and validate your implementation. The program can be run using:
+<div class="language-bash highlight"><span class="filename">Run the estimator</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># piestimator &lt;nsamples&gt;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>piestimator<span class="w"> </span><span class="m">1000000</span>
+</span></code></pre></div></p>
+<hr class="gradient" />
+
+<h2 id="2-timing-and-serialization">2 - Timing and serialization<a class="headerlink" href="#2-timing-and-serialization" title="Permanent link">&para;</a></h2>
+<h3 id="1-implementing-timing">1. Implementing timing<a class="headerlink" href="#1-implementing-timing" title="Permanent link">&para;</a></h3>
+<h4 id="a-modify-the-function-srcmaincmc_harness-to-measure-the-execution-time-of-your-method">a) Modify the function <code>src/main.c:mc_harness(...)</code> to measure the execution time of your method.<a class="headerlink" href="#a-modify-the-function-srcmaincmc_harness-to-measure-the-execution-time-of-your-method" title="Permanent link">&para;</a></h4>
+<p>You must repeat the measurements <code>nmeta</code> times, and record the values of Pi as well as the execution time for every execution.</p>
+<p>What function did you use to measure time ? How accurate is it ? Is it monotonic ?</p>
+<h4 id="b-modify-the-function-srcmaincprint_results-to-print-a-table-with-the-following-values">b) Modify the function <code>src/main.c:print_results(...)</code> to print a table with the following values:<a class="headerlink" href="#b-modify-the-function-srcmaincprint_results-to-print-a-table-with-the-following-values" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Avg. Pi</th>
+<th>Std Pi</th>
+<th>Avg. Time</th>
+<th>Std Time</th>
+<th>Min Time</th>
+<th>Max Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Average Value of Pi</td>
+<td>Standard Deviation of Pi</td>
+<td>Average execution time</td>
+<td>Standard Deviation of execution time</td>
+<td>Min execution time</td>
+<td>Max Execution time</td>
+</tr>
+</tbody>
+</table>
+<p>You may need to modify other functions or the provided structure(s) to achieve this.</p>
+<h4 id="c-implement-csv-serialization-inside-the-program">c) Implement csv serialization inside the program.<a class="headerlink" href="#c-implement-csv-serialization-inside-the-program" title="Permanent link">&para;</a></h4>
+<p>You must exactly match this format and header:</p>
+<div class="language-text highlight"><span class="filename">output.csv</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>NMeta,Pi,Time
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>1,3.145584,0.025
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>2,3.13547,0.028
+</span></code></pre></div>
+<p>Print at least 10 decimals, and ensure that the file is saved in the path provided by the user.</p>
+<p>Check that you can run the following:
+<div class="language-sh highlight"><span class="filename">Expected API</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Run MC Pi Estimator with 1 Million sample, 2048 meta-repetitions and save the results in results.csv</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>./piestimator<span class="w"> </span><span class="m">1000000</span><span class="w"> </span><span class="m">2048</span><span class="w"> </span>results.csv
+</span></code></pre></div></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The following questions will reuse this CSV serialization. Be sure that you match exactly the prescribed format. Be careful not to introduce blank spaces in the header name (e.g. <code>NMeta,Pi,Time</code> rather than <code>NMeta,   Pi,   Time</code>)</p>
+</div>
+<h3 id="2-run-the-provided-experiments">2. Run the provided experiments<a class="headerlink" href="#2-run-the-provided-experiments" title="Permanent link">&para;</a></h3>
+<p>If you correctly implemented csv serialization, this will generate plots inside the <code>results</code> folder.</p>
+<div class="language-sh highlight"><span class="filename">First sequential run</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># ./run_all.sh &lt;run_label&gt;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>./run_all.sh<span class="w"> </span>sequential
+</span></code></pre></div>
+<h4 id="a-first-look-at-the-top-figure-in-convergencepng">a) First, look at the top figure in <code>convergence.png</code><a class="headerlink" href="#a-first-look-at-the-top-figure-in-convergencepng" title="Permanent link">&para;</a></h4>
+<p>How do you observe ? How does the error evolve when increasing the number of Monte-Carlo samples ?<br />
+If needed, fix your program so that the relative error converges towards zero.</p>
+<h4 id="b-look-at-the-bottom-figure-how-does-execution-time-evolve-when-increasing-the-number-of-samples">b) Look at the bottom figure: how does execution time evolve when increasing the number of samples ?<a class="headerlink" href="#b-look-at-the-bottom-figure-how-does-execution-time-evolve-when-increasing-the-number-of-samples" title="Permanent link">&para;</a></h4>
+<p>If needed, fix your program so that the execution time scales linearly with the number of samples.</p>
+<h4 id="c-look-at-the-top-figure-in-stabilitypng">c) Look at the top figure in <code>stability.png</code><a class="headerlink" href="#c-look-at-the-top-figure-in-stabilitypng" title="Permanent link">&para;</a></h4>
+<p>How are the values of the Pi estimations distributed ? Is there any bias, and if yes, why ?<br />
+If needed, fix your program so that the Pi estimations are normally distributed around 3.14.</p>
+<h4 id="d-look-at-the-bottom-figure-how-is-the-execution-time-distributed">d) Look at the bottom figure: how is the execution time distributed ?<a class="headerlink" href="#d-look-at-the-bottom-figure-how-is-the-execution-time-distributed" title="Permanent link">&para;</a></h4>
+<p>Check whether the timings are stable, and if not, propose an explanation.
+Do you observe any measurement noise ? How would you qualify it ?  </p>
+<p>If needed, fix your measurements so that the execution time is mostly normally distributed, and the measurement noise is tolerable.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The <code>results/expected_results</code> folder contains examples of plots that were run on a stable machine, with a correct implementation of the Monte-Carlo estimator.</p>
+</div>
+<div class="goingfurther-section box-section">
+<h2 id="25-going-further-understanding-the-scripts">2.5 - <span class="toc-title"> (Going-Further)</span> Understanding the scripts<a class="headerlink" href="#25-going-further-understanding-the-scripts" title="Permanent link">&para;</a></h2>
+<h3 id="1-look-at-run_allsh-and-try-to-understand-each-line">1. Look at <code>run_all.sh</code>, and try to understand each line.<a class="headerlink" href="#1-look-at-run_allsh-and-try-to-understand-each-line" title="Permanent link">&para;</a></h3>
+<h4 id="a-what-does-set-e-set-o-pipefail-and-21-tee-do">a) What does <code>set -e</code>, <code>set -o pipefail</code> and <code>2&gt;&amp;1 | tee ...</code> do ?<a class="headerlink" href="#a-what-does-set-e-set-o-pipefail-and-21-tee-do" title="Permanent link">&para;</a></h4>
+<h4 id="b-what-is-the-purpose-of-the-run_label-argument-why-should-we-label-our-data">b) What is the purpose of the <code>run_label</code> argument (Why should we label our data) ?<a class="headerlink" href="#b-what-is-the-purpose-of-the-run_label-argument-why-should-we-label-our-data" title="Permanent link">&para;</a></h4>
+<p>What files are generated, and what's the purpose of every one of them ?</p>
+<h3 id="2-look-at-scriptsanalysepy-and-try-to-understand-how-each-plot-is-built">2. Look at <code>scripts/analyse.py</code> and try to understand how each plot is built.<a class="headerlink" href="#2-look-at-scriptsanalysepy-and-try-to-understand-how-each-plot-is-built" title="Permanent link">&para;</a></h3>
+<p>Try to link every components of <code>convergence.png</code> and <code>stability.png</code> (The titles, the axis label, the axis ticks, the distributions, the grid, ...) with the code that generates it.</p>
+</div>
+<hr class="gradient" />
+
+<h2 id="3-optimization">3 - Optimization<a class="headerlink" href="#3-optimization" title="Permanent link">&para;</a></h2>
+<h3 id="1-setting-up-makefile">1) Setting up Makefile<a class="headerlink" href="#1-setting-up-makefile" title="Permanent link">&para;</a></h3>
+<h4 id="a-modify-the-makefile-and-play-around-with-compilation-flags-and-different-compilers">a) Modify the <code>makefile</code> and play around with compilation flags and different compilers.<a class="headerlink" href="#a-modify-the-makefile-and-play-around-with-compilation-flags-and-different-compilers" title="Permanent link">&para;</a></h4>
+<p>Remember that you can run <code>run_all.sh &lt;run_label&gt;</code> to compare the different runs later.  </p>
+<p>What configuration gives you the fastest execution time ? Can you understand why ?</p>
+<h3 id="2-use-openmp-to-parallelize-your-monte-carlo-algorithm">2. Use OpenMP to parallelize your Monte-Carlo algorithm.<a class="headerlink" href="#2-use-openmp-to-parallelize-your-monte-carlo-algorithm" title="Permanent link">&para;</a></h3>
+<p>You may need to modify the <code>makefile</code> to link to OpenMP.  </p>
+<h4 id="a-how-are-you-generating-random-numbers-in-the-sampling-algorithm">a) How are you generating random numbers in the sampling algorithm?<a class="headerlink" href="#a-how-are-you-generating-random-numbers-in-the-sampling-algorithm" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Read the fourth paragraph in the description section of the <code>rand</code>/<code>srand</code> man page using <code>man 3 srand</code> or the <a href="https://linux.die.net/man/3/srand">online version</a>.</li>
+<li>If necessary, research thread-safe alternatives.</li>
+</ul>
+<h4 id="b-where-did-you-implement-parallelization">b) Where did you implement parallelization?<a class="headerlink" href="#b-where-did-you-implement-parallelization" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Are you averaging multiple Pi values from separate runs, or</li>
+<li>Are you summing the counts of points inside the circle across threads?<ul>
+<li>Does each thread accumulate its count in a private variable?</li>
+<li>If you accumulate in a shared variable, do you protect it using mutexes, locks, or OpenMP critical sections?</li>
+</ul>
+</li>
+</ul>
+<h4 id="c-do-you-see-any-performans-gains-compared-to-the-sequential-version">c) Do you see any performans gains compared to the sequential version ?<a class="headerlink" href="#c-do-you-see-any-performans-gains-compared-to-the-sequential-version" title="Permanent link">&para;</a></h4>
+<h4 id="d-rerun-the-provided-experiments-and-compare-with-your-previous-sequential-result">d) Rerun the provided experiments, and compare with your previous sequential result.<a class="headerlink" href="#d-rerun-the-provided-experiments-and-compare-with-your-previous-sequential-result" title="Permanent link">&para;</a></h4>
+<div class="language-bash highlight"><span class="filename">Running the experiment(s)</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>./run_all.sh<span class="w"> </span>parallel
+</span></code></pre></div>
+<p>Is your program faster using OpenMP ? If not, ensure you are correctly running multiple threads.</p>
+<h4 id="e-is-the-performance-stable-is-there-any-impact-on-the-accuracy-of-your-estimator">e) Is the performance stable? Is there any impact on the accuracy of your estimator?<a class="headerlink" href="#e-is-the-performance-stable-is-there-any-impact-on-the-accuracy-of-your-estimator" title="Permanent link">&para;</a></h4>
+<p>If performance is unstable, investigate thread affinity and how to bind threads to specific cores.</p>
+<p>On Intel CPUs, check if your processor has Performance (P) and Efficiency (E) cores, as this can affect timing consistency.</p>
+<div class="language-sh highlight"><span class="filename">Checking your CPU Model Name</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>lscpu<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;Model name&quot;</span>
+</span></code></pre></div>
+<div class="optional-section box-section">
+<h4 id="e-bonus-for-students-with-an-heterogeneous-cpu-efficiency-e-cores-and-performance-p-coress">e - Bonus) For students with an heterogeneous CPU (Efficiency (E) Cores and Performance (P) Coress)<a class="headerlink" href="#e-bonus-for-students-with-an-heterogeneous-cpu-efficiency-e-cores-and-performance-p-coress" title="Permanent link">&para;</a></h4>
+<p>Using both E and P cores can introduce instabilities in your measurements, load balancing issues, and should be avoided.<br />
+Run the following to check your CPU topology:
+<div class="language-sh highlight"><span class="filename">Checking CPU Topology</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>lscpu<span class="w"> </span>--all<span class="w"> </span>--extended
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="c1"># CPU NODE SOCKET CORE L1d:L1i:L2:L3 ONLINE    MAXMHZ   MINMHZ       MHZ</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1">#   0    0      0    0 0:0:0:0          yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1">#   1    0      0    0 0:0:0:0          yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1">#   2    0      0    1 4:4:1:0          yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1">#   3    0      0    1 4:4:1:0          yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1">#   4    0      0    2 8:8:2:0          yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="c1">#   5    0      0    2 8:8:2:0          yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1">#   6    0      0    3 12:12:3:0        yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="c1">#   7    0      0    3 12:12:3:0        yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="c1">#   8    0      0    4 16:16:4:0        yes 5300.0000 800.0000  843.1520</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="c1">#   9    0      0    4 16:16:4:0        yes 5300.0000 800.0000  800.0000</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1">#  10    0      0    5 20:20:5:0        yes 5300.0000 800.0000 2329.4590</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="c1">#  11    0      0    5 20:20:5:0        yes 5300.0000 800.0000  800.0000</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="c1">#  12    0      0    6 24:24:6:0        yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="c1">#  13    0      0    6 24:24:6:0        yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="c1">#  14    0      0    7 28:28:7:0        yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="c1">#  15    0      0    7 28:28:7:0        yes 5100.0000 800.0000  800.0000</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="c1">#  16    0      0    8 32:32:8:0        yes 3800.0000 800.0000  800.0000</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="c1">#  17    0      0    9 33:33:8:0        yes 3800.0000 800.0000  842.6700</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="c1">#  18    0      0   10 34:34:8:0        yes 3800.0000 800.0000  799.7680</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="c1">#  19    0      0   11 35:35:8:0        yes 3800.0000 800.0000  800.0000</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="c1">#  20    0      0   12 40:40:10:0       yes 3800.0000 800.0000  800.0000</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="c1">#  21    0      0   13 41:41:10:0       yes 3800.0000 800.0000  800.0000</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="c1">#  22    0      0   14 42:42:10:0       yes 3800.0000 800.0000  800.0000</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="c1">#  23    0      0   15 43:43:10:0       yes 3800.0000 800.0000  800.0000</span>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="c1">#  24    0      0   16 44:44:11:0       yes 3800.0000 800.0000  799.0440</span>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="c1">#  25    0      0   17 45:45:11:0       yes 3800.0000 800.0000  800.0000</span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="c1">#  26    0      0   18 46:46:11:0       yes 3800.0000 800.0000  800.0000</span>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="c1">#  27    0      0   19 47:47:11:0       yes 3800.0000 800.0000  800.0000</span>
+</span></code></pre></div></p>
+<p>You should be able to see that some cores have a higher Max Frequency (MAXMHZ) than other: those are typically performance cores.<br />
+If you have hyperthreading enabled, you should also see that some cores share the same "core id": classically, only performance cores have hyperthreading enabled.<br />
+From the previous output, we can deduce that cores 0-15 are P-cores and that hyperthreading is enabled.
+As such, we can run the following command to change the thread affinity of our shell to only use physical cores:</p>
+<div class="language-sh highlight"><span class="filename">Restricting Thread Affinity</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Adjust the core list based on your actual topology</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>taskset<span class="w"> </span>-cp<span class="w"> </span><span class="m">0</span>,2,4,6,8,10,12,14<span class="w"> </span><span class="nv">$$</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># You can also use `hwloc-ls` or `lstopo` (from hwloc) for a visual map of your CPU topology.</span>
+</span></code></pre></div>
+<p>From now on, all the executable run in this shell will inherit this thread affinity.
+Feel free to create an alias for this command inside your <code>.bashrc</code> for future use.</p>
+<p>You can also use the following variable for OpenMP:
+<div class="language-sh highlight"><span class="filename">OMP Places for E/P cores</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">OMP_PLACES</span><span class="o">=</span><span class="s2">&quot;{0, 2, 4, 6, 8, 10, 12, 14}&quot;</span>
+</span></code></pre></div></p>
+</div>
+<h4 id="f-verify-your-implementations-strong-scaling">f) Verify your implementation's strong scaling:<a class="headerlink" href="#f-verify-your-implementations-strong-scaling" title="Permanent link">&para;</a></h4>
+<div class="language-bash highlight"><span class="filename">Strong Scaling</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>./piestimator<span class="w"> </span><span class="m">1000000</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">2</span><span class="w"> </span>./piestimator<span class="w"> </span><span class="m">1000000</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">4</span><span class="w"> </span>./piestimator<span class="w"> </span><span class="m">1000000</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">8</span><span class="w"> </span>./piestimator<span class="w"> </span><span class="m">1000000</span>
+</span></code></pre></div>
+<p>Does using 2 threads instead of 1 make your code twice as fast ? Propose an explanation.</p>
+<h4 id="g-verify-your-implementations-weak-scaling">g) Verify your implementation's weak-scaling:<a class="headerlink" href="#g-verify-your-implementations-weak-scaling" title="Permanent link">&para;</a></h4>
+<div class="language-bash highlight"><span class="filename">Weak scaling</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">1</span><span class="w"> </span>./piestimator<span class="w"> </span><span class="m">1000000</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">2</span><span class="w"> </span>./piestimator<span class="w"> </span><span class="m">2000000</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">4</span><span class="w"> </span>./piestimator<span class="w"> </span><span class="m">4000000</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">8</span><span class="w"> </span>./piestimator<span class="w"> </span><span class="m">8000000</span>
+</span></code></pre></div>
+<p>What results do you expect to see ? Does that match your empirical observations ? Propose an explanation.</p>
+<hr class="gradient" />
+
+<div class="summary-section box-section">
+<h2 class="hidden-title" id="5-summary"> 5 - Summary<a class="headerlink" href="#5-summary" title="Permanent link">&para;</a></h2>
+<p>Upon completing this third lab, you should know how to:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Explain the principle of Monte-Carlo algorithms and apply them to numerical estimation</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Implement and benchmark a Monte-Carlo estimator with statistical analysis (mean, stddev, min/max)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Account for variability and noise in timing benchmarks</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Use OpenMP to parallelize a minimal compute-bound code and understand implications for thread safety</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Perform simple analysis of scaling behavior (strong/weak scaling)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Understand thread affinity and hardware topology impacts on performance and timing stability</li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lab3/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Lab 3 - CMake, Unit Tests, and Debugging">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Lab 3 - CMake, Unit Tests, and Debugging
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lab5/" class="md-footer__link md-footer__link--next" aria-label="Next: Lab 5 - Experimental Methodology and Scientific Reporting">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Lab 5 - Experimental Methodology and Scientific Reporting
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      CC BY-NC 4.0; 2025 - Pablo Oliveira, Mathys Jam
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "toc.integrate", "toc.follow", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>

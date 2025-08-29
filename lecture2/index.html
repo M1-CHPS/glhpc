@@ -1,0 +1,1854 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+        <meta name="author" content="M. Jam, P. de Oliveira Castro">
+      
+      
+      
+        <link rel="prev" href="../lecture1/">
+      
+      
+        <link rel="next" href="../lecture3/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+    
+    
+      
+        <title>L2: C for High Performance - GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.7e37652d.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#course-topics" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-header__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              L2: C for High Performance
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-purple" data-md-color-accent="red"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../lecture1/" class="md-tabs__link">
+          
+  
+  
+  Course
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../guide_soutenance/" class="md-tabs__link">
+          
+  
+  
+  Exams
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../annex/bash_cheatsheet/" class="md-tabs__link">
+          
+  
+  
+  Annex
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-nav__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Home
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    Course
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Course
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Lectures
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            Lectures
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L1 - Introduction to Software Engineering for HPC/AI, Development Environment
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    L2 - Performance Aware C Computing
+    
+  </span>
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L3 - Building, Testing, and Debugging Scientific Software
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L4 - Experimental Design, Profiling, and Performance/Energy Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lecture5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    L5 - HPC for AI
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Labs
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            Labs
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab1/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 1 - Prerequisites
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab2/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 2 - C Programming and Memory Management
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab3/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 3 - CMake, Unit Tests, and Debugging
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 4 - Monte-Carlo sampling
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab5/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 5 - Experimental Methodology and Scientific Reporting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab6/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 6 - AI Project (1) SGEMM Kernel Optimization
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../lab7/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Lab 7 - AI Project (2) Neural Network Inference
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Exams
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Exams
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../guide_soutenance/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Guide de soutenance
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Annex
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Annex
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/bash_cheatsheet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Bash cheatsheet
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Linux Environment
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            Linux Environment
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/install_fedora/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing fedora
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/oh-my-zsh/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Installing oh-my-zsh
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="course-topics">Course Topics<a class="headerlink" href="#course-topics" title="Permanent link">&para;</a></h1>
+<ul>
+<li>C Programming</li>
+<li>Memory Management</li>
+<li>Compilation</li>
+<li>Introduction to parallel programming</li>
+</ul>
+<h1 id="why-c-c-python">Why C, C++, Python ?<a class="headerlink" href="#why-c-c-python" title="Permanent link">&para;</a></h1>
+<p>Programming occurs at several abstraction levels from the hardware</p>
+<p><img alt="Hardware to Software layers (https://www.startertutorials.com/blog/basic-software-concepts.html)" src="../image/lecture2/application_layers.png" width="60%" /></p>
+<hr />
+<h1 id="why-c-c-python_1">Why C, C++, Python ?<a class="headerlink" href="#why-c-c-python_1" title="Permanent link">&para;</a></h1>
+<ul>
+<li>Layers close to metal are harder to program...<ul>
+<li>But they offer maximum control and performance</li>
+</ul>
+</li>
+<li>High-level abstraction maximize productivity...<ul>
+<li>But have significant overhead, less control over performance</li>
+</ul>
+</li>
+</ul>
+<p>In practice; we often combine multiple languages</p>
+<ul>
+<li>C for performance critical sections, python for higher level APIs</li>
+</ul>
+<hr />
+<h1 id="why-c-c-python_2">Why C, C++, Python ?<a class="headerlink" href="#why-c-c-python_2" title="Permanent link">&para;</a></h1>
+<p><img alt="Hardware to Software layers (Shershakov, Sergey. (2018). Enhancing Efficiency of Process Mining Algorithms with a Tailored Library: Design Principles and Performance Assessment Technical Report. 10.13140/RG.2.2.18320.46084. )" src="../image/lecture2/Four-abstraction-levels-of-programming-languages.png" width="100%" /></p>
+<hr />
+<h1 id="c-programming-operations-and-typing">C Programming - Operations and Typing<a class="headerlink" href="#c-programming-operations-and-typing" title="Permanent link">&para;</a></h1>
+<p>C is a strongly typed imperative language:</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="n">c</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">a</span><span class="p">;</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><code>main</code> is the program entry point.</p>
+<hr />
+<h1 id="c-programming-functions">C Programming - Functions<a class="headerlink" href="#c-programming-functions" title="Permanent link">&para;</a></h1>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> // For printf(...)</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kt">int</span><span class="w"> </span><span class="nf">sum_and_square</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">n</span><span class="p">;</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">tmp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">tmp</span><span class="p">;</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">}</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">4</span><span class="p">;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum_and_square</span><span class="p">(</span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="p">);</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum_and_square</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">);</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="c1">// Print the result to the console</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;(5+4)**2: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">c</span><span class="p">);</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;(3+9)**2: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">d</span><span class="p">);</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h1 id="c-programming-loops">C Programming - Loops<a class="headerlink" href="#c-programming-loops" title="Permanent link">&para;</a></h1>
+<p>Implementation C de <span class="arithmatex">\(\sum_{i=1}^{100}{i}\)</span></p>
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span><span class="c1"> // For printf(...)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kt">int</span><span class="w"> </span><span class="nf">sum_range</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="k">const</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">end</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="c1">// Consider start = 0; end = 100</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="c1">// For i starting at 0; while i &lt;= 100; increment i by one</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">start</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="n">end</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">sum</span><span class="p">;</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="p">}</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Result: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sum_range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">));</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="p">}</span>
+</span></code></pre></div>
+<code>const</code> qualified variable cannot be modified. This may enable optimizations during compilation.</p>
+<hr />
+<h1 id="c-programming-conditions">C Programming - Conditions<a class="headerlink" href="#c-programming-conditions" title="Permanent link">&para;</a></h1>
+<p>Numbers of multiple of 3 inside <span class="arithmatex">\([0, 99]\)</span> (i.e. <span class="arithmatex">\(i \mod 3 = 0\)</span>)
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">count_multiples_of_three</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="c1">// For i starting at 0; while i &lt; 100; increment i by one</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="c1">// if i % 3 (Remainder of the integer division) is equal to 0</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">      </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Result: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">count</span><span class="p">);</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">}</span>
+</span></code></pre></div></p>
+<h2 class="example" id="note">Note<a class="headerlink" href="#note" title="Permanent link">&para;</a></h2>
+<p>Here we could also do <code>for (unsigned int i = 0; i &lt; 100; i += 3)</code></p>
+<hr />
+<h1 id="c-programming-basic-pointers">C Programming - Basic Pointers<a class="headerlink" href="#c-programming-basic-pointers" title="Permanent link">&para;</a></h1>
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kt">int</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="kt">int</span><span class="o">*</span><span class="w"> </span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="o">*</span><span class="n">c</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">*</span><span class="n">c</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">b</span><span class="p">;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">printf</span><span class="p">(</span><span class="s">&quot;a: %d; b: %d; c: %d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">a</span><span class="p">,</span><span class="w"> </span><span class="n">b</span><span class="w"> </span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">c</span><span class="p">);</span>
+</span></code></pre></div>
+<code>c</code> contains the address of <code>a</code>; so <code>*c = *c + b</code> write in <code>a</code> the sum of <code>a</code> and <code>b</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Adress</th>
+<th>Value</th>
+<th>Variable</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x004</td>
+<td>0</td>
+<td>a</td>
+</tr>
+<tr>
+<td>0x008</td>
+<td>5</td>
+<td>b</td>
+</tr>
+<tr>
+<td>0x00c</td>
+<td>0x004</td>
+<td>c</td>
+</tr>
+<tr>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="c-programming-arrays">C Programming - Arrays<a class="headerlink" href="#c-programming-arrays" title="Permanent link">&para;</a></h1>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">morpion</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="sc">&#39;X&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;O&#39;</span><span class="p">,</span><span class="w">  </span><span class="sc">&#39;\0&#39;</span><span class="p">,</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">                     </span><span class="sc">&#39;O&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;X&#39;</span><span class="p">,</span><span class="w">  </span><span class="sc">&#39;\0&#39;</span><span class="p">,</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">                     </span><span class="sc">&#39;O&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;\0&#39;</span><span class="p">};</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="n">morpion</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sc">&#39;X&#39;</span><span class="p">;</span><span class="w"> </span><span class="c1">// The player clicked on the bottom-right cell !</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><img alt="Morpion layout in memory" src="../image/lecture2/morpion_in_memory.png" width="90%" /></p>
+<hr />
+<h1 id="c-programming-structures">C Programming - Structures<a class="headerlink" href="#c-programming-structures" title="Permanent link">&para;</a></h1>
+<p>Structures are user-defined composite types:</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">  </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">first_name</span><span class="p">;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="kt">char</span><span class="o">*</span><span class="w"> </span><span class="n">last_name</span><span class="p">;</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">age</span><span class="p">;</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">mean_grade</span><span class="p">;</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="kt">char</span><span class="w"> </span><span class="n">gender</span><span class="p">;</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="p">}</span><span class="w"> </span><span class="n">Student</span><span class="p">;</span>
+</span></code></pre></div>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">Student</span><span class="w"> </span><span class="n">e1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;Dupont&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pierre&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;m&#39;</span><span class="p">};</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">Student</span><span class="w"> </span><span class="n">e2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;Major&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Major&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"> </span><span class="mf">13.5</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;a&#39;</span><span class="p">};</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="n">Student</span><span class="w"> </span><span class="n">e3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="s">&quot;Martin&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Evelynne&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span><span class="w"> </span><span class="mi">14</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;f&#39;</span><span class="p">};</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">e1</span><span class="p">.</span><span class="n">mean_grade</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">10</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;(%s %s) is a pretty good student !</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">         </span><span class="n">e1</span><span class="p">.</span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span><span class="n">e1</span><span class="p">.</span><span class="n">last_name</span><span class="p">);</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>C has no concept of <code>class</code>, <code>object</code>, or <code>method</code> !</p>
+<hr />
+<h1 id="c-programming-structures-2">C programming - Structures 2<a class="headerlink" href="#c-programming-structures-2" title="Permanent link">&para;</a></h1>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">display_student</span><span class="p">(</span><span class="n">Student</span><span class="o">*</span><span class="w"> </span><span class="n">s</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="c1">// s-&gt;age is equivalent to (*s).age</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s %s (%i): %f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">first_name</span><span class="p">,</span><span class="w"> </span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">                             </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">last_name</span><span class="p">,</span><span class="w"> </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">age</span><span class="p">,</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">                             </span><span class="n">s</span><span class="o">-&gt;</span><span class="n">mean_grade</span><span class="p">);</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="p">}</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1">// We can have arrays of any types !</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="n">Student</span><span class="w"> </span><span class="n">students</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{{</span><span class="s">&quot;Dupont&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pierre&quot;</span><span class="p">,</span><span class="w"> </span><span class="mi">22</span><span class="p">,</span><span class="w"> </span><span class="mi">13</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;m&#39;</span><span class="p">},</span><span class="w"> </span><span class="p">...};</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">3</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">  </span><span class="n">display_student</span><span class="p">(</span><span class="o">&amp;</span><span class="n">students</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+</span></code></pre></div>
+<p><img alt="Array of Structure (AoS) layout" src="../image/lecture2/structure_in_memory.png" width="75%" /></p>
+<hr />
+<h1 id="c-programming-trading-abstraction-for-performance">C Programming - Trading Abstraction for performance<a class="headerlink" href="#c-programming-trading-abstraction-for-performance" title="Permanent link">&para;</a></h1>
+<h2 class="alert" id="in-c-we-must-manually-take-care-of-very-low-level-concepts">In C, we must manually take care of very low level concepts<a class="headerlink" href="#in-c-we-must-manually-take-care-of-very-low-level-concepts" title="Permanent link">&para;</a></h2>
+<ul>
+<li>We care about data layout, memory addresses, pointers, etc.</li>
+<li>The language doesn't provide linked lists, dynamic arrays, dictionaries, etc.</li>
+<li>No basic algorithms like sorting</li>
+</ul>
+<h2 class="example" id="on-the-flip-side-we-can">On the flip side, we can<a class="headerlink" href="#on-the-flip-side-we-can" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Manually lay out data to maximize efficiency</li>
+<li>Remove any abstractions and overhead to maximize performance</li>
+<li>Generate code  that runs as close to the metal as possible</li>
+<li>Optimize our program for the hardware</li>
+</ul>
+<hr />
+<h1 id="c-programming-trading-abstraction-for-performance-example">C Programming - Trading Abstraction for performance (Example)<a class="headerlink" href="#c-programming-trading-abstraction-for-performance-example" title="Permanent link">&para;</a></h1>
+<p>Consider the following python and C code:</p>
+<div class="language-Python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nb">sum</span> <span class="o">=</span> <span class="mi">0</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ub</span><span class="p">):</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>  <span class="nb">sum</span> <span class="o">+=</span> <span class="n">i</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="nb">print</span><span class="p">(</span><span class="nb">sum</span><span class="p">)</span>
+</span></code></pre></div>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">ub</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="p">}</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Sum of first %llu integers is: %llu</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ub</span><span class="p">,</span><span class="w"> </span><span class="n">sum</span><span class="p">);</span>
+</span></code></pre></div>
+<p>Where ub is a very large number (100 Millions in this example).
+Which one is faster, and by how much ?</p>
+<hr />
+<h1 id="c-programming-trading-abstraction-for-performance-example_1">C Programming - Trading Abstraction for performance (Example)<a class="headerlink" href="#c-programming-trading-abstraction-for-performance-example_1" title="Permanent link">&para;</a></h1>
+<p>Results:</p>
+<ul>
+<li><code>C</code> version: 0.024s</li>
+<li><code>Python</code> version: 5.650s</li>
+</ul>
+<p>That's a speedup of <span class="arithmatex">\(\times 235\)</span>. </p>
+<p>We will see later in this course how this is possible.</p>
+<h2 class="alert" id="numpy-and-other-libraries">Numpy and other libraries<a class="headerlink" href="#numpy-and-other-libraries" title="Permanent link">&para;</a></h2>
+<p>Note that we could use <code>numpy</code> or the <code>sum</code> python function: but those are actually implemented in <code>C</code> !</p>
+<hr />
+<h1 id="managing-memory-concept">Managing Memory - Concept<a class="headerlink" href="#managing-memory-concept" title="Permanent link">&para;</a></h1>
+<h2 class="alert" id="in-high-level-languages">In High-level languages<a class="headerlink" href="#in-high-level-languages" title="Permanent link">&para;</a></h2>
+<ul>
+<li>We operate on abstracted data structures (lists, dictionaries, etc.)</li>
+<li>Memory is managed automatically (allocation, resizing, deallocation)</li>
+<li>We don't care about memory alignment, stack vs. heap, page size, Numa effects, etc.</li>
+</ul>
+<h2 class="example" id="in-c">In C<a class="headerlink" href="#in-c" title="Permanent link">&para;</a></h2>
+<ul>
+<li>We perform directly with primitive data and raw memory</li>
+<li>We are responsible for allocation, layout, and cleanup</li>
+<li>We can only request chunks of raw memory, and fill it however we choose</li>
+<li>This is critical for performance</li>
+</ul>
+<p>This low level control is critical for performance; hence we must understand how memory works under the hood !</p>
+<hr />
+<h1 id="managing-memory-memory-types">Managing Memory - Memory Types<a class="headerlink" href="#managing-memory-memory-types" title="Permanent link">&para;</a></h1>
+<p>We can distinguish two types of memory</p>
+<ul>
+<li>Memory automatically allocated by the compiler on <strong>the stack</strong>.<ul>
+<li>Stores variables, functions arguments, etc.</li>
+<li>Fast but limited in size</li>
+</ul>
+</li>
+<li>Memory that is (manually) dynamically allocated on <strong>the heap</strong> <ul>
+<li>Must be allocated and freed by the developer !</li>
+</ul>
+</li>
+</ul>
+<p>The kernel (Linux / Windows) allocates <strong>memory pages</strong> and operates at a coarse grain level.<br />
+The standard library (<code>libc</code>) manipulates pages on a finer scale and provides memory to the user.</p>
+<hr />
+<h1 id="managing-memory-allocation">Managing Memory - Allocation<a class="headerlink" href="#managing-memory-allocation" title="Permanent link">&para;</a></h1>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;time.h&gt;</span><span class="c1"> // for time</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span><span class="c1"> // For malloc,  srand, rand</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">do_the_thing</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="c1">// We allocate n numbers</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">numbers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">  </span><span class="c1">// We seed the random number generator</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">  </span><span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">  </span><span class="c1">// We generate nsamples random numbers</span>
+</span><span id="__span-11-12"><a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-11-13"><a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">    </span><span class="n">numbers</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="n">rand</span><span class="p">()</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">RAND_MAX</span><span class="p">;</span><span class="w"> </span><span class="c1">// Generate a number in [0, 1]</span>
+</span><span id="__span-11-14"><a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-11-15"><a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">  </span><span class="p">...</span><span class="w"> </span><span class="c1">// Do something complicated here</span>
+</span><span id="__span-11-16"><a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">  </span><span class="n">free</span><span class="p">(</span><span class="n">numbers</span><span class="p">);</span><span class="w"> </span><span class="c1">// Release memory back to the kernel</span>
+</span><span id="__span-11-17"><a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-11-18"><a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h1 id="managing-memory-allocation_1">Managing Memory - Allocation<a class="headerlink" href="#managing-memory-allocation_1" title="Permanent link">&para;</a></h1>
+<p><img alt="Results of memory allocation" height="75%" src="../image/lecture2/malloc_in_memory.png" /></p>
+<p><strong><code>malloc</code> returns a pointer to the beginning of the allocated memory range</strong></p>
+<hr />
+<h1 id="managing-memory-deallocation">Managing Memory - Deallocation<a class="headerlink" href="#managing-memory-deallocation" title="Permanent link">&para;</a></h1>
+<p>Memory is not infinite ! </p>
+<p>In Python (and Java, C#, etc.); memory is managed by the garbage collector (GC):</p>
+<ul>
+<li>The runtime tracks all memory allocations; and all reference(s)</li>
+<li>When a memory block is not referenced by the program; the GC will release the memory back to the kernel.</li>
+</ul>
+<p>In C/C++, <strong>the user must deallocate memory</strong> using <code>free(ptr)</code>. </p>
+<h2 class="alert" id="memory-leak">Memory leak<a class="headerlink" href="#memory-leak" title="Permanent link">&para;</a></h2>
+<p>If memory is not freed (memory leak) the computer can run out:</p>
+<ul>
+<li>The kernel can kill the program</li>
+<li>The OS can crash</li>
+<li>Other applications requesting memory can crash or fail</li>
+</ul>
+<hr />
+<h1 id="virtual-and-physical-memory-problem">Virtual And Physical Memory - Problem<a class="headerlink" href="#virtual-and-physical-memory-problem" title="Permanent link">&para;</a></h1>
+<ul>
+<li>How can the kernel guarantee that memory is always contiguous?</li>
+<li>Can I acess memory from another program and steal their data?</li>
+<li>How can multiple applications share the same memory?</li>
+<li>Some variables have hard-coded addresses!</li>
+<li>How to handle (Internal/External) fragmentation (Empty slot)? </li>
+</ul>
+<hr />
+<h1 id="virtual-and-physical-memory-concept">Virtual And Physical Memory - Concept<a class="headerlink" href="#virtual-and-physical-memory-concept" title="Permanent link">&para;</a></h1>
+<p>We separate <strong>Physical Addresses</strong> (locations in memory) from <strong>Virtual Addresses</strong> (Logic locations) seen by each program !</p>
+<ul>
+<li>Physical memory is divided into small <strong>fixed-size blocks</strong> called <strong>pages</strong> (typically ~4KB).</li>
+<li>The CPU includes a <strong>Memory Management Unit</strong> (MMU) that translates virtual addresses into physical addresses.</li>
+<li>Each program is given its own isolated virtual address space.</li>
+<li>The kernel maintains a <strong>page table</strong> for each program that tells the MMU how to translate addresses.</li>
+</ul>
+<h2 id="the-illusion-of-contiguity">The Illusion of contiguity<a class="headerlink" href="#the-illusion-of-contiguity" title="Permanent link">&para;</a></h2>
+<p>Each process believes it has acces to a large, contiguous block of memory; while it can be physically fragmented or shared.</p>
+<hr />
+<h1 id="virtual-and-physical-memory-diagram">Virtual And Physical Memory - Diagram<a class="headerlink" href="#virtual-and-physical-memory-diagram" title="Permanent link">&para;</a></h1>
+<p><img alt="Virtual And Physical Memory" src="../image/lecture2/virtual_physical_memory.png" width="80%" /></p>
+<p>*<strong>Note that this is a simplified representation</strong>.</p>
+<hr />
+<h1 id="memory-hierarchy">Memory Hierarchy<a class="headerlink" href="#memory-hierarchy" title="Permanent link">&para;</a></h1>
+<p>Which memory are we talking about ?</p>
+<p><img alt="Memory Hierarchy (https://www.geeksforgeeks.org/memory-hierarchy-design-and-its-characteristics/)" src="../image/lecture2/memory-hierarchy.png" width="100%" /></p>
+<p>Note that GPU(s) also have their own separate memory !</p>
+<hr />
+<h1 id="memory-hierarchy_1">Memory Hierarchy<a class="headerlink" href="#memory-hierarchy_1" title="Permanent link">&para;</a></h1>
+<ul>
+<li>CPU computations are extremely fast, and memory access can be a bottleneck</li>
+<li>Registers have the lowest latency</li>
+<li>CPU caches (L1, L2, L3) act as fast buffers for memory</li>
+<li>DRAM (main memory) is much slower, but cheaper and larger</li>
+<li>Accessing DRAM causes significant delays compared to cache</li>
+</ul>
+<p>To achieve high performance, we must maximize data reuse in registers or caches, and minimize DRAM access.</p>
+<hr />
+<h1 id="cpu-caches">CPU Caches<a class="headerlink" href="#cpu-caches" title="Permanent link">&para;</a></h1>
+<p>Most CPU have 3 levels of cache</p>
+<ul>
+<li>L1d - First Level Cache (Very fast)</li>
+<li>L2 - Second Level Cache (Fast)</li>
+<li>L3 (Last Level Cache - LLC) (Larger but slower than L1/L2)</li>
+</ul>
+<p>Some cache level are per-core (L1, often L2) whereas others are shared between multiple cores (L3).</p>
+<h2 class="alert" id="instruction-cache">Instruction Cache<a class="headerlink" href="#instruction-cache" title="Permanent link">&para;</a></h2>
+<p>The assembly instructions are stored in a separate (L1i) instruction cache</p>
+<hr />
+<h1 id="cpu-caches_1">CPU Caches<a class="headerlink" href="#cpu-caches_1" title="Permanent link">&para;</a></h1>
+<p><img alt="CPU Latency and Cache" src="../image/lecture2/cache_diagram.png" width="95%" /></p>
+<p>We speak of <strong>Heterogeneous Memory Hierarchy</strong>: the same memory accesses can have different latency depending on where the data resides !</p>
+<p>[<strong>Live example: LSTOPO</strong>]</p>
+<hr />
+<h1 id="cpu-caches-in-practice">CPU Caches - In practice<a class="headerlink" href="#cpu-caches-in-practice" title="Permanent link">&para;</a></h1>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="p">}</span>
+</span></code></pre></div>
+<ol>
+<li>The cache controller looks-up the data inside the CPU cache (L1 -&gt; L2 -&gt; L3)</li>
+<li>If available, data is sent to register for the ALU</li>
+<li>Else, a memory request is emitted</li>
+<li>This introduces latency and a bubble in the CPU pipeline</li>
+<li>When the memory request is resolved; execution resumes</li>
+<li>The results of <span class="arithmatex">\(a*b\)</span> is written to cache, and eventually back to main memory later on.</li>
+</ol>
+<hr />
+<h1 id="cpu-caches-in-practice_1">CPU Caches - In practice<a class="headerlink" href="#cpu-caches-in-practice_1" title="Permanent link">&para;</a></h1>
+<p>In practice:</p>
+<ul>
+<li>The CPU fetches entire <strong>cache line</strong> (Often 64 Bytes) at once (If float: <span class="arithmatex">\(64B / 4B = 16\)</span> values at once) </li>
+<li>The CPU can <strong>prefetch</strong> data: it learns data access patterns and anticipates future memory access.</li>
+<li>The CPU can execute <strong>out-of-order</strong>; independent instructions are executed while the memory request is in flight.</li>
+</ul>
+<hr />
+<h1 id="caches-cpu-strided-access">Caches CPU - Strided Access<a class="headerlink" href="#caches-cpu-strided-access" title="Permanent link">&para;</a></h1>
+<p>Consider two NBody 3D implementations:</p>
+<p><strong>Array Of Structure (AoS)</strong></p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">// We allocate N tuples of (x, y, z) positions</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">positions</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">3</span><span class="p">);</span>
+</span></code></pre></div>
+<p><strong>Structure Of Array (SoA)</strong></p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">// We allocate separate arrays for each components</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="p">);</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="p">);</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="kt">float</span><span class="o">*</span><span class="w"> </span><span class="n">z</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">N</span><span class="p">);</span>
+</span></code></pre></div>
+<hr />
+<h1 id="caches-cpu-strided-access_1">Caches CPU - Strided Access<a class="headerlink" href="#caches-cpu-strided-access_1" title="Permanent link">&para;</a></h1>
+<p>We want to record the number of particles with <span class="arithmatex">\(x \leq 0.5\)</span></p>
+<p><strong>Array Of Structure (AoS)</strong></p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">positions</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.5</span><span class="p">)</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span></code></pre></div>
+<p><strong>Structure Of Array (SoA)</strong></p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mf">0.5</span><span class="p">)</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+</span></code></pre></div>
+<p>Which one is faster; and why ?</p>
+<p>Which access pattern makes better use of cache lines ?</p>
+<hr />
+<h1 id="caches-cpu-strided-access_2">Caches CPU - Strided Access<a class="headerlink" href="#caches-cpu-strided-access_2" title="Permanent link">&para;</a></h1>
+<p><code>Perf</code> results summed across 100 runs:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Time</th>
+<th># Instr</th>
+<th># L1 Loads</th>
+<th># L1 Miss</th>
+<th># LLC Loads</th>
+<th># LLC Miss</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AoS</td>
+<td>~1.93s</td>
+<td>~14 Billion</td>
+<td>~3.5 Billion</td>
+<td>~1 Million</td>
+<td>~400k</td>
+<td>~382k</td>
+</tr>
+<tr>
+<td>SoA</td>
+<td>~1.75s</td>
+<td>~14 Billion</td>
+<td>~3.5 Billion</td>
+<td>~300k</td>
+<td>~24k</td>
+<td>~15k</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th># Cache references (LLC)</th>
+<th># Cache miss</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>AoS</td>
+<td>~158 Million</td>
+<td>~151 Million</td>
+</tr>
+<tr>
+<td>SoA</td>
+<td>~52 Million</td>
+<td>~35 Million</td>
+</tr>
+</tbody>
+</table>
+<p>With AoS more load fail in the L1, leading to LLC accesses.</p>
+<p>Most LLC loads still results in misses, leading to DRAM access.</p>
+<hr />
+<h1 id="compilation-assembly">Compilation &amp; Assembly<a class="headerlink" href="#compilation-assembly" title="Permanent link">&para;</a></h1>
+<p>C is a compiled language: we must translate the source code to assembly for the CPU</p>
+<p><code>gcc ./main.c -o main (&lt;flags&gt;)</code></p>
+<ul>
+<li>Python is interpreted</li>
+<li>More flexible but <strong>significantly slower</strong></li>
+<li>C# and Java are compiled to intermediary bytecode and then executed via a virtual machine (or JIT-ed)</li>
+<li>Balances performance and productivity</li>
+<li>C/C++/Rust are compiled to assembly code</li>
+<li>Poor portability, but no intermediary.</li>
+</ul>
+<hr />
+<h1 id="compilation-assembly-simple-loop">Compilation &amp; Assembly - Simple Loop<a class="headerlink" href="#compilation-assembly-simple-loop" title="Permanent link">&para;</a></h1>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100000</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">){</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">  </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="p">}</span>
+</span></code></pre></div>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="nl">main:</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nl">.LFB6:</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="nf">pushq</span><span class="w">   </span><span class="nv">%rbp</span><span class="w">                 </span><span class="c1">// We record the stack pointer</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nf">movq</span><span class="w">    </span><span class="nv">%rsp</span><span class="p">,</span><span class="w"> </span><span class="nv">%rbp</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="nf">movl</span><span class="w">    </span><span class="no">$0</span><span class="p">,</span><span class="w"> </span><span class="mi">-4</span><span class="p">(</span><span class="nv">%rbp</span><span class="p">)</span><span class="w">         </span><span class="c1">// Initialize sum</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="nf">movl</span><span class="w">    </span><span class="no">$0</span><span class="p">,</span><span class="w"> </span><span class="mi">-8</span><span class="p">(</span><span class="nv">%rbp</span><span class="p">)</span><span class="w">         </span><span class="c1">// Initialize i</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">    </span><span class="nf">jmp</span><span class="w"> </span><span class="no">.L2</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="nl">.L3:</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">    </span><span class="nf">movl</span><span class="w">    </span><span class="mi">-8</span><span class="p">(</span><span class="nv">%rbp</span><span class="p">),</span><span class="w"> </span><span class="nv">%eax</span><span class="w">       </span><span class="c1">// Load sum to a register</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="nf">addl</span><span class="w">    </span><span class="nv">%eax</span><span class="p">,</span><span class="w"> </span><span class="mi">-4</span><span class="p">(</span><span class="nv">%rbp</span><span class="p">)</span><span class="w">       </span><span class="c1">// Add i and sum (from memory)</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">    </span><span class="nf">addl</span><span class="w">    </span><span class="no">$1</span><span class="p">,</span><span class="w"> </span><span class="mi">-8</span><span class="p">(</span><span class="nv">%rbp</span><span class="p">)</span><span class="w">         </span><span class="c1">// Add 1 to i (from memory)</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="nl">.L2:</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">    </span><span class="nf">cmpl</span><span class="w">    </span><span class="no">$99999</span><span class="p">,</span><span class="w"> </span><span class="mi">-8</span><span class="p">(</span><span class="nv">%rbp</span><span class="p">)</span><span class="w">     </span><span class="c1">// Check if i &lt; 100 000</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">    </span><span class="nf">jle</span><span class="w"> </span><span class="no">.L3</span><span class="w">                      </span><span class="c1">// Jump Less Equal</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">    </span><span class="nf">movl</span><span class="w">    </span><span class="no">$0</span><span class="p">,</span><span class="w"> </span><span class="nv">%eax</span><span class="w">             </span><span class="c1">// Set the return value of main</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">    </span><span class="nf">popq</span><span class="w">    </span><span class="nv">%rbp</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="w">    </span><span class="nf">ret</span><span class="w">                          </span><span class="c1">// Return from main</span>
+</span></code></pre></div>
+<p><code>gcc ./main.c -o main -OO</code></p>
+<hr />
+<h1 id="compilation-assembly_1">Compilation &amp; Assembly<a class="headerlink" href="#compilation-assembly_1" title="Permanent link">&para;</a></h1>
+<p>Assembly is as close to the metal we usually get, and is architecture dependant:</p>
+<ul>
+<li>Intel and AMD use the x86 Instruction Set </li>
+<li>x86 has multiple extensions (FMA, sse, avx, avx512, etc.)</li>
+<li>To maximize performance, we should compile our applications on each platform</li>
+<li>Our binaries are not portable</li>
+<li>But we can use dedicated instructions</li>
+<li>Other instructions set exists (ARM, Risc V, etc.)</li>
+</ul>
+<hr />
+<h1 id="compilation-assembly-optimization-passes">Compilation &amp; Assembly - Optimization passes<a class="headerlink" href="#compilation-assembly-optimization-passes" title="Permanent link">&para;</a></h1>
+<p>The compiler is not <em>just</em> a translator:</p>
+<ul>
+<li>The compiler can generate optimized instructions from our program</li>
+<li>Constant values can be propagated, unused values/code removed</li>
+<li>Operations can be reordered, inlined, vectorized using SIMD, etc.</li>
+<li>Many, many more optimizations</li>
+</ul>
+<p>Those optimizations are enable through flags such as <code>-O1</code>, <code>-O2</code>, -<code>O3</code> which are predefined sets of optimization passes.</p>
+<p>The flag <code>-march=native</code> allows the compiler to target the current machine for compilation and use all the available ASM extensions.</p>
+<hr />
+<h1 id="compilation-assembly-compiler-pipeline">Compilation &amp; Assembly - Compiler Pipeline<a class="headerlink" href="#compilation-assembly-compiler-pipeline" title="Permanent link">&para;</a></h1>
+<p><img alt="C Compiler Workflow" src="../image/lecture2/compiler_pipeline.png" width="105%" /></p>
+<p>There are several compilers with varying performance and features:</p>
+<ul>
+<li>GCC and Clang-LLVM (The classics)</li>
+<li>MSVC (Microsoft), mingw-LLVM, arm-clang (For ARM) and many, many others.</li>
+</ul>
+<hr />
+<h1 id="makefile-basics-introduction">Makefile Basics - Introduction<a class="headerlink" href="#makefile-basics-introduction" title="Permanent link">&para;</a></h1>
+<p><strong>Make</strong> is a scripting tool to automate complex compilation workflows. It works by defining rules inside <strong>Makefiles</strong>.</p>
+<div class="language-makefile highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nv">CC</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>gcc
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nv">CFLAGS</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span>-g
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="nf">main</span><span class="o">:</span><span class="w"> </span><span class="n">main</span>.<span class="n">c</span> <span class="n">my_library</span>.<span class="n">c</span> <span class="n">my_library</span>.<span class="n">h</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="k">$(</span>CC<span class="k">)</span><span class="w"> </span>-o<span class="w"> </span><span class="nv">$@</span><span class="w"> </span>$^<span class="w"> </span><span class="k">$(</span>CFLAGS<span class="k">)</span>
+</span></code></pre></div>
+<ul>
+<li><code>main</code> is the target (What we want to build)</li>
+<li><code>main.c my_library.c my_library.h</code> are the dependencies: rule reruns if any change</li>
+<li><code>$(CC) -o $@ $&lt; $(CFLAGS)</code> is the recipe</li>
+<li><code>$@</code> expands to the target name</li>
+<li><code>$^</code> expands to all dependency</li>
+</ul>
+<hr />
+<h1 id="makefile-basics-phony-rules">Makefile Basics - Phony rules<a class="headerlink" href="#makefile-basics-phony-rules" title="Permanent link">&para;</a></h1>
+<p>Makefiles expects that a rule <code>main</code> produces a file called <code>main</code>. However, not all rules produce files:</p>
+<div class="language-makefile highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nf">.PHONY</span><span class="o">:</span><span class="w"> </span><span class="n">all</span> <span class="n">clean</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nf">all</span><span class="o">:</span><span class="w"> </span><span class="n">main</span> <span class="n">mylibrary</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="err">...</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>
+</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="nf">clean</span><span class="o">:</span>
+</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">  </span>rm<span class="w"> </span>-rf<span class="w"> </span>*.o
+</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">  </span>rm<span class="w"> </span>-rf<span class="w"> </span>./main
+</span></code></pre></div>
+<p>Here, <code>make all</code> will be an alias to build everything, while <code>make clean</code> is a custom rule to clean all build artifacts.
+Makefile has many, many other functionalities, outside the scope of this course.</p>
+<hr />
+<h1 id="makefile-basics-usage">Makefile Basics - Usage<a class="headerlink" href="#makefile-basics-usage" title="Permanent link">&para;</a></h1>
+<p>The typical projects looks something like:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>Project/
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>  src/
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>    main.c
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a>    my_library.c
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>  include/
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a>    my_library.h
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a>  Makefile # We define the Make rules here
+</span></code></pre></div>
+<p><code>make</code> will look for a file in the <code>cwd</code> named <code>Makefile</code> or <code>makefile</code>.
+You can directly call <code>make all</code>, <code>make clean</code>, etc.</p>
+<hr />
+<h1 id="introduction-to-parallelism">Introduction to parallelism<a class="headerlink" href="#introduction-to-parallelism" title="Permanent link">&para;</a></h1>
+<p>Compiler optimization is only one side of high peformance computing.</p>
+<p>If you remember; we saw in <code>LSTOPO</code> that our CPU has many cores:</p>
+<ul>
+<li>Every core can perform computations independently of the other</li>
+<li>Multiple process (Google, vscode, firefox, excel) can run <strong>simultaneously</strong> on different cores.</li>
+<li>The kernel manages execution through thread scheduling and time-slicing</li>
+</ul>
+<h2 class="example" id="main-thread">Main Thread<a class="headerlink" href="#main-thread" title="Permanent link">&para;</a></h2>
+<p>Every process has at least one "thread of execution", which is an ordered sequence of instructions executed by the CPU.</p>
+<hr />
+<h1 id="introduction-to-parallelism_1">Introduction to parallelism<a class="headerlink" href="#introduction-to-parallelism_1" title="Permanent link">&para;</a></h1>
+<p>What if we could split our programs into multiple threads ?</p>
+<ul>
+<li>If we have 1 thread only one computation happens at a time</li>
+<li>If we have 2 threads, we can potentially double throughput !</li>
+</ul>
+<p>In practice, there is some overhead, we must handle dependencies between instructions, etc.</p>
+<hr />
+<h1 id="introduction-to-parallelism-types-of-parallelism">Introduction to parallelism - Types of parallelism<a class="headerlink" href="#introduction-to-parallelism-types-of-parallelism" title="Permanent link">&para;</a></h1>
+<p>We consider three main types of parallelism</p>
+<ul>
+<li>Single Instruction Multiple Data (SIMD): also called Vectorization</li>
+<li>single instruction operates simultaneously on multiple data elements.</li>
+<li>Shared Memory: Multiple threads inside the same memory space</li>
+<li>Threads share a memory space, enabling fast communication and synchronization.</li>
+<li>Distributed Memory: Multiple processes</li>
+<li>Communications are slower, but this model enables scaling across multiple machines.</li>
+</ul>
+<p>For this course, we will only focus on SIMD and Shared Memory parallelism.</p>
+<hr />
+<h1 id="introduction-to-parallelism-shared-memory">Introduction to parallelism - Shared Memory<a class="headerlink" href="#introduction-to-parallelism-shared-memory" title="Permanent link">&para;</a></h1>
+<p>Consider the following loop:</p>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span></code></pre></div>
+<p>We can slice the iteration space in multiple chunks:</p>
+<p><img alt="Iteration slicing with 4 threads" src="../image/lecture2/simple_reduction_omp.png" width="100%" /></p>
+<hr />
+<h1 id="introduction-to-parallelism-shared-memory_1">Introduction to parallelism - Shared Memory<a class="headerlink" href="#introduction-to-parallelism-shared-memory_1" title="Permanent link">&para;</a></h1>
+<p>We split the program into multiple instruction sequences running in parallel.</p>
+<ul>
+<li>Every thread operates a sum on a subset of the data</li>
+<li>We synchronize every thread and combine the partial sums via a global reduction.</li>
+</ul>
+<p><code>OpenMP</code> is an HPC tool designed for scenarios like this !</p>
+<p>It's a simple to use library/compiler pass to parallelize trivial loops.</p>
+<hr />
+<h1 id="introduction-to-parallelism-openmp">Introduction to parallelism - <code>OpenMP</code><a class="headerlink" href="#introduction-to-parallelism-openmp" title="Permanent link">&para;</a></h1>
+<p><div class="language-c highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kt">int</span><span class="w"> </span><span class="n">sum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="cp">#pragma omp parallel for reduction(sum: +)</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="mi">100</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span><span class="n">sum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span></code></pre></div>
+<code>gcc ./main.c -fopenmp -O3 -march=native</code></p>
+<p>This directive automatically distributes the loop iterations across all available CPU cores, 
+performing a thread-safe reduction on sum.</p>
+<hr />
+<h1 id="introduction-to-parallelism-openmp-details">Introduction to parallelism - <code>OpenMP</code> details<a class="headerlink" href="#introduction-to-parallelism-openmp-details" title="Permanent link">&para;</a></h1>
+<p><code>OpenMP</code> defines a set of <code>clause</code> which are operations followed by a set of modifiers.</p>
+<ul>
+<li><code>#pragma omp</code>: is the start of all OpenMP clauses</li>
+<li><code>parallel:</code> enable the creations of multiple threads</li>
+<li><code>for</code>: toggle the automatic slicing of following loop</li>
+<li><code>reduction(sum: +)</code>: toggles a reductions clause for sum using the <code>+</code> operation.</li>
+</ul>
+<p>This code will be enough for most cases; but <code>OpenMP</code> allows for significantly more complex operations.</p>
+<hr />
+<h1 id="introduction-to-parallelism-advanced-openmp-example">Introduction to parallelism - Advanced <code>OpenMP</code> Example<a class="headerlink" href="#introduction-to-parallelism-advanced-openmp-example" title="Permanent link">&para;</a></h1>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="kt">float</span><span class="w"> </span><span class="n">global_min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FLT_MAX</span><span class="p">;</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kt">int</span><span class="w"> </span><span class="n">global_min_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="cp">#pragma omp parallel</span>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="p">{</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">  </span><span class="kt">float</span><span class="w"> </span><span class="n">min_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FLT_MAX</span><span class="p">;</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">min_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">-1</span><span class="p">;</span>
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="cp">#pragma omp for nowait schedule(dynamic)</span>
+</span><span id="__span-24-8"><a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-24-9"><a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min_value</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="w">      </span><span class="n">min_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+</span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="w">      </span><span class="n">min_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+</span><span id="__span-24-12"><a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-24-13"><a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-24-14"><a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a><span class="cp">#pragma omp critical</span>
+</span><span id="__span-24-15"><a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a><span class="w">  </span><span class="p">{</span>
+</span><span id="__span-24-16"><a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">min_value</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">global_min</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-24-17"><a id="__codelineno-24-17" name="__codelineno-24-17" href="#__codelineno-24-17"></a><span class="w">      </span><span class="n">global_min</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min_value</span><span class="p">;</span>
+</span><span id="__span-24-18"><a id="__codelineno-24-18" name="__codelineno-24-18" href="#__codelineno-24-18"></a><span class="w">      </span><span class="n">global_min_index</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">min_index</span><span class="p">;</span>
+</span><span id="__span-24-19"><a id="__codelineno-24-19" name="__codelineno-24-19" href="#__codelineno-24-19"></a><span class="w">    </span><span class="p">}</span>
+</span><span id="__span-24-20"><a id="__codelineno-24-20" name="__codelineno-24-20" href="#__codelineno-24-20"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-24-21"><a id="__codelineno-24-21" name="__codelineno-24-21" href="#__codelineno-24-21"></a><span class="p">}</span>
+</span></code></pre></div>
+<hr />
+<h1 id="naive-nbody-3d-strong-scaling-setup">Naive NBody 3D Strong Scaling - Setup<a class="headerlink" href="#naive-nbody-3d-strong-scaling-setup" title="Permanent link">&para;</a></h1>
+<p>We increase the number of threads while keeping the work size constant.</p>
+<p><code>OMP_PLACES={0,2,4,6,8,10,12,14} OMP_PROC_BIND=True OMP_NUM_THREADS=8 ./nbody 10000</code>
+<code>sudo cpupower frequency-set -g performance</code></p>
+<p>5 Meta repetitions per run, 13th Gen Intel(R) Core(TM) i7-13850HX @5.30 GHz, 32KB/2MB/30MB:L1/L2/L3 15GB DDR5.</p>
+<h1 id="naive-nbody-3d-strong-scaling-results">Naive NBody 3D Strong Scaling - Results<a class="headerlink" href="#naive-nbody-3d-strong-scaling-results" title="Permanent link">&para;</a></h1>
+<p><img alt="Speedup of Naive Gravitationnal NBody 3D" src="../image/lecture2/naive_nbody_scaling.png" width="80%" /></p>
+<p>Speedup is limited by runtime overhead, concurrency, memory bandwidth, data size, etc.</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../lecture1/" class="md-footer__link md-footer__link--prev" aria-label="Previous: L1 - Introduction to Software Engineering for HPC/AI, Development Environment">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                L1 - Introduction to Software Engineering for HPC/AI, Development Environment
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../lecture3/" class="md-footer__link md-footer__link--next" aria-label="Next: L3 - Building, Testing, and Debugging Scientific Software">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                L3 - Building, Testing, and Debugging Scientific Software
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      CC BY-NC 4.0; 2025 - Pablo Oliveira, Mathys Jam
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "toc.integrate", "toc.follow", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
+      
+        <script src="../javascripts/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
