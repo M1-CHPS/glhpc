@@ -2069,7 +2069,7 @@ Retrieve the module cmake file:</p>
 </span></code></pre></div>
 <p>You should see files with the <code>.gcda</code> extension generated in the build directory. These files contain the coverage data collected during the execution of your tests.</p>
 <p>Finally, you can generate the coverage report using the <code>gcovr</code> command:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>$<span class="w"> </span>gcovr<span class="w"> </span>.
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a>$<span class="w"> </span>gcovr<span class="w"> </span>-r<span class="w"> </span>.
 </span></code></pre></div>
 <p>This will generate a coverage report for the <code>transformation.c</code> file, showing which lines of code were executed during the tests.</p>
 <div class="admonition tip">
