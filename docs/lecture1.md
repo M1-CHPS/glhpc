@@ -15,6 +15,12 @@ header-includes:
 
 # Introduction to Software Engineering for HPC and AI
 
+<div class="mkdocs-only" markdown>
+  <p align="right" markdown>
+  [Download as slides 📥](slides/lecture1.pdf)
+  </p>
+</div>
+
 ## Syllabus
 
 - **Lecture 1**: Introduction & Development Environment

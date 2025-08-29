@@ -27,8 +27,9 @@ find . -type f -name "lecture*.md" | while read -r src; do
         --listings \
         -V lang=en \
         -V fontsize=9pt \
-        -V mainfont="Comfortaa Medium" \
-        -V monofont="Latin Modern Mono"
+        -V mainfont="Comfortaa Regular" \
+        -V monofont="Latin Modern Mono" \
+        --lua-filter=$(pwd)/../pandoc-styles/remove_mkdocs_only.lua
 
 done
 

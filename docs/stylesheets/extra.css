@@ -158,3 +158,30 @@ hr.gradient {
 .md-typeset__table table:not([class]) {
   display: table
 }
+
+.download-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em; /* space between emoji and text */
+  padding: 0.55em 1.3em;
+  font-size: 1rem;
+  font-weight: 600;
+  background-color: #4f46e5; /* solid purple-blue that works with your font */
+  border-radius: 0.5rem; /* rounded, not pill-shaped */
+  text-decoration: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  color: #ffffff; /* keep text readable */
+}
+
+.download-button:hover {
+  background-color: #6366f1; /* slightly lighter on hover */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+}
+
+.download-button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
