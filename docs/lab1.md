@@ -73,9 +73,9 @@ ls -lah
 #### b) Run the following commands **step-by-step** and try to understand what is happening:
 ```bash
 ls
-mkdir obhpc
+mkdir glhpc
 ls
-cd ./obhpc
+cd ./glhpc
 ls
 mkdir lab1
 cd ./lab1
@@ -115,7 +115,7 @@ mkdir lab1
 
 * Did the last command (`mkdir lab1`) work ? Why not ?
 * What does `cd ..` do ? What does `..` mean ? 
-* Execute these commands: `pwd`, `realpath .`, `realpath ..`, `realpath ~/obhpc/lab1/..`
+* Execute these commands: `pwd`, `realpath .`, `realpath ..`, `realpath ~/glhpc/lab1/..`
 
 #### f) Run the following:
 ```bash
@@ -151,14 +151,14 @@ exo7/
         test.txt # With the text "test1"
 ```
 
-This directory should be located inside `~/obhpc/lab1/exo7`
+This directory should be located inside `~/glhpc/lab1/exo7`
 
 
 It should look something like this (the `tree` command may not be available on your shell):
 
 ![Final output](image/lab1/tree_exo7.png)
 
-#### c) Finally, run the following from `~/obhpc/lab1`
+#### c) Finally, run the following from `~/glhpc/lab1`
 
 ```bash
 cp -r ./exo7 ./exo7_copy
@@ -257,7 +257,7 @@ Using your shell navigate to the directory you wish to open in VSCode:
 
 
 ```bash
-cd ./obhpc/
+cd ./glhpc/
 code .
 ```
 
@@ -312,7 +312,7 @@ lab1/
             main.c # Empty text file
 ```
 
-Try to do this only using the shell. If you're using **VSCode** you can `cd` into `first_c_project` and run `code .`.
+Try to do this only using the shell. If you're using **VSCode** you can `cd` into `first_c_project` and run `code .`
 
 #### b) Modify `main.c` so that it contains:
 
@@ -326,7 +326,7 @@ int main(int argc, char** argv) {
 }
 ```
 
-#### c) Create a .gitignore text file inside the lab1 folder, with the content:
+#### c) Create a .gitignore text file inside the `first_c_project` folder, with the content:
 
 ```gitignore title=".gitignore"
 *.o
@@ -349,6 +349,9 @@ Please refer to Lecture 1 for all the git commands you will need in this section
 #### a) Initialize a new git repository inside the lab1 folder.
 #### b) Run `git status`, then stage all files from `first_c_project` as well as `.gitignore` in git.
 #### c) Create a first commit with the message "My first commit"
+
+I recommend you use the command `git commit -m "<message>"` or git may open nano/vim for you to edit the commit message, which may be confusing.
+
 #### d) Ensure the commit worked:
 
 `git log` should display the previous commit, and `git status` should no longer display the content of `first_c_project`. Feel free to commit files from the previous exercises of the lab if you want.
@@ -376,9 +379,12 @@ sudo apt install gcc libc6-dev make gdb valgrind
 
 #### b) Check GCC is working
 
-Run the following `gcc --version`. You should see something akin to:
+Run the following:
 
+```sh
+gcc --version
 ```
+```title="Expected output"
 gcc (GCC) 14.3.1 20250808 (Red Hat 14.3.1-3)
 Copyright (C) 2024 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
@@ -416,7 +422,7 @@ Run the following:
 ls -lah
 ```
 
-```sh title="output"
+```sh title="Expected output"
 -rw-r--r--.  1 user user   0 Aug 26 9:48 build.sh
 ```
 
@@ -446,6 +452,7 @@ You should see that the file now has permissions `rwxr-xr-x`. This can be read a
 #### d) Restrict permissions so that only you (the owner) can read, write, and execute build.sh. Neither the group nor others should have any permissions.
 
 In binary:
+
 - `rwx` = 111 = 7
 - `r-x` = 101 = 5
 - `r--` = 100 = 4
