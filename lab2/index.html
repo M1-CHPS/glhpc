@@ -734,9 +734,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#c-try-running-your-program" class="md-nav__link">
+  <a href="#c-run-make-then-try-running-mytransform" class="md-nav__link">
     <span class="md-ellipsis">
-      c) Try running your program
+      c) Run make then try running mytransform
     </span>
   </a>
   
@@ -1424,15 +1424,11 @@
 <td>Parses the transformation graph and executes it.</td>
 </tr>
 <tr>
-<td><code>src/parser.c</code></td>
-<td>Parser for the graph and the pipeline executor</td>
-</tr>
-<tr>
-<td><code>src/parser.h</code></td>
+<td><code>src/parser.(c|h)</code></td>
 <td>DAG representation for the image processing pipeline.</td>
 </tr>
 <tr>
-<td><code>src/image.c/h</code></td>
+<td><code>src/image.(c|h)</code></td>
 <td>Image structure and utilities for memory allocation and management.</td>
 </tr>
 <tr>
@@ -1456,6 +1452,7 @@
 <li>This includes any <code>.o</code>, <code>.so</code>, <code>.out</code>, as well as the <code>mytransform</code> binary</li>
 </ul>
 </li>
+<li>You should link to the math standard library by using the <code>-lm</code> compilation flag </li>
 </ul>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
@@ -1463,7 +1460,7 @@
 </div>
 <h4 id="b-define-a-cflags-variable-inside-the-makefile">b) Define a <code>CFLAGS</code> variable inside the <code>Makefile</code><a class="headerlink" href="#b-define-a-cflags-variable-inside-the-makefile" title="Permanent link">&para;</a></h4>
 <p>To get started, you should use <code>-Og -g -Wall -Wextra</code> as compilation flags. We will update this later. Ensure the flags are in effect.</p>
-<h4 id="c-try-running-your-program">c) Try running your program<a class="headerlink" href="#c-try-running-your-program" title="Permanent link">&para;</a></h4>
+<h4 id="c-run-make-then-try-running-mytransform">c) Run <code>make</code> then try running <code>mytransform</code><a class="headerlink" href="#c-run-make-then-try-running-mytransform" title="Permanent link">&para;</a></h4>
 <p>Execute the following:
 <div class="language-sh highlight"><span class="filename">Running a simple pipeline</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>./mytransform<span class="w"> </span>./pipelines/test.pipeline
 </span></code></pre></div></p>
