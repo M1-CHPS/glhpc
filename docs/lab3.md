@@ -1,4 +1,5 @@
 # Lab 3: CMake, Unit Tests, and Debugging
+
 <hr class="gradient" />
 
 ### Objectives
@@ -11,7 +12,7 @@
 
 ### Provided Files
 
-This lab is a continuation of [lab 2](../lab2). The structure of the project is the same.
+This lab is a continuation of [lab 2](lab2.md). The structure of the project is the same.
 A new transformation `rotate_image_90_clockwise`, which you will analyze in the [third part of this lab](#3-debugging-with-gdb-and-valgrind), has been added to the `transformations.h` and `transformations.c` files.
 
 ## 1 - CMake
