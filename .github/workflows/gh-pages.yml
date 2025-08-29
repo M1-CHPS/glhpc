@@ -37,7 +37,7 @@ jobs:
 
       - name: Run Pandoc build
         run: |
-          ./build_all_slides.sh
+          make
           cp -r ./slides ./docs/slides
 
       - name: Build MkDocs site
