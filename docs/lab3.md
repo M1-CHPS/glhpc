@@ -639,7 +639,7 @@ You should see files with the `.gcda` extension generated in the build directory
 Finally, you can generate the coverage report using the `gcovr` command:
 
 ```sh
-$ gcovr .
+$ gcovr -r .
 ```
 
 This will generate a coverage report for the `transformation.c` file, showing which lines of code were executed during the tests.

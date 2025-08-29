@@ -513,3 +513,4 @@ Object types include:
 - [Tech Talk: Linus Torvalds on Git (YouTube)](http://www.youtube.com/watch?v=4XpnKHJAok8)
 - [*TOP500 Supercomputers*](http://www.top500.org/)
 - *Modern Operating Systems* by Andrew S. Tanenbaum
+- *GIT Lecture Notes* by Thomas Dufaud (IUT Vélizy - UVSQ)
