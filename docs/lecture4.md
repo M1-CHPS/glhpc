@@ -9,7 +9,13 @@ header-includes:
   - \metroset{sectionpage=progressbar}
 ---
 
-# Course Topics
+<div class="mkdocs-only" markdown>
+  <p align="right" markdown>
+  [Download as slides 📥](slides/lecture4.pdf)
+  </p>
+</div>
+
+## Course Topics
 
 - Why and how to experimental methodology for HPC
 - Experimental pipeline
@@ -17,7 +23,7 @@ header-includes:
 
 ---
 
-# Plot Example - Intro
+## Plot Example - Intro
 
 In the following slides, you will be shown a series of plots; mainly taken from the PPN course reports of previous students.
 
@@ -30,7 +36,7 @@ For each plot:
 
 Raise your hands when ready to propose an explanation.
 
-# Plot Example (1)
+## Plot Example (1)
 
 ![](./image/lecture4/example_plot_2.png){ width=100% }
 
@@ -38,7 +44,7 @@ Raise your hands when ready to propose an explanation.
 
 ---
 
-# Plot Example (2)
+## Plot Example (2)
 
 ![](./image/lecture4/example_plot_1.png){ width=80% }
 
@@ -46,7 +52,7 @@ Raise your hands when ready to propose an explanation.
 
 ---
 
-# Plot Example (3)
+## Plot Example (3)
 
 ![](./image/lecture4/example_plot_3.png){ width=100% }
 
@@ -54,7 +60,7 @@ Raise your hands when ready to propose an explanation.
 
 ---
 
-# Plot Example (4)
+## Plot Example (4)
 
 ![](./image/lecture4/example_plot_4.png){ width=100% }
 
@@ -62,7 +68,7 @@ Raise your hands when ready to propose an explanation.
 
 ---
 
-# Plot Example (5)
+## Plot Example (5)
 
 ![](./image/lecture4/example_plot_5.png){ width=100% }
 
@@ -70,7 +76,7 @@ Raise your hands when ready to propose an explanation.
 
 ---
 
-# Plot Example (6)
+## Plot Example (6)
 
 ![](./image/lecture4/example_plot_6.png){ width=100% }
 
@@ -78,7 +84,7 @@ Raise your hands when ready to propose an explanation.
 
 ---
 
-# Plot Example (7)
+## Plot Example (7)
 
 ![](./image/lecture4/example_plot_7.png){ width=100% }
 
@@ -86,7 +92,7 @@ Raise your hands when ready to propose an explanation.
 
 ---
 
-# Plot Example - What makes a good plot
+## Plot Example - What makes a good plot
 
 Ask yourself:
 
@@ -98,7 +104,7 @@ Ask yourself:
 
 ---
 
-# Plot Example - Summary
+## Plot Example - Summary
 
 HPC is a scientific endeavour; data analysis and plotting are essential.
 
@@ -110,13 +116,13 @@ Datasets are large, multi-disciplinary, and often hard to reproduce.
 
 ---
 
-# Experimental Methodology - Workflow
+## Experimental Methodology - Workflow
 
 ![](./image/lecture4/experimental_methodology.png){ width=100% }
 
 ---
 
-# Statistical significance - Introduction
+## Statistical significance - Introduction
 
 Computers are noisy, complex systems:
 
@@ -129,7 +135,7 @@ How can we make sure our experimental measurements are reliable and conclusive?
 
 ---
 
-# Statistical significance - Warm-up effects
+## Statistical significance - Warm-up effects
 
 Systems need time to reach steady-state:
 
@@ -141,7 +147,7 @@ We need "warm-up" iterations to measure stable performance and skip cold caches,
 
 ---
 
-# Statistical significance - Noise mitigation
+## Statistical significance - Noise mitigation
 
 Noise can only be mitigated:
 
@@ -154,7 +160,7 @@ Noise can only be mitigated:
 
 Meta-repetitions are essential to mitigate noisy measurements.
 
-# Statistical significance - Example
+## Statistical significance - Example
 
 Same experiment on a stabilized benchmarking server:
 
@@ -168,7 +174,7 @@ Same experiment on a stabilized benchmarking server:
 
 ---
 
-# Statistical significance - Mean, Median, Variance
+## Statistical significance - Mean, Median, Variance
 
 Single-run measurements are misleading; we need statistics.
 
@@ -186,7 +192,7 @@ Plots usually show $\bar{x} \pm 1 \sigma$ as a shaded region around the mean to 
 
 ---
 
-# Statistical significance - Confidence Intervals
+## Statistical significance - Confidence Intervals
 
 How to decide how many repetitions we should perform ?
 
@@ -205,7 +211,7 @@ CI width $\propto \tfrac{1}{\sqrt{n}}$
 
 ---
 
-# Statistical significance - p-score & Hypothesis testing
+## Statistical significance - p-score & Hypothesis testing
 
 In HPC, mean/median and variance often suffice, but hypothesis testing can become handy in some contexts.
 
@@ -225,7 +231,7 @@ The measured differences between CPU and GPU execution time are **statistically 
 
 ---
 
-# Experimental Methodology – Reproducibility
+## Experimental Methodology – Reproducibility
 
 Reproducibility is a very hot topic (Reproducibility crisis in science)
 
@@ -240,43 +246,43 @@ Beware of your mindset: your results should be credible and honest before being 
 
 ---
 
-# Plotting tools - Cheetsheet
+## Plotting tools - Cheetsheet
 
 ---
 
-# Plotting tools - Matplotlib
+## Plotting tools - Matplotlib
 
 ---
 
-# Plotting tools - Seaborn
+## Plotting tools - Seaborn
 
 ---
 
-# Profiling - Time
+## Profiling - Time
 
 ---
 
-# gprof
+## gprof
 
 ---
 
-# Perf - Introduction
+## Perf - Introduction
 
 ---
 
-# Perf - Performance counters
+## Perf - Performance counters
 
 ---
 
-# Profiling - Energy
+## Profiling - Energy
 
 ---
 
-# Perf - Energy
+## Perf - Energy
 
 ---
 
-# Vtune
+## Vtune
 
 ---
 

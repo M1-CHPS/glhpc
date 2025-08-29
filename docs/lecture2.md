@@ -5,19 +5,32 @@ author: "M. Jam, P. de Oliveira Castro"
 date: \today
 theme: metropolis
 colortheme: orchid
+fonttheme: structurebold
+toc: true
+toc-depth: 2
+slide-level: 2
 header-includes:
   - \metroset{sectionpage=progressbar}
 ---
 
+# C for High Performance
 
-# Course Topics
+<div class="mkdocs-only" markdown>
+  <p align="right" markdown>
+  [Download as slides 📥](slides/lecture2.pdf)
+  </p>
+</div>
+
+## Course Topics
 
 - C Programming
 - Memory Management
 - Compilation
 - Introduction to parallel programming
 
-# Why C, C++, Python ?
+---
+
+## Why C, C++, Python ?
 
 Programming occurs at several abstraction levels from the hardware
 
@@ -25,7 +38,7 @@ Programming occurs at several abstraction levels from the hardware
 
 ---
 
-# Why C, C++, Python ?
+## Why C, C++, Python ?
 
 - Layers close to metal are harder to program...
     - But they offer maximum control and performance
@@ -38,13 +51,13 @@ In practice; we often combine multiple languages
 
 ---
 
-# Why C, C++, Python ?
+## Why C, C++, Python ?
 
 ![Hardware to Software layers (Shershakov, Sergey. (2018). Enhancing Efficiency of Process Mining Algorithms with a Tailored Library: Design Principles and Performance Assessment Technical Report. 10.13140/RG.2.2.18320.46084. )](image/lecture2/Four-abstraction-levels-of-programming-languages.png){ width=100% }
 
 ---
 
-# C Programming - Operations and Typing
+## C Programming - Operations and Typing
 
 C is a strongly typed imperative language:
 
@@ -67,7 +80,7 @@ int main() {
 
 ---
 
-# C Programming - Functions
+## C Programming - Functions
 
 ```c
 #include <stdio.h> // For printf(...)
@@ -92,7 +105,7 @@ int main() {
 
 ---
 
-# C Programming - Loops
+## C Programming - Loops
 
 Implementation C de $\sum_{i=1}^{100}{i}$
 
@@ -118,7 +131,7 @@ int main() {
 
 --- 
 
-# C Programming - Conditions
+## C Programming - Conditions
 
 Numbers of multiple of 3 inside $[0, 99]$ (i.e. $i \mod 3 = 0$)
 ```c
@@ -141,7 +154,7 @@ Here we could also do `for (unsigned int i = 0; i < 100; i += 3)`
 
 ---
 
-# C Programming - Basic Pointers
+## C Programming - Basic Pointers
 
 ```c
 int a = 0;
@@ -162,7 +175,7 @@ printf("a: %d; b: %d; c: %d\n", a, b , *c);
 
 ---
 
-# C Programming - Arrays
+## C Programming - Arrays
 
 ```c
 int main() {
@@ -177,7 +190,7 @@ int main() {
 
 ---
 
-# C Programming - Structures
+## C Programming - Structures
 
 Structures are user-defined composite types:
 
@@ -206,7 +219,7 @@ C has no concept of `class`, `object`, or `method` !
 
 ---
 
-# C programming - Structures 2
+## C programming - Structures 2
 
 ```c
 void display_student(Student* s) {
@@ -227,7 +240,7 @@ for (int i = 0; i < 3; i++)
 
 ---
 
-# C Programming - Trading Abstraction for performance
+## C Programming - Trading Abstraction for performance
 
 ## In C, we must manually take care of very low level concepts {.alert}
 
@@ -244,7 +257,7 @@ for (int i = 0; i < 3; i++)
 
 ---
 
-# C Programming - Trading Abstraction for performance (Example)
+## C Programming - Trading Abstraction for performance (Example)
 
 Consider the following python and C code:
 
@@ -268,7 +281,7 @@ Which one is faster, and by how much ?
 
 ---
 
-# C Programming - Trading Abstraction for performance (Example)
+## C Programming - Trading Abstraction for performance (Example)
 
 Results:
 
@@ -286,7 +299,7 @@ Note that we could use `numpy` or the `sum` python function: but those are actua
 
 ---
 
-# Managing Memory - Concept
+## Managing Memory - Concept
 
 ## In High-level languages {.alert}
 
@@ -308,7 +321,7 @@ This low level control is critical for performance; hence we must understand how
 
 ---
 
-# Managing Memory - Memory Types
+## Managing Memory - Memory Types
 
 We can distinguish two types of memory
 
@@ -323,7 +336,7 @@ The standard library (`libc`) manipulates pages on a finer scale and provides me
 
 ---
 
-# Managing Memory - Allocation
+## Managing Memory - Allocation
 
 ```c
 #include <time.h> // for time
@@ -349,7 +362,7 @@ int do_the_thing(int n) {
 
 ---
 
-# Managing Memory - Allocation
+## Managing Memory - Allocation
 
 ![Results of memory allocation](image/lecture2/malloc_in_memory.png){ height=75% }
 
@@ -357,7 +370,7 @@ int do_the_thing(int n) {
 
 ---
 
-# Managing Memory - Deallocation
+## Managing Memory - Deallocation
 
 Memory is not infinite ! 
 
@@ -378,7 +391,7 @@ If memory is not freed (memory leak) the computer can run out:
 
 ---
 
-# Virtual And Physical Memory - Problem
+## Virtual And Physical Memory - Problem
 
 - How can the kernel guarantee that memory is always contiguous?
 - Can I acess memory from another program and steal their data?
@@ -388,7 +401,7 @@ If memory is not freed (memory leak) the computer can run out:
 
 ---
 
-# Virtual And Physical Memory - Concept
+## Virtual And Physical Memory - Concept
 
 We separate **Physical Addresses** (locations in memory) from **Virtual Addresses** (Logic locations) seen by each program !
 
@@ -402,7 +415,7 @@ Each process believes it has acces to a large, contiguous block of memory; while
 
 ---
 
-# Virtual And Physical Memory - Diagram
+## Virtual And Physical Memory - Diagram
 
 ![Virtual And Physical Memory](image/lecture2/virtual_physical_memory.png){ width=80% }
 
@@ -411,7 +424,7 @@ Each process believes it has acces to a large, contiguous block of memory; while
 ---
 
 
-# Memory Hierarchy
+## Memory Hierarchy
 
 Which memory are we talking about ?
 
@@ -421,7 +434,7 @@ Note that GPU(s) also have their own separate memory !
 
 ---
 
-# Memory Hierarchy
+## Memory Hierarchy
 
 * CPU computations are extremely fast, and memory access can be a bottleneck
   - Registers have the lowest latency
@@ -433,7 +446,7 @@ To achieve high performance, we must maximize data reuse in registers or caches,
 
 ---
 
-# CPU Caches
+## CPU Caches
 
 Most CPU have 3 levels of cache
 
@@ -449,7 +462,7 @@ The assembly instructions are stored in a separate (L1i) instruction cache
 
 ---
 
-# CPU Caches
+## CPU Caches
 
 ![CPU Latency and Cache](image/lecture2/cache_diagram.png){ width=95% }
 
@@ -460,7 +473,7 @@ We speak of **Heterogeneous Memory Hierarchy**: the same memory accesses can hav
 
 ---
 
-# CPU Caches - In practice
+## CPU Caches - In practice
 
 ```c
 for (int i = 0; i < n; i++) {
@@ -477,7 +490,7 @@ for (int i = 0; i < n; i++) {
 
 ---
 
-# CPU Caches - In practice
+## CPU Caches - In practice
 
 In practice:
 
@@ -487,7 +500,7 @@ In practice:
 
 ---
 
-# Caches CPU - Strided Access
+## Caches CPU - Strided Access
 
 Consider two NBody 3D implementations:
 
@@ -509,7 +522,7 @@ float* z = malloc(sizeof(float) * N);
 
 ---
 
-# Caches CPU - Strided Access
+## Caches CPU - Strided Access
 
 We want to record the number of particles with $x \leq 0.5$
 
@@ -536,7 +549,7 @@ Which access pattern makes better use of cache lines ?
 
 ---
 
-# Caches CPU - Strided Access
+## Caches CPU - Strided Access
 
 `Perf` results summed across 100 runs:
 
@@ -556,7 +569,7 @@ Most LLC loads still results in misses, leading to DRAM access.
 
 ---
 
-# Compilation & Assembly
+## Compilation & Assembly
 
 C is a compiled language: we must translate the source code to assembly for the CPU
 
@@ -571,7 +584,7 @@ C is a compiled language: we must translate the source code to assembly for the 
 
 ---
 
-# Compilation & Assembly - Simple Loop
+## Compilation & Assembly - Simple Loop
 
 ```c
 int sum = 0;
@@ -604,7 +617,7 @@ main:
 
 ---
 
-# Compilation & Assembly
+## Compilation & Assembly
 
 Assembly is as close to the metal we usually get, and is architecture dependant:
 
@@ -617,7 +630,7 @@ Assembly is as close to the metal we usually get, and is architecture dependant:
 
 ---
 
-# Compilation & Assembly - Optimization passes
+## Compilation & Assembly - Optimization passes
 
 The compiler is not *just* a translator:
 
@@ -632,7 +645,7 @@ The flag `-march=native` allows the compiler to target the current machine for c
 
 ---
 
-# Compilation & Assembly - Compiler Pipeline
+## Compilation & Assembly - Compiler Pipeline
 
 ![C Compiler Workflow](image/lecture2/compiler_pipeline.png){ width=105% }
 
@@ -643,7 +656,7 @@ There are several compilers with varying performance and features:
 
 ---
 
-# Makefile Basics - Introduction
+## Makefile Basics - Introduction
 
 **Make** is a scripting tool to automate complex compilation workflows. It works by defining rules inside **Makefiles**.
 
@@ -663,7 +676,7 @@ main: main.c my_library.c my_library.h
 
 ---
 
-# Makefile Basics - Phony rules
+## Makefile Basics - Phony rules
 
 Makefiles expects that a rule `main` produces a file called `main`. However, not all rules produce files:
 
@@ -684,7 +697,7 @@ Makefile has many, many other functionalities, outside the scope of this course.
 
 ---
 
-# Makefile Basics - Usage
+## Makefile Basics - Usage
 
 The typical projects looks something like:
 
@@ -703,7 +716,7 @@ You can directly call `make all`, `make clean`, etc.
 
 ---
 
-# Introduction to parallelism
+## Introduction to parallelism
 
 Compiler optimization is only one side of high peformance computing.
 
@@ -718,7 +731,7 @@ Every process has at least one "thread of execution", which is an ordered sequen
 
 ---
 
-# Introduction to parallelism
+## Introduction to parallelism
 
 What if we could split our programs into multiple threads ?
 
@@ -729,7 +742,7 @@ In practice, there is some overhead, we must handle dependencies between instruc
 
 ---
 
-# Introduction to parallelism - Types of parallelism
+## Introduction to parallelism - Types of parallelism
 
 We consider three main types of parallelism
 
@@ -744,7 +757,7 @@ For this course, we will only focus on SIMD and Shared Memory parallelism.
 
 ---
 
-# Introduction to parallelism - Shared Memory
+## Introduction to parallelism - Shared Memory
 
 Consider the following loop:
 
@@ -760,7 +773,7 @@ We can slice the iteration space in multiple chunks:
 
 ---
 
-# Introduction to parallelism - Shared Memory
+## Introduction to parallelism - Shared Memory
 
 We split the program into multiple instruction sequences running in parallel.
 
@@ -773,7 +786,7 @@ It's a simple to use library/compiler pass to parallelize trivial loops.
 
 ---
 
-# Introduction to parallelism - `OpenMP`
+## Introduction to parallelism - `OpenMP`
 
 ```c
 int sum = 0;
@@ -789,7 +802,7 @@ performing a thread-safe reduction on sum.
 
 ---
 
-# Introduction to parallelism - `OpenMP` details
+## Introduction to parallelism - `OpenMP` details
 
 `OpenMP` defines a set of `clause` which are operations followed by a set of modifiers.
 
@@ -802,7 +815,7 @@ This code will be enough for most cases; but `OpenMP` allows for significantly m
 
 ---
 
-# Introduction to parallelism - Advanced `OpenMP` Example
+## Introduction to parallelism - Advanced `OpenMP` Example
 
 ```c
 float global_min = FLT_MAX;
@@ -830,7 +843,7 @@ int global_min_index = -1;
 
 ---
 
-# Naive NBody 3D Strong Scaling - Setup
+## Naive NBody 3D Strong Scaling - Setup
 
 We increase the number of threads while keeping the work size constant.
 
@@ -839,7 +852,7 @@ We increase the number of threads while keeping the work size constant.
 
 5 Meta repetitions per run, 13th Gen Intel(R) Core(TM) i7-13850HX @5.30 GHz, 32KB/2MB/30MB:L1/L2/L3 15GB DDR5.
 
-# Naive NBody 3D Strong Scaling - Results
+## Naive NBody 3D Strong Scaling - Results
 
 ![Speedup of Naive Gravitationnal NBody 3D](./image/lecture2/naive_nbody_scaling.png){ width=80% }
 
