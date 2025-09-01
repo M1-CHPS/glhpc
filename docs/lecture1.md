@@ -474,17 +474,23 @@ Object types include:
 
 - **Rewriting History:** Interactive rebasing is risky. Only rewrite commits that haven't been pushed to a remote repository. Prefer branch-based corrections for safer handling.
 
-## Centralized Collaboration
+## Centralized Collaboration 
 
 ![Interactions with a centralized system](image/lecture1/CentralizedVCS.png)
+
+(image from Joomla's documentation)
 
 ## Decentralized with Central Repository
 
 ![Constrained interactions with a decentralized system](image/lecture1/DistributedVCS_withCentral.png)
 
+(image from Joomla's documentation)
+
 ## Fully Decentralized Collaboration
 
 ![Interactions with a decentralized system](image/lecture1/DistributedVCS_Complex.png)
+
+(image from Joomla's documentation)
 
 ## Best Practices for Collaborative Development
 
