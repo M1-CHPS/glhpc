@@ -17,11 +17,11 @@
     margin-bottom: 0;
 }
 
-.box-section > *:first-child {
+.box-section>*:first-child {
     margin-top: 1em;
 }
 
-.box-section > * {
+.box-section>* {
     padding: 0.5em 1em 0.1em 1em;
     margin-bottom: 0;
 }
@@ -34,7 +34,8 @@ This is a workaround to remove the margins around the content when inside a box-
 .box-section ul,
 .box-section ol,
 .box-section p {
-    margin-bottom: 0.05em; /* Or adjust as needed */
+    margin-bottom: 0.05em;
+    /* Or adjust as needed */
     margin-top: 0.05em;
 }
 
@@ -44,6 +45,7 @@ This is a workaround to remove the margins around the content when inside a box-
     border-color: #ccc;
     background-color: #3d435324;
 }
+
 .optional-section::before {
     content: "📘 Optional Content";
     background-color: #3d435324;
@@ -55,6 +57,7 @@ This is a workaround to remove the margins around the content when inside a box-
     border-color: #007acc;
     background-color: #3d435324;
 }
+
 .goingfurther-section::before {
     content: "⚙️ Going Further";
     background-color: #3d435324;
@@ -69,18 +72,20 @@ This is a workaround to remove the margins around the content when inside a box-
     background-color: #31975124;
     margin-top: 5em;
 }
+
 .summary-section::before {
     content: "✅ Lab Summary";
     background-color: #31975124;
     border-color: #31975124;
 }
 
-.summary-section > *:first-child {
+.summary-section>*:first-child {
     margin-top: 1em;
 }
 
-.summary-section > * {
-    padding: 0.5em 1em 0.5em 1.5em; /* top, right, bottom, left */
+.summary-section>* {
+    padding: 0.5em 1em 0.5em 1.5em;
+    /* top, right, bottom, left */
 }
 
 .summary-section p,
@@ -88,7 +93,8 @@ This is a workaround to remove the margins around the content when inside a box-
 .summary-section ol,
 .summary-section pre,
 .summary-section blockquote {
-    padding: 0.5em 1em 0.5em 1.5em; /* top, right, bottom, left */
+    padding: 0.5em 1em 0.5em 1.5em;
+    /* top, right, bottom, left */
 }
 
 .toc-title {
@@ -116,11 +122,11 @@ This is a workaround to remove the margins around the content when inside a box-
     border-right: 0;
     background-color: #f9f9f9;
     margin: 1.5em 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 /* Style the clickable summary header */
-.md-typeset details.optional-section > summary {
+.md-typeset details.optional-section>summary {
     background-color: #e0e0e0;
     padding: 0.4em 4em;
     font-weight: bold;
@@ -130,58 +136,69 @@ This is a workaround to remove the margins around the content when inside a box-
 }
 
 /* Inner content padding */
-.md-typeset details.optional-section > *:not(summary) {
+.md-typeset details.optional-section>*:not(summary) {
     padding: 0.8em 1.2em;
 }
 
 hr.gradient {
-  position: relative;
-  height: 4px;
-  border: none;
-  margin: 2.5em 0;
-  border-radius: 2px;
+    position: relative;
+    height: 4px;
+    border: none;
+    margin: 2.5em 0;
+    border-radius: 2px;
 
-  /* Base gradient line */
-  background: linear-gradient(
-    to right,
-    #f9f9f9 0%,
-    #9400FF 50%,
-    #f9f9f9 100%
-  );
+    /* Base gradient line */
+    background: linear-gradient(to right,
+            #f9f9f9 0%,
+            #9400FF 50%,
+            #f9f9f9 100%);
 }
 
 /* Make the tables full width */
 .md-typeset__table {
-  width: 100%;
+    width: 100%;
 }
 
 .md-typeset__table table:not([class]) {
-  display: table
+    display: table
 }
 
 .download-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5em; /* space between emoji and text */
-  padding: 0.55em 1.3em;
-  font-size: 1rem;
-  font-weight: 600;
-  background-color: #4f46e5; /* solid purple-blue that works with your font */
-  border-radius: 0.5rem; /* rounded, not pill-shaped */
-  text-decoration: none;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
-  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-  color: #ffffff; /* keep text readable */
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
+    /* space between emoji and text */
+    padding: 0.55em 1.3em;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #4f46e5;
+    /* solid purple-blue that works with your font */
+    border-radius: 0.5rem;
+    /* rounded, not pill-shaped */
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    color: #ffffff;
+    /* keep text readable */
 }
 
 .download-button:hover {
-  background-color: #6366f1; /* slightly lighter on hover */
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
+    background-color: #6366f1;
+    /* slightly lighter on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.12);
 }
 
 .download-button:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
 }
 
+/* Auto scaling images */
+
+/* Scale to fit the page with constraints */
+/* Bigger images will be max 15cm, sligthly bigger than the size of a beamer slide */
+
+.md-content__inner img {
+    max-width: 15cm;
+}
