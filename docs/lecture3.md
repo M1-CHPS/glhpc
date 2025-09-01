@@ -418,11 +418,129 @@ install(TARGETS my_library
 
 # Debugging Tools
 
+## Buggy program example
+
+```c
+/* Linked list of n = 5 nodes
+         .---------.    .---------.           .--------------.
+         | val = 4 |    | val = 3 |           | val = 0      |
+ head -> | next  --|--> | next  --|--> ... -> | next =  NULL |
+         '---------'    '---------'           '--------------'
+ */
+
+#include <stdlib.h>
+#include <assert.h>
+
+struct Node
+{
+  int val;
+  struct Node *next;
+};
+
+int main()
+{
+  int n = 5;
+
+  struct Node *head = init_list(n);
+  // ... do something with the list ...
+  delete(head);
+
+  return 0;
+}
+```
+
+## Linked List Initialization and Deletion
+
+```c
+struct Node *init_list(int n)
+{
+  struct Node *head = NULL;
+  for (int i = 0; i < n; ++i)
+  {
+    struct Node *p = malloc(sizeof *p);
+    assert(p != NULL);
+    p->val = i;
+    p->next = head;
+    head = p;
+  }
+  return head;
+}
+
+void delete(struct Node *head)
+{
+  while (head)
+  {
+    struct Node *next = head->next;
+    free(head);
+    head = head->next;
+  }
+}
+```
+
+## Running the program...
+
+```bash
+$ gcc -g -O0 -o buggy buggy.c
+$ ./buggy
+Segmentation fault (core dumped)
+```
+
 ## GDB: GNU Debugger
+
+- Inspect the state of a program at the moment it crashes.
+- Step through the code line by line.
+- Inspect variables and memory.
+- Set breakpoints to pause execution at specific lines.
+
+(Live demonstration)
+
+```bash
+$ gdb ./buggy
+Program received signal SIGSEGV, Segmentation fault.
+0x000055555555522b in delete (head=0xa45d97b66d0683e8) at buggy.c:28
+28          struct Node *next = head->next;
+(gdb) x head
+0xa45d97b66d0683e8:     Cannot access memory at address 0xa45d97b66d0683e8
+```
 
 ## Valgrind: memory debugging and leak detection
 
+- Detects memory leaks, invalid memory access, and uninitialized memory usage.
+- Runs the code in a virtual sandbox that monitors every memory operation.
+
+(Live demonstration)
+
+```bash
+$ valgrind --leak-check=full ./buggy
+==537945== Invalid read of size 8
+==537945==    at 0x109243: delete (buggy.c:30)
+==537945==    by 0x109282: main (buggy.c:40)
+==537945==  Address 0x4a94188 is 8 bytes inside a block of size 16 free'd
+==537945==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==537945==    by 0x10923E: delete (buggy.c:29)
+==537945==    by 0x109282: main (buggy.c:40)
+==537945==  Block was alloc'd at
+==537945==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==537945==    by 0x1091B2: init_list (buggy.c:15)
+==537945==    by 0x109272: main (buggy.c:38)
+```
+
 ## Other tools: ASAN, UBSAN
+
+- **AddressSanitizer (ASAN):** Detects memory errors such as buffer overflows and use-after-free.
+- **UndefinedBehaviorSanitizer (UBSAN):** Detects undefined behavior in C/C++ programs.
+- Works on threaded programs and has lower overhead than Valgrind.
+
+(live demonstration)
+```bash
+$ gcc -fsanitize=address -g -O0 -o buggy_asan buggy.c
+$ ./buggy_asan
+=================================================================
+==538335==ERROR: AddressSanitizer: heap-use-after-free on address 0x502000000098 at pc 0x5bec7c7343e9 bp 0x7ffdf3015150 sp 0x7ffdf3015140
+READ of size 8 at 0x502000000098 thread T0
+    #0 0x5bec7c7343e8 in delete /home/poliveira/test-gdb/buggy.c:30
+    #1 0x5bec7c73442c in main /home/poliveira/test-gdb/buggy.c:40
+```
 
 # Software Testing
 
@@ -604,6 +722,27 @@ It is possible to select a subset of classes!
   ```
 
 - Reference for all assertions: [Unity Assertions](https://github.com/ThrowTheSwitch/Unity/blob/master/docs/UnityAssertionsReference.md)
+
+## Example: testing our linked list
+
+```c
+#include "unity.h"
+#include "buggy.h"
+void test_delete_single_node(void) {
+    struct Node *head = init_list(1); 
+    TEST_ASSERT_NOT_NULL(head); // head should not be NULL
+    TEST_ASSERT_EQUAL_INT(0, head->val); // head should be 0
+    delete(head); // should not crash
+    TEST_ASSERT_NULL(head); // head should be NULL after deletion
+}
+void test_delete_multiple_nodes(void) {
+    struct Node *head = init_list(5);
+    TEST_ASSERT_EQUAL_INT(4, head->val); // head should be 4
+    TEST_ASSERT_EQUAL_INT(3, head->next->val); 
+    delete(head); // should not crash
+    TEST_ASSERT_NULL(head); // head should be NULL after deletion
+}
+```
 
 ## Running Tests
 
