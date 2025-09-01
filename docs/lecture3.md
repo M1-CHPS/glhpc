@@ -424,15 +424,15 @@ install(TARGETS my_library
 - 1988-1994: FAA Advanced Automation System project abandoned due to management issues and overly ambitious specifications, resulting in a \$2.6B loss.
 - 1985-1987: Therac-25 medical accelerator malfunctioned due to a thread concurrency issue, causing five deaths and numerous injuries.
 
-# Technical Debt
+## Technical Debt
 
 ![Software Costs (Applied Soft. Measurement, Capers Jones)](image/lecture3/cost-software.png)
 
-# Software Costs
+## Software Costs
 
 ![Software Costs (Nancy Leveson)](image/lecture3/cost-software2.png)
 
-# Verification and Validation (V&V)
+## Verification and Validation (V&V)
 
 - **Validation**: Does the software meet the client's needs?  
   - "Are we building the right product?"
@@ -447,15 +447,15 @@ install(TARGETS my_library
 - Code reviews
 - **Testing**
 
-# Software Testing
+## Software Testing
 
 ![Testing Process (S. Bardin)](image/lecture3/test-pipeline.png)
 
-# V Cycle Model
+## V Cycle Model
 
 ![V-Model: Validation followed by Verification](image/lecture3/vcycle.svg)
 
-# Different Types of Tests
+## Different Types of Tests
 
 - **Unit Tests:**
   - Test individual functions in isolation.
@@ -475,26 +475,24 @@ install(TARGETS my_library
 - **Regression Tests:**
   - Ensure that fixed bugs do not reappear.
 
-# Black-Box and White-Box Testing
+## Black-Box and White-Box Testing
 
-## Black-Box Testing (Functional)
+### Black-Box Testing (Functional)
 
 - Tests are generated from specifications.
 - Uses assumptions different from the programmer's.
 - Tests are independent of implementation.
 - Difficult to find programming defects.
 
-## White-Box Testing (Structural)
+### White-Box Testing (Structural)
 
 - Tests are generated from source code.
 - Maximizes coverage by testing all code branches.
 - Difficult to find omission or specification errors.
 
-##
-
 Both approaches are complementary.
 
-# What to Test?
+## What to Test?
 
 - Running the program on all possible inputs is too costly.
 - Choose a subset of inputs:
@@ -504,9 +502,9 @@ Both approaches are complementary.
   - Test invalid cases.
   - Test combinations (experimental design).
 
-# Example of Partitioning
+## Example of Partitioning
 
-## Specification
+### Specification
 
 ```c
 /* compare returns:
@@ -516,8 +514,6 @@ Both approaches are complementary.
  */
 int compare (int a, int b);
 ```
-
-##
 
 What inputs should be tested?
 
@@ -551,7 +547,7 @@ It is possible to select a subset of classes!
 |-----------|----|-------
 |-2147483648|-1  | -1
 
-# Discussion
+## Discussion
 
 - Automatic test generation.
 - Test coverage calculation.
