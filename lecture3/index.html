@@ -1857,6 +1857,24 @@
 <p>gcovr generate HTML reports showing which parts of the code were covered by tests.</p>
 </li>
 </ul>
+<h2 id="documentation-with-doxygen">Documentation with Doxygen<a class="headerlink" href="#documentation-with-doxygen" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Doxygen is a documentation generator for C, C++, and other languages.</li>
+<li>It extracts comments from the source code and generates documentation in various formats (HTML, LaTex, etc.).</li>
+<li>Use special comment blocks to document functions, parameters, return values, and more.</li>
+<li>Example of a documented function:</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="cm">/**</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="cm"> * @brief Initializes a linked list with n nodes.</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="cm"> * @param n Number of nodes to create.</span>
+</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="cm"> * @return Pointer to the head of the linked list</span>
+</span><span id="__span-40-5"><a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="cm"> * @return NULL if memory allocation fails.</span>
+</span><span id="__span-40-6"><a id="__codelineno-40-6" name="__codelineno-40-6" href="#__codelineno-40-6"></a><span class="cm"> */</span>
+</span><span id="__span-40-7"><a id="__codelineno-40-7" name="__codelineno-40-7" href="#__codelineno-40-7"></a><span class="k">struct</span><span class="w"> </span><span class="nc">Node</span><span class="w"> </span><span class="o">*</span><span class="n">init_list</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+</span></code></pre></div>
+<ul>
+<li>Generate documentation using the <code>doxygen</code> command with a configuration file (<code>Doxyfile</code>).</li>
+</ul>
 <h2 id="credits-and-bibliography">Credits and Bibliography<a class="headerlink" href="#credits-and-bibliography" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Course "Automated Software Testing," Sébastien Bardin.</li>
