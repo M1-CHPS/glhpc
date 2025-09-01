@@ -13,6 +13,13 @@ header-includes:
   - \metroset{sectionpage=progressbar}
 ---
 
+# Building, Testing and Debugging Scientific Software
+
+<div class="mkdocs-only" markdown>
+  <p align="right" markdown>
+  [Download as slides 📥](slides/lecture3.pdf)
+  </p>
+</div>
 
 ## Objectives
 
@@ -449,7 +456,7 @@ install(TARGETS my_library
 - Code reviews
 - **Testing**
 
-## Software Testing
+## Testing Process
 
 ![Testing Process (S. Bardin)](image/lecture3/test-pipeline.png)
 
@@ -504,7 +511,7 @@ Both approaches are complementary.
   - Test invalid cases.
   - Test combinations (experimental design).
 
-## Example of Partitioning
+## Example of Partitioning (1/3)
 
 ### Specification
 
@@ -519,9 +526,7 @@ int compare (int a, int b);
 
 What inputs should be tested?
 
-## Example of Partitioning
-
-### Equivalence Classes
+## Equivalence Classes (2/3)
 
 | Variable | Possible Values            |
 |----------|----------------------------|
@@ -540,10 +545,9 @@ What inputs should be tested?
 | -5  | -10 | 1      |
 | ... | ... | ...    |
 
-
 It is possible to select a subset of classes!
 
-## Boundary Tests
+## Boundary Tests (3/3)
 
 |a          | b  | result
 |-----------|----|-------
@@ -606,7 +610,7 @@ It is possible to select a subset of classes!
 - Create a test runner function to execute all tests:
 
   ```c
-  int main(void) {
+  int main(void) ## Boundary Tests{
       UNITY_BEGIN();
       RUN_TEST(test_function_name);
       ...
@@ -641,13 +645,13 @@ It is possible to select a subset of classes!
 
 - gcovr generate HTML reports showing which parts of the code were covered by tests.
 
-# Credits and Bibliography
+## Credits and Bibliography
 
 - Course "Automated Software Testing," Sébastien Bardin.
-- CMake Tutorial: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
-- CMake Best Practices: https://cliutils.gitlab.io/modern-cmake/
-- Unity Test Framework: http://www.throwtheswitch.org/unity
-- Valgrind: http://valgrind.org/
-- GDB: https://www.gnu.org/software/gdb/
-- ASAN/UBSAN: https://clang.llvm.org/docs/AddressSanitizer.html
-- Doxygen: https://www.doxygen.nl/index.html
+- [CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
+- [CMake Best Practices](https://cliutils.gitlab.io/modern-cmake/)
+- [Unity Test Framework](http://www.throwtheswitch.org/unity)
+- [Valgrind](http://valgrind.org/)
+- [GDB](https://www.gnu.org/software/gdb/)
+- [ASAN/UBSAN](https://clang.llvm.org/docs/AddressSanitizer.html)
+- [Doxygen](https://www.doxygen.nl/index.html)
