@@ -1095,6 +1095,75 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#unity-test-framework" class="md-nav__link">
+    <span class="md-ellipsis">
+      Unity Test Framework
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Unity Test Framework">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction-to-unity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction to Unity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setting-up-unity" class="md-nav__link">
+    <span class="md-ellipsis">
+      Setting Up Unity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#writing-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Writing Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#running-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Running Tests
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup-and-teardown" class="md-nav__link">
+    <span class="md-ellipsis">
+      SetUp and TearDown
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#code-coverage-with-unit-tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Code Coverage with unit tests
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#credits-and-bibliography" class="md-nav__link">
     <span class="md-ellipsis">
       Credits and Bibliography
@@ -2201,9 +2270,93 @@
 <li>Importance of using automated testing tools.</li>
 <li>Importance of using continuous integration tools.</li>
 </ul>
+<h1 id="unity-test-framework">Unity Test Framework<a class="headerlink" href="#unity-test-framework" title="Permanent link">&para;</a></h1>
+<h2 id="introduction-to-unity">Introduction to Unity<a class="headerlink" href="#introduction-to-unity" title="Permanent link">&para;</a></h2>
+<p><img alt="Unity Logo" src="../image/lecture3/unity-slim.png" /></p>
+<p><a href="http://www.throwtheswitch.org/unity">Unity Test Framework</a></p>
+<ul>
+<li>Lightweight and simple unit testing framework for C.</li>
+<li>Designed for embedded systems but can be used in any C project.</li>
+<li>Provides a set of macros and functions to define and run tests.</li>
+</ul>
+<h2 id="setting-up-unity">Setting Up Unity<a class="headerlink" href="#setting-up-unity" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Separate Unity tests into a separate directory, e.g., <code>tests/</code>. </p>
+</li>
+<li>
+<p>Include the Unity header in your test files:</p>
+</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&quot;unity.h&quot;</span>
+</span></code></pre></div>
+<ul>
+<li>Requires linking against the Unity library</li>
+<li>We will link against a static library <code>libunity.a</code>, since Unity uses CMake, we will use FetchContent to add it to our projects.</li>
+</ul>
+<h2 id="writing-tests">Writing Tests<a class="headerlink" href="#writing-tests" title="Permanent link">&para;</a></h2>
+<ul>
+<li>test_functions use <code>TEST</code> macros provided by Unity to assert conditions.</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">test_function_name</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">    </span><span class="p">...</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">    </span><span class="n">TEST_ASSERT_EQUAL_INT</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">);</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">    </span><span class="n">TEST_ASSERT_NOT_NULL</span><span class="p">(</span><span class="n">pointer</span><span class="p">);</span>
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">    </span><span class="n">TEST_ASSERT_TRUE</span><span class="p">(</span><span class="n">condition</span><span class="p">);</span>
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">    </span><span class="p">...</span><span class="w"> </span>
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li>Reference for all assertions: <a href="https://github.com/ThrowTheSwitch/Unity/blob/master/docs/UnityAssertionsReference.md">Unity Assertions</a></li>
+</ul>
+<h2 id="running-tests">Running Tests<a class="headerlink" href="#running-tests" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Create a test runner function to execute all tests:</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">    </span><span class="n">UNITY_BEGIN</span><span class="p">();</span>
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="n">RUN_TEST</span><span class="p">(</span><span class="n">test_function_name</span><span class="p">);</span>
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">    </span><span class="p">...</span>
+</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">UNITY_END</span><span class="p">();</span>
+</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="setup-and-teardown">SetUp and TearDown<a class="headerlink" href="#setup-and-teardown" title="Permanent link">&para;</a></h2>
+<ul>
+<li>SetUp and TearDown functions can be defined to run before and after each test.</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setUp</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="w">    </span><span class="c1">// Code to run before each test</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="p">}</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="kt">void</span><span class="w"> </span><span class="nf">tearDown</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="w">    </span><span class="c1">// Code to run after each test</span>
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="code-coverage-with-unit-tests">Code Coverage with unit tests<a class="headerlink" href="#code-coverage-with-unit-tests" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Use <code>gcov</code> or <code>llvm-cov</code> to measure code coverage of your tests.</li>
+<li>Compile your code with coverage flags:</li>
+</ul>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>gcc<span class="w"> </span>--coverage<span class="w"> </span>-g<span class="w"> </span>-O0<span class="w"> </span>-o<span class="w"> </span>test_runner<span class="w"> </span>test_runner.c<span class="w"> </span>my_code.c<span class="w"> </span>-lunity
+</span></code></pre></div>
+<ul>
+<li>
+<p>gcov instruments the basic blocks of code to record what is executed during tests.</p>
+</li>
+<li>
+<p>gcovr generate HTML reports showing which parts of the code were covered by tests.</p>
+</li>
+</ul>
 <h1 id="credits-and-bibliography">Credits and Bibliography<a class="headerlink" href="#credits-and-bibliography" title="Permanent link">&para;</a></h1>
 <ul>
 <li>Course "Automated Software Testing," Sébastien Bardin.</li>
+<li>CMake Tutorial: https://cmake.org/cmake/help/latest/guide/tutorial/index.html</li>
+<li>CMake Best Practices: https://cliutils.gitlab.io/modern-cmake/</li>
+<li>Unity Test Framework: http://www.throwtheswitch.org/unity</li>
+<li>Valgrind: http://valgrind.org/</li>
+<li>GDB: https://www.gnu.org/software/gdb/</li>
+<li>ASAN/UBSAN: https://clang.llvm.org/docs/AddressSanitizer.html</li>
+<li>Doxygen: https://www.doxygen.nl/index.html</li>
 </ul>
 
 
