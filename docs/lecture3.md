@@ -8,9 +8,11 @@ colortheme: orchid
 fonttheme: structurebold
 toc: true
 toc-depth: 2
+slide-level: 2
 header-includes:
   - \metroset{sectionpage=progressbar}
 ---
+
 
 ## Objectives
 
@@ -556,6 +558,96 @@ It is possible to select a subset of classes!
 - Importance of using automated testing tools.
 - Importance of using continuous integration tools.
 
+
+# Unity Test Framework
+
+## Introduction to Unity
+
+  ![Unity Logo](image/lecture3/unity-slim.png)
+
+  [Unity Test Framework](http://www.throwtheswitch.org/unity)
+
+  - Lightweight and simple unit testing framework for C.
+  - Designed for embedded systems but can be used in any C project.
+  - Provides a set of macros and functions to define and run tests.
+  
+
+## Setting Up Unity 
+
+- Separate Unity tests into a separate directory, e.g., `tests/`. 
+
+- Include the Unity header in your test files:
+
+  ```c
+  #include "unity.h"
+  ```
+
+- Requires linking against the Unity library
+- We will link against a static library `libunity.a`, since Unity uses CMake, we will use FetchContent to add it to our projects.
+
+## Writing Tests
+
+- test_functions use `TEST` macros provided by Unity to assert conditions.
+
+  ```c
+  void test_function_name(void) {
+      ...
+      TEST_ASSERT_EQUAL_INT(expected, actual);
+      TEST_ASSERT_NOT_NULL(pointer);
+      TEST_ASSERT_TRUE(condition);
+      ... 
+  }
+  ```
+
+- Reference for all assertions: [Unity Assertions](https://github.com/ThrowTheSwitch/Unity/blob/master/docs/UnityAssertionsReference.md)
+
+## Running Tests
+
+- Create a test runner function to execute all tests:
+
+  ```c
+  int main(void) {
+      UNITY_BEGIN();
+      RUN_TEST(test_function_name);
+      ...
+      return UNITY_END();
+  }
+  ```
+
+## SetUp and TearDown
+
+- SetUp and TearDown functions can be defined to run before and after each test.
+
+  ```c
+  void setUp(void) {
+      // Code to run before each test
+  }
+
+  void tearDown(void) {
+      // Code to run after each test
+  }
+  ```
+
+## Code Coverage with unit tests
+
+- Use `gcov` or `llvm-cov` to measure code coverage of your tests.
+- Compile your code with coverage flags:
+
+  ```sh
+  gcc --coverage -g -O0 -o test_runner test_runner.c my_code.c -lunity
+  ```
+
+- gcov instruments the basic blocks of code to record what is executed during tests.
+
+- gcovr generate HTML reports showing which parts of the code were covered by tests.
+
 # Credits and Bibliography
 
 - Course "Automated Software Testing," Sébastien Bardin.
+- CMake Tutorial: https://cmake.org/cmake/help/latest/guide/tutorial/index.html
+- CMake Best Practices: https://cliutils.gitlab.io/modern-cmake/
+- Unity Test Framework: http://www.throwtheswitch.org/unity
+- Valgrind: http://valgrind.org/
+- GDB: https://www.gnu.org/software/gdb/
+- ASAN/UBSAN: https://clang.llvm.org/docs/AddressSanitizer.html
+- Doxygen: https://www.doxygen.nl/index.html
