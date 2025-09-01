@@ -784,6 +784,24 @@ void test_delete_multiple_nodes(void) {
 
 - gcovr generate HTML reports showing which parts of the code were covered by tests.
 
+## Documentation with Doxygen
+- Doxygen is a documentation generator for C, C++, and other languages.
+- It extracts comments from the source code and generates documentation in various formats (HTML, LaTex, etc.).
+- Use special comment blocks to document functions, parameters, return values, and more.
+- Example of a documented function:
+
+```c
+/**
+ * @brief Initializes a linked list with n nodes.
+ * @param n Number of nodes to create.
+ * @return Pointer to the head of the linked list
+ * @return NULL if memory allocation fails.
+ */
+struct Node *init_list(int n);
+```
+
+- Generate documentation using the `doxygen` command with a configuration file (`Doxyfile`).
+
 ## Credits and Bibliography
 
 - Course "Automated Software Testing," Sébastien Bardin.
