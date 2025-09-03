@@ -89,11 +89,11 @@ perf stat -r 3 -e cycles,power/energy-pkg/ ./sgemm sgemm 512 512 512
 
 The `-r 3` option tells `perf` to repeat the measurement 3 times and report the mean and variance.
 
-### 2. Write a script `performance.sh`
+### 2. Write a script `compare-sizes.sh`
 
 The script should:
 
-- run `sgemm` with M=512, K=512 and N with increasing sizes (100, 200, 300, ..., 3000).
+- run `sgemm` with N=512, K=512 and M with increasing sizes (e.g. 100, 200, 300, ..., 3000).
 - measure the number of CPU cycles and energy consumption using `perf stat` for each run.
 - define a variable `REPETITIONS` that controls how many times each configuration is repeated. `perf` supports the `-r` option to repeat measurements. It outputs the mean and variance of the measurements, allowing to plot error bars.
 - define a variable `EVENTS` to specify the events to measure (e.g. `cycles,power/energy-pkg/`).
@@ -102,11 +102,11 @@ The script should:
 !!! Tip
     If you are using `json`, you can use `jq` to process the output of `perf stat` and aggregate the results together with `jq -s 'flatten(1)'`.
 
-### 3. Write a script `plot.py`
+### 3. Write a script `plot-sizes.py`
 
 The script should:
 
-- read the output of `performance.sh` and produces a plot with two y-axes:
+- read the output of the previous script and produces a plot with two y-axes:
 - left y-axis: number of CPU cycles (with error bars)
 - right y-axis: energy consumption (with error bars)
 
@@ -148,6 +148,15 @@ Ensure the innermost loop has contiguous memory accesses.
 2. Change the loop order to (i, k, j).
 3. Measure runtime/energy and compare to the naive version. Explain differences.
 
+#### c) Add two new scripts to `performance/`
+
+- `compare-optimizations.sh`: compares the naive and `ikj` implementations for a chosen matrix size.
+- `plot-optimizations.py`: plots the performance and energy consumption of each implementation. Include error bars as before.
+
+!!! Tip
+    You can use the same structure as `compare-sizes.sh` and `plot-sizes.py`, but modify them to compare different implementations for a fixed matrix size.
+    Make the scripts generic enough to easily add new implementations in the future.
+
 ### 2. Cache blocking
 
 Access to `B` in the naive algorithm typically strides through columns — poor locality for row-major storage. Blocking (tiling) improves cache reuse.
@@ -162,10 +171,10 @@ perf stat -e LLC-loads,LLC-stores ./sgemm sgemm_ikj 1280 512 512
 
 #### b) Implement a blocked matrix multiplication
 
-Define a block size `BLOCK` (e.g. 32, 64) and implement `sgemm_blocked` in `sgemm.c`:
+Define a block size `BLOCK_SIZE` and implement `sgemm_blocked` in `sgemm.c`:
 
 ```c title='sgemm.h'
-#define BLOCK 64  /* block size, tune for your CPU cache */
+#define BLOCK_SIZE 512  /* block size, tune for your CPU cache */
 /* sgemm_blocked has the same prototype as sgemm and sgemm_ikj */ 
 void sgemm_blocked( ... );
 ```
@@ -181,6 +190,8 @@ Do not forget to call it from `main.c` and add a command line option to select i
 #### c) Measure LLC loads/stores for the blocked version and compare to naive.
 
 #### d) Measure energy and time for blocked version and compare.
+
+Modify your `compare-optimizations.sh` script to include the blocked version in the comparisons.
 
 #### e) Why does blocking reduce LLC misses and energy/time?
 
