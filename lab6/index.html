@@ -889,22 +889,31 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#1-write-a-script-performancesh" class="md-nav__link">
+  <a href="#1-measure-performance-and-energy-consumption" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Write a script performance.sh
+      1. Measure performance and energy consumption
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-write-a-script-plotpy" class="md-nav__link">
+  <a href="#2-write-a-script-performancesh" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Write a script plot.py
+      2. Write a script performance.sh
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Write a script plot.py">
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-write-a-script-plotpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Write a script plot.py
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Write a script plot.py">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -1477,22 +1486,32 @@ Inside <code>tests/</code> you will find <code>test_runner.c</code> that contain
 <h2 id="2-performance-measurement-harness">2 - Performance measurement harness<a class="headerlink" href="#2-performance-measurement-harness" title="Permanent link">&para;</a></h2>
 <p>Create a new directory <code>performance/</code> and add two files: <code>performance.sh</code> and <code>plot.py</code>.
 For both the measurement harness and plotting script follow best practices taught in <a href="../lecture4/">lecture 4</a>.</p>
-<h3 id="1-write-a-script-performancesh">1. Write a script <code>performance.sh</code><a class="headerlink" href="#1-write-a-script-performancesh" title="Permanent link">&para;</a></h3>
-<p>The script should:
-- run <code>sgemm</code> with M=512, K=512 and N with incresing sizes (100, 200, 300, ..., 3000).
-- measure the number of CPU cycles and energy consumption using <code>perf stat</code> for each run.
-- define a variable <code>REPETITIONS</code> that controls how many times each configuration is repeated. <code>perf</code> supports the <code>-r</code> option to repeat measurements. It outputs the mean and variance of the measurements, allowing to plot error bars.
-- define a variable <code>EVENTS</code> to specify the events to measure (e.g. <code>cycles,power/energy-pkg/</code>).
-- aggregate all measures into a <code>.json</code> file or <code>.csv</code> file.</p>
+<h3 id="1-measure-performance-and-energy-consumption">1. Measure performance and energy consumption<a class="headerlink" href="#1-measure-performance-and-energy-consumption" title="Permanent link">&para;</a></h3>
+<p>We will use <code>perf</code> to measure the number of CPU cycles and energy consumption of our SGEMM implementation.</p>
+<p>Example command to measure cycles and energy consumption of a run of <code>sgemm</code> with M=512, K=512, N=512:
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">3</span><span class="w"> </span>-e<span class="w"> </span>cycles,power/energy-pkg/<span class="w"> </span>./sgemm<span class="w"> </span>sgemm<span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span>
+</span></code></pre></div></p>
+<p>The <code>-r 3</code> option tells <code>perf</code> to repeat the measurement 3 times and report the mean and variance.</p>
+<h3 id="2-write-a-script-performancesh">2. Write a script <code>performance.sh</code><a class="headerlink" href="#2-write-a-script-performancesh" title="Permanent link">&para;</a></h3>
+<p>The script should:</p>
+<ul>
+<li>run <code>sgemm</code> with M=512, K=512 and N with increasing sizes (100, 200, 300, ..., 3000).</li>
+<li>measure the number of CPU cycles and energy consumption using <code>perf stat</code> for each run.</li>
+<li>define a variable <code>REPETITIONS</code> that controls how many times each configuration is repeated. <code>perf</code> supports the <code>-r</code> option to repeat measurements. It outputs the mean and variance of the measurements, allowing to plot error bars.</li>
+<li>define a variable <code>EVENTS</code> to specify the events to measure (e.g. <code>cycles,power/energy-pkg/</code>).</li>
+<li>aggregate all measures into a <code>.json</code> file or <code>.csv</code> file.</li>
+</ul>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>If you are using <code>json</code>, you can use <code>jq</code> to process the output of <code>perf stat</code> and aggregate the results together with <code>jq -s 'flatten(1)'</code>.</p>
 </div>
-<h3 id="2-write-a-script-plotpy">2. Write a script <code>plot.py</code><a class="headerlink" href="#2-write-a-script-plotpy" title="Permanent link">&para;</a></h3>
-<p>The script should:
-- read the output of <code>performance.sh</code> and produces a plot with two y-axes:
-    - left y-axis: number of CPU cycles (with error bars)
-    - right y-axis: energy consumption (with error bars)</p>
+<h3 id="3-write-a-script-plotpy">3. Write a script <code>plot.py</code><a class="headerlink" href="#3-write-a-script-plotpy" title="Permanent link">&para;</a></h3>
+<p>The script should:</p>
+<ul>
+<li>read the output of <code>performance.sh</code> and produces a plot with two y-axes:</li>
+<li>left y-axis: number of CPU cycles (with error bars)</li>
+<li>right y-axis: energy consumption (with error bars)</li>
+</ul>
 <h4 id="a-run-your-scripts-and-produce-an-initial-plot">a) Run your scripts and produce an initial plot.<a class="headerlink" href="#a-run-your-scripts-and-produce-an-initial-plot" title="Permanent link">&para;</a></h4>
 <h4 id="b-inspect-your-plot-do-you-see-any-knee-points-can-you-explain-them-hint-consider-cache-sizes">b) Inspect your plot. Do you see any knee points? Can you explain them? (Hint: consider cache sizes.)<a class="headerlink" href="#b-inspect-your-plot-do-you-see-any-knee-points-can-you-explain-them-hint-consider-cache-sizes" title="Permanent link">&para;</a></h4>
 <div class="admonition tip">
@@ -1533,13 +1552,13 @@ Do not forget to add tests for each new version of <code>sgemm</code> in <code>t
 <p>Access to <code>B</code> in the naive algorithm typically strides through columns — poor locality for row-major storage. Blocking (tiling) improves cache reuse.</p>
 <h4 id="a-measure-last-level-cache-events-for-the-naive-implementation">a) Measure last-level-cache events for the naive implementation.<a class="headerlink" href="#a-measure-last-level-cache-events-for-the-naive-implementation" title="Permanent link">&para;</a></h4>
 <p>Use <code>perf stat</code> with <code>LLC-loads</code> and <code>LLC-stores</code> events. Example:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-e<span class="w"> </span>LLC-loads,LLC-stores<span class="w"> </span>./sgemm<span class="w"> </span>sgemm_ikj<span class="w"> </span><span class="m">1280</span><span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-e<span class="w"> </span>LLC-loads,LLC-stores<span class="w"> </span>./sgemm<span class="w"> </span>sgemm_ikj<span class="w"> </span><span class="m">1280</span><span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span>
 </span></code></pre></div>
 <h4 id="b-implement-a-blocked-matrix-multiplication">b) Implement a blocked matrix multiplication<a class="headerlink" href="#b-implement-a-blocked-matrix-multiplication" title="Permanent link">&para;</a></h4>
 <p>Define a block size <code>BLOCK</code> (e.g. 32, 64) and implement <code>sgemm_blocked</code> in <code>sgemm.c</code>:</p>
-<div class="language-c highlight"><span class="filename">sgemm.h</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">#define BLOCK 64  </span><span class="cm">/* block size, tune for your CPU cache */</span>
-</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="cm">/* sgemm_blocked has the same prototype as sgemm and sgemm_ikj */</span><span class="w"> </span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kt">void</span><span class="w"> </span><span class="nf">sgemm_blocked</span><span class="p">(</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">);</span>
+<div class="language-c highlight"><span class="filename">sgemm.h</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#define BLOCK 64  </span><span class="cm">/* block size, tune for your CPU cache */</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="cm">/* sgemm_blocked has the same prototype as sgemm and sgemm_ikj */</span><span class="w"> </span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kt">void</span><span class="w"> </span><span class="nf">sgemm_blocked</span><span class="p">(</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">);</span>
 </span></code></pre></div>
 <p>Do not forget to call it from <code>main.c</code> and add a command line option to select it.</p>
 <div class="admonition tip">
@@ -1568,7 +1587,7 @@ Do not forget to add tests for each new version of <code>sgemm</code> in <code>t
 <p>Parallelize over blocks of rows for better load balancing.</p>
 <p>Add <code>#include &lt;omp.h&gt;</code> at the top of your <code>sgemm.c</code> file.
 Use the following pragma to parallelize the outer loop:
-<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#pragma omp parallel for schedule(static)</span>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="cp">#pragma omp parallel for schedule(static)</span>
 </span></code></pre></div></p>
 </li>
 </ul>
@@ -1580,7 +1599,7 @@ strategies (e.g., dynamic, guided) to see their impact on performance.</p>
 </div>
 <h4 id="b-compile-and-measure-performance">b) Compile and measure performance<a class="headerlink" href="#b-compile-and-measure-performance" title="Permanent link">&para;</a></h4>
 <p>You can set the number of threads with the <code>OMP_NUM_THREADS</code> environment variable. For example, to use 8 threads:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">8</span><span class="w">  </span><span class="c1"># Adjust based on your machine</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">8</span><span class="w">  </span><span class="c1"># Adjust based on your machine</span>
 </span></code></pre></div>
 <p>Plot the performance and energy consumption of your OpenMP implementation for different numbers of threads (e.g., 1, 2, 4, 8, 16).
 Add your scripts to <code>performance/</code> and produce a scalability plot.</p>
