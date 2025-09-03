@@ -1086,18 +1086,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-for-further-study" class="md-nav__link">
+  <a href="#5-making-a-library" class="md-nav__link">
     <span class="md-ellipsis">
-      5 - For further study
+      5 - Making a Library
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-summary" class="md-nav__link">
+  <a href="#6-for-further-study" class="md-nav__link">
     <span class="md-ellipsis">
-      6 - Summary
+      6 - For further study
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      7 - Summary
     </span>
   </a>
   
@@ -1582,7 +1591,12 @@ Add your scripts to <code>performance/</code> and produce a scalability plot.</p
 <li>Is energy per run higher or lower with more threads? Why?</li>
 <li>How does memory bandwidth affect scaling as more threads are added?</li>
 </ul>
-<h2 id="5-for-further-study">5 - For further study<a class="headerlink" href="#5-for-further-study" title="Permanent link">&para;</a></h2>
+<h2 id="5-making-a-library">5 - Making a Library<a class="headerlink" href="#5-making-a-library" title="Permanent link">&para;</a></h2>
+<p>Now that you have optimized your SGEMM implementation, you can package it as a library.
+In the next lab, we will use your library to implement a simple Neural Network inference engine. </p>
+<p>To do so, modify your <code>CMakeLists.txt</code> to build a static library <code>libsgemm.a</code> from <code>sgemm.c</code> and <code>sgemm.h</code>. Ensure the prototypes in the public header <code>sgemm.h</code> are well commented in Doxygen style. Modify the <code>CMakeLists.txt</code> so that users of the library
+know where to find the header files.</p>
+<h2 id="6-for-further-study">6 - For further study<a class="headerlink" href="#6-for-further-study" title="Permanent link">&para;</a></h2>
 <p>The matrix product we have implemented is efficient, but it is possible to push optimizations even further. Here are some references and avenues if this work interests you:</p>
 <ul>
 <li>
@@ -1607,7 +1621,7 @@ optimized vendor libraries (OpenBLAS, Intel MKL). You can even try using
 <hr class="gradient" />
 
 <div class="summary-section box-section">
-<h2 class="hidden-title" id="6-summary"> 6 - Summary<a class="headerlink" href="#6-summary" title="Permanent link">&para;</a></h2>
+<h2 class="hidden-title" id="7-summary"> 7 - Summary<a class="headerlink" href="#7-summary" title="Permanent link">&para;</a></h2>
 <p>Upon completing this lab, you should know how to:</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Write a naive implementation of the SGEMM algorithm.</li>
