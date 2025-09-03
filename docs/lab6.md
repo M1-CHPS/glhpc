@@ -242,7 +242,7 @@ optimized vendor libraries (OpenBLAS, Intel MKL). You can even try using
 
 <div class="summary-section box-section" markdown>
 
-<h2 class="hidden-title"> 6 - Summary</h2>
+<h2 class="hidden-title"> 7 - Summary</h2>
 
 Upon completing this lab, you should know how to:
 
