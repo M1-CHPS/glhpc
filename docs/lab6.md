@@ -78,10 +78,22 @@ Now that you have a working implementation, you can call `sgemm` from `main.c` w
 Create a new directory `performance/` and add two files: `performance.sh` and `plot.py`.
 For both the measurement harness and plotting script follow best practices taught in [lecture 4](lecture4.md).
 
-### 1. Write a script `performance.sh`
+### 1. Measure performance and energy consumption
+
+We will use `perf` to measure the number of CPU cycles and energy consumption of our SGEMM implementation.
+
+Example command to measure cycles and energy consumption of a run of `sgemm` with M=512, K=512, N=512:
+```sh
+perf stat -r 3 -e cycles,power/energy-pkg/ ./sgemm sgemm 512 512 512
+```
+
+The `-r 3` option tells `perf` to repeat the measurement 3 times and report the mean and variance.
+
+### 2. Write a script `performance.sh`
 
 The script should:
-- run `sgemm` with M=512, K=512 and N with incresing sizes (100, 200, 300, ..., 3000).
+
+- run `sgemm` with M=512, K=512 and N with increasing sizes (100, 200, 300, ..., 3000).
 - measure the number of CPU cycles and energy consumption using `perf stat` for each run.
 - define a variable `REPETITIONS` that controls how many times each configuration is repeated. `perf` supports the `-r` option to repeat measurements. It outputs the mean and variance of the measurements, allowing to plot error bars.
 - define a variable `EVENTS` to specify the events to measure (e.g. `cycles,power/energy-pkg/`).
@@ -90,12 +102,13 @@ The script should:
 !!! Tip
     If you are using `json`, you can use `jq` to process the output of `perf stat` and aggregate the results together with `jq -s 'flatten(1)'`.
 
-### 2. Write a script `plot.py`
+### 3. Write a script `plot.py`
 
 The script should:
+
 - read the output of `performance.sh` and produces a plot with two y-axes:
-    - left y-axis: number of CPU cycles (with error bars)
-    - right y-axis: energy consumption (with error bars)
+- left y-axis: number of CPU cycles (with error bars)
+- right y-axis: energy consumption (with error bars)
 
 #### a) Run your scripts and produce an initial plot.
 #### b) Inspect your plot. Do you see any knee points? Can you explain them? (Hint: consider cache sizes.)
