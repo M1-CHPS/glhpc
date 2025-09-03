@@ -898,22 +898,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#2-write-a-script-performancesh" class="md-nav__link">
+  <a href="#2-write-a-script-compare-sizessh" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Write a script performance.sh
+      2. Write a script compare-sizes.sh
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#3-write-a-script-plotpy" class="md-nav__link">
+  <a href="#3-write-a-script-plot-sizespy" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Write a script plot.py
+      3. Write a script plot-sizes.py
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Write a script plot.py">
+    <nav class="md-nav" aria-label="3. Write a script plot-sizes.py">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -977,6 +977,15 @@
   <a href="#b-loop-order-stride" class="md-nav__link">
     <span class="md-ellipsis">
       b) Loop order / stride
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-add-two-new-scripts-to-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Add two new scripts to performance/
     </span>
   </a>
   
@@ -1492,10 +1501,10 @@ For both the measurement harness and plotting script follow best practices taugh
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">3</span><span class="w"> </span>-e<span class="w"> </span>cycles,power/energy-pkg/<span class="w"> </span>./sgemm<span class="w"> </span>sgemm<span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span>
 </span></code></pre></div></p>
 <p>The <code>-r 3</code> option tells <code>perf</code> to repeat the measurement 3 times and report the mean and variance.</p>
-<h3 id="2-write-a-script-performancesh">2. Write a script <code>performance.sh</code><a class="headerlink" href="#2-write-a-script-performancesh" title="Permanent link">&para;</a></h3>
+<h3 id="2-write-a-script-compare-sizessh">2. Write a script <code>compare-sizes.sh</code><a class="headerlink" href="#2-write-a-script-compare-sizessh" title="Permanent link">&para;</a></h3>
 <p>The script should:</p>
 <ul>
-<li>run <code>sgemm</code> with M=512, K=512 and N with increasing sizes (100, 200, 300, ..., 3000).</li>
+<li>run <code>sgemm</code> with N=512, K=512 and M with increasing sizes (e.g. 100, 200, 300, ..., 3000).</li>
 <li>measure the number of CPU cycles and energy consumption using <code>perf stat</code> for each run.</li>
 <li>define a variable <code>REPETITIONS</code> that controls how many times each configuration is repeated. <code>perf</code> supports the <code>-r</code> option to repeat measurements. It outputs the mean and variance of the measurements, allowing to plot error bars.</li>
 <li>define a variable <code>EVENTS</code> to specify the events to measure (e.g. <code>cycles,power/energy-pkg/</code>).</li>
@@ -1505,10 +1514,10 @@ For both the measurement harness and plotting script follow best practices taugh
 <p class="admonition-title">Tip</p>
 <p>If you are using <code>json</code>, you can use <code>jq</code> to process the output of <code>perf stat</code> and aggregate the results together with <code>jq -s 'flatten(1)'</code>.</p>
 </div>
-<h3 id="3-write-a-script-plotpy">3. Write a script <code>plot.py</code><a class="headerlink" href="#3-write-a-script-plotpy" title="Permanent link">&para;</a></h3>
+<h3 id="3-write-a-script-plot-sizespy">3. Write a script <code>plot-sizes.py</code><a class="headerlink" href="#3-write-a-script-plot-sizespy" title="Permanent link">&para;</a></h3>
 <p>The script should:</p>
 <ul>
-<li>read the output of <code>performance.sh</code> and produces a plot with two y-axes:</li>
+<li>read the output of the previous script and produces a plot with two y-axes:</li>
 <li>left y-axis: number of CPU cycles (with error bars)</li>
 <li>right y-axis: energy consumption (with error bars)</li>
 </ul>
@@ -1548,6 +1557,16 @@ Do not forget to add tests for each new version of <code>sgemm</code> in <code>t
 <li>Change the loop order to (i, k, j).</li>
 <li>Measure runtime/energy and compare to the naive version. Explain differences.</li>
 </ol>
+<h4 id="c-add-two-new-scripts-to-performance">c) Add two new scripts to <code>performance/</code><a class="headerlink" href="#c-add-two-new-scripts-to-performance" title="Permanent link">&para;</a></h4>
+<ul>
+<li><code>compare-optimizations.sh</code>: compares the naive and <code>ikj</code> implementations for a chosen matrix size.</li>
+<li><code>plot-optimizations.py</code>: plots the performance and energy consumption of each implementation. Include error bars as before.</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use the same structure as <code>compare-sizes.sh</code> and <code>plot-sizes.py</code>, but modify them to compare different implementations for a fixed matrix size.
+Make the scripts generic enough to easily add new implementations in the future.</p>
+</div>
 <h3 id="2-cache-blocking">2. Cache blocking<a class="headerlink" href="#2-cache-blocking" title="Permanent link">&para;</a></h3>
 <p>Access to <code>B</code> in the naive algorithm typically strides through columns — poor locality for row-major storage. Blocking (tiling) improves cache reuse.</p>
 <h4 id="a-measure-last-level-cache-events-for-the-naive-implementation">a) Measure last-level-cache events for the naive implementation.<a class="headerlink" href="#a-measure-last-level-cache-events-for-the-naive-implementation" title="Permanent link">&para;</a></h4>
@@ -1555,8 +1574,8 @@ Do not forget to add tests for each new version of <code>sgemm</code> in <code>t
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-e<span class="w"> </span>LLC-loads,LLC-stores<span class="w"> </span>./sgemm<span class="w"> </span>sgemm_ikj<span class="w"> </span><span class="m">1280</span><span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span>
 </span></code></pre></div>
 <h4 id="b-implement-a-blocked-matrix-multiplication">b) Implement a blocked matrix multiplication<a class="headerlink" href="#b-implement-a-blocked-matrix-multiplication" title="Permanent link">&para;</a></h4>
-<p>Define a block size <code>BLOCK</code> (e.g. 32, 64) and implement <code>sgemm_blocked</code> in <code>sgemm.c</code>:</p>
-<div class="language-c highlight"><span class="filename">sgemm.h</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#define BLOCK 64  </span><span class="cm">/* block size, tune for your CPU cache */</span>
+<p>Define a block size <code>BLOCK_SIZE</code> and implement <code>sgemm_blocked</code> in <code>sgemm.c</code>:</p>
+<div class="language-c highlight"><span class="filename">sgemm.h</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#define BLOCK_SIZE 512  </span><span class="cm">/* block size, tune for your CPU cache */</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="cm">/* sgemm_blocked has the same prototype as sgemm and sgemm_ikj */</span><span class="w"> </span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kt">void</span><span class="w"> </span><span class="nf">sgemm_blocked</span><span class="p">(</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">);</span>
 </span></code></pre></div>
@@ -1574,6 +1593,7 @@ Do not forget to add tests for each new version of <code>sgemm</code> in <code>t
 </div>
 <h4 id="c-measure-llc-loadsstores-for-the-blocked-version-and-compare-to-naive">c) Measure LLC loads/stores for the blocked version and compare to naive.<a class="headerlink" href="#c-measure-llc-loadsstores-for-the-blocked-version-and-compare-to-naive" title="Permanent link">&para;</a></h4>
 <h4 id="d-measure-energy-and-time-for-blocked-version-and-compare">d) Measure energy and time for blocked version and compare.<a class="headerlink" href="#d-measure-energy-and-time-for-blocked-version-and-compare" title="Permanent link">&para;</a></h4>
+<p>Modify your <code>compare-optimizations.sh</code> script to include the blocked version in the comparisons.</p>
 <h4 id="e-why-does-blocking-reduce-llc-misses-and-energytime">e) Why does blocking reduce LLC misses and energy/time?<a class="headerlink" href="#e-why-does-blocking-reduce-llc-misses-and-energytime" title="Permanent link">&para;</a></h4>
 <ol>
 <li>Parallelization</li>
