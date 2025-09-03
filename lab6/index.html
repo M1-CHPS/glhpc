@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#td6-projet-ia-part-1-sgemm-kernel-optimization" class="md-skip">
+        <a href="#lab-6-ai-project-1-sgemm-kernel-optimization" class="md-skip">
           Skip to content
         </a>
       
@@ -739,6 +739,19 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Lab 6 - AI Project (1) SGEMM Kernel Optimization
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         
   
@@ -750,6 +763,349 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-implementing-a-naive-sgemm" class="md-nav__link">
+    <span class="md-ellipsis">
+      1 - Implementing a naive SGEMM
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1 - Implementing a naive SGEMM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-creating-random-matrices" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Creating random matrices
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Creating random matrices">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-implement-random_matrix-inside-sgemmc-to-generate-random-matrices" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Implement random_matrix inside sgemm.c to generate random matrices.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-add-a-test-in-test_sgemmc-that-checks-that-random_matrix-correctly-generates-matrices-with-values-in-the-range-10-10-call-the-test-from-test_runnerc" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Add a test in test_sgemm.c that checks that random_matrix correctly generates matrices with values in the range \([-1.0, 1.0]\). Call the test from test_runner.c.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-create-a-cmakelisttxt" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Create a CMakeList.txt
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-naive-sgemm-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Naive SGEMM implementation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Naive SGEMM implementation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-implement-the-naive-version-of-sgemm-in-sgemmc-using-three-nested-loops-in-the-order-i-j-k" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Implement the naive version of sgemm in sgemm.c using three nested loops in the order (i, j, k).
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-add-various-tests-in-test_sgemmc-that-checks-that-your-sgemm-implementation-correctly-computes-the-product-of-small-matrices-with-variying-sizes-and-shapes-eg-1x1-2x2-3x1-1x3-3x3" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Add various tests in test_sgemm.c that checks that your sgemm implementation correctly computes the product of small matrices with variying sizes and shapes (e.g. 1x1, 2x2, 3x1, 1x3, 3x3).
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-check-that-your-tests-pass" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Check that your tests pass.
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-performance-measurement-harness" class="md-nav__link">
+    <span class="md-ellipsis">
+      2 - Performance measurement harness
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2 - Performance measurement harness">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-write-a-script-performancesh" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Write a script performance.sh
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-write-a-script-plotpy" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Write a script plot.py
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Write a script plot.py">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-run-your-scripts-and-produce-an-initial-plot" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Run your scripts and produce an initial plot.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-inspect-your-plot-do-you-see-any-knee-points-can-you-explain-them-hint-consider-cache-sizes" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Inspect your plot. Do you see any knee points? Can you explain them? (Hint: consider cache sizes.)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-optimizations" class="md-nav__link">
+    <span class="md-ellipsis">
+      3 - Optimizations
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3 - Optimizations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-vectorization" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Vectorization
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Vectorization">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-compiler-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Compiler flags
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-loop-order-stride" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Loop order / stride
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-cache-blocking" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Cache blocking
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Cache blocking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-measure-last-level-cache-events-for-the-naive-implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Measure last-level-cache events for the naive implementation.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-implement-a-blocked-matrix-multiplication" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Implement a blocked matrix multiplication
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-measure-llc-loadsstores-for-the-blocked-version-and-compare-to-naive" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Measure LLC loads/stores for the blocked version and compare to naive.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#d-measure-energy-and-time-for-blocked-version-and-compare" class="md-nav__link">
+    <span class="md-ellipsis">
+      d) Measure energy and time for blocked version and compare.
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#e-why-does-blocking-reduce-llc-misses-and-energytime" class="md-nav__link">
+    <span class="md-ellipsis">
+      e) Why does blocking reduce LLC misses and energy/time?
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-parallelization-with-openmp" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Parallelization with OpenMP
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Parallelization with OpenMP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-implement-a-parallel-version-using-openmp" class="md-nav__link">
+    <span class="md-ellipsis">
+      a) Implement a parallel version using OpenMP
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-compile-and-measure-performance" class="md-nav__link">
+    <span class="md-ellipsis">
+      b) Compile and measure performance
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-analyze-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      c) Analyze results
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-for-further-study" class="md-nav__link">
+    <span class="md-ellipsis">
+      5 - For further study
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      6 - Summary
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1053,7 +1409,213 @@
 
 
 
-<h1 id="td6-projet-ia-part-1-sgemm-kernel-optimization">TD6: Projet IA - Part 1 - SGEMM Kernel Optimization<a class="headerlink" href="#td6-projet-ia-part-1-sgemm-kernel-optimization" title="Permanent link">&para;</a></h1>
+<h1 id="lab-6-ai-project-1-sgemm-kernel-optimization">Lab 6 - AI Project (1) SGEMM Kernel Optimization<a class="headerlink" href="#lab-6-ai-project-1-sgemm-kernel-optimization" title="Permanent link">&para;</a></h1>
+<hr class="gradient" />
+
+<h2 id="1-implementing-a-naive-sgemm">1 - Implementing a naive SGEMM<a class="headerlink" href="#1-implementing-a-naive-sgemm" title="Permanent link">&para;</a></h2>
+<p>We work on multiplication of dense matrices. This algorithm is everywhere (ML, data analysis, 3D engines, physics). 
+Here we focus on single-precision floating point SGEMM as used in many ML workloads.</p>
+<p>The operation we want to implement is:</p>
+<div class="arithmatex">\[ \text{RES} = A \times B + C \]</div>
+<p><img alt="SGEMM" src="../image/lab6/sgemm.svg" /></p>
+<div class="language-c highlight"><span class="filename">sgemm.h</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cm">/**</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cm"> * @brief SGEMM (Single-precision General Matrix Multiply)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cm"> *</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="cm"> * Performs the matrix multiplication operation:</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="cm"> * RES = A*B + C</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="cm"> *</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="cm"> * @param A Input matrix A with dimensions M x K (row-major order)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="cm"> * @param B Input matrix B with dimensions K x N</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="cm"> * @param C Input matrix C with dimensions M x N</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="cm"> * @param M Number of rows in matrix A and C</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="cm"> * @param N Number of columns in matrix B and C</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="cm"> * @param K Number of columns in matrix A and rows in matrix B</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="cm"> * @param RES Output matrix with dimensions M x N, where the result will be stored</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="cm"> */</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="kt">void</span><span class="w"> </span><span class="nf">sgemm</span><span class="p">(</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">A</span><span class="p">,</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">B</span><span class="p">,</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">C</span><span class="p">,</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="w">    </span><span class="kt">float</span><span class="w"> </span><span class="o">*</span><span class="n">RES</span><span class="p">,</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">M</span><span class="p">,</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">N</span><span class="p">,</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">    </span><span class="kt">size_t</span><span class="w"> </span><span class="n">K</span><span class="p">);</span>
+</span></code></pre></div>
+<p>Matrices are stored in row-major order (C-style). That is, the elements of each row are stored in contiguous memory locations. For example, a 3x3 matrix:</p>
+<div class="arithmatex">\[ \begin{pmatrix}
+a_{11} &amp; a_{12} &amp; a_{13} \\
+a_{21} &amp; a_{22} &amp; a_{23} \\
+a_{31} &amp; a_{32} &amp; a_{33}
+\end{pmatrix} \]</div>
+<p>is stored in memory as:</p>
+<div class="arithmatex">\[ [a_{11}, a_{12}, a_{13}, a_{21}, a_{22}, a_{23}, a_{31}, a_{32}, a_{33}] \]</div>
+<h3 id="1-creating-random-matrices">1. Creating random matrices<a class="headerlink" href="#1-creating-random-matrices" title="Permanent link">&para;</a></h3>
+<p>Inside <code>src/</code> you find starter files: <code>sgemm.h</code>, <code>sgemm.c</code>, <code>main.c</code>.
+Inside <code>tests/</code> you will find <code>test_runner.c</code> that contains a starter test harness.</p>
+<h4 id="a-implement-random_matrix-inside-sgemmc-to-generate-random-matrices">a) Implement <code>random_matrix</code> inside <code>sgemm.c</code> to generate random matrices.<a class="headerlink" href="#a-implement-random_matrix-inside-sgemmc-to-generate-random-matrices" title="Permanent link">&para;</a></h4>
+<h4 id="b-add-a-test-in-test_sgemmc-that-checks-that-random_matrix-correctly-generates-matrices-with-values-in-the-range-10-10-call-the-test-from-test_runnerc">b) Add a test in <code>test_sgemm.c</code> that checks that <code>random_matrix</code> correctly generates matrices with values in the range <span class="arithmatex">\([-1.0, 1.0]\)</span>. Call the test from <code>test_runner.c</code>.<a class="headerlink" href="#b-add-a-test-in-test_sgemmc-that-checks-that-random_matrix-correctly-generates-matrices-with-values-in-the-range-10-10-call-the-test-from-test_runnerc" title="Permanent link">&para;</a></h4>
+<h4 id="c-create-a-cmakelisttxt">c) Create a <code>CMakeList.txt</code><a class="headerlink" href="#c-create-a-cmakelisttxt" title="Permanent link">&para;</a></h4>
+<p>It should:
+- build an executable <code>gemm</code> from <code>main.c</code> and <code>sgemm.c</code>.
+- build an executable <code>test_runner</code> from <code>test_runner.c</code> and <code>sgemm.c</code> using the <code>unity</code> testing framework as shown in previous labs.
+- allow changing the build type (Debug/Release) from the command line with different sets of flags.</p>
+<p>Check that your code compiles and that the test passes.</p>
+<h3 id="2-naive-sgemm-implementation">2. Naive SGEMM implementation<a class="headerlink" href="#2-naive-sgemm-implementation" title="Permanent link">&para;</a></h3>
+<h4 id="a-implement-the-naive-version-of-sgemm-in-sgemmc-using-three-nested-loops-in-the-order-i-j-k">a) Implement the naive version of <code>sgemm</code> in <code>sgemm.c</code> using three nested loops in the order (i, j, k).<a class="headerlink" href="#a-implement-the-naive-version-of-sgemm-in-sgemmc-using-three-nested-loops-in-the-order-i-j-k" title="Permanent link">&para;</a></h4>
+<h4 id="b-add-various-tests-in-test_sgemmc-that-checks-that-your-sgemm-implementation-correctly-computes-the-product-of-small-matrices-with-variying-sizes-and-shapes-eg-1x1-2x2-3x1-1x3-3x3">b) Add various tests in <code>test_sgemm.c</code> that checks that your <code>sgemm</code> implementation correctly computes the product of small matrices with variying sizes and shapes (e.g. 1x1, 2x2, 3x1, 1x3, 3x3).<a class="headerlink" href="#b-add-various-tests-in-test_sgemmc-that-checks-that-your-sgemm-implementation-correctly-computes-the-product-of-small-matrices-with-variying-sizes-and-shapes-eg-1x1-2x2-3x1-1x3-3x3" title="Permanent link">&para;</a></h4>
+<h4 id="c-check-that-your-tests-pass">c) Check that your tests pass.<a class="headerlink" href="#c-check-that-your-tests-pass" title="Permanent link">&para;</a></h4>
+<p>Now that you have a working implementation, you can call <code>sgemm</code> from <code>main.c</code> with random matrices of different sizes passed as command line arguments.</p>
+<h2 id="2-performance-measurement-harness">2 - Performance measurement harness<a class="headerlink" href="#2-performance-measurement-harness" title="Permanent link">&para;</a></h2>
+<p>Create a new directory <code>performance/</code> and add two files: <code>performance.sh</code> and <code>plot.py</code>.
+For both the measurement harness and plotting script follow best practices taught in <a href="../lecture4/">lecture 4</a>.</p>
+<h3 id="1-write-a-script-performancesh">1. Write a script <code>performance.sh</code><a class="headerlink" href="#1-write-a-script-performancesh" title="Permanent link">&para;</a></h3>
+<p>The script should:
+- run <code>sgemm</code> with M=512, K=512 and N with incresing sizes (100, 200, 300, ..., 3000).
+- measure the number of CPU cycles and energy consumption using <code>perf stat</code> for each run.
+- define a variable <code>REPETITIONS</code> that controls how many times each configuration is repeated. <code>perf</code> supports the <code>-r</code> option to repeat measurements. It outputs the mean and variance of the measurements, allowing to plot error bars.
+- define a variable <code>EVENTS</code> to specify the events to measure (e.g. <code>cycles,power/energy-pkg/</code>).
+- aggregate all measures into a <code>.json</code> file or <code>.csv</code> file.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you are using <code>json</code>, you can use <code>jq</code> to process the output of <code>perf stat</code> and aggregate the results together with <code>jq -s 'flatten(1)'</code>.</p>
+</div>
+<h3 id="2-write-a-script-plotpy">2. Write a script <code>plot.py</code><a class="headerlink" href="#2-write-a-script-plotpy" title="Permanent link">&para;</a></h3>
+<p>The script should:
+- read the output of <code>performance.sh</code> and produces a plot with two y-axes:
+    - left y-axis: number of CPU cycles (with error bars)
+    - right y-axis: energy consumption (with error bars)</p>
+<h4 id="a-run-your-scripts-and-produce-an-initial-plot">a) Run your scripts and produce an initial plot.<a class="headerlink" href="#a-run-your-scripts-and-produce-an-initial-plot" title="Permanent link">&para;</a></h4>
+<h4 id="b-inspect-your-plot-do-you-see-any-knee-points-can-you-explain-them-hint-consider-cache-sizes">b) Inspect your plot. Do you see any knee points? Can you explain them? (Hint: consider cache sizes.)<a class="headerlink" href="#b-inspect-your-plot-do-you-see-any-knee-points-can-you-explain-them-hint-consider-cache-sizes" title="Permanent link">&para;</a></h4>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You can use the following commands to inspect your CPU and memory topology:
+- <code>lstopo</code> to view memory/core topology (if available).
+- <code>cat /proc/cpuinfo</code> to inspect core model, cache sizes.</p>
+</div>
+<h2 id="3-optimizations">3 - Optimizations<a class="headerlink" href="#3-optimizations" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In this section we will implement different optimizations step by step. After each optimization, you should run your performance measurement harness to see the impact of the optimization on performance and energy consumption.
+Each new version of the code should be implemented in a new function (e.g. <code>sgemm_ikj</code>, <code>sgemm_blocked</code>, <code>sgemm_omp</code>), and you should add a command line option to <code>main.c</code> to select which version to run.
+Do not forget to add tests for each new version of <code>sgemm</code> in <code>test_sgemm.c</code>.</p>
+</div>
+<h3 id="1-vectorization">1. Vectorization<a class="headerlink" href="#1-vectorization" title="Permanent link">&para;</a></h3>
+<p>Modern CPUs have SIMD units (SSE/AVX/AVX512). The compiler can generate SIMD code, but the code and data layout must be friendly.</p>
+<h4 id="a-compiler-flags">a) Compiler flags<a class="headerlink" href="#a-compiler-flags" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Compile with <code>-O3 -march=native</code> and inspect compiler vectorization reports (GCC/Clang flags to tell whether loops were vectorized: <code>-fopt-info-vec-optimized</code> or <code>-Rpass=loop-vectorize</code>).</li>
+<li>Measure runtime/energy after changes. Observe and explain differences.</li>
+</ol>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the compiler does not vectorize your loops, try to understand why. Common reasons include:
+- Data dependencies that prevent reordering.
+- Pointer aliasing (use <code>restrict</code> keyword if applicable).
+- Complex control flow inside loops.</p>
+</div>
+<h4 id="b-loop-order-stride">b) Loop order / stride<a class="headerlink" href="#b-loop-order-stride" title="Permanent link">&para;</a></h4>
+<p>Ensure the innermost loop has contiguous memory accesses.</p>
+<ol>
+<li>Create a new function <code>sgemm_ikj</code> and call it from <code>main.c</code>. Add a command line option to select which version to run.</li>
+<li>Change the loop order to (i, k, j).</li>
+<li>Measure runtime/energy and compare to the naive version. Explain differences.</li>
+</ol>
+<h3 id="2-cache-blocking">2. Cache blocking<a class="headerlink" href="#2-cache-blocking" title="Permanent link">&para;</a></h3>
+<p>Access to <code>B</code> in the naive algorithm typically strides through columns — poor locality for row-major storage. Blocking (tiling) improves cache reuse.</p>
+<h4 id="a-measure-last-level-cache-events-for-the-naive-implementation">a) Measure last-level-cache events for the naive implementation.<a class="headerlink" href="#a-measure-last-level-cache-events-for-the-naive-implementation" title="Permanent link">&para;</a></h4>
+<p>Use <code>perf stat</code> with <code>LLC-loads</code> and <code>LLC-stores</code> events. Example:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-e<span class="w"> </span>LLC-loads,LLC-stores<span class="w"> </span>./sgemm<span class="w"> </span>sgemm_ikj<span class="w"> </span><span class="m">1280</span><span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span>
+</span></code></pre></div>
+<h4 id="b-implement-a-blocked-matrix-multiplication">b) Implement a blocked matrix multiplication<a class="headerlink" href="#b-implement-a-blocked-matrix-multiplication" title="Permanent link">&para;</a></h4>
+<p>Define a block size <code>BLOCK</code> (e.g. 32, 64) and implement <code>sgemm_blocked</code> in <code>sgemm.c</code>:</p>
+<div class="language-c highlight"><span class="filename">sgemm.h</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="cp">#define BLOCK 64  </span><span class="cm">/* block size, tune for your CPU cache */</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="cm">/* sgemm_blocked has the same prototype as sgemm and sgemm_ikj */</span><span class="w"> </span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="kt">void</span><span class="w"> </span><span class="nf">sgemm_blocked</span><span class="p">(</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">);</span>
+</span></code></pre></div>
+<p>Do not forget to call it from <code>main.c</code> and add a command line option to select it.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<ul>
+<li>
+<p>Ensure <code>n</code> is a multiple of <code>BLOCK</code> for simplicity; either restrict inputs or pad matrices (padding can be an exercise).</p>
+</li>
+<li>
+<p>Inside blocks, use simple triple loops over block elements (ensure indices map correctly to row-major layout).</p>
+</li>
+</ul>
+</div>
+<h4 id="c-measure-llc-loadsstores-for-the-blocked-version-and-compare-to-naive">c) Measure LLC loads/stores for the blocked version and compare to naive.<a class="headerlink" href="#c-measure-llc-loadsstores-for-the-blocked-version-and-compare-to-naive" title="Permanent link">&para;</a></h4>
+<h4 id="d-measure-energy-and-time-for-blocked-version-and-compare">d) Measure energy and time for blocked version and compare.<a class="headerlink" href="#d-measure-energy-and-time-for-blocked-version-and-compare" title="Permanent link">&para;</a></h4>
+<h4 id="e-why-does-blocking-reduce-llc-misses-and-energytime">e) Why does blocking reduce LLC misses and energy/time?<a class="headerlink" href="#e-why-does-blocking-reduce-llc-misses-and-energytime" title="Permanent link">&para;</a></h4>
+<ol>
+<li>Parallelization</li>
+</ol>
+<h3 id="3-parallelization-with-openmp">3. Parallelization with OpenMP<a class="headerlink" href="#3-parallelization-with-openmp" title="Permanent link">&para;</a></h3>
+<p>In this section, we focus on parallelizing the blocked matrix multiplication using OpenMP. While we will only target the CPU for now, other parallel runtimes (e.g., MPI, TBB) could also be explored in the future.</p>
+<h4 id="a-implement-a-parallel-version-using-openmp">a) Implement a parallel version using OpenMP<a class="headerlink" href="#a-implement-a-parallel-version-using-openmp" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Use OpenMP to parallelize the blocked version of <code>sgemm</code>.</li>
+<li>
+<p>Parallelize over blocks of rows for better load balancing.</p>
+<p>Add <code>#include &lt;omp.h&gt;</code> at the top of your <code>sgemm.c</code> file.
+Use the following pragma to parallelize the outer loop:
+<div class="language-c highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="cp">#pragma omp parallel for schedule(static)</span>
+</span></code></pre></div></p>
+</li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Static scheduling is often a good choice for matrix multiplication since the
+workload is evenly distributed, but you can experiment with other scheduling
+strategies (e.g., dynamic, guided) to see their impact on performance.</p>
+</div>
+<h4 id="b-compile-and-measure-performance">b) Compile and measure performance<a class="headerlink" href="#b-compile-and-measure-performance" title="Permanent link">&para;</a></h4>
+<p>You can set the number of threads with the <code>OMP_NUM_THREADS</code> environment variable. For example, to use 8 threads:</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">8</span><span class="w">  </span><span class="c1"># Adjust based on your machine</span>
+</span></code></pre></div>
+<p>Plot the performance and energy consumption of your OpenMP implementation for different numbers of threads (e.g., 1, 2, 4, 8, 16).
+Add your scripts to <code>performance/</code> and produce a scalability plot.</p>
+<h4 id="c-analyze-results">c) Analyze results<a class="headerlink" href="#c-analyze-results" title="Permanent link">&para;</a></h4>
+<ul>
+<li>Compare energy consumption and runtime to the single-threaded version.</li>
+<li>Experiment with different numbers of threads and observe the impact on energy and time.</li>
+<li>Is energy per run higher or lower with more threads? Why?</li>
+<li>How does memory bandwidth affect scaling as more threads are added?</li>
+</ul>
+<h2 id="5-for-further-study">5 - For further study<a class="headerlink" href="#5-for-further-study" title="Permanent link">&para;</a></h2>
+<p>The matrix product we have implemented is efficient, but it is possible to push optimizations even further. Here are some references and avenues if this work interests you:</p>
+<ul>
+<li>
+<p><strong>Algorithmic improvements</strong> such as Strassen allow to trade multiplications for additions, which in some cases can be beneficial.</p>
+</li>
+<li>
+<p><strong>Cache-oblivious algorithms</strong> (recursive tiling based on space-filling curves).
+Instead of using blocking techniques, which must be parameterized by a fixed
+block size; it is possible to implement matrix multiplication to preserve
+locality regardless of scale. This is called a cache-oblivious algorithm in
+English. For matrix multiplication, such an algorithm can be obtained by
+reordering the elements according to the order given by the Lebesgue curve.
+This allows obtaining very efficient implementations for matrices whose
+dimension is a power of two.  </p>
+</li>
+<li>
+<p><strong>Advanced BLAS</strong>. You can compare your implementation with <code>cblas_sgemm</code> from
+optimized vendor libraries (OpenBLAS, Intel MKL). You can even try using
+<code>cublas</code> library to target GPUs.</p>
+</li>
+</ul>
+<hr class="gradient" />
+
+<div class="summary-section box-section">
+<h2 class="hidden-title" id="6-summary"> 6 - Summary<a class="headerlink" href="#6-summary" title="Permanent link">&para;</a></h2>
+<p>Upon completing this lab, you should know how to:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Write a naive implementation of the SGEMM algorithm.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Measure performance and energy consumption using <code>perf</code>.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Optimize the SGEMM algorithm using vectorization, loop reordering, cache blocking, and parallelization with OpenMP.</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Analyze the impact of optimizations on performance and energy consumption.</li>
+</ul>
+</div>
 
 
 
