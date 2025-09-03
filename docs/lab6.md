@@ -211,7 +211,15 @@ Add your scripts to `performance/` and produce a scalability plot.
 - Is energy per run higher or lower with more threads? Why?
 - How does memory bandwidth affect scaling as more threads are added?
 
-## 5 - For further study
+## 5 - Making a Library
+
+Now that you have optimized your SGEMM implementation, you can package it as a library.
+In the next lab, we will use your library to implement a simple Neural Network inference engine. 
+
+To do so, modify your `CMakeLists.txt` to build a static library `libsgemm.a` from `sgemm.c` and `sgemm.h`. Ensure the prototypes in the public header `sgemm.h` are well commented in Doxygen style. Modify the `CMakeLists.txt` so that users of the library
+know where to find the header files.
+
+## 6 - For further study
 
 The matrix product we have implemented is efficient, but it is possible to push optimizations even further. Here are some references and avenues if this work interests you:
 
