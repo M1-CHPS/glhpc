@@ -1,4 +1,4 @@
-# TD5: Experimental Methodology and Scientific Reporting
+# Lab 5: Experimental Methodology and Scientific Reporting
 <hr class="gradient" />
 
 Regression is a classical machine learning problem. It aims at learning to predict a continuous variable from input features.
