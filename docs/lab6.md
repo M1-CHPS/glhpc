@@ -122,15 +122,20 @@ The script should:
 
 !!! Tip
     You can use the following commands to inspect your CPU and memory topology:
+
     - `lstopo` to view memory/core topology (if available).
+
     - `cat /proc/cpuinfo` to inspect core model, cache sizes.
+
     - do not forget to include the units in your plot (e.g. ns, ms, s, mJ, J, ...).
 
 ## 3 - Optimizations
 
 !!! Note
     In this section we will implement different optimizations step by step. After each optimization, you should run your performance measurement harness to see the impact of the optimization on performance and energy consumption.
+
     Each new version of the code should be implemented in a new function (e.g. `sgemm_ikj`, `sgemm_blocked`, `sgemm_omp`), and you should add a command line option to `main.c` to select which version to run.
+
     Do not forget to add tests for each new version of `sgemm` in `test_sgemm.c`.
 
 ### 1. Vectorization
@@ -144,8 +149,11 @@ Modern CPUs have SIMD units (SSE/AVX/AVX512). The compiler can generate SIMD cod
 
 !!! Tip
     If the compiler does not vectorize your loops, try to understand why. Common reasons include:
+
     - Data dependencies that prevent reordering.
+
     - Pointer aliasing (use `restrict` keyword if applicable).
+
     - Complex control flow inside loops.
 
 #### b) Loop order / stride
@@ -203,13 +211,11 @@ Modify your `compare-optimizations.sh` script to include the blocked version in 
 
 #### e) Why does blocking reduce LLC misses and energy/time?
 
-3. Parallelization
-
-### 3. Parallelization with OpenMP
+## 3 - Parallelization with OpenMP
 
 In this section, we focus on parallelizing the blocked matrix multiplication using OpenMP. While we will only target the CPU for now, other parallel runtimes (e.g., MPI, TBB) could also be explored in the future.
 
-#### a) Implement a parallel version using OpenMP
+### 1. Implement a parallel version using OpenMP
 
 - Use OpenMP to parallelize the blocked version of `sgemm`.
 - Parallelize over blocks of rows for better load balancing.
@@ -225,7 +231,7 @@ In this section, we focus on parallelizing the blocked matrix multiplication usi
     workload is evenly distributed, but you can experiment with other scheduling
     strategies (e.g., dynamic, guided) to see their impact on performance.
 
-#### b) Compile and measure performance
+### 2. Compile and measure performance
 
 You can set the number of threads with the `OMP_NUM_THREADS` environment variable. For example, to use 8 threads:
 
@@ -236,7 +242,7 @@ export OMP_NUM_THREADS=8  # Adjust based on your machine
 Plot the performance and energy consumption of your OpenMP implementation for different numbers of threads (e.g., 1, 2, 4, 8, 16).
 Add your scripts to `performance/` and produce a scalability plot.
 
-#### c) Tune OpenMP settings
+### 3. Tune OpenMP settings
 
 You can experiment with different OpenMP settings to optimize performance and energy consumption. For example, you can set the thread affinity to bind threads to specific cores:
 ```bash
@@ -245,14 +251,14 @@ export OMP_PLACES=cores
 export OMP_PROC_BIND=close        # or 'spread' to experiment
 ```
 
-#### d) Analyze results
+### 4. Analyze results
 
 - Compare energy consumption and runtime to the single-threaded version.
 - Experiment with different numbers of threads and observe the impact on energy and time.
 - Is energy per run higher or lower with more threads? Why?
 - How does memory bandwidth affect scaling as more threads are added?
 
-## 5 - Making a Library
+## 4 - Making a Library
 
 Now that you have optimized your SGEMM implementation, you can package it as a library.
 In the next lab, we will use your library to implement a simple Neural Network inference engine. 
@@ -260,7 +266,7 @@ In the next lab, we will use your library to implement a simple Neural Network i
 To do so, modify your `CMakeLists.txt` to build a static library `libsgemm.a` from `sgemm.c` and `sgemm.h`. Ensure the prototypes in the public header `sgemm.h` are well commented in Doxygen style. Modify the `CMakeLists.txt` so that users of the library
 know where to find the header files.
 
-## 6 - For further study
+## 5 - For further study
 
 The matrix product we have implemented is efficient, but it is possible to push optimizations even further. Here are some references and avenues if this work interests you:
 
