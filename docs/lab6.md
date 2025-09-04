@@ -80,23 +80,30 @@ For both the measurement harness and plotting script follow best practices taugh
 
 ### 1. Measure performance and energy consumption
 
-We will use `perf` to measure the number of CPU cycles and energy consumption of our SGEMM implementation.
+We will use `perf` to measure the elapsed time and energy consumption of our SGEMM implementation.
 
-Example command to measure cycles and energy consumption of a run of `sgemm` with M=512, K=512, N=512:
+Example command to measure duration_time and energy consumption of a run of `sgemm` with M=512, K=512, N=512:
 ```sh
-perf stat -r 3 -e cycles,power/energy-pkg/ ./sgemm sgemm 512 512 512
+perf stat -r 3 -a -e duration_time,power/energy-pkg/ ./sgemm sgemm 512 512 512
 ```
 
 The `-r 3` option tells `perf` to repeat the measurement 3 times and report the mean and variance.
 
-### 2. Write a script `compare-sizes.sh`
+!!! Tip
 
+    - You can use `LC_NUMERIC=C` to ensure that the decimal separator is a dot (`.`) instead of a comma (`,`) in the output of `perf`, which is useful for parsing the output.
+
+    - The `-a` option can be used to measure system-wide events, which is needed for energy measurements.
+
+    - For added stability you can use `taskset` to pin the process to a specific CPU core and disable frequency scaling with `cpufreq-set`.
+
+### 2. Write a script `compare-sizes.sh`
 The script should:
 
 - run `sgemm` with N=512, K=512 and M with increasing sizes (e.g. 100, 200, 300, ..., 3000).
-- measure the number of CPU cycles and energy consumption using `perf stat` for each run.
+- measure the time and energy consumption using `perf stat` for each run.
 - define a variable `REPETITIONS` that controls how many times each configuration is repeated. `perf` supports the `-r` option to repeat measurements. It outputs the mean and variance of the measurements, allowing to plot error bars.
-- define a variable `EVENTS` to specify the events to measure (e.g. `cycles,power/energy-pkg/`).
+- define a variable `EVENTS` to specify the events to measure (e.g. `duration_time,power/energy-pkg/`).
 - aggregate all measures into a `.json` file or `.csv` file.
 
 !!! Tip
@@ -107,7 +114,7 @@ The script should:
 The script should:
 
 - read the output of the previous script and produces a plot with two y-axes:
-- left y-axis: number of CPU cycles (with error bars)
+- left y-axis: time (with error bars)
 - right y-axis: energy consumption (with error bars)
 
 #### a) Run your scripts and produce an initial plot.
@@ -117,6 +124,7 @@ The script should:
     You can use the following commands to inspect your CPU and memory topology:
     - `lstopo` to view memory/core topology (if available).
     - `cat /proc/cpuinfo` to inspect core model, cache sizes.
+    - do not forget to include the units in your plot (e.g. ns, ms, s, mJ, J, ...).
 
 ## 3 - Optimizations
 
@@ -228,7 +236,16 @@ export OMP_NUM_THREADS=8  # Adjust based on your machine
 Plot the performance and energy consumption of your OpenMP implementation for different numbers of threads (e.g., 1, 2, 4, 8, 16).
 Add your scripts to `performance/` and produce a scalability plot.
 
-#### c) Analyze results
+#### c) Tune OpenMP settings
+
+You can experiment with different OpenMP settings to optimize performance and energy consumption. For example, you can set the thread affinity to bind threads to specific cores:
+```bash
+export OMP_NUM_THREADS=6
+export OMP_PLACES=cores
+export OMP_PROC_BIND=close        # or 'spread' to experiment
+```
+
+#### d) Analyze results
 
 - Compare energy consumption and runtime to the single-threaded version.
 - Experiment with different numbers of threads and observe the impact on energy and time.
