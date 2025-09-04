@@ -1056,38 +1056,52 @@
   
 </li>
         
-          <li class="md-nav__item">
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#3-parallelization-with-openmp" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Parallelization with OpenMP
+      3 - Parallelization with OpenMP
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Parallelization with OpenMP">
+    <nav class="md-nav" aria-label="3 - Parallelization with OpenMP">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#a-implement-a-parallel-version-using-openmp" class="md-nav__link">
+  <a href="#1-implement-a-parallel-version-using-openmp" class="md-nav__link">
     <span class="md-ellipsis">
-      a) Implement a parallel version using OpenMP
+      1. Implement a parallel version using OpenMP
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#b-compile-and-measure-performance" class="md-nav__link">
+  <a href="#2-compile-and-measure-performance" class="md-nav__link">
     <span class="md-ellipsis">
-      b) Compile and measure performance
+      2. Compile and measure performance
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#c-analyze-results" class="md-nav__link">
+  <a href="#3-tune-openmp-settings" class="md-nav__link">
     <span class="md-ellipsis">
-      c) Analyze results
+      3. Tune OpenMP settings
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4-analyze-results" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Analyze results
     </span>
   </a>
   
@@ -1097,25 +1111,20 @@
     </nav>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
       
         <li class="md-nav__item">
-  <a href="#5-making-a-library" class="md-nav__link">
+  <a href="#4-making-a-library" class="md-nav__link">
     <span class="md-ellipsis">
-      5 - Making a Library
+      4 - Making a Library
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#6-for-further-study" class="md-nav__link">
+  <a href="#5-for-further-study" class="md-nav__link">
     <span class="md-ellipsis">
-      6 - For further study
+      5 - For further study
     </span>
   </a>
   
@@ -1496,18 +1505,32 @@ Inside <code>tests/</code> you will find <code>test_runner.c</code> that contain
 <p>Create a new directory <code>performance/</code> and add two files: <code>performance.sh</code> and <code>plot.py</code>.
 For both the measurement harness and plotting script follow best practices taught in <a href="../lecture4/">lecture 4</a>.</p>
 <h3 id="1-measure-performance-and-energy-consumption">1. Measure performance and energy consumption<a class="headerlink" href="#1-measure-performance-and-energy-consumption" title="Permanent link">&para;</a></h3>
-<p>We will use <code>perf</code> to measure the number of CPU cycles and energy consumption of our SGEMM implementation.</p>
-<p>Example command to measure cycles and energy consumption of a run of <code>sgemm</code> with M=512, K=512, N=512:
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">3</span><span class="w"> </span>-e<span class="w"> </span>cycles,power/energy-pkg/<span class="w"> </span>./sgemm<span class="w"> </span>sgemm<span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span>
+<p>We will use <code>perf</code> to measure the elapsed time and energy consumption of our SGEMM implementation.</p>
+<p>Example command to measure duration_time and energy consumption of a run of <code>sgemm</code> with M=512, K=512, N=512:
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">3</span><span class="w"> </span>-a<span class="w"> </span>-e<span class="w"> </span>duration_time,power/energy-pkg/<span class="w"> </span>./sgemm<span class="w"> </span>sgemm<span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span><span class="w"> </span><span class="m">512</span>
 </span></code></pre></div></p>
 <p>The <code>-r 3</code> option tells <code>perf</code> to repeat the measurement 3 times and report the mean and variance.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<ul>
+<li>
+<p>You can use <code>LC_NUMERIC=C</code> to ensure that the decimal separator is a dot (<code>.</code>) instead of a comma (<code>,</code>) in the output of <code>perf</code>, which is useful for parsing the output.</p>
+</li>
+<li>
+<p>The <code>-a</code> option can be used to measure system-wide events, which is needed for energy measurements.</p>
+</li>
+<li>
+<p>For added stability you can use <code>taskset</code> to pin the process to a specific CPU core and disable frequency scaling with <code>cpufreq-set</code>.</p>
+</li>
+</ul>
+</div>
 <h3 id="2-write-a-script-compare-sizessh">2. Write a script <code>compare-sizes.sh</code><a class="headerlink" href="#2-write-a-script-compare-sizessh" title="Permanent link">&para;</a></h3>
 <p>The script should:</p>
 <ul>
 <li>run <code>sgemm</code> with N=512, K=512 and M with increasing sizes (e.g. 100, 200, 300, ..., 3000).</li>
-<li>measure the number of CPU cycles and energy consumption using <code>perf stat</code> for each run.</li>
+<li>measure the time and energy consumption using <code>perf stat</code> for each run.</li>
 <li>define a variable <code>REPETITIONS</code> that controls how many times each configuration is repeated. <code>perf</code> supports the <code>-r</code> option to repeat measurements. It outputs the mean and variance of the measurements, allowing to plot error bars.</li>
-<li>define a variable <code>EVENTS</code> to specify the events to measure (e.g. <code>cycles,power/energy-pkg/</code>).</li>
+<li>define a variable <code>EVENTS</code> to specify the events to measure (e.g. <code>duration_time,power/energy-pkg/</code>).</li>
 <li>aggregate all measures into a <code>.json</code> file or <code>.csv</code> file.</li>
 </ul>
 <div class="admonition tip">
@@ -1518,23 +1541,32 @@ For both the measurement harness and plotting script follow best practices taugh
 <p>The script should:</p>
 <ul>
 <li>read the output of the previous script and produces a plot with two y-axes:</li>
-<li>left y-axis: number of CPU cycles (with error bars)</li>
+<li>left y-axis: time (with error bars)</li>
 <li>right y-axis: energy consumption (with error bars)</li>
 </ul>
 <h4 id="a-run-your-scripts-and-produce-an-initial-plot">a) Run your scripts and produce an initial plot.<a class="headerlink" href="#a-run-your-scripts-and-produce-an-initial-plot" title="Permanent link">&para;</a></h4>
 <h4 id="b-inspect-your-plot-do-you-see-any-knee-points-can-you-explain-them-hint-consider-cache-sizes">b) Inspect your plot. Do you see any knee points? Can you explain them? (Hint: consider cache sizes.)<a class="headerlink" href="#b-inspect-your-plot-do-you-see-any-knee-points-can-you-explain-them-hint-consider-cache-sizes" title="Permanent link">&para;</a></h4>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>You can use the following commands to inspect your CPU and memory topology:
-- <code>lstopo</code> to view memory/core topology (if available).
-- <code>cat /proc/cpuinfo</code> to inspect core model, cache sizes.</p>
+<p>You can use the following commands to inspect your CPU and memory topology:</p>
+<ul>
+<li>
+<p><code>lstopo</code> to view memory/core topology (if available).</p>
+</li>
+<li>
+<p><code>cat /proc/cpuinfo</code> to inspect core model, cache sizes.</p>
+</li>
+<li>
+<p>do not forget to include the units in your plot (e.g. ns, ms, s, mJ, J, ...).</p>
+</li>
+</ul>
 </div>
 <h2 id="3-optimizations">3 - Optimizations<a class="headerlink" href="#3-optimizations" title="Permanent link">&para;</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In this section we will implement different optimizations step by step. After each optimization, you should run your performance measurement harness to see the impact of the optimization on performance and energy consumption.
-Each new version of the code should be implemented in a new function (e.g. <code>sgemm_ikj</code>, <code>sgemm_blocked</code>, <code>sgemm_omp</code>), and you should add a command line option to <code>main.c</code> to select which version to run.
-Do not forget to add tests for each new version of <code>sgemm</code> in <code>test_sgemm.c</code>.</p>
+<p>In this section we will implement different optimizations step by step. After each optimization, you should run your performance measurement harness to see the impact of the optimization on performance and energy consumption.</p>
+<p>Each new version of the code should be implemented in a new function (e.g. <code>sgemm_ikj</code>, <code>sgemm_blocked</code>, <code>sgemm_omp</code>), and you should add a command line option to <code>main.c</code> to select which version to run.</p>
+<p>Do not forget to add tests for each new version of <code>sgemm</code> in <code>test_sgemm.c</code>.</p>
 </div>
 <h3 id="1-vectorization">1. Vectorization<a class="headerlink" href="#1-vectorization" title="Permanent link">&para;</a></h3>
 <p>Modern CPUs have SIMD units (SSE/AVX/AVX512). The compiler can generate SIMD code, but the code and data layout must be friendly.</p>
@@ -1545,10 +1577,18 @@ Do not forget to add tests for each new version of <code>sgemm</code> in <code>t
 </ol>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>If the compiler does not vectorize your loops, try to understand why. Common reasons include:
-- Data dependencies that prevent reordering.
-- Pointer aliasing (use <code>restrict</code> keyword if applicable).
-- Complex control flow inside loops.</p>
+<p>If the compiler does not vectorize your loops, try to understand why. Common reasons include:</p>
+<ul>
+<li>
+<p>Data dependencies that prevent reordering.</p>
+</li>
+<li>
+<p>Pointer aliasing (use <code>restrict</code> keyword if applicable).</p>
+</li>
+<li>
+<p>Complex control flow inside loops.</p>
+</li>
+</ul>
 </div>
 <h4 id="b-loop-order-stride">b) Loop order / stride<a class="headerlink" href="#b-loop-order-stride" title="Permanent link">&para;</a></h4>
 <p>Ensure the innermost loop has contiguous memory accesses.</p>
@@ -1595,12 +1635,9 @@ Make the scripts generic enough to easily add new implementations in the future.
 <h4 id="d-measure-energy-and-time-for-blocked-version-and-compare">d) Measure energy and time for blocked version and compare.<a class="headerlink" href="#d-measure-energy-and-time-for-blocked-version-and-compare" title="Permanent link">&para;</a></h4>
 <p>Modify your <code>compare-optimizations.sh</code> script to include the blocked version in the comparisons.</p>
 <h4 id="e-why-does-blocking-reduce-llc-misses-and-energytime">e) Why does blocking reduce LLC misses and energy/time?<a class="headerlink" href="#e-why-does-blocking-reduce-llc-misses-and-energytime" title="Permanent link">&para;</a></h4>
-<ol>
-<li>Parallelization</li>
-</ol>
-<h3 id="3-parallelization-with-openmp">3. Parallelization with OpenMP<a class="headerlink" href="#3-parallelization-with-openmp" title="Permanent link">&para;</a></h3>
+<h2 id="3-parallelization-with-openmp">3 - Parallelization with OpenMP<a class="headerlink" href="#3-parallelization-with-openmp" title="Permanent link">&para;</a></h2>
 <p>In this section, we focus on parallelizing the blocked matrix multiplication using OpenMP. While we will only target the CPU for now, other parallel runtimes (e.g., MPI, TBB) could also be explored in the future.</p>
-<h4 id="a-implement-a-parallel-version-using-openmp">a) Implement a parallel version using OpenMP<a class="headerlink" href="#a-implement-a-parallel-version-using-openmp" title="Permanent link">&para;</a></h4>
+<h3 id="1-implement-a-parallel-version-using-openmp">1. Implement a parallel version using OpenMP<a class="headerlink" href="#1-implement-a-parallel-version-using-openmp" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Use OpenMP to parallelize the blocked version of <code>sgemm</code>.</li>
 <li>
@@ -1617,25 +1654,31 @@ Use the following pragma to parallelize the outer loop:
 workload is evenly distributed, but you can experiment with other scheduling
 strategies (e.g., dynamic, guided) to see their impact on performance.</p>
 </div>
-<h4 id="b-compile-and-measure-performance">b) Compile and measure performance<a class="headerlink" href="#b-compile-and-measure-performance" title="Permanent link">&para;</a></h4>
+<h3 id="2-compile-and-measure-performance">2. Compile and measure performance<a class="headerlink" href="#2-compile-and-measure-performance" title="Permanent link">&para;</a></h3>
 <p>You can set the number of threads with the <code>OMP_NUM_THREADS</code> environment variable. For example, to use 8 threads:</p>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">8</span><span class="w">  </span><span class="c1"># Adjust based on your machine</span>
 </span></code></pre></div>
 <p>Plot the performance and energy consumption of your OpenMP implementation for different numbers of threads (e.g., 1, 2, 4, 8, 16).
 Add your scripts to <code>performance/</code> and produce a scalability plot.</p>
-<h4 id="c-analyze-results">c) Analyze results<a class="headerlink" href="#c-analyze-results" title="Permanent link">&para;</a></h4>
+<h3 id="3-tune-openmp-settings">3. Tune OpenMP settings<a class="headerlink" href="#3-tune-openmp-settings" title="Permanent link">&para;</a></h3>
+<p>You can experiment with different OpenMP settings to optimize performance and energy consumption. For example, you can set the thread affinity to bind threads to specific cores:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OMP_NUM_THREADS</span><span class="o">=</span><span class="m">6</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OMP_PLACES</span><span class="o">=</span>cores
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nb">export</span><span class="w"> </span><span class="nv">OMP_PROC_BIND</span><span class="o">=</span>close<span class="w">        </span><span class="c1"># or &#39;spread&#39; to experiment</span>
+</span></code></pre></div></p>
+<h3 id="4-analyze-results">4. Analyze results<a class="headerlink" href="#4-analyze-results" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Compare energy consumption and runtime to the single-threaded version.</li>
 <li>Experiment with different numbers of threads and observe the impact on energy and time.</li>
 <li>Is energy per run higher or lower with more threads? Why?</li>
 <li>How does memory bandwidth affect scaling as more threads are added?</li>
 </ul>
-<h2 id="5-making-a-library">5 - Making a Library<a class="headerlink" href="#5-making-a-library" title="Permanent link">&para;</a></h2>
+<h2 id="4-making-a-library">4 - Making a Library<a class="headerlink" href="#4-making-a-library" title="Permanent link">&para;</a></h2>
 <p>Now that you have optimized your SGEMM implementation, you can package it as a library.
 In the next lab, we will use your library to implement a simple Neural Network inference engine. </p>
 <p>To do so, modify your <code>CMakeLists.txt</code> to build a static library <code>libsgemm.a</code> from <code>sgemm.c</code> and <code>sgemm.h</code>. Ensure the prototypes in the public header <code>sgemm.h</code> are well commented in Doxygen style. Modify the <code>CMakeLists.txt</code> so that users of the library
 know where to find the header files.</p>
-<h2 id="6-for-further-study">6 - For further study<a class="headerlink" href="#6-for-further-study" title="Permanent link">&para;</a></h2>
+<h2 id="5-for-further-study">5 - For further study<a class="headerlink" href="#5-for-further-study" title="Permanent link">&para;</a></h2>
 <p>The matrix product we have implemented is efficient, but it is possible to push optimizations even further. Here are some references and avenues if this work interests you:</p>
 <ul>
 <li>
