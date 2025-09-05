@@ -1,6 +1,6 @@
 # Lab 7: Projet IA - Part 2 - Neural Networks Inference Engine
 
-In [TD6](lab6.md), you implemented and optimized an sgemm library for matrix-matrix multiplication. In this lab, you will use this library to implement a simple neural network inference engine. This lab is inspired by [Michal Pitr inference engine project](https://github.com/MichalPitr/inference_engine/) released under the MIT license. Michal Pitr offers a C++ implementation and a series of [excellent blog posts](https://michalpitr.substack.com/p/build-your-own-inference-engine-from) explaining the implementation. Feel free to read them, but you must implement the lab in C and produce your own code.
+In [lab 6](lab6.md), you implemented and optimized an sgemm library for matrix-matrix multiplication. In this lab, you will use this library to implement a simple neural network inference engine. This lab is inspired by [Michal Pitr inference engine project](https://github.com/MichalPitr/inference_engine/) released under the MIT license. Michal Pitr offers a C++ implementation and a series of [excellent blog posts](https://michalpitr.substack.com/p/build-your-own-inference-engine-from) explaining the implementation. Feel free to read them, but you must implement the lab in C and produce your own code.
 
 ## 1 - Design of the inference engine
 

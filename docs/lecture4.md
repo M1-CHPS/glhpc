@@ -1,5 +1,5 @@
 ---
-title: "CM4: Experimental Methodology, Profiling, and Performance/Energy Optimization"
+title: "L4: Experimental Design, Profiling, and Performance/Energy Optimization"
 institute: "Master Calcul Haute Performance et Simulation - GLHPC | UVSQ"
 author: "M. Jam, P. de Oliveira Castro"
 date: \today
@@ -12,13 +12,14 @@ header-includes:
   - \metroset{sectionpage=progressbar}
 ---
 
+# Experimental Design, Profiling, and Performance/Energy Optimization
+
 <div class="mkdocs-only" markdown>
   <p align="right" markdown>
   [Download as slides 📥](slides/lecture4.pdf)
   </p>
 </div>
 
-# Scientific visualization
 
 ## Plot Example - Intro
 
