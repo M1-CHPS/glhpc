@@ -21,12 +21,15 @@ theme:
     - navigation.path
     - navigation.instant
     - navigation.instant.progress
+    - navigation.expand
     - navigation.tracking
     - navigation.tabs
     - navigation.tabs.sticky
     - navigation.footer
 
     - header.autohide
+
+    - toc.integrate
 
     - content.code.annotate
     - content.tabs.link
