@@ -258,6 +258,9 @@ export OMP_PROC_BIND=close        # or 'spread' to experiment
 - Is energy per run higher or lower with more threads? Why?
 - How does memory bandwidth affect scaling as more threads are added?
 
+!!! Warning
+    Keep all your performance results, plots, and analysis for your final report that you will submit at the end of [lab 7](lab7.md). 
+
 ## 4 - Making a Library
 
 Now that you have optimized your SGEMM implementation, you can package it as a library.

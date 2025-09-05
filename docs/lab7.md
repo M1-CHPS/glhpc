@@ -6,6 +6,8 @@ In [TD6](lab6.md), you implemented and optimized an sgemm library for matrix-mat
 
 We want to recognize handwritten digits from the MNIST dataset using a neural network. The neural network has been trained using [PyTorch](https://pytorch.org/) and the [ONNX format](https://onnx.ai/) is used to export the model.
 
+![MNIST dataset examples](image/lab7/MNIST_dataset_example.png)
+
 The model takes as input a 28x28 grayscale image (784 pixels) and outputs a vector of 10 probabilities, one for each digit (0 to 9). The predicted digit is the one with the highest probability.
 
 The model architecture is described as a computation graph. Each node in the graph represents a layer in the neural network. The edges represent the flow of data between layers.
@@ -52,9 +54,10 @@ The parse_model module provides utilities to load MNIST input images and read ON
 ### Data types
 
 - `struct matrix_t`: represents a matrix (weights or data) with fields:
-  - `bool weights`, true if the `matrix` represents weights, false for data. 
-  - `size_t M, N`, dimensions of the matrix (`MxN`).
-  - `float *data`, pointer to the matrix data in row-major order.
+
+    - `bool weights`, true if the `matrix` represents weights, false for data. 
+    - `size_t M, N`, dimensions of the matrix (`MxN`).
+    - `float *data`, pointer to the matrix data in row-major order.
 
 - `struct model_t`: opaque model handle (internal representation hidden).
 
@@ -154,6 +157,10 @@ Use the provided test images and labels to validate your implementation. Include
 
 Measure the accuracy of each model by comparing the predicted labels with the expected labels from `labels.txt`. Report the accuracy for each model.
 
+!!! Note
+    To compute a simple accuracy metric, you can count the number of correct predictions and divide by the total number of images.
+    More advanced metrics (precision, recall, F1-score) are not required for this lab.
+
 You can use the `main.c` file to implement a simple command-line interface to load a model, load an input image, execute the model, and print the predicted label.
 
 ### 4. Optimization and performance analysis
@@ -161,10 +168,12 @@ You can use the `main.c` file to implement a simple command-line interface to lo
 Optimize the implementation for performance and energy efficiency. You can
 experiment with parallel execution of the graph nodes, pipelining, and other
 optimization techniques.
-
+o
 Benchmark the execution time and energy consumption of your implementation. Include your benchmarking scripts in a `performance/` directory.
 
-!!! Note
+!!! Tip
+    Keep the performance measurements for each version of your code so you can compare them in the final report.
+    Do not forget to track versions with git commits.
 
     The project is open-ended and there are many possible approaches to implement and optimize the inference engine. The goal is to learn about neural networks, ONNX format, and performance optimization techniques. Feel free to explore and experiment with different ideas. If you have access to a GPU, you can also try to implement parts of the inference engine using CUDA or OpenCL.
 
