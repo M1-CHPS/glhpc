@@ -1218,6 +1218,7 @@
 <p>In <a href="../lab6/">TD6</a>, you implemented and optimized an sgemm library for matrix-matrix multiplication. In this lab, you will use this library to implement a simple neural network inference engine. This lab is inspired by <a href="https://github.com/MichalPitr/inference_engine/">Michal Pitr inference engine project</a> released under the MIT license. Michal Pitr offers a C++ implementation and a series of <a href="https://michalpitr.substack.com/p/build-your-own-inference-engine-from">excellent blog posts</a> explaining the implementation. Feel free to read them, but you must implement the lab in C and produce your own code.</p>
 <h2 id="1-design-of-the-inference-engine">1 - Design of the inference engine<a class="headerlink" href="#1-design-of-the-inference-engine" title="Permanent link">&para;</a></h2>
 <p>We want to recognize handwritten digits from the MNIST dataset using a neural network. The neural network has been trained using <a href="https://pytorch.org/">PyTorch</a> and the <a href="https://onnx.ai/">ONNX format</a> is used to export the model.</p>
+<p><img alt="MNIST dataset examples" src="../image/lab7/MNIST_dataset_example.png" /></p>
 <p>The model takes as input a 28x28 grayscale image (784 pixels) and outputs a vector of 10 probabilities, one for each digit (0 to 9). The predicted digit is the one with the highest probability.</p>
 <p>The model architecture is described as a computation graph. Each node in the graph represents a layer in the neural network. The edges represent the flow of data between layers.
 Our inference engine must support the following four operations:</p>
@@ -1272,11 +1273,13 @@ Now you must implement and optimize the other operations (add, relu, flatten) an
 <p>The parse_model module provides utilities to load MNIST input images and read ONNX models, exposing a small C API to access model graph info and weight tensors.</p>
 <h3 id="data-types">Data types<a class="headerlink" href="#data-types" title="Permanent link">&para;</a></h3>
 <ul>
-<li><code>struct matrix_t</code>: represents a matrix (weights or data) with fields:</li>
+<li>
+<p><code>struct matrix_t</code>: represents a matrix (weights or data) with fields:</p>
+<ul>
 <li><code>bool weights</code>, true if the <code>matrix</code> represents weights, false for data. </li>
 <li><code>size_t M, N</code>, dimensions of the matrix (<code>MxN</code>).</li>
-<li>
-<p><code>float *data</code>, pointer to the matrix data in row-major order.</p>
+<li><code>float *data</code>, pointer to the matrix data in row-major order.</li>
+</ul>
 </li>
 <li>
 <p><code>struct model_t</code>: opaque model handle (internal representation hidden).</p>
@@ -1391,14 +1394,22 @@ The <code>get_weight_matrix()</code> function takes care of this for you by tran
 <h3 id="3-testing-and-benchmarking">3. Testing and benchmarking<a class="headerlink" href="#3-testing-and-benchmarking" title="Permanent link">&para;</a></h3>
 <p>Use the provided test images and labels to validate your implementation. Include tests in the <code>tests/</code> directory to verify the correctness of each operation and the overall model execution.</p>
 <p>Measure the accuracy of each model by comparing the predicted labels with the expected labels from <code>labels.txt</code>. Report the accuracy for each model.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To compute a simple accuracy metric, you can count the number of correct predictions and divide by the total number of images.
+More advanced metrics (precision, recall, F1-score) are not required for this lab.</p>
+</div>
 <p>You can use the <code>main.c</code> file to implement a simple command-line interface to load a model, load an input image, execute the model, and print the predicted label.</p>
 <h3 id="4-optimization-and-performance-analysis">4. Optimization and performance analysis<a class="headerlink" href="#4-optimization-and-performance-analysis" title="Permanent link">&para;</a></h3>
 <p>Optimize the implementation for performance and energy efficiency. You can
 experiment with parallel execution of the graph nodes, pipelining, and other
-optimization techniques.</p>
-<p>Benchmark the execution time and energy consumption of your implementation. Include your benchmarking scripts in a <code>performance/</code> directory.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+optimization techniques.
+o
+Benchmark the execution time and energy consumption of your implementation. Include your benchmarking scripts in a <code>performance/</code> directory.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Keep the performance measurements for each version of your code so you can compare them in the final report.
+Do not forget to track versions with git commits.</p>
 <p>The project is open-ended and there are many possible approaches to implement and optimize the inference engine. The goal is to learn about neural networks, ONNX format, and performance optimization techniques. Feel free to explore and experiment with different ideas. If you have access to a GPU, you can also try to implement parts of the inference engine using CUDA or OpenCL.</p>
 </div>
 <h2 id="5-submission">5 - Submission<a class="headerlink" href="#5-submission" title="Permanent link">&para;</a></h2>
