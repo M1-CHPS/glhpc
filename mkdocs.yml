@@ -21,7 +21,6 @@ theme:
     - navigation.path
     - navigation.instant
     - navigation.instant.progress
-    - navigation.expand
     - navigation.tracking
     - navigation.tabs
     - navigation.tabs.sticky
@@ -29,8 +28,6 @@ theme:
 
     - header.autohide
 
-    - toc.integrate
-    - toc.follow
     - content.code.annotate
     - content.tabs.link
     - content.code.copy
@@ -41,6 +38,7 @@ markdown_extensions:
   - attr_list
   - toc:
       permalink: true
+      toc_depth: 0
   - pymdownx.superfences
   - pymdownx.details
   - pymdownx.tabbed
@@ -67,29 +65,26 @@ nav:
   - Home: index.md
   - Course:
       - Lectures:
-        - L1 - Introduction to Software Engineering for HPC/AI, Development Environment: lecture1.md
-        - L2 - Performance Aware C Computing: lecture2.md
-        - L3 - Building, Testing, and Debugging Scientific Software: lecture3.md
-        - L4 - Experimental Design, Profiling, and Performance/Energy Optimization: lecture4.md
-        - L5 - HPC for AI: lecture5.md
+          - L1 - Introduction to Software Engineering for HPC/AI, Development Environment: lecture1.md
+          - L2 - Performance Aware C Computing: lecture2.md
+          - L3 - Building, Testing, and Debugging Scientific Software: lecture3.md
+          - L4 - Experimental Design, Profiling, and Performance/Energy Optimization: lecture4.md
+          - L5 - HPC for AI: lecture5.md
       - Labs:
-        - Lab 1 - Prerequisites: lab1.md
-        - Lab 2 - C Programming and Memory Management: lab2.md
-        - Lab 3 - CMake, Unit Tests, and Debugging: lab3.md
-        - Lab 4 - Monte-Carlo sampling: lab4.md
-        - Lab 5 - Experimental Methodology and Scientific Reporting: lab5.md
-        - Lab 6 - AI Project (1) SGEMM Kernel Optimization: lab6.md
-        - Lab 7 - AI Project (2) Neural Network Inference: lab7.md
-  - Exams:
-    - Guide de soutenance: guide_soutenance.md
+          - Lab 1 - Prerequisites: lab1.md
+          - Lab 2 - C Programming and Memory Management: lab2.md
+          - Lab 3 - CMake, Unit Tests, and Debugging: lab3.md
+          - Lab 4 - Monte-Carlo sampling: lab4.md
+          - Lab 5 - Experimental Methodology and Scientific Reporting: lab5.md
+          - Lab 6 - AI Project (1) SGEMM Kernel Optimization: lab6.md
+          - Lab 7 - AI Project (2) Neural Network Inference: lab7.md
   - Annex:
-    - Bash cheatsheet: annex/bash_cheatsheet.md
-    - Linux Environment:
-      - Installing fedora: annex/install_fedora.md
-      - Installing oh-my-zsh: annex/oh-my-zsh.md
+      - Bash cheatsheet: annex/bash_cheatsheet.md
+      - Linux Environment:
+          - Installing fedora: annex/install_fedora.md
+          - Installing oh-my-zsh: annex/oh-my-zsh.md
 
 extra_css:
   - stylesheets/extra.css
 
-copyright:  CC BY-NC 4.0; 2025 - Pablo de Oliveira Castro, Mathys E. Jam
-
+copyright: CC BY-NC 4.0; 2025 - Pablo de Oliveira Castro, Mathys E. Jam
