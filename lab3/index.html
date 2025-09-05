@@ -73,11 +73,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#lab-3-cmake-unit-tests-and-debugging" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -258,26 +253,6 @@
     
     
       <li class="md-tabs__item">
-        <a href="../guide_soutenance/" class="md-tabs__link">
-          
-  
-  
-  Exams
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
         <a href="../annex/bash_cheatsheet/" class="md-tabs__link">
           
   
@@ -316,9 +291,7 @@
   
 
 
-  
-
-<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-nav__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
       
@@ -417,9 +390,7 @@
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
         
           
           <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
@@ -667,21 +638,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Lab 3 - CMake, Unit Tests, and Debugging
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -694,562 +650,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#objectives" class="md-nav__link">
-    <span class="md-ellipsis">
-      Objectives
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#provided-files" class="md-nav__link">
-    <span class="md-ellipsis">
-      Provided Files
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#1-cmake" class="md-nav__link">
-    <span class="md-ellipsis">
-      1 - CMake
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1 - CMake">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-minimal-build" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Minimal Build
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Minimal Build">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-set-the-minimum-required-cmake-version-and-project-name" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) Set the minimum required CMake version and project name
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-add-include-directories" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Add include directories
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-add-the-shared-library-target" class="md-nav__link">
-    <span class="md-ellipsis">
-      c) Add the shared library target
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-add-the-executable-target" class="md-nav__link">
-    <span class="md-ellipsis">
-      d) Add the executable target
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e-link-the-shared-library-to-the-executable" class="md-nav__link">
-    <span class="md-ellipsis">
-      e) Link the shared library to the executable
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#f-generate-the-build-system" class="md-nav__link">
-    <span class="md-ellipsis">
-      f) Generate the build system
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#g-build-the-project" class="md-nav__link">
-    <span class="md-ellipsis">
-      g) Build the project
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#h-answer-the-following-questions" class="md-nav__link">
-    <span class="md-ellipsis">
-      h) Answer the following questions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-build-configurations" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Build Configurations
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Build Configurations">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-configure-the-c-standard-used" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) Configure the C standard used
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-enable-different-build-types" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Enable different build types
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-enable-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Enable Installation
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Enable Installation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-give-your-project-a-version-number" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) Give your project a version number
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-include-the-gnuinstalldirs-module" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Include the GNUInstallDirs module
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-add-installation-rules-for-the-shared-library" class="md-nav__link">
-    <span class="md-ellipsis">
-      c) Add installation rules for the shared library
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-add-installation-rules-for-the-executable" class="md-nav__link">
-    <span class="md-ellipsis">
-      d) Add installation rules for the executable
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e-test-the-installation" class="md-nav__link">
-    <span class="md-ellipsis">
-      e) Test the installation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#f-install-the-public-header-file" class="md-nav__link">
-    <span class="md-ellipsis">
-      f) Install the public header file
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-better-handling-of-include-directories" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Better handling of include directories
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Better handling of include directories">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-remove-the-global-include_directories-command" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) Remove the global include_directories command
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-add-the-following-commands-to-specify-include-directories-for-each-target" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Add the following commands to specify include directories for each target
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-unit-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      2 - Unit Tests
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2 - Unit Tests">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-fetch-the-unity-framework" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Fetch the Unity framework
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-write-a-first-unit-test" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Write a first unit test
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-add-the-test-runner-executable" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Add the test runner executable
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-add-a-custom-target-to-run-the-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Add a custom target to run the tests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-add-the-remaining-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. Add the remaining tests
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-debugging-with-gdb-and-valgrind" class="md-nav__link">
-    <span class="md-ellipsis">
-      3 - Debugging with GDB and Valgrind
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3 - Debugging with GDB and Valgrind">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-build-the-program-with-debug-symbols" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Build the Program with Debug Symbols
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Build the Program with Debug Symbols">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-run-the-cmake-command-with-the-debug-build-type" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) Run the cmake command with the Debug build type
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-build-the-project" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Build the project
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-run-the-program-using-the-rotate-transformation" class="md-nav__link">
-    <span class="md-ellipsis">
-      c) Run the program using the rotate transformation
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-analyze-carefully-the-error-message" class="md-nav__link">
-    <span class="md-ellipsis">
-      d) Analyze carefully the error message
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-running-the-program-with-gdb" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Running the program with GDB
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Running the program with GDB">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-start-gdb-with-the-program-and-its-arguments" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) Start gdb with the program and its arguments
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-run-the-program-inside-gdb" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Run the program inside gdb
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-backtrace-the-function-calls" class="md-nav__link">
-    <span class="md-ellipsis">
-      c) Backtrace the function calls
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-inspect-the-variables" class="md-nav__link">
-    <span class="md-ellipsis">
-      d) Inspect the variables
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e-fix-and-explain-the-first-bug" class="md-nav__link">
-    <span class="md-ellipsis">
-      e) Fix and explain the first bug
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#3-using-valgrind-to-detect-memory-issues" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Using Valgrind to Detect Memory Issues
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Using Valgrind to Detect Memory Issues">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-run-the-program-with-gdb-again" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) Run the program with GDB again
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-use-valgrind-to-pinpoint-the-memory-issue" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Use Valgrind to pinpoint the memory issue
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-set-a-breakpoint-at-the-faulty-line" class="md-nav__link">
-    <span class="md-ellipsis">
-      c) Set a breakpoint at the faulty line
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-inspect-the-values-of-x-y-width-height-and-the-computed-index" class="md-nav__link">
-    <span class="md-ellipsis">
-      d) Inspect the values of x, y, width, height, and the computed index:
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e-set-a-conditional-breakpoint" class="md-nav__link">
-    <span class="md-ellipsis">
-      e) Set a conditional breakpoint
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#f-analyze-and-fix-the-bug" class="md-nav__link">
-    <span class="md-ellipsis">
-      f) Analyze and fix the bug
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#4-non-regression-tests" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Non-regression tests
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#5-gcov-llvm-cov-optional" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. GCov / llvm-cov (Optional)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      4 - Summary
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1381,85 +781,10 @@
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Exams
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Exams
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guide_soutenance/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Guide de soutenance
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -1472,8 +797,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Annex
           </label>
@@ -1520,12 +845,10 @@
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
         
           
-          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
             
   
   
@@ -1538,8 +861,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             Linux Environment
           </label>
@@ -1612,6 +935,22 @@
                 </div>
               </div>
             
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
             
           
           
@@ -2189,7 +1528,7 @@ Retrieve the module cmake file:</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "toc.integrate", "toc.follow", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>

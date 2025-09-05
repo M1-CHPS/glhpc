@@ -73,11 +73,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#lab-4-monte-carlo-sampling" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -258,26 +253,6 @@
     
     
       <li class="md-tabs__item">
-        <a href="../guide_soutenance/" class="md-tabs__link">
-          
-  
-  
-  Exams
-
-        </a>
-      </li>
-    
-  
-
-      
-        
-  
-  
-  
-  
-    
-    
-      <li class="md-tabs__item">
         <a href="../annex/bash_cheatsheet/" class="md-tabs__link">
           
   
@@ -316,9 +291,7 @@
   
 
 
-  
-
-<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
     <a href=".." title="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l&#39;Intelligence Artificielle" class="md-nav__button md-logo" aria-label="GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle" data-md-component="logo">
       
@@ -417,9 +390,7 @@
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2_1" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
         
           
           <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="0">
@@ -690,21 +661,6 @@
       <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
       
       
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  
-  <span class="md-ellipsis">
-    Lab 4 - Monte-Carlo sampling
-    
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         
@@ -717,334 +673,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-implementing-the-mc-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      1 - Implementing the MC Method
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-timing-and-serialization" class="md-nav__link">
-    <span class="md-ellipsis">
-      2 - Timing and serialization
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2 - Timing and serialization">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-implementing-timing" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Implementing timing
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Implementing timing">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-modify-the-function-srcmaincmc_harness-to-measure-the-execution-time-of-your-method" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) Modify the function src/main.c:mc_harness(...) to measure the execution time of your method.
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-modify-the-function-srcmaincprint_results-to-print-a-table-with-the-following-values" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Modify the function src/main.c:print_results(...) to print a table with the following values:
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-implement-csv-serialization-inside-the-program" class="md-nav__link">
-    <span class="md-ellipsis">
-      c) Implement csv serialization inside the program.
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-run-the-provided-experiments" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Run the provided experiments
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Run the provided experiments">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-first-look-at-the-top-figure-in-convergencepng" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) First, look at the top figure in convergence.png
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-look-at-the-bottom-figure-how-does-execution-time-evolve-when-increasing-the-number-of-samples" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Look at the bottom figure: how does execution time evolve when increasing the number of samples ?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-look-at-the-top-figure-in-stabilitypng" class="md-nav__link">
-    <span class="md-ellipsis">
-      c) Look at the top figure in stability.png
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-look-at-the-bottom-figure-how-is-the-execution-time-distributed" class="md-nav__link">
-    <span class="md-ellipsis">
-      d) Look at the bottom figure: how is the execution time distributed ?
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#25-going-further-understanding-the-scripts" class="md-nav__link">
-    <span class="md-ellipsis">
-      2.5 - (Going-Further) Understanding the scripts
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2.5 - (Going-Further) Understanding the scripts">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-look-at-run_allsh-and-try-to-understand-each-line" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Look at run_all.sh, and try to understand each line.
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Look at run_all.sh, and try to understand each line.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-what-does-set-e-set-o-pipefail-and-21-tee-do" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) What does set -e, set -o pipefail and 2&gt;&amp;1 | tee ... do ?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-what-is-the-purpose-of-the-run_label-argument-why-should-we-label-our-data" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) What is the purpose of the run_label argument (Why should we label our data) ?
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-look-at-scriptsanalysepy-and-try-to-understand-how-each-plot-is-built" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Look at scripts/analyse.py and try to understand how each plot is built.
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-optimization" class="md-nav__link">
-    <span class="md-ellipsis">
-      3 - Optimization
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3 - Optimization">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#1-setting-up-makefile" class="md-nav__link">
-    <span class="md-ellipsis">
-      1) Setting up Makefile
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1) Setting up Makefile">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-modify-the-makefile-and-play-around-with-compilation-flags-and-different-compilers" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) Modify the makefile and play around with compilation flags and different compilers.
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#2-use-openmp-to-parallelize-your-monte-carlo-algorithm" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Use OpenMP to parallelize your Monte-Carlo algorithm.
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Use OpenMP to parallelize your Monte-Carlo algorithm.">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#a-how-are-you-generating-random-numbers-in-the-sampling-algorithm" class="md-nav__link">
-    <span class="md-ellipsis">
-      a) How are you generating random numbers in the sampling algorithm?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#b-where-did-you-implement-parallelization" class="md-nav__link">
-    <span class="md-ellipsis">
-      b) Where did you implement parallelization?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#c-do-you-see-any-performans-gains-compared-to-the-sequential-version" class="md-nav__link">
-    <span class="md-ellipsis">
-      c) Do you see any performans gains compared to the sequential version ?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#d-rerun-the-provided-experiments-and-compare-with-your-previous-sequential-result" class="md-nav__link">
-    <span class="md-ellipsis">
-      d) Rerun the provided experiments, and compare with your previous sequential result.
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e-is-the-performance-stable-is-there-any-impact-on-the-accuracy-of-your-estimator" class="md-nav__link">
-    <span class="md-ellipsis">
-      e) Is the performance stable? Is there any impact on the accuracy of your estimator?
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#e-bonus-for-students-with-an-heterogeneous-cpu-efficiency-e-cores-and-performance-p-coress" class="md-nav__link">
-    <span class="md-ellipsis">
-      e - Bonus) For students with an heterogeneous CPU (Efficiency (E) Cores and Performance (P) Coress)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#f-verify-your-implementations-strong-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
-      f) Verify your implementation's strong scaling:
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#g-verify-your-implementations-weak-scaling" class="md-nav__link">
-    <span class="md-ellipsis">
-      g) Verify your implementation's weak-scaling:
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-summary" class="md-nav__link">
-    <span class="md-ellipsis">
-      5 - Summary
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
       
     </li>
   
@@ -1153,85 +781,10 @@
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
-            
-  
-  
-  <span class="md-ellipsis">
-    Exams
-    
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3">
-            <span class="md-nav__icon md-icon"></span>
-            Exams
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../guide_soutenance/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    Guide de soutenance
-    
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    
-    
-    
-    
-      
-      
-    
-    
-    <li class="md-nav__item md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
             
   
   
@@ -1244,8 +797,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             Annex
           </label>
@@ -1292,12 +845,10 @@
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" >
         
           
-          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="0">
             
   
   
@@ -1310,8 +861,8 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_4_2">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
             <span class="md-nav__icon md-icon"></span>
             Linux Environment
           </label>
@@ -1384,6 +935,22 @@
                 </div>
               </div>
             
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
             
           
           
@@ -1696,7 +1263,7 @@ Feel free to create an alias for this command inside your <code>.bashrc</code> f
     
     
       
-      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "toc.integrate", "toc.follow", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
       <script src="../assets/javascripts/bundle.92b07e13.min.js"></script>
