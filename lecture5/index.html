@@ -7,7 +7,7 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
-        <meta name="author" content="P. Oliveira, M. Jam">
+        <meta name="author" content="P. de Oliveira Castro, M. Jam">
       
       
       
@@ -18,11 +18,11 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
     
     
       
-        <title>CM5: HPC pour l’IA - GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle</title>
+        <title>L5: HPC for AI applications & Environmental impact of computation - GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle</title>
       
     
     
@@ -107,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              CM5: HPC pour l’IA
+              L5: HPC for AI applications & Environmental impact of computation
             
           </span>
         </div>
@@ -530,7 +530,7 @@
   
   
   <span class="md-ellipsis">
-    L5 - HPC for AI
+    L5 - HPC for AI & Environmental Impact of Computation
     
   </span>
   
@@ -955,19 +955,383 @@
 
 
 
-  <h1>L5 - HPC for AI</h1>
-
+<h1 id="hpc-for-ai-environmental-impact-of-computation">HPC for AI &amp; Environmental impact of computation<a class="headerlink" href="#hpc-for-ai-environmental-impact-of-computation" title="Permanent link">&para;</a></h1>
 <div class="mkdocs-only">
 <p align="right">
   <a href="../slides/lecture5.pdf">Download as slides 📥</a>
   </p>
 </div>
-<h2 id="cm5-hpc-pour-lia">CM5: HPC pour l’IA<a class="headerlink" href="#cm5-hpc-pour-lia" title="Permanent link">&para;</a></h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit lorem tincidunt felis luctus posuere. Sed nec eros non justo laoreet aliquam pulvinar at quam. Maecenas sagittis quis purus eu hendrerit. Maecenas egestas sapien metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam felis urna, hendrerit vitae lacus quis, pellentesque semper lacus. Sed pharetra ex ut condimentum congue. Pellentesque non malesuada ipsum. Interdum et malesuada fames ac ante ipsum primis in faucibus. In nunc turpis, luctus vitae sem vitae, congue feugiat tellus. Sed pretium ipsum elit, ut iaculis nunc accumsan tincidunt. Nulla elementum libero vitae quam scelerisque imperdiet. </p>
-<hr />
-<h2 id="objectifs">Objectifs<a class="headerlink" href="#objectifs" title="Permanent link">&para;</a></h2>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur blandit lorem tincidunt felis luctus posuere. Sed nec eros non justo laoreet aliquam pulvinar at quam. Maecenas sagittis quis purus eu hendrerit. Maecenas egestas sapien metus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam felis urna, hendrerit vitae lacus quis, pellentesque semper lacus. Sed pharetra ex ut condimentum congue. Pellentesque non malesuada ipsum. Interdum et malesuada fames ac ante ipsum primis in faucibus. In nunc turpis, luctus vitae sem vitae, congue feugiat tellus. Sed pretium ipsum elit, ut iaculis nunc accumsan tincidunt. Nulla elementum libero vitae quam scelerisque imperdiet. </p>
-<hr />
+<h1 id="introduction-to-ai-applications">Introduction to AI applications<a class="headerlink" href="#introduction-to-ai-applications" title="Permanent link">&para;</a></h1>
+<h1 id="environmental-impact-of-computation">Environmental impact of computation<a class="headerlink" href="#environmental-impact-of-computation" title="Permanent link">&para;</a></h1>
+<h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>Major ecological crisis</strong>: French roadmap targets carbon
+    neutrality in 2050 (Stratégie Nationale Bas Carbone).</p>
+</li>
+<li>
+<p>Requires a <strong>40% energy consumption reduction</strong>.</p>
+</li>
+<li>
+<p>HPC <strong>part of the solution</strong>: modeling and improving complex
+    systems</p>
+</li>
+<li>
+<p>HPC <strong>part of the problem</strong>: Frontier system at ORNL</p>
+</li>
+<li>
+<p>More than <span class="arithmatex">\(10^{18}\)</span> floating point operations per second</p>
+</li>
+<li>
+<p>Consumes <strong>21MW</strong>: the energy of a small town (<span class="arithmatex">\(16\,000\)</span> french houses)</p>
+</li>
+</ul>
+<p><img alt="image" src="../image/lecture5/frontier.jpg" /></p>
+<h2 id="environmental-impact-of-computation_1">Environmental impact of computation<a class="headerlink" href="#environmental-impact-of-computation_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>The ICT sector consumes <strong><span class="arithmatex">\(\approx\)</span> 5% of the energy</strong>
+    wordwide</p>
+</li>
+<li>
+<p>It accounts for <strong>1.8% - 2.8%</strong> of emitted GHG [Freitag, 2021]:</p>
+</li>
+<li>
+<p>Accounts for embodied emissions.</p>
+</li>
+<li>
+<p>Shadow energy during the <strong>whole life-cycle: mining, fabrication, transportation, recycling</strong>.</p>
+</li>
+<li>
+<p>GHG emmissions are only one of the sustainability issues</p>
+</li>
+<li>
+<p>rare-earth mining and waste disposal (eg. Agbogbloshie).</p>
+<ul>
+<li>human-right abuses, health issues, pollution.</li>
+</ul>
+</li>
+<li>
+<p><strong>This presentation focus on energy consumption of HPC</strong></p>
+</li>
+</ul>
+<h2 id="what-about-renewable-energies">What about renewable energies?<a class="headerlink" href="#what-about-renewable-energies" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Low-carbon electricity is a <strong>limited ressource</strong></p>
+</li>
+<li>
+<p>Decarbonation <span class="arithmatex">\(\rightarrow\)</span> huge increase in electricity demand</p>
+<ul>
+<li>
+<p>Heating, Transportation, Industry</p>
+</li>
+<li>
+<p>Computing will compete for low-carbon electricity.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h1 id="energy-consumption-of-hpc">Energy consumption of HPC<a class="headerlink" href="#energy-consumption-of-hpc" title="Permanent link">&para;</a></h1>
+<h2 id="evolution-of-processing-units-batten-2023">Evolution of processing units [Batten, 2023]<a class="headerlink" href="#evolution-of-processing-units-batten-2023" title="Permanent link">&para;</a></h2>
+<p><img alt="image" src="../image/lecture5/50-years.svg" /></p>
+<h2 id="dennards-scaling-1970-2005">Dennard's scaling 1970-2005<a class="headerlink" href="#dennards-scaling-1970-2005" title="Permanent link">&para;</a></h2>
+<div class="arithmatex">\[\begin{aligned}
+        \text{CMOS Power} &amp;  &amp; P = \underbrace{1/2.C.V^2.f}_{P_{\text{dynamic}}} + \underbrace{V.I_{\text{leak}}}_{P_{\text{static}}}
+\end{aligned}\]</div>
+<p>For each generation, transistors dimensions reduced by <strong>30%</strong>,</p>
+<ul>
+<li>
+<p>Voltage and capacitance reduced by 30%</p>
+</li>
+<li>
+<p>Frequency increases: <span class="arithmatex">\(\times 1.4 \approx 1/0.7\)</span></p>
+</li>
+<li>
+<p>Surface halved: <span class="arithmatex">\(0.5 \approx 0.7 \times 0.7\)</span></p>
+</li>
+<li>
+<p>Power halved: <span class="arithmatex">\(\Delta P = 0.7 \times 0.7^2 \times 1/0.7 \approx 0.5\)</span></p>
+</li>
+</ul>
+<p><strong>Power per surface unit remains constant</strong> but manufacturers
+double number of transistors and frequency increases:</p>
+<ul>
+<li>
+<p>Power efficiency doubles every 1.57 years</p>
+</li>
+<li>
+<p>Total power increases</p>
+</li>
+</ul>
+<h2 id="multicore-2005-2020">Multicore 2005-2020<a class="headerlink" href="#multicore-2005-2020" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>At current scale, leak currents start increasing
+    (<span class="arithmatex">\(P_{\textrm{static}} \nearrow\)</span>). <strong>Power wall slows Dennard's scaling.</strong></p>
+</li>
+<li>
+<p>Computing demand <span class="arithmatex">\(\rightarrow\)</span> <strong>parallelism</strong> and <strong>specialization</strong>.</p>
+</li>
+<li>
+<p>Number of cores increases exponentially since 2005.</p>
+</li>
+<li>
+<p>Power efficiency still improving:</p>
+<ul>
+<li>
+<p>selectively turning-off inactive transistors;</p>
+</li>
+<li>
+<p>architecture design optimizations;</p>
+</li>
+<li>
+<p>software optimizations.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="ai-accelerators-2020-2024">AI Accelerators 2020-2024<a class="headerlink" href="#ai-accelerators-2020-2024" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>For domain specific applications, such as AI, specialized
+    accelerators are used</p>
+<ul>
+<li>
+<p>Memory and compute units tuned for a specific problem (matrix
+    multiplication) ;</p>
+</li>
+<li>
+<p>Faster and better power efficiency: GPU, TPU, FPGA, ASIC.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="analysis-of-top-100-hpc-systems">Analysis of TOP-100 HPC systems<a class="headerlink" href="#analysis-of-top-100-hpc-systems" title="Permanent link">&para;</a></h2>
+<p><img alt="image" src="../image/lecture5/top500.png" /></p>
+<p><strong>Efficiency and Peak computation exponential increase.</strong></p>
+<h2 id="rebound-effects">Rebound effects<a class="headerlink" href="#rebound-effects" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>In 1865, Jevons shows that steam engine improvements translate into
+    increased coal consumption.</p>
+</li>
+<li>
+<p>In HPC, efficiency gains contribute to the rising computation
+    demand.</p>
+<ol>
+<li><strong>net increase of the total power consumption.</strong></li>
+</ol>
+</li>
+<li>
+<p>Rebound effects for data-centers [Masanet, 2020]</p>
+<ol>
+<li>6% increase in energy consumption from 2010 to 2018\
+    (255 % increase in nodes).</li>
+</ol>
+</li>
+<li>
+<p><strong>Indirect rebound effects</strong>: computation advances can
+    contribute to the acceleration of other fields.</p>
+</li>
+</ul>
+<h1 id="ai-energy-and-computation-costs">AI energy and computation costs<a class="headerlink" href="#ai-energy-and-computation-costs" title="Permanent link">&para;</a></h1>
+<h2 id="artificial-intelligence">Artificial Intelligence<a class="headerlink" href="#artificial-intelligence" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>2012: <strong>AI renaissance</strong> brought by increased data
+    availability and computation ressources</p>
+<ul>
+<li>
+<p>breakthroughs in multiple domains</p>
+</li>
+<li>
+<p>many innovations: algorithms, specialized processors,
+    optimizations</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Most systems use <strong>neural networks</strong>:</p>
+<ul>
+<li>
+<p>Training (stochastic gradient descent + backpropagation)</p>
+</li>
+<li>
+<p>Inference (forward pass)</p>
+</li>
+</ul>
+</li>
+<li>
+<p>For both, <strong>the bottleneck is matrix multiplication</strong></p>
+</li>
+</ul>
+<h2 id="training-cost-doubles-every-34-months-openai-2020">Training cost doubles every 3.4 months [OpenAI, 2020]<a class="headerlink" href="#training-cost-doubles-every-34-months-openai-2020" title="Permanent link">&para;</a></h2>
+<p><img alt="image" src="../image/lecture5/ai-and-compute-all-error-no-title.png" /></p>
+<h2 id="should-we-study-training-or-inference">Should we study training or inference?<a class="headerlink" href="#should-we-study-training-or-inference" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p><strong>Training</strong>: huge cost but done once</p>
+<ul>
+<li>
+<p>GPT3, 175 billion parameters, <span class="arithmatex">\(\approx\)</span> 314 ZettaFLOP</p>
+</li>
+<li>
+<p>GPT4, 1.7 trillion parameters</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Inference</strong>: millions of users and requests</p>
+<ul>
+<li>80-90% cost of a deployed AI system is spend on inference
+    [NVIDIA, 2019]</li>
+</ul>
+</li>
+</ul>
+<h2 id="inference-cost-diminishing-returns-for-computer-vision">Inference cost - Diminishing returns for computer vision<a class="headerlink" href="#inference-cost-diminishing-returns-for-computer-vision" title="Permanent link">&para;</a></h2>
+<p><img alt="image" src="../image/lecture5/flops-acc.png" />
+<img alt="image" src="../image/lecture5/joules-acc.png" /></p>
+<p>Exponential increase in compute for linear accuracy gain [Desislavov,
+2023 / Schwartz, 2019]</p>
+<h1 id="more-frugal-computing">More frugal computing?<a class="headerlink" href="#more-frugal-computing" title="Permanent link">&para;</a></h1>
+<h2 id="smaller-precision-smaller-models-for-ai">Smaller precision / Smaller models for AI<a class="headerlink" href="#smaller-precision-smaller-models-for-ai" title="Permanent link">&para;</a></h2>
+<p><img alt="image" src="../image/lecture5/accelerators-joules.png" /></p>
+<p>LLM success of smaller models (Llama, Chinchilla) fine-tuned
+for specific tasks with LoRA.</p>
+<h2 id="tradeoff-model-complexity-cost-explainability">Tradeoff: Model complexity - Cost - Explainability<a class="headerlink" href="#tradeoff-model-complexity-cost-explainability" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Inference cost grows with model complexity</p>
+</li>
+<li>
+<p>Simpler models are often more interpretable</p>
+<ul>
+<li>Traditional science also prefers simpler models</li>
+</ul>
+</li>
+<li>
+<p>DNN not necessary for all tasks</p>
+</li>
+</ul>
+<h2 id="dvfs-study-of-lu-decomposition">DVFS study of LU decomposition<a class="headerlink" href="#dvfs-study-of-lu-decomposition" title="Permanent link">&para;</a></h2>
+<p><img alt="image" src="../image/lecture5/lu-pareto1.svg" /></p>
+<ul>
+<li>
+<p>Knights Mill 72 cores</p>
+</li>
+<li>
+<p>Intel MKL dgetrf</p>
+</li>
+<li>
+<p><span class="arithmatex">\(n \in [1000,3000]\)</span></p>
+</li>
+<li>
+<p>RAPL estimation</p>
+</li>
+</ul>
+<p>Save energy by computing slower: 1GHz</p>
+<p>Thomas Roglin, M1 UVSQ/INTEL internship 2023</p>
+<h2 id="when-accounting-for-the-whole-system">When accounting for the whole system<a class="headerlink" href="#when-accounting-for-the-whole-system" title="Permanent link">&para;</a></h2>
+<p><img alt="image" src="../image/lecture5/lu-pareto2.svg" /></p>
+<ul>
+<li>
+<p>Model: RAPL + <strong>40W</strong></p>
+</li>
+<li>
+<p><strong>Optimal 2.6 GHz</strong>: compute faster and turn off machine</p>
+</li>
+<li>
+<p>Saves idle power (race to idle)</p>
+</li>
+</ul>
+<p>Thomas Roglin, M1 UVSQ/INTEL internship 2023</p>
+<h2 id="need-for-an-interdisciplinary-discussion">Need for an interdisciplinary discussion<a class="headerlink" href="#need-for-an-interdisciplinary-discussion" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>AI / HPC can contribute towards sustainability (eg. acceleration of
+    weather forecast models) ...  <strong>but its energy cost must be reduced</strong></p>
+</li>
+<li>
+<p><strong>Efficiency:</strong></p>
+<ul>
+<li>
+<p>Improve hardware and software</p>
+</li>
+<li>
+<p>Use smaller models / smaller precision</p>
+</li>
+</ul>
+<p>... <strong>subject to rebound effects</strong></p>
+</li>
+<li>
+<p><strong>Frugality in computing:</strong></p>
+<ul>
+<li>
+<p>Balance computation cost vs. outcomes for each task</p>
+</li>
+<li>
+<p>Choose the right sized model</p>
+</li>
+<li>
+<p>Assess the environmental impact</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="exemple-e-health-solution-in-tanzania-dacremont-2021">Exemple: e-health solution in Tanzania [d'Acremont, 2021]<a class="headerlink" href="#exemple-e-health-solution-in-tanzania-dacremont-2021" title="Permanent link">&para;</a></h2>
+<p>Treatment of febrile children illnesess in dispensaries.</p>
+<ul>
+<li>
+<p><strong>IMCI:</strong> Paper-based decision tree WHO</p>
+</li>
+<li>
+<p><strong>e-POCT</strong> CART tree tailored to real data on a standalone
+    tablet</p>
+<ul>
+<li>
+<p>Final CART tree easy to interpret and manually checked</p>
+</li>
+<li>
+<p>Randomized-trial <span class="arithmatex">\(\rightarrow\)</span> better clinical outcomes and
+    antibiotic prescription reduction</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Sophisticated AI that continuously collects patient data and adapts
+    the algorithm ?</p>
+<ul>
+<li>
+<p>Increase in hardware and computation costs.</p>
+</li>
+<li>
+<p>Loss in explainability and verification of the algorithm.</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="references-environmental-impact-of-computation">References - Environmental impact of computation<a class="headerlink" href="#references-environmental-impact-of-computation" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Jones, Nicola (2018) ‘How to stop data centres from gobbling up the world’s electricity’. Nature, 561(7722), pp. 163–167.</p>
+</li>
+<li>
+<p>Freitag, Charlotte, Berners-Lee, Mike, Widdicks, Kelly, Knowles, Bran, et al. (2021) ‘The real climate and transformative impact of ICT: A critique of estimates, trends, and regulations’. Patterns, 2(9), p. 100340. <a href="online">https://www.sciencedirect.com/science/article/pii/S2666389921001884</a></p>
+</li>
+<li>
+<p>Masanet, Eric, Shehabi, Arman, Lei, Nuoa, Smith, Sarah and Koomey, Jonathan (2020) ‘Recalibrating global data center energy-use estimates’. Science, 367(6481), pp. 984–986.</p>
+</li>
+<li>
+<p>Schwartz, Roy, Dodge, Jesse, Smith, Noah A. and Etzioni, Oren (2019) ‘Green AI’. <a href="http://arxiv.org/abs/1907.10597">arXiv:1907.10597</a></p>
+</li>
+<li>
+<p>Amodei, Dario, Hernandez, Danny, Sastry, Girish, Clark, Jack, et al. (2018) ‘AI and compute. OpenAI’. <a href="https://openai.com/blog/ai-and-compute/">https://openai.com/blog/ai-and-compute/</a></p>
+</li>
+<li>
+<p>D'Acremont presentation: <a href="https://youtu.be/oKcy_cY0QOw">https://youtu.be/oKcy_cY0QOw</a></p>
+</li>
+</ul>
 
 
 
