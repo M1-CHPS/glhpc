@@ -956,58 +956,18 @@
 <h1 id="lab-5-experimental-methodology-and-scientific-reporting">Lab 5: Experimental Methodology and Scientific Reporting<a class="headerlink" href="#lab-5-experimental-methodology-and-scientific-reporting" title="Permanent link">&para;</a></h1>
 <hr class="gradient" />
 
-<p>Regression is a classical machine learning problem. It aims at learning to predict a continuous variable from input features.
-For example, we could predict the height of a person (label) depending on their age, gender, and country of origin (features).</p>
-<p>In this lab, we will focus on two solutions to the regression problem:</p>
-<ul>
-<li>The K-Nearest Neighbors (KNN), where we predict the average value from the K nearest points using euclidean or other distances</li>
-<li>Gradient Boosting Model (GBM) based on decision trees; using the python package LightGBM.</li>
-</ul>
-<p>GBM is a very powerful but complex model. Furthermore, it requires the model to be fitted on a training dataset first. Once fitted, predictions are cheap and constant time.
-KNN is significantly simpler, does not require model training, but predictions scale with the number of samples in the reference dataset.</p>
-<p>In this lab, we will learn how to use and apply low-level profiling tools to quantify the performance of both methods, and apply the experimental design course to present our results.</p>
-<p>The provided source code includes:</p>
-<ol>
-<li>A brute-force C implementation of the K-Nearest Neighbors (KNN) regression method using OpenMP.</li>
-<li>An incomplete and partially broken experiment that attempts to compare how the KNN and LightGBM model behave with an increasing number of samples</li>
-</ol>
+<p>The <a href="https://en.wikipedia.org/wiki/Kepler_space_telescope">Kepler space telescope</a> monitors the variation in the luminosity of distant stars using a photometer. The datasets are freely available online, and we will use them as a study case for this lab.</p>
+<figure>
+  <img alt="Processing Example" src="../image/lab5/kepler.png" />
+<br />
+<figcaption>Kepler space telescope shortly after the assembly
+  <br>
+  (NASA/Troy Cryder)
+  </figcaption>
+</figure>
+<p>Kepler generates pretty simple datasets: a photon flux (the intensity of the received light) at a certain date for a particular star. However, by carefully preprocessing this data and using dedicated signal analysis techniques, we can make major discoveries.</p>
 <hr />
-<h3 id="1-k-nearest-neighbors-implementation">1. K-Nearest Neighbors implementation<a class="headerlink" href="#1-k-nearest-neighbors-implementation" title="Permanent link">&para;</a></h3>
-<p>The KNN application can be run like so:
-<div class="language-sh highlight"><span class="filename">Running the KNN</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="w"> </span><span class="c1"># Use cmake to build the application, make sure to be in Release mode</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>mkdir<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cmake<span class="w"> </span>..<span class="w"> </span>-DCMAKE_BUILD_TYPE<span class="o">=</span>Release<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>make
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># ./build/myknn &lt;samples.csv&gt; &lt;queries.csv&gt; &lt;k&gt; &lt;num_threads&gt; (&lt;output_csv_path&gt;)</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>./build/myknn<span class="w"> </span>./datasets/samples.csv<span class="w"> </span>./datasets/queries.csv<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="m">8</span>
-</span></code></pre></div></p>
-<div class="admonition danger">
-<p class="admonition-title">Danger</p>
-<p>The parser is very basic: both the queries and datasets .csv file must contain exactly the same columns, in the same order.</p>
-</div>
-<p>By default, if no output path is provided, the application will output inside <code>./results.csv</code></p>
-<hr />
-<h3 id="2-broken-experiment">2. Broken Experiment<a class="headerlink" href="#2-broken-experiment" title="Permanent link">&para;</a></h3>
-<p>The script <code>/scripts/lgbm_vs_knn.py</code> objective is to measure the timing and accuracy of LightGBM and KNN when increasing the number of training samples.
-The gathered data should look something like this:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>model,time,mae,nsamples
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>lgbm,0.2365,0.0186,2400
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>lgbm,0.2308,0.0184,2515
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>lgbm,0.2394,0.0185,2636
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>knn,0.1604,0.02308,2400
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>knn,0.1555,0.0243,2515
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>knn,0.1633,0.0358,2636
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>...
-</span></code></pre></div></p>
-<p>However, the person writing it never finished it. When fixing this script, you should make sure to:</p>
-<ul>
-<li>Keep the same test samples for all runs</li>
-<li>Use <code>np.linspace</code> or <code>np.geomspace</code> to generate the points</li>
-<li>Have the timing encompass both training and prediction (We only focus on a coarse performance comparison here)</li>
-<li>Make multiple repetitions to control measurement noise.</li>
-<li>You can have one plot for accuracy and one for performance, but having both on the same plot using <code>ax.twinx</code> is a very nice bonus.</li>
-</ul>
-<hr />
-<h3 id="3-provided-files">3. Provided Files<a class="headerlink" href="#3-provided-files" title="Permanent link">&para;</a></h3>
+<h3 id="provided-files">Provided files<a class="headerlink" href="#provided-files" title="Permanent link">&para;</a></h3>
 <table>
 <thead>
 <tr>
@@ -1017,146 +977,231 @@ The gathered data should look something like this:
 </thead>
 <tbody>
 <tr>
-<td><code>CMakeLists.txt</code></td>
-<td>CMake for the C implementation of KNN</td>
+<td><code>data/</code></td>
+<td>Pre-processed Kepler dataset for this lab</td>
 </tr>
 <tr>
-<td><code>src/dataset.(c\|h)</code></td>
-<td>Contain the logic for parsing a .csv dataset</td>
+<td><code>libbls/</code></td>
+<td>Box Least Square (BLS) Python library for transit detection. (CMake)</td>
 </tr>
 <tr>
-<td><code>src/main.c</code></td>
-<td>Contain the implementation of KNN</td>
+<td><code>scripts/</code></td>
+<td>Python/bash scripts for plotting and data analysis</td>
 </tr>
 <tr>
-<td><code>datasets/</code></td>
-<td>Contain both the training dataset and a sample query file</td>
+<td><code>src/stability.py</code></td>
+<td>Monitors the system usage for 5 minutes to assess measurements stability</td>
 </tr>
 <tr>
-<td><code>scripts/my_experiment.py</code></td>
-<td>Skeleton of an experiment that you will have to complete</td>
+<td><code>src/strong_scaling.py</code></td>
+<td>Draft for a strong scaling analysis you will have to complete</td>
 </tr>
 <tr>
-<td><code>scripts/lgbm_vs_knn.py</code></td>
-<td>An incomplete experiment you will have to finish</td>
+<td><code>setup_env.sh</code></td>
+<td>Helper script to setup the python environment and various env. variables</td>
 </tr>
 <tr>
-<td><code>scripts/stability.py</code></td>
-<td>A script to check performance and energy measurement stability</td>
+<td><code>build_library.sh</code></td>
+<td>Helper script to run CMake for the BLS library</td>
 </tr>
 </tbody>
 </table>
 <hr class="gradient" />
 
-<h2 id="1-measuring-energy-execution-time-and-cache-misses">1 - Measuring Energy, execution time, and cache misses<a class="headerlink" href="#1-measuring-energy-execution-time-and-cache-misses" title="Permanent link">&para;</a></h2>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Measuring energy is a significant part of this lab. However, the RAPL energy counter may not be available on your CPU (Mostly Intel/AMD).
-You will have to find a valid machine to run this measurements.</p>
-</div>
-<p><strong>Linux Perf</strong> is a very powerful tool to collect a variety of performance indicators. Its capable of capturing a list of CPU-events provided by the user, perform automatic meta-repetitions, and aggregate results in a nice JSON format.</p>
-<h3 id="1-setup-your-environment">1. Setup your environment<a class="headerlink" href="#1-setup-your-environment" title="Permanent link">&para;</a></h3>
-<p>Run the following to setup your lab:</p>
-<div class="language-sh highlight"><span class="filename">Setup the lab</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nb">source</span><span class="w"> </span>./setup_env.sh
-</span></code></pre></div>
-<hr />
-<h3 id="2-stabilize-your-machine">2. Stabilize your machine<a class="headerlink" href="#2-stabilize-your-machine" title="Permanent link">&para;</a></h3>
-<p>Run <code>./scripts/stability.py</code> and check the results in <code>results/stability.png</code>. Take the necessary actions to make your machine relatively stable:</p>
+<h2 id="1-plotting-and-data-analysis">1 - Plotting and data analysis<a class="headerlink" href="#1-plotting-and-data-analysis" title="Permanent link">&para;</a></h2>
+<p>Kepler generates time-series, that is data indexed by a timestep. First, look at the data inside <code>data/Kepler-8_light_curve.csv</code>. The <code>time</code> column denotes the time in days since the satelite reference. The <code>flux</code> column is the normalized measured luminosity of the Kepler 8 star at a given date.</p>
+<h4 id="a-setup-python">a) Setup python<a class="headerlink" href="#a-setup-python" title="Permanent link">&para;</a></h4>
+<p>Run the following:
+<div class="language-bash highlight"><span class="filename">Setup bash environment</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">source</span><span class="w"> </span>./setup_env.sh
+</span></code></pre></div></p>
+<h4 id="b-plot-the-evolution-of-luminosity">b) Plot the evolution of luminosity<a class="headerlink" href="#b-plot-the-evolution-of-luminosity" title="Permanent link">&para;</a></h4>
+<p>Write a <code>script/plot_luminosity.py</code> script that:</p>
 <ul>
-<li>Set the energy governor to performance
-    <div class="language-sh highlight"><span class="filename">Performance governor</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>cpupower<span class="w"> </span>frequency-set<span class="w"> </span>-g<span class="w"> </span>performance
-</span></code></pre></div>
-    Remember to switch back to <code>powersave</code> when you're done !</li>
-<li>If your CPU has heterogeneous cores, set the thread affinity to only use performance cores. </li>
-<li>If on a laptop, remember to plug your laptop to avoid measurements noise due to the battery governor.</li>
-<li>Kill any background apps</li>
+<li>Can be called with <code>./script/plot_luminosity.py ./results kepler-*</code> where * is an id (i.e., kepler-8, kepler-17, etc.)</li>
+<li>Fetches the corresponding dataset in <code>data/</code></li>
+<li>Plots the dataset using <code>matplotlib</code> (x: Time (days), y: Flux)</li>
+<li>Save the plots as <code>results/luminosity_kepler-*.png</code></li>
 </ul>
-<hr />
-<h3 id="3-measuring-energy">3. Measuring Energy<a class="headerlink" href="#3-measuring-energy" title="Permanent link">&para;</a></h3>
+<p>Make sure that the script is executable using <code>chmod +x &lt;file&gt;</code> and that the file starts with the shebang <code>#!/usr/bin/env python3</code> </p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>You should make sure that the <code>results</code> folder exists before trying to save to it. You can use <code>os.makedirs(&lt;path&gt;, exists_ok=True)</code> in your script. Beware that the datasets paths are Capitalized !</p>
+</div>
+<h4 id="c-run-the-previous-script-for-the-kepler-8-dataset-what-do-you-observe">c) Run the previous script for the Kepler 8 dataset. What do you observe ?<a class="headerlink" href="#c-run-the-previous-script-for-the-kepler-8-dataset-what-do-you-observe" title="Permanent link">&para;</a></h4>
+<h4 id="d-refine-your-previous-plot">d) Refine your previous plot<a class="headerlink" href="#d-refine-your-previous-plot" title="Permanent link">&para;</a></h4>
+<p>Make sure that:</p>
+<ul>
+<li>The axis are clearly labelled</li>
+<li>The x and y ticks are easily readable and properly spaced (<code>np.linspace</code>)</li>
+<li>The plot has a title, legend, and a <code>tight</code> or <code>constrained</code> layout.</li>
+<li>The figure format is correct (ratio between width and height)</li>
+</ul>
+<p>The final plot should look something like this:
+<img alt="Kepler 8 Light curve" src="../image/lab5/luminosity_Kepler-8.png" /></p>
+<h4 id="e-give-a-possible-explanation-for-the-periodic-dips-in-luminosity">e) Give a possible explanation for the periodic dips in luminosity<a class="headerlink" href="#e-give-a-possible-explanation-for-the-periodic-dips-in-luminosity" title="Permanent link">&para;</a></h4>
+<p>On the previous light curve, we observe that the luminosity appears to "dip" sharply at regular intervals.
+What could cause this periodic phenomenon ?</p>
+<h4 id="f-implement-phase-folding-light-curve">f) Implement phase folding light curve<a class="headerlink" href="#f-implement-phase-folding-light-curve" title="Permanent link">&para;</a></h4>
+<p>Phase folding is a simple technique to visualize periodic signals: we fold the data over a given period so that the signals overlaps, highlighting patterns.</p>
+<div class="language-python highlight"><span class="filename">Phase Folding</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># ... Load data here</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Period to fold over</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">period</span> <span class="o">=</span> <span class="mf">0.8</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a> <span class="c1"># We phase by the period, and divide by period to go in the [0, 1] range</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">phase</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">%</span> <span class="n">period</span><span class="p">)</span> <span class="o">/</span> <span class="n">period</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="c1"># Center the phase</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">phase</span><span class="p">)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">phase_sorted</span> <span class="o">=</span> <span class="n">phase</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">flux_sorted</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">phase_sorted</span><span class="p">,</span> <span class="n">phase_sorted</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># Double plotting to improve visualization</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">flux_sorted</span><span class="p">,</span> <span class="n">flux_sorted</span><span class="p">])</span>
+</span></code></pre></div>
+<p>Implement a <code>scripts/phase_folding.py</code> script that plots the phase-folded light curve (x: phase, y: flux). </p>
+<p>It should be used like so:
+<code>./script/phase_folding.py ./results kepler-* &lt;period&gt;</code>.</p>
+<p>Optionnaly, you can also plot a binned mean on top of the phase-folded light curve:</p>
+<div class="language-python highlight"><span class="filename">Phase folding: Binning</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">bins</span> <span class="o">=</span> <span class="mi">200</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">bin_means</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic</span><span class="p">(</span><span class="n">phase_sorted</span><span class="p">,</span> <span class="n">flux_sorted</span><span class="p">,</span> <span class="n">statistic</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">bin_centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">bin_means</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</span></code></pre></div>
+<h4 id="h-check-the-file-datakepler-8_known_planetsjson">h) Check the file `data/Kepler-8_known_planets.json<a class="headerlink" href="#h-check-the-file-datakepler-8_known_planetsjson" title="Permanent link">&para;</a></h4>
+<p>Run the previous script by phase folding over the Kepler 8b Period. </p>
+<ul>
+<li>What do you observe ? </li>
+<li>Does the light "dip" overlaps or is your plot noisy ? </li>
+<li>What can we say about the relationship between the light "dip" and Kepler 8b orbit ?</li>
+</ul>
+<p><img alt="Phase folded Kepler 8 Light curbe" src="../image/lab5/phase_folding_Kepler-8.png" /></p>
+<hr class="gradient" />
+
+<h2 id="2-box-least-square">2 - Box Least Square<a class="headerlink" href="#2-box-least-square" title="Permanent link">&para;</a></h2>
+<p>The Box Least Square (BLS) signal processing algorithm is used to detect the transit of exoplanets in front of their stars by searching for characteristic box-shaped dips in the luminosity at regular frequency.</p>
+<p>The provided library implements a Python &lt;-&gt; C interface so that you can call BLS from a python script. It also simplifies the loading and manipulation of the data, which can be done in python, while the C code focuses on the high performance analysis.</p>
+<h4 id="a-run-the-provided-build_librarysh-script">a) Run the provided <code>build_library.sh</code> script<a class="headerlink" href="#a-run-the-provided-build_librarysh-script" title="Permanent link">&para;</a></h4>
+<h4 id="b-write-a-scriptbls_runnerpy-script-for-kepler-data">b) Write a <code>script/bls_runner.py</code> script for kepler data<a class="headerlink" href="#b-write-a-scriptbls_runnerpy-script-for-kepler-data" title="Permanent link">&para;</a></h4>
+<p>The BLS library can be used like so:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">bls</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># ... Load data here</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">match</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">bls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="mf">1.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</span></code></pre></div>
+BLS is very sensible to the hyperparameters, and as such you <strong>must use the ones provided here</strong>.</p>
+<p>Make sure that your script can be called with <code>script/run_bls.py kepler-*</code> and that it reports the match found.
+Check that the BLS output is coherent for the Kepler 8b exoplanet characteristic.</p>
+<figure>
+  <img alt="Processing Example" src="../image/lab5/kepler_principle.png" />
+<br />
+<figcaption>Principle behind the Kepler exoplanet detection system
+  <br>
+  Hannah R. Wakeford, Laura C. Mayorga
+  <br>
+  <a href="https://arxiv.org/abs/2506.22839">Characterizing the Dynamics and Chemistry of Transiting Exoplanets with the Habitable World Observatory (2025)</a>
+  </figcaption>
+</figure>
+<hr class="gradient" />
+
+<h2 id="3-profilers-for-energy-and-performance-characterization">3 - Profilers for energy and performance characterization<a class="headerlink" href="#3-profilers-for-energy-and-performance-characterization" title="Permanent link">&para;</a></h2>
+<h3 id="1-measuring-energy">1. Measuring Energy<a class="headerlink" href="#1-measuring-energy" title="Permanent link">&para;</a></h3>
+<h4 id="a-disable-perf-event-paranoid">a) Disable perf event paranoid<a class="headerlink" href="#a-disable-perf-event-paranoid" title="Permanent link">&para;</a></h4>
+<p>By default, the linux kernel will restrict access to some perf counters to prevent malicious usage.
+We can disable these securities by running:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo -1 &gt; /proc/sys/kernel/perf_event_paranoid&#39;</span>
+</span></code></pre></div>
+<p>Run this command now.</p>
+<h4 id="b-first-energy-measure">b) First energy measure<a class="headerlink" href="#b-first-energy-measure" title="Permanent link">&para;</a></h4>
 <p>What does the following command do ?
-<div class="language-sh highlight"><span class="filename">Idle Energy Consumption</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span>sleep<span class="w"> </span><span class="m">60</span>
+<div class="language-sh highlight"><span class="filename">Idle Energy Consumption</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span>sleep<span class="w"> </span><span class="m">60</span>
 </span></code></pre></div></p>
 <p>Ensure your machine is mostly idle and execute this command.</p>
-<h4 id="a-what-does-energy-pkg-measure-and-whats-the-unit-what-about-the-other-events">a) What does <code>energy-pkg</code> measure, and what's the unit ? What about the other events ?<a class="headerlink" href="#a-what-does-energy-pkg-measure-and-whats-the-unit-what-about-the-other-events" title="Permanent link">&para;</a></h4>
-<p>Compute your machine idle power consumption: <span class="arithmatex">\(P_{idle} = \frac{\text{energy-pkg}}{T}\)</span>.</p>
-<h4 id="b-measure-the-knn-energy-consumption">b) Measure the KNN energy consumption<a class="headerlink" href="#b-measure-the-knn-energy-consumption" title="Permanent link">&para;</a></h4>
-<div class="language-sh highlight"><span class="filename">Workload Consumption</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span>./build/myknn<span class="w"> </span>./datasets/samples.csv<span class="w"> </span>./datasets/queries.csv<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>
+<h4 id="c-what-does-energy-pkg-measure-and-whats-the-unit-what-about-the-other-events">c) What does <code>energy-pkg</code> measure, and what's the unit ? What about the other events ?<a class="headerlink" href="#c-what-does-energy-pkg-measure-and-whats-the-unit-what-about-the-other-events" title="Permanent link">&para;</a></h4>
+<p>Compute your machine idle power consumption: </p>
+<div class="arithmatex">\[
+P_{idle} = \frac{\text{energy-pkg}_{idle}}{t}
+\]</div>
+<h4 id="b-measure-the-bls-algorithm-energy-consumption">b) Measure the BLS algorithm energy consumption<a class="headerlink" href="#b-measure-the-bls-algorithm-energy-consumption" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><span class="filename">Workload Consumption</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
 </span></code></pre></div>
 <p>Note that the <code>-r 5</code> flag causes <code>perf</code> to perform 5 meta-repetitions. The <code>time</code> command reports the sum of the timings for all runs.
-Compute the effective power and energy consumption of the <code>knn</code> application. Remember to substract <span class="arithmatex">\(P_{idle}\)</span>.</p>
+Compute the effective power and energy consumption of BLS.</p>
+<div class="arithmatex">\[
+P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
+\]</div>
 <hr />
-<h3 id="4-measuring-performance-metrics">4. Measuring performance metrics<a class="headerlink" href="#4-measuring-performance-metrics" title="Permanent link">&para;</a></h3>
+<h3 id="2-measuring-performance-metrics">2. Measuring performance metrics<a class="headerlink" href="#2-measuring-performance-metrics" title="Permanent link">&para;</a></h3>
 <p>What does the following command do ?
-<div class="language-sh highlight"><span class="filename">Measuring performance</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-e<span class="w"> </span>instructions,cycles,cache-references,cache-misses<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>./build/myknn<span class="w"> </span>./datasets/samples.csv<span class="w"> </span>./datasets/queries.csv<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="m">1</span><span class="w"> </span>
+<div class="language-sh highlight"><span class="filename">Measuring performance</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-e<span class="w"> </span>instructions,cycles,cache-references,cache-misses<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
 </span></code></pre></div></p>
 <p>Execute this command and answer the following questions.</p>
 <h4 id="a-whats-the-observed-variance-in-the-execution-time">a) What's the observed variance in the execution time ?<a class="headerlink" href="#a-whats-the-observed-variance-in-the-execution-time" title="Permanent link">&para;</a></h4>
 <h4 id="b-whats-the-mean-instructions-cycle">b) What's the mean instructions / cycle ?<a class="headerlink" href="#b-whats-the-mean-instructions-cycle" title="Permanent link">&para;</a></h4>
-<p>A Memory bound application has the CPU waiting for data to be retrieved for memory, meaning the CPU has a low number of instructions / cycle.
-A compute bound application is limited by the CPU performance.</p>
-<p>Is the application memory bound ?</p>
-<h4 id="c-whats-the-percentage-of-cache-misses">c) What's the percentage of cache misses ?<a class="headerlink" href="#c-whats-the-percentage-of-cache-misses" title="Permanent link">&para;</a></h4>
-<p>Memory accesses are reported as "Cache References"</p>
-<h4 id="d-how-does-the-percentage-of-cache-miss-evolve-when-increasing-the-number-of-threads">d) How does the percentage of cache miss evolve when increasing the number of threads ?<a class="headerlink" href="#d-how-does-the-percentage-of-cache-miss-evolve-when-increasing-the-number-of-threads" title="Permanent link">&para;</a></h4>
-<p>Could you explain why ?</p>
+<h4 id="c-is-the-application-compute-or-memory-intensive">c) Is the application compute or memory intensive ?<a class="headerlink" href="#c-is-the-application-compute-or-memory-intensive" title="Permanent link">&para;</a></h4>
+<p>Memory intensive application have very low intructions / cycles, and high memory metrics.
+Compute intensive applications are vectorized (High intructions / cycles) and threads are fully used.</p>
+<h4 id="d-what-is-costlier-running-the-bls-algorithm-or-loading-the-huge-dataset">d) What is costlier: running the BLS algorithm, or loading the huge dataset ?<a class="headerlink" href="#d-what-is-costlier-running-the-bls-algorithm-or-loading-the-huge-dataset" title="Permanent link">&para;</a></h4>
+<p>Run the following:
+<div class="language-sh highlight"><span class="filename">Perf Record</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>perf<span class="w"> </span>record<span class="w"> </span>-g<span class="w"> </span>--<span class="w"> </span>python3<span class="w"> </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>perf<span class="w"> </span>report
+</span></code></pre></div></p>
+<p>You can move around the perf report using the arrow keys, and you can press <code>+</code> to expand a particular call tree.</p>
+<p>How much time is spent in the BLS algorithm ?</p>
+<p>What would be more time-efficient for an engineer: optimizing the data loading process, or the BLS algorithm ?</p>
+<h4 id="e-build-a-flamegraph-for-bls">e) Build a flamegraph for bls<a class="headerlink" href="#e-build-a-flamegraph-for-bls" title="Permanent link">&para;</a></h4>
+<p>Run the following
+<div class="language-sh highlight"><span class="filename">Flamegraph</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Download the flame graph toolsuit</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/brendangregg/FlameGraph
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w"> </span><span class="c1"># Convert perf output to a flamegraph-readable format</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>perf<span class="w"> </span>script<span class="w"> </span>&gt;<span class="w"> </span>out.perf
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Preprocess the perf data</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>./FlameGraph/stackcollapse-perf.pl<span class="w"> </span>../out.perf<span class="w"> </span>&gt;<span class="w"> </span>out.folded
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="c1"># Generate a flame graph</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>./FlameGraph/flamegraph.pl<span class="w"> </span>--minwidth<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span>--bgcolors<span class="o">=</span><span class="s2">&quot;#ffffff&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span>--title<span class="w"> </span><span class="s2">&quot;FlameGraph for BLS algorithm&quot;</span><span class="w"> </span>out.folded<span class="w"> </span>&gt;<span class="w"> </span>flamegraph.svg
+</span></code></pre></div></p>
+<p>Look at the generated flamegraph.svg: does the flamegraph match the previous perf result ?</p>
 <hr />
-<h3 id="5-simple-profiling">5. Simple Profiling<a class="headerlink" href="#5-simple-profiling" title="Permanent link">&para;</a></h3>
-<p>Modify the <code>CMakeLists.txt</code> to add the <code>-pg -g</code> compilation flag, then rerun the application:</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>Cmake does not always detect flag changes and may rebuild with the old flags. Delete <code>./build/CMakeCache.txt</code> and rerun <code>setup_env.sh</code></p>
+<p><img alt="FlameGraph Example" src="../image/lab5/flamegraph.svg" /></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Its unusual to measure a python application with <code>perf</code>. We used python for this lab because it was easier to build the data analysis pipeline in python. </p>
+<p>However, the same tools an be used to directly measure a C application, and precisely profile in which functions is the time spent using <code>perf record</code> and <code>perf report</code>.</p>
 </div>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>./build/myknn ./datasets/samples.csv ./datasets/queries.csv 5 1 
-</span></code></pre></div>
-<p>You should see that a <code>gmon.out</code> file has appeared; this file contains the profile of the application.</p>
-<p>Run the following:</p>
-<div class="language-sh highlight"><span class="filename">Running gprof</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>gprof<span class="w"> </span>./build/myknn<span class="w"> </span>./gmon.out
-</span></code></pre></div>
-<p>Where is most of the time spent in the application ?</p>
-<p><strong>Remove the -pg flag as it will slow your application and bias your measurements later on</strong></p>
-<hr class="gradient" />
-
-<h2 id="2-scientific-report-model-comparison-and-energy-study">2 - Scientific Report: Model Comparison and Energy Study<a class="headerlink" href="#2-scientific-report-model-comparison-and-energy-study" title="Permanent link">&para;</a></h2>
-<p>You are tasked to write a <strong>maximum three page scientific report</strong> with the following sections:</p>
-<h4 id="a-stability-and-environment">a) Stability and Environment<a class="headerlink" href="#a-stability-and-environment" title="Permanent link">&para;</a></h4>
+<h2 id="4-report">4 - Report<a class="headerlink" href="#4-report" title="Permanent link">&para;</a></h2>
+<p>You are tasked in making a <strong>maximum 3 page report (References not included)</strong>. Your report must use the following structure:</p>
 <ul>
-<li>Document CPU model, number of cores, Cache(s) size, Ram, OS version, compilers / python version<ul>
-<li>The dataset <code>datasets/samples.csv</code> contains <span class="arithmatex">\(\text{ncols} * \text{nrows}\)</span> floating point values, stored as 32 bits floats in <code>myknn</code>.
-Does this dataset fit in your CPU caches ?</li>
+<li>1) Environment and context<ul>
+<li>Give details on the machine you used for the experiments: CPU/Memory specifications, compiler version, python version, OS name and version, and any other details that helps characterize your setup.</li>
+<li>A brief description of the context of BLS, the kepler datasets, etc.</li>
 </ul>
 </li>
-<li>Specify CPU gorvernor and thread affinity settings used during the experiments</li>
-<li>A stability plot generated through <code>scripts/stability.py</code>. </li>
-<li>Make sure to add a table with the mean and standard deviation of each metric.</li>
-</ul>
-<h4 id="b-a-corrected-and-improved-version-of-the-provided-experiment-comparing-knn-regression-with-lightgbm">b) A corrected and improved version of the provided experiment comparing KNN regression with LightGBM<a class="headerlink" href="#b-a-corrected-and-improved-version-of-the-provided-experiment-comparing-knn-regression-with-lightgbm" title="Permanent link">&para;</a></h4>
-<ul>
-<li>A paragraph describing the goal of the experiment</li>
-<li>A paragraph explaining your protocol</li>
-<li>A plot comparing KNN and LightGBM accuracy and execution time when increasing the number of samples<ul>
-<li>From this plot, we should observe that: Accuracy increases with the number of samples; the execution time of KNN grows linearly with the number of samples;
-LightGBM has good scalability and accuracy, and is faster than KNN.</li>
-<li>Make sure to include confidence intervals.</li>
+<li>2) Kepler result<ul>
+<li>Include both a lightcurve plot and a phase-folding plot for Kepler 8.</li>
+<li>The BLS algorithm scans through a range of Orbital Periods, and returns pairs of (Power, Period) which allows us to identify candidates 
+exoplanets. The function <code>bls.bls_periodogram(...)</code> returns an array containing all pairs, which allows us to build a <strong>Periodogram</strong>.
+Plot a periodogram for Kepler 8, 17, 45 and 785. <strong>You are required to use subplots</strong>. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Check that the periodograms match the known exoplanets for all these stars.</li>
 </ul>
 </li>
-<li>Your observations and conclusions</li>
-</ul>
-<h4 id="c-an-experiment-of-your-choosing">c) An experiment of your choosing<a class="headerlink" href="#c-an-experiment-of-your-choosing" title="Permanent link">&para;</a></h4>
-<ul>
-<li>Formulate a specific question of your choice about energy consumption. Examples:<ul>
-<li>How does the <span class="arithmatex">\(\text{efficiency} = \frac{E}{\text{# of predictions}}\)</span> scale with the number of threads for both KNN and LightGBM ?</li>
-<li>How reproducible and stable are RAPL energy measurements for LightGBM and KNN across multiple runs and thread counts?</li>
-<li>What is the relationship between energy consumption and the number <span class="arithmatex">\(k\)</span> of nearest neighbors ?</li>
+<li>3) Profiling results<ul>
+<li><strong>If your machine supports RAPL measurement</strong>: Give the approximate energy consumption of the BLS algorithm on the Kepler 8 dataset. </li>
+<li><strong>If your machine does not support RAPL measurement</strong>:<ul>
+<li>State it explicity</li>
+<li>Try on another machine if able</li>
+<li>... OR replace this experiment by a stability assesment of the <code>run_bls.py</code> script (Distribution of runtime).</li>
 </ul>
 </li>
-<li>Formulate a clear hypothesis for your energy experiment (What you expect to see)</li>
-<li>Explain your experimental design</li>
-<li>Provide an informative plot that answers the question</li>
-<li>Present your observations and conclusions</li>
+<li>Give the perf results for <code>instructions,cycles,cache-references,cache-misses</code></li>
+<li>Generate a plot using <code>./scripts/stability.py</code> and include it in the report.</li>
+<li>Include the flamegraph</li>
+<li>Starting with the <code>./scripts/strong_scaling.py</code> script as a basis, make a strong scaling plot for the BLS algorithm on the Kepler 8 dataset.</li>
 </ul>
-<p>Your report will be evaluated on clarity, conciseness, and scientific rigor. Avoid unnecessary implementation details; focus on producing convincing results.</p>
+</li>
+</ul>
 
 
 
