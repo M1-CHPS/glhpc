@@ -72,7 +72,7 @@ nav:
           - L2 - Performance Aware C Computing: lecture2.md
           - L3 - Building, Testing, and Debugging Scientific Software: lecture3.md
           - L4 - Experimental Design, Profiling, and Performance/Energy Optimization: lecture4.md
-          - L5 - HPC for AI: lecture5.md
+          - L5 - HPC for AI & Environmental Impact of Computation: lecture5.md
       - Labs:
           - Lab 1 - Prerequisites: lab1.md
           - Lab 2 - C Programming and Memory Management: lab2.md
