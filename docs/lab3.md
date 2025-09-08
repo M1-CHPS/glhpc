@@ -251,13 +251,6 @@ if(NOT unity_POPULATED)
 endif()
 ```
 
-Set up the Unity include directory and library:
-
-```cmake title="CMakeLists.txt"
-set(UNITY_INCLUDE_DIR "${unity_SOURCE_DIR}/src")
-set(UNITY_LIBRARY "${unity_BINARY_DIR}/libunity.a")
-```
-
 CMake fetches and builds the Unity framework, making it available for use in your project.
 
 ### 2. Write a first unit test
@@ -327,13 +320,12 @@ To run our tests, we need to create a new executable target for the test runner 
 add_executable(test_runner tests/test_runner.c tests/test_image.c src/transformation.c src/image.c)
 target_include_directories(test_runner 
     PRIVATE 
-        ${UNITY_INCLUDE_DIR} 
         ${PROJECT_SOURCE_DIR}/src
 )
-target_link_libraries(test_runner ${UNITY_LIBRARY} m parser)
+target_link_libraries(test_runner unity m parser)
 ```
 
-Observe that we link the `test_runner` target against the Unity library, the math library `m`, and our `parser` library.
+Observe that we link the `test_runner` target against the `unity` library, the math library `m`, and our `parser` library.
 
 ### 4. Add a custom target to run the tests
 
@@ -605,6 +597,63 @@ Check that the program runs correctly now!
 Now that you have fixed both bugs, it's important to ensure that the bugs will not reappear in the future. To do this, you will write non-regression tests using the Unity testing framework.
 
 Add tests that specifically target the scenarios that led to the bugs you fixed. For example, you can create tests that rotate images of various sizes and shapes, including non-square images, to ensure that the `rotate_image_90_clockwise` function behaves correctly.
+
+
+### 5. GCov / llvm-cov (Optional)
+
+GCov analyzes and reports on the code coverage of your tests. It helps you identify which parts of your code are being executed during testing and which parts are not, allowing you to improve your test suite.
+
+GCov (or its variant llvm-cov for LLVM/Clang) works by instrumenting your code during compilation to collect coverage data. 
+
+To use GCov with CMake, you need to enable coverage flags during the build process. When compiling with GCC, you can use the `--coverage -O0 -g` flags, and link with `--coverage` flag.
+
+Fortunately, CMake provides a convenient way to set these flags using the CodeCoverage module.
+Retrieve the module cmake file:
+
+```sh
+$ mkdir CMakeModules && cd CMakeModules
+$ wget https://github.com/bilke/cmake-modules/raw/refs/heads/master/CodeCoverage.cmake
+```
+
+Then, include the module in your `CMakeLists.txt` file and add the coverage flags to the test target:
+
+```cmake title="CMakeLists.txt"
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+include(CodeCoverage)
+
+... [truncated] ...
+
+append_coverage_compiler_flags_to_target(test_runner)
+
+```
+
+Then, you can build your project with the `Debug` build type:
+
+```sh
+$ cmake -B build -DCMAKE_BUILD_TYPE=Debug .
+$ make -C build/ test 
+```
+
+You should see files with the `.gcda` extension generated in the build directory. These files contain the coverage data collected during the execution of your tests.
+
+Finally, you can generate the coverage report using the `gcovr` command:
+
+```sh
+$ gcovr -r .
+```
+
+This will generate a coverage report for the `transformation.c` file, showing which lines of code were executed during the tests.
+
+!!! Tip
+    You can also generate an HTML report using the `--html` option:
+
+    ```sh
+    $ gcovr -r . --html --html-details -o coverage_report.html
+    ```
+
+    This will create a detailed HTML report that you can open in a web browser.
+
+*What is the percentage of code coverage achieved by your tests? Are there any parts of the code that are not covered by the tests? If so, consider adding more tests to cover those areas.*
 
 <hr class="gradient" />
 

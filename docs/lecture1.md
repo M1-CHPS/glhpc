@@ -24,10 +24,10 @@ header-includes:
 ## Syllabus
 
 - **Lecture 1**: Introduction & Development Environment
-- **Lecture 2**: Mastering C for Performance and HPC
+- **Lecture 2**: Performance Aware C Computing 
 - **Lecture 3**: Building, Testing and Debugging Scientific Software
 - **Lecture 4**: Experimental Design, Profiling and Performance/Energy Optimization
-- **Lecture 5**: HPC for AI
+- **Lecture 5**: HPC for AI & Environmental Impact of Computation
 
 *Project*: Inference Engine for a Deep Network
 
@@ -474,17 +474,23 @@ Object types include:
 
 - **Rewriting History:** Interactive rebasing is risky. Only rewrite commits that haven't been pushed to a remote repository. Prefer branch-based corrections for safer handling.
 
-## Centralized Collaboration
+## Centralized Collaboration 
 
 ![Interactions with a centralized system](image/lecture1/CentralizedVCS.png)
+
+(image from Joomla's documentation)
 
 ## Decentralized with Central Repository
 
 ![Constrained interactions with a decentralized system](image/lecture1/DistributedVCS_withCentral.png)
 
+(image from Joomla's documentation)
+
 ## Fully Decentralized Collaboration
 
 ![Interactions with a decentralized system](image/lecture1/DistributedVCS_Complex.png)
+
+(image from Joomla's documentation)
 
 ## Best Practices for Collaborative Development
 
@@ -513,3 +519,4 @@ Object types include:
 - [Tech Talk: Linus Torvalds on Git (YouTube)](http://www.youtube.com/watch?v=4XpnKHJAok8)
 - [*TOP500 Supercomputers*](http://www.top500.org/)
 - *Modern Operating Systems* by Andrew S. Tanenbaum
+- *GIT Lecture Notes* by Thomas Dufaud (IUT Vélizy - UVSQ)

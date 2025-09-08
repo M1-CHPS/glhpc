@@ -8,9 +8,18 @@ colortheme: orchid
 fonttheme: structurebold
 toc: true
 toc-depth: 2
+slide-level: 2
 header-includes:
   - \metroset{sectionpage=progressbar}
 ---
+
+# Building, Testing and Debugging Scientific Software
+
+<div class="mkdocs-only" markdown>
+  <p align="right" markdown>
+  [Download as slides 📥](slides/lecture3.pdf)
+  </p>
+</div>
 
 ## Objectives
 
@@ -409,11 +418,129 @@ install(TARGETS my_library
 
 # Debugging Tools
 
+## Buggy program example
+
+```c
+/* Linked list of n = 5 nodes
+         .---------.    .---------.           .--------------.
+         | val = 4 |    | val = 3 |           | val = 0      |
+ head -> | next  --|--> | next  --|--> ... -> | next =  NULL |
+         '---------'    '---------'           '--------------'
+ */
+
+#include <stdlib.h>
+#include <assert.h>
+
+struct Node
+{
+  int val;
+  struct Node *next;
+};
+
+int main()
+{
+  int n = 5;
+
+  struct Node *head = init_list(n);
+  // ... do something with the list ...
+  delete(head);
+
+  return 0;
+}
+```
+
+## Linked List Initialization and Deletion
+
+```c
+struct Node *init_list(int n)
+{
+  struct Node *head = NULL;
+  for (int i = 0; i < n; ++i)
+  {
+    struct Node *p = malloc(sizeof *p);
+    assert(p != NULL);
+    p->val = i;
+    p->next = head;
+    head = p;
+  }
+  return head;
+}
+
+void delete(struct Node *head)
+{
+  while (head)
+  {
+    struct Node *next = head->next;
+    free(head);
+    head = head->next;
+  }
+}
+```
+
+## Running the program...
+
+```bash
+$ gcc -g -O0 -o buggy buggy.c
+$ ./buggy
+Segmentation fault (core dumped)
+```
+
 ## GDB: GNU Debugger
+
+- Inspect the state of a program at the moment it crashes.
+- Step through the code line by line.
+- Inspect variables and memory.
+- Set breakpoints to pause execution at specific lines.
+
+(Live demonstration)
+
+```bash
+$ gdb ./buggy
+Program received signal SIGSEGV, Segmentation fault.
+0x000055555555522b in delete (head=0xa45d97b66d0683e8) at buggy.c:28
+28          struct Node *next = head->next;
+(gdb) x head
+0xa45d97b66d0683e8:     Cannot access memory at address 0xa45d97b66d0683e8
+```
 
 ## Valgrind: memory debugging and leak detection
 
+- Detects memory leaks, invalid memory access, and uninitialized memory usage.
+- Runs the code in a virtual sandbox that monitors every memory operation.
+
+(Live demonstration)
+
+```bash
+$ valgrind --leak-check=full ./buggy
+==537945== Invalid read of size 8
+==537945==    at 0x109243: delete (buggy.c:30)
+==537945==    by 0x109282: main (buggy.c:40)
+==537945==  Address 0x4a94188 is 8 bytes inside a block of size 16 free'd
+==537945==    at 0x484988F: free (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==537945==    by 0x10923E: delete (buggy.c:29)
+==537945==    by 0x109282: main (buggy.c:40)
+==537945==  Block was alloc'd at
+==537945==    at 0x4846828: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==537945==    by 0x1091B2: init_list (buggy.c:15)
+==537945==    by 0x109272: main (buggy.c:38)
+```
+
 ## Other tools: ASAN, UBSAN
+
+- **AddressSanitizer (ASAN):** Detects memory errors such as buffer overflows and use-after-free.
+- **UndefinedBehaviorSanitizer (UBSAN):** Detects undefined behavior in C/C++ programs.
+- Works on threaded programs and has lower overhead than Valgrind.
+
+(live demonstration)
+```bash
+$ gcc -fsanitize=address -g -O0 -o buggy_asan buggy.c
+$ ./buggy_asan
+=================================================================
+==538335==ERROR: AddressSanitizer: heap-use-after-free on address 0x502000000098 at pc 0x5bec7c7343e9 bp 0x7ffdf3015150 sp 0x7ffdf3015140
+READ of size 8 at 0x502000000098 thread T0
+    #0 0x5bec7c7343e8 in delete /home/poliveira/test-gdb/buggy.c:30
+    #1 0x5bec7c73442c in main /home/poliveira/test-gdb/buggy.c:40
+```
 
 # Software Testing
 
@@ -424,15 +551,15 @@ install(TARGETS my_library
 - 1988-1994: FAA Advanced Automation System project abandoned due to management issues and overly ambitious specifications, resulting in a \$2.6B loss.
 - 1985-1987: Therac-25 medical accelerator malfunctioned due to a thread concurrency issue, causing five deaths and numerous injuries.
 
-# Technical Debt
+## Technical Debt
 
 ![Software Costs (Applied Soft. Measurement, Capers Jones)](image/lecture3/cost-software.png)
 
-# Software Costs
+## Software Costs
 
 ![Software Costs (Nancy Leveson)](image/lecture3/cost-software2.png)
 
-# Verification and Validation (V&V)
+## Verification and Validation (V&V)
 
 - **Validation**: Does the software meet the client's needs?  
   - "Are we building the right product?"
@@ -447,15 +574,15 @@ install(TARGETS my_library
 - Code reviews
 - **Testing**
 
-# Software Testing
+## Testing Process
 
 ![Testing Process (S. Bardin)](image/lecture3/test-pipeline.png)
 
-# V Cycle Model
+## V Cycle Model
 
 ![V-Model: Validation followed by Verification](image/lecture3/vcycle.svg)
 
-# Different Types of Tests
+## Different Types of Tests
 
 - **Unit Tests:**
   - Test individual functions in isolation.
@@ -475,26 +602,24 @@ install(TARGETS my_library
 - **Regression Tests:**
   - Ensure that fixed bugs do not reappear.
 
-# Black-Box and White-Box Testing
+## Black-Box and White-Box Testing
 
-## Black-Box Testing (Functional)
+### Black-Box Testing (Functional)
 
 - Tests are generated from specifications.
 - Uses assumptions different from the programmer's.
 - Tests are independent of implementation.
 - Difficult to find programming defects.
 
-## White-Box Testing (Structural)
+### White-Box Testing (Structural)
 
 - Tests are generated from source code.
 - Maximizes coverage by testing all code branches.
 - Difficult to find omission or specification errors.
 
-##
-
 Both approaches are complementary.
 
-# What to Test?
+## What to Test?
 
 - Running the program on all possible inputs is too costly.
 - Choose a subset of inputs:
@@ -504,9 +629,9 @@ Both approaches are complementary.
   - Test invalid cases.
   - Test combinations (experimental design).
 
-# Example of Partitioning
+## Example of Partitioning (1/3)
 
-## Specification
+### Specification
 
 ```c
 /* compare returns:
@@ -517,13 +642,9 @@ Both approaches are complementary.
 int compare (int a, int b);
 ```
 
-##
-
 What inputs should be tested?
 
-## Example of Partitioning
-
-### Equivalence Classes
+## Equivalence Classes (2/3)
 
 | Variable | Possible Values            |
 |----------|----------------------------|
@@ -542,16 +663,15 @@ What inputs should be tested?
 | -5  | -10 | 1      |
 | ... | ... | ...    |
 
-
 It is possible to select a subset of classes!
 
-## Boundary Tests
+## Boundary Tests (3/3)
 
 |a          | b  | result
 |-----------|----|-------
 |-2147483648|-1  | -1
 
-# Discussion
+## Discussion
 
 - Automatic test generation.
 - Test coverage calculation.
@@ -560,6 +680,135 @@ It is possible to select a subset of classes!
 - Importance of using automated testing tools.
 - Importance of using continuous integration tools.
 
-# Credits and Bibliography
+
+# Unity Test Framework
+
+## Introduction to Unity
+
+  ![Unity Logo](image/lecture3/unity-slim.png)
+
+  [Unity Test Framework](http://www.throwtheswitch.org/unity)
+
+  - Lightweight and simple unit testing framework for C.
+  - Designed for embedded systems but can be used in any C project.
+  - Provides a set of macros and functions to define and run tests.
+  
+
+## Setting Up Unity 
+
+- Separate Unity tests into a separate directory, e.g., `tests/`. 
+
+- Include the Unity header in your test files:
+
+  ```c
+  #include "unity.h"
+  ```
+
+- Requires linking against the Unity library
+- We will link against a static library `libunity.a`, since Unity uses CMake, we will use FetchContent to add it to our projects.
+
+## Writing Tests
+
+- test_functions use `TEST` macros provided by Unity to assert conditions.
+
+  ```c
+  void test_function_name(void) {
+      ...
+      TEST_ASSERT_EQUAL_INT(expected, actual);
+      TEST_ASSERT_NOT_NULL(pointer);
+      TEST_ASSERT_TRUE(condition);
+      ... 
+  }
+  ```
+
+- Reference for all assertions: [Unity Assertions](https://github.com/ThrowTheSwitch/Unity/blob/master/docs/UnityAssertionsReference.md)
+
+## Example: testing our linked list
+
+```c
+#include "unity.h"
+#include "buggy.h"
+void test_delete_single_node(void) {
+    struct Node *head = init_list(1); 
+    TEST_ASSERT_NOT_NULL(head); // head should not be NULL
+    TEST_ASSERT_EQUAL_INT(0, head->val); // head should be 0
+    delete(head); // should not crash
+    TEST_ASSERT_NULL(head); // head should be NULL after deletion
+}
+void test_delete_multiple_nodes(void) {
+    struct Node *head = init_list(5);
+    TEST_ASSERT_EQUAL_INT(4, head->val); // head should be 4
+    TEST_ASSERT_EQUAL_INT(3, head->next->val); 
+    delete(head); // should not crash
+    TEST_ASSERT_NULL(head); // head should be NULL after deletion
+}
+```
+
+## Running Tests
+
+- Create a test runner function to execute all tests:
+
+  ```c
+  int main(void) ## Boundary Tests{
+      UNITY_BEGIN();
+      RUN_TEST(test_function_name);
+      ...
+      return UNITY_END();
+  }
+  ```
+
+## SetUp and TearDown
+
+- SetUp and TearDown functions can be defined to run before and after each test.
+
+  ```c
+  void setUp(void) {
+      // Code to run before each test
+  }
+
+  void tearDown(void) {
+      // Code to run after each test
+  }
+  ```
+
+## Code Coverage with unit tests
+
+- Use `gcov` or `llvm-cov` to measure code coverage of your tests.
+- Compile your code with coverage flags:
+
+  ```sh
+  gcc --coverage -g -O0 -o test_runner test_runner.c my_code.c -lunity
+  ```
+
+- gcov instruments the basic blocks of code to record what is executed during tests.
+
+- gcovr generate HTML reports showing which parts of the code were covered by tests.
+
+## Documentation with Doxygen
+- Doxygen is a documentation generator for C, C++, and other languages.
+- It extracts comments from the source code and generates documentation in various formats (HTML, LaTex, etc.).
+- Use special comment blocks to document functions, parameters, return values, and more.
+- Example of a documented function:
+
+```c
+/**
+ * @brief Initializes a linked list with n nodes.
+ * @param n Number of nodes to create.
+ * @return Pointer to the head of the linked list
+ * @return NULL if memory allocation fails.
+ */
+struct Node *init_list(int n);
+```
+
+- Generate documentation using the `doxygen` command with a configuration file (`Doxyfile`).
+
+## Credits and Bibliography
 
 - Course "Automated Software Testing," Sébastien Bardin.
+- [CMake Tutorial](https://cmake.org/cmake/help/latest/guide/tutorial/index.html)
+- [CMake Best Practices](https://cliutils.gitlab.io/modern-cmake/)
+- [Unity Test Framework](http://www.throwtheswitch.org/unity)
+- [Valgrind](http://valgrind.org/)
+- [GDB](https://www.gnu.org/software/gdb/)
+- [ASAN/UBSAN](https://clang.llvm.org/docs/AddressSanitizer.html)
+- [Doxygen](https://www.doxygen.nl/index.html)

@@ -1,4 +1,4 @@
-# TD5: Experimental Methodology and Scientific Reporting
+# Lab 5: Experimental Methodology and Scientific Reporting
 <hr class="gradient" />
 
 The [Kepler space telescope](https://en.wikipedia.org/wiki/Kepler_space_telescope) monitors the variation in the luminosity of distant stars using a photometer. The datasets are freely available online, and we will use them as a study case for this lab.

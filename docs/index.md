@@ -1,14 +1,18 @@
 # GLHPC - Introduction
 
-This course is intended for M1 Calcul Haute Performance et simulation (M1CHPS) students as a crash course for programming techniques specific to High Performance Computing and Artificial Intelligence applications.
-This course will cover programming basics in C and shell, and will gradually move on to more complex notions such as parallelism, performance profiling, experimental design, and the implementation of a Neural Network from scratch.
+This course is intended for M1 Calcul Haute Performance et simulation (M1CHPS)
+students as a crash course for software engineering targetting High Performance
+Computing and Artificial Intelligence applications.
 
-## Organisation
+This course will cover programming basics in C and shell, software engineering
+best practices, and will gradually move on to more complex notions such as
+parallelism, performance profiling, experimental design, and the implementation
+of a Neural Network inference engince from scratch.
 
-This course is organised as a mixture of lectures and labs. The lectures are available online in the Course section of this website, and may be provided as slides by your professor.
+## Advanced optional tasks
 
-The labs subjects are contained in the same section, but code snippets and other ressources will be provided via github classroom.
-
-## Advanced content
-
-Some of you may come from a CS background and already have strong notions of C programming. This course includes Advanced and optionnal sections to keep you busy during class hours.
+This course starts from the basics as some of the students come from applied
+maths and physics backgrounds. For those of you, who already have a good
+programming background, we have included optional advanced tasks in each lab to
+deepen your knowledge. You are not required to do them, but you are strongly
+encouraged.
