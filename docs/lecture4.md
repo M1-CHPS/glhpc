@@ -11,14 +11,13 @@ slide-level: 2
 header-includes:
   - \metroset{sectionpage=progressbar}
 ---
+# Scientific visualization
 
 <div class="mkdocs-only" markdown>
   <p align="right" markdown>
   [Download as slides 📥](slides/lecture4.pdf)
   </p>
 </div>
-
-# Scientific visualization
 
 ## Plot Example - Intro
 
@@ -35,57 +34,64 @@ Raise your hands when ready to propose an explanation.
 
 ## Plot Example (1)
 
-![](./image/lecture4/example_plot_2.png){ width=100% }
+![**PPN Example** - (No Caption)](./image/lecture4/example_plot_2.png){ width=100% }
 
-**PPN Example** - (No Caption)
-
+<div class="mkdocs-only" markdown>
+  **PPN Example** - (No Caption)
+</div>
 
 ## Plot Example (2)
 
-![](./image/lecture4/example_plot_1.png){ width=80% }
+![**PPN Example** - (No Caption)](./image/lecture4/example_plot_1.png){ width=80% }
 
-**PPN Example** - (No Caption)
-
+<div class="mkdocs-only" markdown>
+  **PPN Example** - (No Caption)
+</div>
 
 
 ## Plot Example (3)
 
-![](./image/lecture4/example_plot_3.png){ width=100% }
+![**PPN Example** - (No Caption)](./image/lecture4/example_plot_3.png){ width=100% }
 
-**PPN Example** - (No Caption)
-
+<div class="mkdocs-only" markdown>
+  **PPN Example** - (No Caption)
+</div>
 
 
 ## Plot Example (4)
 
-![](./image/lecture4/example_plot_4.png){ width=100% }
+![**PPN Example** - "Récapitulatif des optimisations faites"](./image/lecture4/example_plot_4.png){ width=100% }
 
-**PPN Example** - "Récapitulatif des optimisations faites"
-
+<div class="mkdocs-only" markdown>
+  **PPN Example** - "Récapitulatif des optimisations faites"
+</div>
 
 
 ## Plot Example (5)
 
-![](./image/lecture4/example_plot_5.png){ width=100% }
+![**PPN Example** - "Nouveau tracé de la latence cache"](./image/lecture4/example_plot_5.png){ width=100% }
 
-**PPN Example** - "Nouveau tracé de la latence cache"
-
+<div class="mkdocs-only" markdown>
+  **PPN Example** - "Nouveau tracé de la latence cache"
+</div>
 
 
 ## Plot Example (6)
 
-![](./image/lecture4/example_plot_6.png){ width=100% }
+![**Prof Example** - (KNM): (a) Speedup map of GA-Adaptive (7k samples) over the Intel MKL hand-tuning for `dgetrf` (LU), higher is better. (b) Analysis of the slowdown region (performance regression). (c) Analysis of the high speedup region. $3,000$ random solutions were evaluated for each distribution.](./image/lecture4/example_plot_6.png){ width=100% }
 
-**Prof Example** - (KNM): (a) Speedup map of GA-Adaptive (7k samples) over the Intel MKL hand-tuning for `dgetrf` (LU), higher is better. (b) Analysis of the slowdown region (performance regression). (c) Analysis of the high speedup region. $3,000$ random solutions were evaluated for each distribution.
-
+<div class="mkdocs-only" markdown>
+  **Prof Example** - (KNM): (a) Speedup map of GA-Adaptive (7k samples) over the Intel MKL hand-tuning for `dgetrf` (LU), higher is better. (b) Analysis of the slowdown region (performance regression). (c) Analysis of the high speedup region. $3,000$ random solutions were evaluated for each distribution.
+</div>
 
 
 ## Plot Example (7)
 
-![](./image/lecture4/example_plot_7.png){ width=100% }
+![**Prof Example** - (SPR): Geometric mean Speedup (higher is better)  against the MKL reference configuration on `dgetrf` (LU), depending on the sampling algorithm. 46x46 validation grid. 7k/15k/30k denotes the samples count. GA-Adaptive outperforms all other sampling strategies for auto-tuning. With 30k samples it achieves a mean speedup of $\times 1.3$ of the MKL dgetrf kernel.](./image/lecture4/example_plot_7.png){ width=100% }
 
-**Prof Example** - (SPR): Geometric mean Speedup (higher is better)  against the MKL reference configuration on `dgetrf` (LU), depending on the sampling algorithm. 46x46 validation grid. 7k/15k/30k denotes the samples count. GA-Adaptive outperforms all other sampling strategies for auto-tuning. With 30k samples it achieves a mean speedup of $\times 1.3$ of the MKL dgetrf kernel.
-
+<div class="mkdocs-only" markdown>
+  **Prof Example** - (SPR): Geometric mean Speedup (higher is better)  against the MKL reference configuration on `dgetrf` (LU), depending on the sampling algorithm. 46x46 validation grid. 7k/15k/30k denotes the samples count. GA-Adaptive outperforms all other sampling strategies for auto-tuning. With 30k samples it achieves a mean speedup of $\times 1.3$ of the MKL dgetrf kernel.
+</div>
 
 
 ## Plot Example - What makes a good plot
@@ -114,7 +120,7 @@ Datasets are large, multi-disciplinary, and often hard to reproduce.
 
 ## Experimental Methodology - Workflow
 
-![](./image/lecture4/experimental_methodology.png){ width=100% }
+![Typical experimental workflow](./image/lecture4/experimental_methodology.png){ width=100% }
 
 
 
@@ -246,13 +252,132 @@ Reproducibility is a very hot topic (Reproducibility crisis in science):
 
 ## Plotting tools - Cheetsheet
 
+| Name       | Use                                  |
+|------------|--------------------------------------|
+| pandas     | Storing and saving tabular data      |
+| numpy      | Numerical arrays, manipulating data  |
+| matplotlib | Basic 2D plots, full control         |
+| seaborn    | Statistical plots, higher-level API  |
+| logging    | Logging experiment progress/results  |
+| OpenCV     | Image processing, animations/videos  |
+| ffmpeg     | Generating and encoding videos       |
+
+Lookup the quick reference plotting gallery in the annex!  
+Both `matplotlib` and `seaborn` provide extensive online galleries.
+
+
+
+[**Live Example of the matplotlib gallery <https://matplotlib.org/stable/gallery/index.html>**]
 
 
 ## Plotting tools - Matplotlib
 
+Matplotlib is one of the most widely used plotting libraries.  
+A figure is built hierarchically from nested elements:
 
+```
+- Figure (The canvas)
+  - (Subfigures)
+    - Axes (One or more subplots)
+      - Axis (x/y/z scales, ticks, labels)
+      - Artists (Lines, markers, text, patches, etc.)
+```
+
+- Data is plotted using axis-level functions like `ax.plot`, `ax.histogram`
+- Customization occurs at both the Figure and Axes levels
+- Complex multi plots layout occur at the Figure level
+
+## Plotting tools - Matplotlib
+
+```python
+import matplotlib.pyplot as plt
+
+x = [0, 1, 2, 3]
+y = [2.8, 5.7, 12.5, 14]
+
+# Create a new figure, single axis
+# Size is 8 inches by 8 inches, and constrained layout
+fig, ax = plt.subplots(figsize=(8, 8), layout="constrained")
+
+# Plot a simple line
+ax.plot(x, y, color="red", label="My Algorithm")
+
+# Customize the axes
+ax.set_xlabel("Iteration") # Name of the X axis
+ax.set_ylabel("Time (s)") # Name of the y axis
+# Title of the plot
+ax.set_title("Evolution of Time with the number of iteration")
+
+ax.margins(0, 0) # Remove white spaces around the figure
+ax.legend(loc="upper right") # Draw the legend in the upper right corner
+
+fig.savefig("my_plot.png", dpi=300) # Higher DPI -> bigger image
+plt.close() # End the plot and release resources
+```
+
+## Plotting tools - Matplotlib (Multi axis)
+
+We can easily have multiple plots on the same figure:
+
+```python
+nrows = 5, ncols = 1
+fig, axs = plt.subplots(5, 1, figsize(8 * ncols, 3 * nrows))
+
+ax = axs[0]
+ax.plot()
+...
+
+ax = axs[1]
+ax.plot()
+...
+
+fig.tight_layout() # Alternative to constrained layout
+fig.savefig("my_multiplot.png", dpi=300)
+```
+
+Each axis is its own plot, with its own legend and artists.
+
+### Note {.example}
+
+Use the reference (<https://matplotlib.org/stable/api/index.html>) and gallery (<https://matplotlib.org/stable/gallery/index.html>) extensively !
 
 ## Plotting tools - Seaborn
+
+Seaborn is an extension of Matplotlib dedicated to statistical visualization:
+
+![<https://seaborn.pydata.org/examples/index.html>](image/lecture4/seaborn_smooth_bivariate_kde.png){ width=40% }
+
+It's useful for histograms, bar charts, kdeplots, scatterplots, and is overall a very good companion library.
+
+## Plotting tools - Seaborn
+
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv(...) # Read the dataframe from somewhere
+
+fig, ax = plt.subplots(figsize=(8, 8), layout="constrained")
+
+# We must pass the axis to plot on as an argument
+sns.kdeplot(data=df, x="Time", label="Algorithm", color="red", fill=True, ax=ax)
+
+ax.set_title("Distribution of Execution time for the algorithm")
+ax.margins(0, 0)
+ax.set_xlabel("Time (s)", fontweight="bold")
+ax.set_ylabel("Density", fontweight="bold")
+
+ax.set_xticks(np.linspace(df["Time"].min(), df["Time"].max(), 10)
+# Format the x axis ticks: `3.25s`
+ax.xaxis.set_major_formatter(StrMethodFormatter("{x:.2f}s"))
+
+fig.savefig("my_distribution.png")
+```
+
+<https://matplotlib.org/stable/gallery/ticks/tick-formatters.html>
 
 # Profiling
 
