@@ -1,7 +1,8 @@
 # Lab 5: Experimental Methodology and Scientific Reporting
+
 <hr class="gradient" />
 
-The [Kepler space telescope](https://en.wikipedia.org/wiki/Kepler_space_telescope) monitors the variation in the luminosity of distant stars using a photometer. The datasets are freely available online, and we will use them as a study case for this lab.
+The [Kepler space telescope](https://en.wikipedia.org/wiki/Kepler_space_telescope) monitors the variation in the luminosity of distant stars using a photometer. The datasets are freely available online, and we will use them as a case study for this lab.
 
 
 <figure markdown="span">
@@ -12,7 +13,7 @@ The [Kepler space telescope](https://en.wikipedia.org/wiki/Kepler_space_telescop
   </figcaption>
 </figure>
 
-Kepler generates pretty simple datasets: a photon flux (the intensity of the received light) at a certain date for a particular star. However, by carefully preprocessing this data and using dedicated signal analysis techniques, we can make major discoveries.
+Kepler generates relatively simple datasets: a photon flux (the intensity of the received light) at specific dates for a particular stars. However, by carefully preprocessing this data and using specialized signal analysis techniques, we can make major discoveries.
 
 ---
 
@@ -50,23 +51,22 @@ Write a `scripts/plot_luminosity.py` script that:
 - Plots the dataset using `matplotlib` (x: Time (days), y: Flux)
 - Save the plots as `results/luminosity_kepler-*.png`
 
-Make sure that the script is executable using `chmod +x <file>` and that the file starts with the shebang `#!/usr/bin/env python3` 
+Ensure the script is executable using `chmod +x <file>` and that the file starts with the shebang `#!/usr/bin/env python3` 
 
 !!! Tip
-    You should make sure that the `results` folder exists before trying to save to it. You can use `os.makedirs(<path>, exists_ok=True)` in your script. Beware that the datasets paths are Capitalized !
+    Ensure that the `results` folder exists before saving to it. You can use `os.makedirs(<path>, exists_ok=True)` in your script. Note that the datasets paths are capitalized!
 
 #### c) Run the previous script for the Kepler 8 dataset. What do you observe ?
 #### d) Refine your previous plot
 
 Make sure that:
 
-- The axis are clearly labelled
+- The axes are clearly labeled
 - The x and y ticks are easily readable and properly spaced (`np.linspace`)
-- The plot has a title, legend, and a `tight` or `constrained` layout.
-- The figure format is correct (ratio between width and height)
+- The plot includes a title, legend, and uses a `tight` or `constrained` layout.
+- The figure has an appropriate aspect ratio (width to height)
 
 The final plot should look something like this:
-
 
 <figure markdown="span">
   <img src="/image/lab5/luminosity_Kepler-8.png" style="max-width: 100%; width: auto;">
@@ -81,7 +81,7 @@ What could cause this periodic phenomenon ?
 
 #### f) Implement phase folding light curve
 
-Phase folding is a simple technique to visualize periodic signals: we fold the data over a given period so that the signals overlaps, highlighting patterns.
+Phase folding is a simple technique to visualize periodic signals: we fold the data over a given period so that the signals overlap, highlighting patterns.
 
 ```python title="Phase Folding"
 # ... Load data here
@@ -113,7 +113,7 @@ bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
 ax.plot(bin_centers, bin_means, color="red", lw=1.5)
 ```
 
-#### h) Check the file `data/Kepler-8_known_planets.json
+#### h) Check the file `data/Kepler-8_known_planets.json`
 
 Run the previous script by phase folding over the Kepler 8b Period. 
 
@@ -139,16 +139,16 @@ The provided library implements a Python <-> C interface so that you can call BL
 #### b) Write a `scripts/bls_runner.py` script for kepler data
 
 The BLS library can be used like so:
-```python
+```python title="bls_runner.py"
 import bls
 # ... Load data here
 match = bls.bls(data["time"].values.astype(np.float64), data["flux"].values.astype(np.float64),
     1.0, 4, 250, 0.02, 0.15, 100)
 ```
-BLS is very sensible to the hyperparameters, and as such you **must use the ones provided here**.
+BLS is very sensitive to the hyperparameters, and as such you **must use the ones provided here**.
 
 Make sure that your script can be called with `scripts/run_bls.py kepler-*` and that it reports the match found.
-Check that the BLS output is coherent for the Kepler 8b exoplanet characteristic.
+Verify that the BLS output is consistent with the characteristics of the Kepler 8b exoplanet.
 
 <figure markdown="span">
   <img src="/image/lab5/kepler_principle.png" style="max-width: 70%; width: auto;">
@@ -162,17 +162,16 @@ Check that the BLS output is coherent for the Kepler 8b exoplanet characteristic
 
 <hr class="gradient" />
 
-
 ## 3 - Profiling for energy and performance characterization
 
 ### 1. Measuring Energy
 
 #### a) Disable perf event paranoid
 
-By default, the linux kernel will restrict access to some perf counters to prevent malicious usage.
-We can disable these securities by running:
+By default, the Linux kernel restricts access to some perf counters to prevent malicious usage.
+You can disable these restrictions by running:
 
-```bash
+```bash title="Perf event paranoid"
 sudo sh -c 'echo -1 > /proc/sys/kernel/perf_event_paranoid'
 ```
 
@@ -202,8 +201,8 @@ time perf stat -r 5 -a -j -e power/energy-pkg/,power/energy-cores/ \
     ./scripts/run_bls.py kepler-8
 ```
 
-Note that the `-r 5` flag causes `perf` to perform 5 meta-repetitions. The `time` command reports the sum of the timings for all runs.
-Compute the effective power and energy consumption of BLS.
+Note that the -r 5 flag causes perf to perform five (meta-) repetitions. The `time` command reports the sum of the timings for all runs.
+Calculate the effective power and energy consumption of BLS.
 
 $$
 P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
@@ -227,8 +226,8 @@ Execute this command and answer the following questions.
 
 Put simply:
 
-- Memory intensive application have relatively low instructions / cycles, and high memory metrics.
-- Compute intensive applications are vectorized (High intructions / cycles) and threads are fully used.
+- Memory-intensive applications have low instructions per cycle and high memory metrics
+- Compute-intensive applications are vectorized (high instructions per cycle) and fully utilize threads.
   Memory usage is relatively low because the arithmetic density is high.
 
 #### d) What is costlier: running the BLS algorithm, or loading the dataset ?
@@ -243,13 +242,13 @@ You can move around the perf report using the arrow keys, and you can press `+` 
 
 How much time is spent in the BLS algorithm ?
 
-What would be more time-efficient for an engineer: optimizing the data loading process, or the BLS algorithm ?
+Which would be more time-efficient for an engineer: optimizing the data loading process or the BLS algorithm?
 
 #### e) Build a flamegraph for bls
 
 Run the following
 ```sh title="Flamegraph"
-# Download the flame graph toolsuit
+# Download the Flamegraph tool suite
 git clone https://github.com/brendangregg/FlameGraph
 # Convert perf output to a flamegraph-readable format
 perf script > out.perf
@@ -263,7 +262,7 @@ perf script > out.perf
     --title "FlameGraph for BLS algorithm" out.folded > flamegraph.svg
 ```
 
-Look at the generated `flamegraph.svg`: does the flamegraph match the previous perf result ?
+Examine the generated `flamegraph.svg`: does the flamegraph match the previous perf results?
 
 ---
 
@@ -284,7 +283,7 @@ Take a look at `scripts/strong_scaling.py`. It contains a code snippet for runni
 
 #### a) Look and try to understand the purpose of the `scripts/stability.py` script
 
-What are we measuring ? What information does this script gives us on our environment ?
+What are we measuring ? What information does this script provide about our environment?
 
 #### b) Modify `stability.py` to measure the stability of `run_bls.py`
 
@@ -294,14 +293,14 @@ Modify the script to:
 
 - Load the kepler 8 Dataset, and subsample it (Reduce the size to ~2k randomly selected samples)
 - Save the previous script, and execute `run_bls.py` on the subsampled dataset, measuring the time.
-- Repeat the previous measurements ~100 time, and generate a distribution plot using seaborn. 
+- Repeat the previous measurements approximately 100 times, and generate a distribution plot using seaborn.
     You can use a boxplot, kdeplot, violin plot, histogram, etc.
     Save the raw data to `results/stability_bls.csv`
 
-If your machine is stable, we would expect the performance distribution to follow a normal distribution.
+If your machine is stable, the performance distribution should follow a normal distribution.
 
 !!! Danger
-    Make sure to sort the dataset after subsampling by using `df.sort_values(by="time")` !
+    Be sure to sort the dataset after subsampling by using `df.sort_values(by="time")` !
 
 ---
 
@@ -314,7 +313,6 @@ If your machine is stable, we would expect the performance distribution to follo
 </figure>
 
 ---
-
 
 #### c) Modify `scripts/strong_scaling.py` to build a strong scaling plot
 
@@ -329,7 +327,7 @@ os.makedirs(f"results/{date}/", exist_ok=True)
 
 ## 4 - Report
 
-You are tasked in making a **maximum 3 page report (References not included)**. Your report must use the following structure:
+You are tasked with creating a report of **no more than 3 pages (excluding references)**. Your report must use the following structure:
 
 - 1) Environment and context
     - Give details on the machine you used for the experiments: CPU/Memory specifications, compiler version, python version, OS name and version, and any other details that helps characterize your setup.
@@ -338,12 +336,12 @@ You are tasked in making a **maximum 3 page report (References not included)**. 
 - 2) Kepler result
     - Include both a lightcurve plot and a phase-folding plot for Kepler 8.
     - The BLS algorithm scans through a range of Orbital Periods, and computes a *Power* score for each candidates. The higher the power, the better the candidate. The function `bls.bls_periodogram(...)` returns a 2D array containing all the scores, which allows us to build a **Periodogram**. Pairs are stored as (Power, Period).
-    Plot a periodogram for Kepler 8, 17, 45 and 785. **You are required to use subplots** so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Check that the periodograms match the known exoplanets for all these stars.
+    Plot a periodogram for Kepler 8, 17, 45 and 785. **You are required to use subplots** so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Verify that the periodograms match the known exoplanets for all these stars.
 - 3) Profiling results
     - **If your machine supports RAPL measurement**: Give the approximate energy consumption of the BLS algorithm on the Kepler 8 dataset. 
     - **If your machine does not support RAPL measurement**:
-        - State it explicity in your report.
-        - Try on another machine if able
+        - State this explicity in your report.
+        - Try on another machine if possible
         - ... OR replace this experiment by a weak scaling plot if you can't get RAPL to work.
     - Give the perf results for `instructions,cycles,cache-references,cache-misses`
     - Generate stability plots using `./scripts/stability.py` and include them in the report.
