@@ -291,6 +291,11 @@ A figure is built hierarchically from nested elements:
 
 ## Plotting tools - Matplotlib
 
+![](image/lecture4/matplotlib_decomposed.png)
+
+
+## Plotting tools - Matplotlib
+
 ```python
 import matplotlib.pyplot as plt
 
@@ -383,31 +388,216 @@ fig.savefig("my_distribution.png")
 
 # Profiling
 
+## Profiling - Motivation
+
+- HPC codes are massive, complex and heterogeneous
+- Humans are **bad** at predicting bottlenecks 
+- Don’t blindly optimize everything
+- Profiling guides optimization
+
+Remember: **Always profile first**.
+
+## Profiling - Amdahl's law
+
+$$
+\mathrm{Speedup} = \frac{1}{1 - f + \frac{f}{S}}
+$$
+
+Where f is the fraction of program improved, and S is the speedup on that fraction.
+
+Example:
+
+- I have optimized 80% of my application, with a speedup of x10
+- In total, my application is now $\frac{1}{0.2 + (0.8 / 10)} = 3.57 \times$ faster
+
+The 20% are a bottleneck !
+
+## Profiling - Steps
+
+1. Where (Hotspots) ?
+  - What functions are we spending time/energy in ?
+  - What **call-tree** are we spending time/energy in ?
+2. Why ?
+  - Arithmetic density, memory access patterns
+  - Cache misses, branch misspredictions, vectorization efficieny (Hardware counters)
+3. What goal ?
+  - Should I optimize for speed ? For energy ? Memory footprint ?
+    - What about cold storage size/compression ?
+  - Do I have constraints (i.e. limited memory) ?
+  - Should I optimize or switch algorithm ?
+
+
 ## Profiling - Time
 
+It's rather easy to benchmark a single function using a (high-resolution monotonic) clock:
+```python 
+begin = time.now()
+my_function()
+end = time.now()
+elapsed = end - begin
+```
+
+Very simple way to evalute a function cost
+
+## Profiling - Time (Stability)
+
+But we have to account for noise:
+
+```python
+for _ in range(NWarmup):
+  my_function()
+
+times = []
+for _ in range(NMeta):
+  begin = time.perf_counter()
+  my_function()
+  times.append(time.perf_counter() - begin) 
+
+median = np.median(times)
+std = np.std(times)
+print(f"Time: {median} +/- {std}")
+```
+
+We must check that our measures are valid !
+
+## Profilers - Introduction
+
+Full application -> Thousands of functions to measure !
+
+- Profilers are tools to automate this
+- Two main types:
+  - Sampling: Pause the program and log where the program is
+  (Costly functions -> More samples !)
+  - Instrumentation: Modify the program to automatically add timers
+
+Profilers can also check for thread usage, vectorization, memory access, etc.
+
+## Perf - Record
+
+Linux Perf is a powerful and versatile profiler:
+
+```bash
+perf record -g -- python3 ./scripts/run_bls.py kepler-8
+[ perf record: Woken up 255 times to write data ]
+[ perf record: Wrote 85.474 MB perf.data (1220354 samples) ]
+
+pert report perf.out
+```
+
+![](image/lecture4/perf_report.png)
+
+It's a great tool to quickly get a Tree stack without any dependencies.
+
+## Profiling - Hardware counters
+
+In reality, perf is not realy a profiler !
+
+- The Linux Perf API can be used to access many hardware counters
+- Perf record is just one usage of perf
+
+Most CPUs/GPUs have hardware counters that monitors different events:
+
+- Number of cycles
+- Number of instructions
+- Number of memory access
+- RAPL
+
+## Profiling - Perf for Hardware counters
+
+```bash
+perf stat -e cycles,instructions python3 ./scripts/run_bls.py kepler-8
+{'period': 3.520136229965055, 'duration': 0.11662673569985234, 'phase': 0.43, 'depth': 0.004983530583444806, 'power': 0.028861678651344452}
+
+ Performance counter stats for 'python3 ./scripts/run_bls.py kepler-8':
+
+   962,187,248,452      cpu_atom/cycles/                                                        (43.66%)
+ 1,119,319,677,606      cpu_core/cycles/                                                        (56.34%)
+ 3,547,146,665,075      cpu_atom/instructions/           #    3.69  insn per cycle              (43.66%)
+ 2,837,633,772,530      cpu_core/instructions/           #    2.54  insn per cycle              (56.34%)
+
+      12.507192456 seconds time elapsed
+```
+
+## VTune
+
+The Intel VTune profiler is more complex but more self-contained than perf:
+
+![](image/lecture4/vtune.png)
+
+## VTune - CPU Usage
+
+![](image/lecture4/cpu_usage_vtune.png)
+![](image/lecture4/vtune_hpc_thread_usage.png)
 
 
-## gprof
+## VTune - HPC Performance
 
+VTune has multiple collection mode:
 
+![](image/lecture4/hpc_vtune.png)
 
-## Perf - Introduction
+## Other profilers
 
+- MAQAO is a profiler developped by the LIPARAD
+- AMD, NVIDIA and ARM have their own profilers for their platforms
+- And many, many others (likwid, gprof, etc.) 
 
-
-## Perf - Performance counters
-
-
+Usually, we combine a "quick" profiler like gprof/perf record with a more indepth one when needed.
 
 ## Profiling - Energy
 
+Energy is a growing concern:
+
+- One HPC cluster consume millions of dollars in electricity **yearly**
+- ChatGPT and other LLM are computationally intensive:
+  - Nvidia GPUs consumes lots of energy
+
+On the flip side, measuring energy is harder than measuring time.
+
+Many actors still focus on execution time only -> Energy is perceived as "Second rank"
+
+## Profiling - RAPL
+
+Running Average Power Limit (RAPL) is an x86 hardware counter that monitors energy consumption:
+
+- Energy is tracked at different level
+  - Core, Ram, Package, GPU, etc.
+- It does not account for secondary power consummers (Fans, Water cooling, etc.) 
+- RAPL is not event based: The entire machine is measured ! (Background processes, etc.)
+
+It requires sudo permissions to access (compared to a clock)
+
+```bash
+perf stat -a -j -e power/energy-pkg,power/energy-cores <app>
+{"counter-value" : "88.445740", "unit" : "Joules", "event" : "power/energy-pkg/", "event-runtime" : 10002168423, "pcnt-running" : 100.00}
+{"counter-value" : "10.848633", "unit" : "Joules", "event" : "power/energy-cores/", "event-runtime" : 10002166697, "pcnt-running" : 100.00}
+```
+
+## Profiling - Watt-Meter
+
+![Yokogawa](image/lecture4/yokogawa.png)
+
+Hardware solutions are also available to monitor energy consumption.
+They typically have a slow sampling resolution ($\approx 1s$) and are harder to scale to entire clusters.
+
+On the flip side, they give precise power measurements compared to RAPL.
+
+## Profiling - RAPL accuracy
+
+![Calibration of RAPL](image/lecture4/rapl_calib.png)
+
+In practice, RAPL underestimates power consumption, but trends are correctly matched.
+
+# Live Demo
+
+## Experiment example
+
+[Annex/run_experiment.sh](https://m1-chps.github.io/glhpc/annex/example_experiment/run_experiment/)
+
+[Annex/model_convergence.py](https://m1-chps.github.io/glhpc/annex/example_experiment/model_convergence/)
 
 
-## Perf - Energy
 
-
-
-## Vtune
 
 
 

@@ -86,6 +86,9 @@ nav:
       - Linux Environment:
           - Installing fedora: annex/install_fedora.md
           - Installing oh-my-zsh: annex/oh-my-zsh.md
+      - Experiment Example:
+          - run_experiment.sh: annex/example_experiment/run_experiment.md
+          - model_convergence.py: annex/example_experiment/model_convergence.md
 
 extra_css:
   - stylesheets/extra.css
