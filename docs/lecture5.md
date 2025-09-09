@@ -23,8 +23,6 @@ header-includes:
 
 # Introduction to AI applications
 
-## Artificial Intelligence overview
-
 ## AI Renaissance: Neural Networks
 
 - 2012: **AI renaissance** brought by increased data
@@ -77,14 +75,16 @@ for (i = 0; i < M; i++) {
 ## Locality issues in naive SGEMM
 
 $$
-{\color{green}\text{order in memory} \rightarrow }\\
+{\color{green}\text{order in memory} \rightarrow}
+$$
 
+$$
 \begin{bmatrix}
 \color{red} b_{11} & b_{12} & b_{13} & b_{14} \\
 \color{red} b_{21} & b_{22} & b_{23} & b_{24} \\
 \color{red} b_{31} & b_{32} & b_{33} & b_{34} \\
 \color{red} b_{41} & b_{42} & b_{43} & b_{44} \\
-\end{bmatrix} 
+\end{bmatrix}
 $$
 
 - Stride in accessing B (column-major)
@@ -97,6 +97,7 @@ $$
 ## Reordering loops (i,k,j)
 
 - Sums `RES[i][j] += A[i][k] * B[k][j];` are independent → reorder loops:
+
 ```c
 for (i = 0; i < M; i++) 
     for (k = 0; k < K; k++) 
@@ -104,8 +105,9 @@ for (i = 0; i < M; i++)
             RES[i][j] += A[i][k] * B[k][j];
 ```
 
-- `A[i][k]` does not depend on `j` → load once, reuse N times 
-- `RES` and `B` accesses are now stride-1 (row-major) 
+- `A[i][k]` does not depend on `j` → load once, reuse N times
+
+- `RES` and `B` accesses are now stride-1 (row-major)
 
 ```c
 for (i = 0; i < M; i++) 
