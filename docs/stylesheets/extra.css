@@ -198,7 +198,6 @@ hr.gradient {
 
 /* Scale to fit the page with constraints */
 /* Bigger images will be max 15cm, sligthly bigger than the size of a beamer slide */
-
 .md-content__inner img {
     max-width: 15cm;
 }
