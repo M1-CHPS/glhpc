@@ -962,6 +962,237 @@
   </p>
 </div>
 <h1 id="introduction-to-ai-applications">Introduction to AI applications<a class="headerlink" href="#introduction-to-ai-applications" title="Permanent link">&para;</a></h1>
+<h2 id="ai-renaissance-neural-networks">AI Renaissance: Neural Networks<a class="headerlink" href="#ai-renaissance-neural-networks" title="Permanent link">&para;</a></h2>
+<ul>
+<li>2012: <strong>AI renaissance</strong> brought by increased data
+    availability and computation ressources</li>
+<li>breakthroughs in multiple domains</li>
+<li>
+<p>many innovations: algorithms, specialized processors, optimizations</p>
+</li>
+<li>
+<p>Most systems use <strong>neural networks</strong>:</p>
+</li>
+<li>
+<p>Training (stochastic gradient descent + backpropagation)</p>
+</li>
+<li>
+<p>Inference (forward pass)</p>
+</li>
+<li>
+<p>For both, <strong>the bottleneck is matrix multiplication</strong></p>
+</li>
+</ul>
+<h2 id="objectives">Objectives<a class="headerlink" href="#objectives" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Explain why dense linear algebra (GEMM) dominates NN compute</li>
+<li>Core SGEMM kernel ideas and common optimizations</li>
+<li>Use Roofline model to identify bottlenecks</li>
+<li>Understand mixed precision &amp; quantization tradeoffs for energy/perf</li>
+</ul>
+<h2 id="sgemm">SGEMM<a class="headerlink" href="#sgemm" title="Permanent link">&para;</a></h2>
+<p>Single-precision General Matrix-Matrix multiplication (SGEMM):</p>
+<div class="arithmatex">\[ RES = A \times B + C \]</div>
+<p><img alt="SGEMM" src="../image/lab6/sgemm.svg" /></p>
+<h2 id="naive-sgemm-implementation-pseudocode">Naive SGEMM implementation (pseudocode)<a class="headerlink" href="#naive-sgemm-implementation-pseudocode" title="Permanent link">&para;</a></h2>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Initialize RES to C</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">        </span><span class="n">RES</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">// Matrix multiply</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">            </span><span class="n">RES</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">        </span><span class="p">}</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li>FLOPS: <span class="arithmatex">\(2 \times M \times N \times K\)</span></li>
+<li>Memory: <span class="arithmatex">\(4 \times (M \times K + K \times N + M \times N)\)</span> bytes</li>
+</ul>
+<h2 id="locality-issues-in-naive-sgemm">Locality issues in naive SGEMM<a class="headerlink" href="#locality-issues-in-naive-sgemm" title="Permanent link">&para;</a></h2>
+<div class="arithmatex">\[
+{\color{green}\text{order in memory} \rightarrow}
+\]</div>
+<div class="arithmatex">\[
+\begin{bmatrix}
+\color{red} b_{11} &amp; b_{12} &amp; b_{13} &amp; b_{14} \\
+\color{red} b_{21} &amp; b_{22} &amp; b_{23} &amp; b_{24} \\
+\color{red} b_{31} &amp; b_{32} &amp; b_{33} &amp; b_{34} \\
+\color{red} b_{41} &amp; b_{42} &amp; b_{43} &amp; b_{44} \\
+\end{bmatrix}
+\]</div>
+<ul>
+<li>Stride in accessing B (column-major)</li>
+<li>Poor spatial locality</li>
+<li>Difficult to vectorize</li>
+<li>
+<p>Cache misses for large matrices (reuse distance too large)</p>
+</li>
+<li>
+<p><strong>Low arithmetic intensity</strong>: <span class="arithmatex">\(\approx 0.5\)</span> FLOP/byte for large matrices</p>
+</li>
+</ul>
+<h2 id="reordering-loops-ikj">Reordering loops (i,k,j)<a class="headerlink" href="#reordering-loops-ikj" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Sums <code>RES[i][j] += A[i][k] * B[k][j];</code> are independent → reorder loops:</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">            </span><span class="n">RES</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span></code></pre></div>
+<ul>
+<li>
+<p><code>A[i][k]</code> does not depend on <code>j</code> → load once, reuse N times</p>
+</li>
+<li>
+<p><code>RES</code> and <code>B</code> accesses are now stride-1 (row-major)</p>
+</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">        </span><span class="k">const</span><span class="w"> </span><span class="kt">float</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">];</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">             </span><span class="n">RES</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">temp</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">        </span><span class="p">}</span>
+</span></code></pre></div>
+<ul>
+<li>Better spatial locality and easier to vectorize</li>
+</ul>
+<h2 id="vectorization">Vectorization<a class="headerlink" href="#vectorization" title="Permanent link">&para;</a></h2>
+<p>Inner loop assembly for (i,k,j) ordering with AVX (8 <code>float</code> in a vector):</p>
+<div class="language-asm highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nl">.loop:</span><span class="w">                                   </span><span class="c1"># Inner loop</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="nf">vmovss</span><span class="w">  </span><span class="no">xmm0</span><span class="p">,</span><span class="w"> </span><span class="no">DWORD</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="no">A</span><span class="p">[</span><span class="no">i</span><span class="p">][</span><span class="no">k</span><span class="p">]</span><span class="w">      </span><span class="c1"># Load A[i][k]</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nf">vbroadcastss</span><span class="w"> </span><span class="no">ymm0</span><span class="p">,</span><span class="w"> </span><span class="no">xmm0</span><span class="w">              </span><span class="c1"># Broadcast scalar to all lanes</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nf">vmovaps</span><span class="w"> </span><span class="no">ymm1</span><span class="p">,</span><span class="w"> </span><span class="no">YMMWORD</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="no">B</span><span class="p">[</span><span class="no">k</span><span class="p">][</span><span class="no">j</span><span class="p">]</span><span class="w">    </span><span class="c1"># Load B[k][j:j+8]</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nf">vfmadd231ps</span><span class="w"> </span><span class="no">ymm2</span><span class="p">,</span><span class="w"> </span><span class="no">ymm1</span><span class="p">,</span><span class="w"> </span><span class="no">ymm0</span><span class="w">         </span><span class="c1"># Fused multiply-add</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nf">vmovaps</span><span class="w"> </span><span class="no">YMMWORD</span><span class="w"> </span><span class="no">PTR</span><span class="w"> </span><span class="no">RES</span><span class="p">[</span><span class="no">i</span><span class="p">][</span><span class="no">j</span><span class="p">],</span><span class="w"> </span><span class="no">ymm2</span><span class="w">  </span><span class="c1"># Store RES[i][j:j+8]</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nf">add</span><span class="w">     </span><span class="no">j</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="w">                         </span><span class="c1"># Increment j by 8 (vector width)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="nf">cmp</span><span class="w">     </span><span class="no">j</span><span class="p">,</span><span class="w"> </span><span class="no">N</span><span class="w">                         </span><span class="c1"># Compare j with N</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nf">jl</span><span class="w">      </span><span class="no">.loop</span><span class="w">                        </span><span class="c1"># Loop if j &lt; N</span>
+</span></code></pre></div>
+<h2 id="problems-with-ikj-ordering">Problems with (i,k,j) ordering<a class="headerlink" href="#problems-with-ikj-ordering" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Temporal locality analysis:</li>
+<li><strong>GOOD</strong>: <span class="arithmatex">\(A[i][k]\)</span> reused in the inner loop, reuse distance <span class="arithmatex">\(1\)</span>.</li>
+<li><strong>MEDIUM</strong> : For a fixed <span class="arithmatex">\((i,j)\)</span>, each <span class="arithmatex">\(RES[i][j]\)</span> revisited once per k. So reuse distance <span class="arithmatex">\(K\)</span> (one full row).<ul>
+<li>To keep C in cache between uses you would need cache <span class="arithmatex">\(\ge K \times 4B\)</span></li>
+</ul>
+</li>
+<li>
+<p><strong>BAD</strong> : For a fixed <span class="arithmatex">\((k,j)\)</span>, <span class="arithmatex">\(B[k][j]\)</span> used once per i. So reuse distance <span class="arithmatex">\(K \times N\)</span> (entire B matrix).</p>
+<ul>
+<li>To keep B in cache between uses you would need cache <span class="arithmatex">\(\ge K \times N \times 4B\)</span></li>
+</ul>
+</li>
+<li>
+<p>Still poor temporal locality for large matrices </p>
+</li>
+<li>
+<p>Solution: <strong>tiling / blocking</strong> to increase reuse</p>
+</li>
+</ul>
+<h2 id="blocking-tiling">Blocking (tiling)<a class="headerlink" href="#blocking-tiling" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Idea:</strong> operate on sub-matrices blocks that fit in cache</li>
+</ul>
+<div class="arithmatex">\[ 
+\begin{bmatrix}
+\textcolor{red}{A_{11}} &amp; A_{12} \\
+A_{21} &amp; A_{22} \\
+\end{bmatrix}
+\times
+\begin{bmatrix}
+\textcolor{blue}{B_{11}} &amp; B_{12} \\
+B_{21} &amp; B_{22} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\textcolor{red}{A_{11}}\textcolor{blue}{B_{11}} + A_{12}B_{21} &amp; A _{11}B_{12} + A_{12}B_{22} \\
+A_{21}B_{11} + A_{22}B_{21} &amp; A_{21}B_{12} + A_{22}B_{22} \\
+\end{bmatrix}
+\]</div>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="cp">#define BS 64 </span><span class="c1">// Block size</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1">// Loop over blocks</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">ii</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">;</span><span class="w"> </span><span class="n">ii</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">BS</span><span class="p">)</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">kk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">kk</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="n">kk</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">BS</span><span class="p">)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">jj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">jj</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">jj</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">BS</span><span class="p">)</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">            </span><span class="c1">// Operate on blocks A[ii:ii+BS, kk:kk+BS],</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">            </span><span class="c1">// B[kk:kk+BS, jj:jj+BS], C[ii:ii+BS, jj:jj+BS]</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ii</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">ii</span><span class="o">+</span><span class="n">BS</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">);</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">                </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">k</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">kk</span><span class="p">;</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">kk</span><span class="o">+</span><span class="n">BS</span><span class="p">,</span><span class="w"> </span><span class="n">K</span><span class="p">);</span><span class="w"> </span><span class="n">k</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">                    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">j</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">jj</span><span class="p">;</span><span class="w"> </span><span class="n">j</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">min</span><span class="p">(</span><span class="n">jj</span><span class="o">+</span><span class="n">BS</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">);</span><span class="w"> </span><span class="n">j</span><span class="o">++</span><span class="p">)</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">                        </span><span class="n">C</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">B</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+</span></code></pre></div>
+<h2 id="parallelization">Parallelization<a class="headerlink" href="#parallelization" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Each block operation is independent → parallelize over blocks</li>
+</ul>
+<div class="language-c highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="cp">#pragma omp parallel for collapse(3)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">ii</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">ii</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">M</span><span class="p">;</span><span class="w"> </span><span class="n">ii</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">BS</span><span class="p">)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">jj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">jj</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">N</span><span class="p">;</span><span class="w"> </span><span class="n">jj</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">BS</span><span class="p">)</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">kk</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">kk</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">K</span><span class="p">;</span><span class="w"> </span><span class="n">kk</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">BS</span><span class="p">)</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">            </span><span class="c1">// Block multiplication as before</span>
+</span></code></pre></div>
+<ul>
+<li>Each thread works on its own block → no false sharing</li>
+<li>Synchronization only at the end of the parallel region</li>
+<li>NUMA considerations: pin threads to cores, allocate memory close to threads</li>
+<li>Load balancing: static scheduling usually works well for large matrices</li>
+</ul>
+<h2 id="libraries-autotuners">Libraries &amp; autotuners<a class="headerlink" href="#libraries-autotuners" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Highly optimized SGEMM implementations exist:</p>
+</li>
+<li>
+<p>OpenBLAS, Intel MKL for CPU</p>
+</li>
+<li>
+<p>NVIDIA cuBLAS for GPU</p>
+</li>
+<li>
+<p>Implementations use blocking, vectorization, parallelization, and many architecture-specific optimizations</p>
+</li>
+<li>
+<p>Libraries are carefully tuned for different sizes and shapes of matrices.</p>
+</li>
+<li>
+<p>Autotuners (e.g., ATLAS, TVM, <strong>MLKAPS</strong>) can generate optimized code for specific hardware and problem sizes.</p>
+</li>
+</ul>
+<h2 id="roofline-model-definitions">Roofline model - Definitions<a class="headerlink" href="#roofline-model-definitions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>Hypothesis: performance is limited by either compute or memory bandwidth</p>
+</li>
+<li>
+<p>performance: FLOP/s (vertical axis)</p>
+</li>
+<li>memory bandwidth: Bytes/s</li>
+<li>
+<p>arithmetic intensity: FLOP/byte (horizontal axis)</p>
+</li>
+<li>
+<p>Simple visual model to understand bottlenecks</p>
+</li>
+</ul>
+<h2 id="roofline-model-bounds">Roofline model - Bounds<a class="headerlink" href="#roofline-model-bounds" title="Permanent link">&para;</a></h2>
+<p><img alt="Roofline SGEMM" src="../image/lecture5/roofline.svg" /></p>
+<ul>
+<li><em>Compute bound</em>: horizontal line at peak FLOP/s</li>
+<li><em>Memory bound</em>: sloped line with slope = memory bandwidth</li>
+<li><span class="arithmatex">\(\frac{\text{Flop/s}}{\text{Flop/Byte}} = \text{Byte/s}\)</span> </li>
+</ul>
+<h2 id="roofline-model-sgemm-analysis">Roofline model - SGEMM analysis<a class="headerlink" href="#roofline-model-sgemm-analysis" title="Permanent link">&para;</a></h2>
+<p><img alt="Roofline SGEMM" src="../image/lecture5/roofline-sgemm.svg" /></p>
+<ul>
+<li>Interactive demonstration and analysis</li>
+</ul>
 <h1 id="environmental-impact-of-computation">Environmental impact of computation<a class="headerlink" href="#environmental-impact-of-computation" title="Permanent link">&para;</a></h1>
 <h2 id="introduction">Introduction<a class="headerlink" href="#introduction" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1136,36 +1367,6 @@ double number of transistors and frequency increases:</p>
 </li>
 </ul>
 <h1 id="ai-energy-and-computation-costs">AI energy and computation costs<a class="headerlink" href="#ai-energy-and-computation-costs" title="Permanent link">&para;</a></h1>
-<h2 id="artificial-intelligence">Artificial Intelligence<a class="headerlink" href="#artificial-intelligence" title="Permanent link">&para;</a></h2>
-<ul>
-<li>
-<p>2012: <strong>AI renaissance</strong> brought by increased data
-    availability and computation ressources</p>
-<ul>
-<li>
-<p>breakthroughs in multiple domains</p>
-</li>
-<li>
-<p>many innovations: algorithms, specialized processors,
-    optimizations</p>
-</li>
-</ul>
-</li>
-<li>
-<p>Most systems use <strong>neural networks</strong>:</p>
-<ul>
-<li>
-<p>Training (stochastic gradient descent + backpropagation)</p>
-</li>
-<li>
-<p>Inference (forward pass)</p>
-</li>
-</ul>
-</li>
-<li>
-<p>For both, <strong>the bottleneck is matrix multiplication</strong></p>
-</li>
-</ul>
 <h2 id="training-cost-doubles-every-34-months-openai-2020">Training cost doubles every 3.4 months [OpenAI, 2020]<a class="headerlink" href="#training-cost-doubles-every-34-months-openai-2020" title="Permanent link">&para;</a></h2>
 <p><img alt="image" src="../image/lecture5/ai-and-compute-all-error-no-title.png" /></p>
 <h2 id="should-we-study-training-or-inference">Should we study training or inference?<a class="headerlink" href="#should-we-study-training-or-inference" title="Permanent link">&para;</a></h2>
@@ -1311,13 +1512,17 @@ for specific tasks with LoRA.</p>
 </ul>
 </li>
 </ul>
+<h2 id="references-hpc-for-ai-applications">References - HPC for AI applications<a class="headerlink" href="#references-hpc-for-ai-applications" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="https://siboehm.com/articles/22/CUDA-MMM">S. Boehm Optimizing, How to Optimize a CUDA Matmul Kernel</a></li>
+</ul>
 <h2 id="references-environmental-impact-of-computation">References - Environmental impact of computation<a class="headerlink" href="#references-environmental-impact-of-computation" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
 <p>Jones, Nicola (2018) ‘How to stop data centres from gobbling up the world’s electricity’. Nature, 561(7722), pp. 163–167.</p>
 </li>
 <li>
-<p>Freitag, Charlotte, Berners-Lee, Mike, Widdicks, Kelly, Knowles, Bran, et al. (2021) ‘The real climate and transformative impact of ICT: A critique of estimates, trends, and regulations’. Patterns, 2(9), p. 100340. <a href="online">https://www.sciencedirect.com/science/article/pii/S2666389921001884</a></p>
+<p>Freitag, Charlotte, Berners-Lee, Mike, Widdicks, Kelly, Knowles, Bran, et al. (2021) ‘The real climate and transformative impact of ICT: A critique of estimates, trends, and regulations’. Patterns, 2(9), p. 100340. <a href="https://www.sciencedirect.com/science/article/pii/S2666389921001884">online</a></p>
 </li>
 <li>
 <p>Masanet, Eric, Shehabi, Arman, Lei, Nuoa, Smith, Sarah and Koomey, Jonathan (2020) ‘Recalibrating global data center energy-use estimates’. Science, 367(6481), pp. 984–986.</p>
