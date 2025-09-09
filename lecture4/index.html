@@ -932,6 +932,103 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Experiment Example
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Experiment Example
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/example_experiment/run_experiment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    run_experiment.sh
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/example_experiment/model_convergence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    model_convergence.py
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -1173,6 +1270,8 @@ A figure is built hierarchically from nested elements:</p>
 <li>Complex multi plots layout occur at the Figure level</li>
 </ul>
 <h2 id="plotting-tools-matplotlib_1">Plotting tools - Matplotlib<a class="headerlink" href="#plotting-tools-matplotlib_1" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../image/lecture4/matplotlib_decomposed.png" /></p>
+<h2 id="plotting-tools-matplotlib_2">Plotting tools - Matplotlib<a class="headerlink" href="#plotting-tools-matplotlib_2" title="Permanent link">&para;</a></h2>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
@@ -1246,13 +1345,161 @@ A figure is built hierarchically from nested elements:</p>
 </span></code></pre></div>
 <p><a href="https://matplotlib.org/stable/gallery/ticks/tick-formatters.html">https://matplotlib.org/stable/gallery/ticks/tick-formatters.html</a></p>
 <h1 id="profiling">Profiling<a class="headerlink" href="#profiling" title="Permanent link">&para;</a></h1>
+<h2 id="profiling-motivation">Profiling - Motivation<a class="headerlink" href="#profiling-motivation" title="Permanent link">&para;</a></h2>
+<ul>
+<li>HPC codes are massive, complex and heterogeneous</li>
+<li>Humans are <strong>bad</strong> at predicting bottlenecks </li>
+<li>Don’t blindly optimize everything</li>
+<li>Profiling guides optimization</li>
+</ul>
+<p>Remember: <strong>Always profile first</strong>.</p>
+<h2 id="profiling-amdahls-law">Profiling - Amdahl's law<a class="headerlink" href="#profiling-amdahls-law" title="Permanent link">&para;</a></h2>
+<div class="arithmatex">\[
+\mathrm{Speedup} = \frac{1}{1 - f + \frac{f}{S}}
+\]</div>
+<p>Where f is the fraction of program improved, and S is the speedup on that fraction.</p>
+<p>Example:</p>
+<ul>
+<li>I have optimized 80% of my application, with a speedup of x10</li>
+<li>In total, my application is now <span class="arithmatex">\(\frac{1}{0.2 + (0.8 / 10)} = 3.57 \times\)</span> faster</li>
+</ul>
+<p>The 20% are a bottleneck !</p>
+<h2 id="profiling-steps">Profiling - Steps<a class="headerlink" href="#profiling-steps" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Where (Hotspots) ?</li>
+<li>What functions are we spending time/energy in ?</li>
+<li>What <strong>call-tree</strong> are we spending time/energy in ?</li>
+<li>Why ?</li>
+<li>Arithmetic density, memory access patterns</li>
+<li>Cache misses, branch misspredictions, vectorization efficieny (Hardware counters)</li>
+<li>What goal ?</li>
+<li>Should I optimize for speed ? For energy ? Memory footprint ?<ul>
+<li>What about cold storage size/compression ?</li>
+</ul>
+</li>
+<li>Do I have constraints (i.e. limited memory) ?</li>
+<li>Should I optimize or switch algorithm ?</li>
+</ol>
 <h2 id="profiling-time">Profiling - Time<a class="headerlink" href="#profiling-time" title="Permanent link">&para;</a></h2>
-<h2 id="gprof">gprof<a class="headerlink" href="#gprof" title="Permanent link">&para;</a></h2>
-<h2 id="perf-introduction">Perf - Introduction<a class="headerlink" href="#perf-introduction" title="Permanent link">&para;</a></h2>
-<h2 id="perf-performance-counters">Perf - Performance counters<a class="headerlink" href="#perf-performance-counters" title="Permanent link">&para;</a></h2>
+<p>It's rather easy to benchmark a single function using a (high-resolution monotonic) clock:
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="n">my_function</span><span class="p">()</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">elapsed</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">begin</span>
+</span></code></pre></div></p>
+<p>Very simple way to evalute a function cost</p>
+<h2 id="profiling-time-stability">Profiling - Time (Stability)<a class="headerlink" href="#profiling-time-stability" title="Permanent link">&para;</a></h2>
+<p>But we have to account for noise:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NWarmup</span><span class="p">):</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  <span class="n">my_function</span><span class="p">()</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">NMeta</span><span class="p">):</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  <span class="n">begin</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  <span class="n">my_function</span><span class="p">()</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  <span class="n">times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">begin</span><span class="p">)</span> 
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">median</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time: </span><span class="si">{</span><span class="n">median</span><span class="si">}</span><span class="s2"> +/- </span><span class="si">{</span><span class="n">std</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<p>We must check that our measures are valid !</p>
+<h2 id="profilers-introduction">Profilers - Introduction<a class="headerlink" href="#profilers-introduction" title="Permanent link">&para;</a></h2>
+<p>Full application -&gt; Thousands of functions to measure !</p>
+<ul>
+<li>Profilers are tools to automate this</li>
+<li>Two main types:</li>
+<li>Sampling: Pause the program and log where the program is
+  (Costly functions -&gt; More samples !)</li>
+<li>Instrumentation: Modify the program to automatically add timers</li>
+</ul>
+<p>Profilers can also check for thread usage, vectorization, memory access, etc.</p>
+<h2 id="perf-record">Perf - Record<a class="headerlink" href="#perf-record" title="Permanent link">&para;</a></h2>
+<p>Linux Perf is a powerful and versatile profiler:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>perf<span class="w"> </span>record<span class="w"> </span>-g<span class="w"> </span>--<span class="w"> </span>python3<span class="w"> </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="o">[</span><span class="w"> </span>perf<span class="w"> </span>record:<span class="w"> </span>Woken<span class="w"> </span>up<span class="w"> </span><span class="m">255</span><span class="w"> </span><span class="nb">times</span><span class="w"> </span>to<span class="w"> </span>write<span class="w"> </span>data<span class="w"> </span><span class="o">]</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="o">[</span><span class="w"> </span>perf<span class="w"> </span>record:<span class="w"> </span>Wrote<span class="w"> </span><span class="m">85</span>.474<span class="w"> </span>MB<span class="w"> </span>perf.data<span class="w"> </span><span class="o">(</span><span class="m">1220354</span><span class="w"> </span>samples<span class="o">)</span><span class="w"> </span><span class="o">]</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>pert<span class="w"> </span>report<span class="w"> </span>perf.out
+</span></code></pre></div>
+<p><img alt="" src="../image/lecture4/perf_report.png" /></p>
+<p>It's a great tool to quickly get a Tree stack without any dependencies.</p>
+<h2 id="profiling-hardware-counters">Profiling - Hardware counters<a class="headerlink" href="#profiling-hardware-counters" title="Permanent link">&para;</a></h2>
+<p>In reality, perf is not realy a profiler !</p>
+<ul>
+<li>The Linux Perf API can be used to access many hardware counters</li>
+<li>Perf record is just one usage of perf</li>
+</ul>
+<p>Most CPUs/GPUs have hardware counters that monitors different events:</p>
+<ul>
+<li>Number of cycles</li>
+<li>Number of instructions</li>
+<li>Number of memory access</li>
+<li>RAPL</li>
+</ul>
+<h2 id="profiling-perf-for-hardware-counters">Profiling - Perf for Hardware counters<a class="headerlink" href="#profiling-perf-for-hardware-counters" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-e<span class="w"> </span>cycles,instructions<span class="w"> </span>python3<span class="w"> </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="o">{</span><span class="s1">&#39;period&#39;</span>:<span class="w"> </span><span class="m">3</span>.520136229965055,<span class="w"> </span><span class="s1">&#39;duration&#39;</span>:<span class="w"> </span><span class="m">0</span>.11662673569985234,<span class="w"> </span><span class="s1">&#39;phase&#39;</span>:<span class="w"> </span><span class="m">0</span>.43,<span class="w"> </span><span class="s1">&#39;depth&#39;</span>:<span class="w"> </span><span class="m">0</span>.004983530583444806,<span class="w"> </span><span class="s1">&#39;power&#39;</span>:<span class="w"> </span><span class="m">0</span>.028861678651344452<span class="o">}</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w"> </span>Performance<span class="w"> </span>counter<span class="w"> </span>stats<span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="s1">&#39;python3 ./scripts/run_bls.py kepler-8&#39;</span>:
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">   </span><span class="m">962</span>,187,248,452<span class="w">      </span>cpu_atom/cycles/<span class="w">                                                        </span><span class="o">(</span><span class="m">43</span>.66%<span class="o">)</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w"> </span><span class="m">1</span>,119,319,677,606<span class="w">      </span>cpu_core/cycles/<span class="w">                                                        </span><span class="o">(</span><span class="m">56</span>.34%<span class="o">)</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w"> </span><span class="m">3</span>,547,146,665,075<span class="w">      </span>cpu_atom/instructions/<span class="w">           </span><span class="c1">#    3.69  insn per cycle              (43.66%)</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w"> </span><span class="m">2</span>,837,633,772,530<span class="w">      </span>cpu_core/instructions/<span class="w">           </span><span class="c1">#    2.54  insn per cycle              (56.34%)</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">      </span><span class="m">12</span>.507192456<span class="w"> </span>seconds<span class="w"> </span><span class="nb">time</span><span class="w"> </span>elapsed
+</span></code></pre></div>
+<h2 id="vtune">VTune<a class="headerlink" href="#vtune" title="Permanent link">&para;</a></h2>
+<p>The Intel VTune profiler is more complex but more self-contained than perf:</p>
+<p><img alt="" src="../image/lecture4/vtune.png" /></p>
+<h2 id="vtune-cpu-usage">VTune - CPU Usage<a class="headerlink" href="#vtune-cpu-usage" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../image/lecture4/cpu_usage_vtune.png" />
+<img alt="" src="../image/lecture4/vtune_hpc_thread_usage.png" /></p>
+<h2 id="vtune-hpc-performance">VTune - HPC Performance<a class="headerlink" href="#vtune-hpc-performance" title="Permanent link">&para;</a></h2>
+<p>VTune has multiple collection mode:</p>
+<p><img alt="" src="../image/lecture4/hpc_vtune.png" /></p>
+<h2 id="other-profilers">Other profilers<a class="headerlink" href="#other-profilers" title="Permanent link">&para;</a></h2>
+<ul>
+<li>MAQAO is a profiler developped by the LIPARAD</li>
+<li>AMD, NVIDIA and ARM have their own profilers for their platforms</li>
+<li>And many, many others (likwid, gprof, etc.) </li>
+</ul>
+<p>Usually, we combine a "quick" profiler like gprof/perf record with a more indepth one when needed.</p>
 <h2 id="profiling-energy">Profiling - Energy<a class="headerlink" href="#profiling-energy" title="Permanent link">&para;</a></h2>
-<h2 id="perf-energy">Perf - Energy<a class="headerlink" href="#perf-energy" title="Permanent link">&para;</a></h2>
-<h2 id="vtune">Vtune<a class="headerlink" href="#vtune" title="Permanent link">&para;</a></h2>
+<p>Energy is a growing concern:</p>
+<ul>
+<li>One HPC cluster consume millions of dollars in electricity <strong>yearly</strong></li>
+<li>ChatGPT and other LLM are computationally intensive:</li>
+<li>Nvidia GPUs consumes lots of energy</li>
+</ul>
+<p>On the flip side, measuring energy is harder than measuring time.</p>
+<p>Many actors still focus on execution time only -&gt; Energy is perceived as "Second rank"</p>
+<h2 id="profiling-rapl">Profiling - RAPL<a class="headerlink" href="#profiling-rapl" title="Permanent link">&para;</a></h2>
+<p>Running Average Power Limit (RAPL) is an x86 hardware counter that monitors energy consumption:</p>
+<ul>
+<li>Energy is tracked at different level</li>
+<li>Core, Ram, Package, GPU, etc.</li>
+<li>It does not account for secondary power consummers (Fans, Water cooling, etc.) </li>
+<li>RAPL is not event based: The entire machine is measured ! (Background processes, etc.)</li>
+</ul>
+<p>It requires sudo permissions to access (compared to a clock)</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg,power/energy-cores<span class="w"> </span>&lt;app&gt;
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="o">{</span><span class="s2">&quot;counter-value&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="s2">&quot;88.445740&quot;</span>,<span class="w"> </span><span class="s2">&quot;unit&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="s2">&quot;Joules&quot;</span>,<span class="w"> </span><span class="s2">&quot;event&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="s2">&quot;power/energy-pkg/&quot;</span>,<span class="w"> </span><span class="s2">&quot;event-runtime&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="m">10002168423</span>,<span class="w"> </span><span class="s2">&quot;pcnt-running&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="m">100</span>.00<span class="o">}</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="o">{</span><span class="s2">&quot;counter-value&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="s2">&quot;10.848633&quot;</span>,<span class="w"> </span><span class="s2">&quot;unit&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="s2">&quot;Joules&quot;</span>,<span class="w"> </span><span class="s2">&quot;event&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="s2">&quot;power/energy-cores/&quot;</span>,<span class="w"> </span><span class="s2">&quot;event-runtime&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="m">10002166697</span>,<span class="w"> </span><span class="s2">&quot;pcnt-running&quot;</span><span class="w"> </span>:<span class="w"> </span><span class="m">100</span>.00<span class="o">}</span>
+</span></code></pre></div>
+<h2 id="profiling-watt-meter">Profiling - Watt-Meter<a class="headerlink" href="#profiling-watt-meter" title="Permanent link">&para;</a></h2>
+<p><img alt="Yokogawa" src="../image/lecture4/yokogawa.png" /></p>
+<p>Hardware solutions are also available to monitor energy consumption.
+They typically have a slow sampling resolution (<span class="arithmatex">\(\approx 1s\)</span>) and are harder to scale to entire clusters.</p>
+<p>On the flip side, they give precise power measurements compared to RAPL.</p>
+<h2 id="profiling-rapl-accuracy">Profiling - RAPL accuracy<a class="headerlink" href="#profiling-rapl-accuracy" title="Permanent link">&para;</a></h2>
+<p><img alt="Calibration of RAPL" src="../image/lecture4/rapl_calib.png" /></p>
+<p>In practice, RAPL underestimates power consumption, but trends are correctly matched.</p>
+<h1 id="live-demo">Live Demo<a class="headerlink" href="#live-demo" title="Permanent link">&para;</a></h1>
+<h2 id="experiment-example">Experiment example<a class="headerlink" href="#experiment-example" title="Permanent link">&para;</a></h2>
+<p><a href="https://m1-chps.github.io/glhpc/annex/example_experiment/run_experiment/">Annex/run_experiment.sh</a></p>
+<p><a href="https://m1-chps.github.io/glhpc/annex/example_experiment/model_convergence/">Annex/model_convergence.py</a></p>
 
 
 

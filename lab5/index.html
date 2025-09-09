@@ -930,6 +930,103 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    Experiment Example
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Experiment Example
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/example_experiment/run_experiment/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    run_experiment.sh
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../annex/example_experiment/model_convergence/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    model_convergence.py
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -956,7 +1053,7 @@
 <h1 id="lab-5-experimental-methodology-and-scientific-reporting">Lab 5: Experimental Methodology and Scientific Reporting<a class="headerlink" href="#lab-5-experimental-methodology-and-scientific-reporting" title="Permanent link">&para;</a></h1>
 <hr class="gradient" />
 
-<p>The <a href="https://en.wikipedia.org/wiki/Kepler_space_telescope">Kepler space telescope</a> monitors the variation in the luminosity of distant stars using a photometer. The datasets are freely available online, and we will use them as a study case for this lab.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Kepler_space_telescope">Kepler space telescope</a> monitors the variation in the luminosity of distant stars using a photometer. The datasets are freely available online, and we will use them as a case study for this lab.</p>
 <figure>
   <img alt="Processing Example" src="../image/lab5/kepler.png" />
 <br />
@@ -965,7 +1062,7 @@
   (NASA/Troy Cryder)
   </figcaption>
 </figure>
-<p>Kepler generates pretty simple datasets: a photon flux (the intensity of the received light) at a certain date for a particular star. However, by carefully preprocessing this data and using dedicated signal analysis techniques, we can make major discoveries.</p>
+<p>Kepler generates relatively simple datasets: a photon flux (the intensity of the received light) at specific dates for a particular stars. However, by carefully preprocessing this data and using specialized signal analysis techniques, we can make major discoveries.</p>
 <hr />
 <h3 id="provided-files">Provided files<a class="headerlink" href="#provided-files" title="Permanent link">&para;</a></h3>
 <table>
@@ -1022,19 +1119,19 @@
 <li>Plots the dataset using <code>matplotlib</code> (x: Time (days), y: Flux)</li>
 <li>Save the plots as <code>results/luminosity_kepler-*.png</code></li>
 </ul>
-<p>Make sure that the script is executable using <code>chmod +x &lt;file&gt;</code> and that the file starts with the shebang <code>#!/usr/bin/env python3</code> </p>
+<p>Ensure the script is executable using <code>chmod +x &lt;file&gt;</code> and that the file starts with the shebang <code>#!/usr/bin/env python3</code> </p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>You should make sure that the <code>results</code> folder exists before trying to save to it. You can use <code>os.makedirs(&lt;path&gt;, exists_ok=True)</code> in your script. Beware that the datasets paths are Capitalized !</p>
+<p>Ensure that the <code>results</code> folder exists before saving to it. You can use <code>os.makedirs(&lt;path&gt;, exists_ok=True)</code> in your script. Note that the datasets paths are capitalized!</p>
 </div>
 <h4 id="c-run-the-previous-script-for-the-kepler-8-dataset-what-do-you-observe">c) Run the previous script for the Kepler 8 dataset. What do you observe ?<a class="headerlink" href="#c-run-the-previous-script-for-the-kepler-8-dataset-what-do-you-observe" title="Permanent link">&para;</a></h4>
 <h4 id="d-refine-your-previous-plot">d) Refine your previous plot<a class="headerlink" href="#d-refine-your-previous-plot" title="Permanent link">&para;</a></h4>
 <p>Make sure that:</p>
 <ul>
-<li>The axis are clearly labelled</li>
+<li>The axes are clearly labeled</li>
 <li>The x and y ticks are easily readable and properly spaced (<code>np.linspace</code>)</li>
-<li>The plot has a title, legend, and a <code>tight</code> or <code>constrained</code> layout.</li>
-<li>The figure format is correct (ratio between width and height)</li>
+<li>The plot includes a title, legend, and uses a <code>tight</code> or <code>constrained</code> layout.</li>
+<li>The figure has an appropriate aspect ratio (width to height)</li>
 </ul>
 <p>The final plot should look something like this:</p>
 <figure>
@@ -1047,7 +1144,7 @@
 <p>On the previous light curve, we observe that the luminosity appears to "dip" sharply at regular intervals.
 What could cause this periodic phenomenon ?</p>
 <h4 id="f-implement-phase-folding-light-curve">f) Implement phase folding light curve<a class="headerlink" href="#f-implement-phase-folding-light-curve" title="Permanent link">&para;</a></h4>
-<p>Phase folding is a simple technique to visualize periodic signals: we fold the data over a given period so that the signals overlaps, highlighting patterns.</p>
+<p>Phase folding is a simple technique to visualize periodic signals: we fold the data over a given period so that the signals overlap, highlighting patterns.</p>
 <div class="language-python highlight"><span class="filename">Phase Folding</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># ... Load data here</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Period to fold over</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">period</span> <span class="o">=</span> <span class="mf">0.8</span>
@@ -1071,7 +1168,7 @@ What could cause this periodic phenomenon ?</p>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">bin_centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">bin_means</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 </span></code></pre></div>
-<h4 id="h-check-the-file-datakepler-8_known_planetsjson">h) Check the file `data/Kepler-8_known_planets.json<a class="headerlink" href="#h-check-the-file-datakepler-8_known_planetsjson" title="Permanent link">&para;</a></h4>
+<h4 id="h-check-the-file-datakepler-8_known_planetsjson">h) Check the file <code>data/Kepler-8_known_planets.json</code><a class="headerlink" href="#h-check-the-file-datakepler-8_known_planetsjson" title="Permanent link">&para;</a></h4>
 <p>Run the previous script by phase folding over the Kepler 8b Period. </p>
 <ul>
 <li>What do you observe ? </li>
@@ -1092,14 +1189,14 @@ What could cause this periodic phenomenon ?</p>
 <h4 id="a-run-the-provided-build_librarysh-script">a) Run the provided <code>build_library.sh</code> script<a class="headerlink" href="#a-run-the-provided-build_librarysh-script" title="Permanent link">&para;</a></h4>
 <h4 id="b-write-a-scriptsbls_runnerpy-script-for-kepler-data">b) Write a <code>scripts/bls_runner.py</code> script for kepler data<a class="headerlink" href="#b-write-a-scriptsbls_runnerpy-script-for-kepler-data" title="Permanent link">&para;</a></h4>
 <p>The BLS library can be used like so:
-<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">bls</span>
+<div class="language-python highlight"><span class="filename">bls_runner.py</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">bls</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># ... Load data here</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">match</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">bls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="mf">1.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </span></code></pre></div>
-BLS is very sensible to the hyperparameters, and as such you <strong>must use the ones provided here</strong>.</p>
+BLS is very sensitive to the hyperparameters, and as such you <strong>must use the ones provided here</strong>.</p>
 <p>Make sure that your script can be called with <code>scripts/run_bls.py kepler-*</code> and that it reports the match found.
-Check that the BLS output is coherent for the Kepler 8b exoplanet characteristic.</p>
+Verify that the BLS output is consistent with the characteristics of the Kepler 8b exoplanet.</p>
 <figure>
   <img src="/image/lab5/kepler_principle.png" style="max-width: 70%; width: auto;">
 <br />
@@ -1115,9 +1212,9 @@ Check that the BLS output is coherent for the Kepler 8b exoplanet characteristic
 <h2 id="3-profiling-for-energy-and-performance-characterization">3 - Profiling for energy and performance characterization<a class="headerlink" href="#3-profiling-for-energy-and-performance-characterization" title="Permanent link">&para;</a></h2>
 <h3 id="1-measuring-energy">1. Measuring Energy<a class="headerlink" href="#1-measuring-energy" title="Permanent link">&para;</a></h3>
 <h4 id="a-disable-perf-event-paranoid">a) Disable perf event paranoid<a class="headerlink" href="#a-disable-perf-event-paranoid" title="Permanent link">&para;</a></h4>
-<p>By default, the linux kernel will restrict access to some perf counters to prevent malicious usage.
-We can disable these securities by running:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo -1 &gt; /proc/sys/kernel/perf_event_paranoid&#39;</span>
+<p>By default, the Linux kernel restricts access to some perf counters to prevent malicious usage.
+You can disable these restrictions by running:</p>
+<div class="language-bash highlight"><span class="filename">Perf event paranoid</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo -1 &gt; /proc/sys/kernel/perf_event_paranoid&#39;</span>
 </span></code></pre></div>
 <p>Run this command now.</p>
 <h4 id="b-first-energy-measure">b) First energy measure<a class="headerlink" href="#b-first-energy-measure" title="Permanent link">&para;</a></h4>
@@ -1134,8 +1231,8 @@ P_{idle} = \frac{\text{energy-pkg}_{idle}}{t}
 <div class="language-sh highlight"><span class="filename">Workload Consumption</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
 </span></code></pre></div>
-<p>Note that the <code>-r 5</code> flag causes <code>perf</code> to perform 5 meta-repetitions. The <code>time</code> command reports the sum of the timings for all runs.
-Compute the effective power and energy consumption of BLS.</p>
+<p>Note that the -r 5 flag causes perf to perform five (meta-) repetitions. The <code>time</code> command reports the sum of the timings for all runs.
+Calculate the effective power and energy consumption of BLS.</p>
 <div class="arithmatex">\[
 P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 \]</div>
@@ -1151,8 +1248,8 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 <h4 id="c-is-the-application-compute-or-memory-intensive">c) Is the application compute or memory intensive ?<a class="headerlink" href="#c-is-the-application-compute-or-memory-intensive" title="Permanent link">&para;</a></h4>
 <p>Put simply:</p>
 <ul>
-<li>Memory intensive application have relatively low instructions / cycles, and high memory metrics.</li>
-<li>Compute intensive applications are vectorized (High intructions / cycles) and threads are fully used.
+<li>Memory-intensive applications have low instructions per cycle and high memory metrics</li>
+<li>Compute-intensive applications are vectorized (high instructions per cycle) and fully utilize threads.
   Memory usage is relatively low because the arithmetic density is high.</li>
 </ul>
 <h4 id="d-what-is-costlier-running-the-bls-algorithm-or-loading-the-dataset">d) What is costlier: running the BLS algorithm, or loading the dataset ?<a class="headerlink" href="#d-what-is-costlier-running-the-bls-algorithm-or-loading-the-dataset" title="Permanent link">&para;</a></h4>
@@ -1162,10 +1259,10 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 </span></code></pre></div></p>
 <p>You can move around the perf report using the arrow keys, and you can press <code>+</code> to expand a particular call tree.</p>
 <p>How much time is spent in the BLS algorithm ?</p>
-<p>What would be more time-efficient for an engineer: optimizing the data loading process, or the BLS algorithm ?</p>
+<p>Which would be more time-efficient for an engineer: optimizing the data loading process or the BLS algorithm?</p>
 <h4 id="e-build-a-flamegraph-for-bls">e) Build a flamegraph for bls<a class="headerlink" href="#e-build-a-flamegraph-for-bls" title="Permanent link">&para;</a></h4>
 <p>Run the following
-<div class="language-sh highlight"><span class="filename">Flamegraph</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Download the flame graph toolsuit</span>
+<div class="language-sh highlight"><span class="filename">Flamegraph</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Download the Flamegraph tool suite</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/brendangregg/FlameGraph
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Convert perf output to a flamegraph-readable format</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>perf<span class="w"> </span>script<span class="w"> </span>&gt;<span class="w"> </span>out.perf
@@ -1178,7 +1275,7 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span>--bgcolors<span class="o">=</span><span class="s2">&quot;#ffffff&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span>--title<span class="w"> </span><span class="s2">&quot;FlameGraph for BLS algorithm&quot;</span><span class="w"> </span>out.folded<span class="w"> </span>&gt;<span class="w"> </span>flamegraph.svg
 </span></code></pre></div></p>
-<p>Look at the generated <code>flamegraph.svg</code>: does the flamegraph match the previous perf result ?</p>
+<p>Examine the generated <code>flamegraph.svg</code>: does the flamegraph match the previous perf results?</p>
 <hr />
 <figure>
   <img src="/image/lab5/flamegraph.svg" style="max-width: 100%; width: auto;">
@@ -1194,21 +1291,21 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 <h3 id="3-strong-scaling-analysis">3. Strong scaling analysis<a class="headerlink" href="#3-strong-scaling-analysis" title="Permanent link">&para;</a></h3>
 <p>Take a look at <code>scripts/strong_scaling.py</code>. It contains a code snippet for running the <code>scripts/run_bls.py</code> script with a given number of threads. Our goal is now to build a strong scaling plot.</p>
 <h4 id="a-look-and-try-to-understand-the-purpose-of-the-scriptsstabilitypy-script">a) Look and try to understand the purpose of the <code>scripts/stability.py</code> script<a class="headerlink" href="#a-look-and-try-to-understand-the-purpose-of-the-scriptsstabilitypy-script" title="Permanent link">&para;</a></h4>
-<p>What are we measuring ? What information does this script gives us on our environment ?</p>
+<p>What are we measuring ? What information does this script provide about our environment?</p>
 <h4 id="b-modify-stabilitypy-to-measure-the-stability-of-run_blspy">b) Modify <code>stability.py</code> to measure the stability of <code>run_bls.py</code><a class="headerlink" href="#b-modify-stabilitypy-to-measure-the-stability-of-run_blspy" title="Permanent link">&para;</a></h4>
 <p>To further assess the stability of our setup, we should try to measure the distribution of multiple runs of <code>run_bls.py</code></p>
 <p>Modify the script to:</p>
 <ul>
 <li>Load the kepler 8 Dataset, and subsample it (Reduce the size to ~2k randomly selected samples)</li>
 <li>Save the previous script, and execute <code>run_bls.py</code> on the subsampled dataset, measuring the time.</li>
-<li>Repeat the previous measurements ~100 time, and generate a distribution plot using seaborn. 
+<li>Repeat the previous measurements approximately 100 times, and generate a distribution plot using seaborn.
     You can use a boxplot, kdeplot, violin plot, histogram, etc.
     Save the raw data to <code>results/stability_bls.csv</code></li>
 </ul>
-<p>If your machine is stable, we would expect the performance distribution to follow a normal distribution.</p>
+<p>If your machine is stable, the performance distribution should follow a normal distribution.</p>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
-<p>Make sure to sort the dataset after subsampling by using <code>df.sort_values(by="time")</code> !</p>
+<p>Be sure to sort the dataset after subsampling by using <code>df.sort_values(by="time")</code> !</p>
 </div>
 <hr />
 <figure>
@@ -1229,7 +1326,7 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 <hr class="gradient" />
 
 <h2 id="4-report">4 - Report<a class="headerlink" href="#4-report" title="Permanent link">&para;</a></h2>
-<p>You are tasked in making a <strong>maximum 3 page report (References not included)</strong>. Your report must use the following structure:</p>
+<p>You are tasked with creating a report of <strong>no more than 3 pages (excluding references)</strong>. Your report must use the following structure:</p>
 <ul>
 <li>1) Environment and context<ul>
 <li>Give details on the machine you used for the experiments: CPU/Memory specifications, compiler version, python version, OS name and version, and any other details that helps characterize your setup.<ul>
@@ -1242,14 +1339,14 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 <li>2) Kepler result<ul>
 <li>Include both a lightcurve plot and a phase-folding plot for Kepler 8.</li>
 <li>The BLS algorithm scans through a range of Orbital Periods, and computes a <em>Power</em> score for each candidates. The higher the power, the better the candidate. The function <code>bls.bls_periodogram(...)</code> returns a 2D array containing all the scores, which allows us to build a <strong>Periodogram</strong>. Pairs are stored as (Power, Period).
-Plot a periodogram for Kepler 8, 17, 45 and 785. <strong>You are required to use subplots</strong> so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Check that the periodograms match the known exoplanets for all these stars.</li>
+Plot a periodogram for Kepler 8, 17, 45 and 785. <strong>You are required to use subplots</strong> so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Verify that the periodograms match the known exoplanets for all these stars.</li>
 </ul>
 </li>
 <li>3) Profiling results<ul>
 <li><strong>If your machine supports RAPL measurement</strong>: Give the approximate energy consumption of the BLS algorithm on the Kepler 8 dataset. </li>
 <li><strong>If your machine does not support RAPL measurement</strong>:<ul>
-<li>State it explicity in your report.</li>
-<li>Try on another machine if able</li>
+<li>State this explicity in your report.</li>
+<li>Try on another machine if possible</li>
 <li>... OR replace this experiment by a weak scaling plot if you can't get RAPL to work.</li>
 </ul>
 </li>
