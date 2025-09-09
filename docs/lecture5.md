@@ -23,6 +23,223 @@ header-includes:
 
 # Introduction to AI applications
 
+## Artificial Intelligence overview
+
+## AI Renaissance: Neural Networks
+
+- 2012: **AI renaissance** brought by increased data
+    availability and computation ressources
+  - breakthroughs in multiple domains
+  - many innovations: algorithms, specialized processors, optimizations
+
+- Most systems use **neural networks**:
+
+  - Training (stochastic gradient descent + backpropagation)
+  - Inference (forward pass)
+
+- For both, **the bottleneck is matrix multiplication**
+
+## Objectives
+
+* Explain why dense linear algebra (GEMM) dominates NN compute
+* Core SGEMM kernel ideas and common optimizations
+* Use Roofline model to identify bottlenecks
+* Understand mixed precision & quantization tradeoffs for energy/perf
+
+## SGEMM
+
+Single-precision General Matrix-Matrix multiplication (SGEMM):
+
+$$ RES = A \times B + C $$
+
+![SGEMM](image/lab6/sgemm.svg)
+
+## Naive SGEMM implementation (pseudocode)
+
+```c
+// Initialize RES to C
+for (i = 0; i < M; i++)
+    for (j = 0; j < N; j++)
+        RES[i][j] = C[i][j];
+
+// Matrix multiply
+for (i = 0; i < M; i++) {
+    for (j = 0; j < N; j++) {
+        for (k = 0; k < K; k++) {
+            RES[i][j] += A[i][k] * B[k][j];
+        }
+}
+```
+
+- FLOPS: $2 \times M \times N \times K$
+- Memory: $4 \times (M \times K + K \times N + M \times N)$ bytes
+
+## Locality issues in naive SGEMM
+
+$$
+{\color{green}\text{order in memory} \rightarrow }\\
+
+\begin{bmatrix}
+\color{red} b_{11} & b_{12} & b_{13} & b_{14} \\
+\color{red} b_{21} & b_{22} & b_{23} & b_{24} \\
+\color{red} b_{31} & b_{32} & b_{33} & b_{34} \\
+\color{red} b_{41} & b_{42} & b_{43} & b_{44} \\
+\end{bmatrix} 
+$$
+
+- Stride in accessing B (column-major)
+  - Poor spatial locality
+  - Difficult to vectorize
+  - Cache misses for large matrices (reuse distance too large)
+
+- **Low arithmetic intensity**: $\approx 0.5$ FLOP/byte for large matrices
+
+## Reordering loops (i,k,j)
+
+- Sums `RES[i][j] += A[i][k] * B[k][j];` are independent → reorder loops:
+```c
+for (i = 0; i < M; i++) 
+    for (k = 0; k < K; k++) 
+        for (j = 0; j < N; j++) 
+            RES[i][j] += A[i][k] * B[k][j];
+```
+
+- `A[i][k]` does not depend on `j` → load once, reuse N times 
+- `RES` and `B` accesses are now stride-1 (row-major) 
+
+```c
+for (i = 0; i < M; i++) 
+    for (k = 0; k < K; k++) {
+        const float temp = A[i][k];
+        for (j = 0; j < N; j++) 
+             RES[i][j] += temp * B[k][j];
+        }
+```
+
+- Better spatial locality and easier to vectorize
+
+## Vectorization
+
+Inner loop assembly for (i,k,j) ordering with AVX (8 `float` in a vector):
+
+```asm
+.loop:                                   # Inner loop
+    vmovss  xmm0, DWORD PTR A[i][k]      # Load A[i][k]
+    vbroadcastss ymm0, xmm0              # Broadcast scalar to all lanes
+    vmovaps ymm1, YMMWORD PTR B[k][j]    # Load B[k][j:j+8]
+    vfmadd231ps ymm2, ymm1, ymm0         # Fused multiply-add
+    vmovaps YMMWORD PTR RES[i][j], ymm2  # Store RES[i][j:j+8]
+    add     j, 8                         # Increment j by 8 (vector width)
+    cmp     j, N                         # Compare j with N
+    jl      .loop                        # Loop if j < N
+```
+
+## Problems with (i,k,j) ordering
+
+- Temporal locality analysis:
+  - **GOOD**: $A[i][k]$ reused in the inner loop, reuse distance $1$.
+  - **MEDIUM** : For a fixed $(i,j)$, each $RES[i][j]$ revisited once per k. So reuse distance $K$ (one full row).
+    - To keep C in cache between uses you would need cache $\ge K \times 4B$
+  - **BAD** : For a fixed $(k,j)$, $B[k][j]$ used once per i. So reuse distance $K \times N$ (entire B matrix).
+
+    - To keep B in cache between uses you would need cache $\ge K \times N \times 4B$
+
+- Still poor temporal locality for large matrices 
+
+- Solution: **tiling / blocking** to increase reuse
+
+## Blocking (tiling)
+
+- **Idea:** operate on sub-matrices blocks that fit in cache
+
+$$ 
+\begin{bmatrix}
+\textcolor{red}{A_{11}} & A_{12} \\
+A_{21} & A_{22} \\
+\end{bmatrix}
+\times
+\begin{bmatrix}
+\textcolor{blue}{B_{11}} & B_{12} \\
+B_{21} & B_{22} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\textcolor{red}{A_{11}}\textcolor{blue}{B_{11}} + A_{12}B_{21} & A _{11}B_{12} + A_{12}B_{22} \\
+A_{21}B_{11} + A_{22}B_{21} & A_{21}B_{12} + A_{22}B_{22} \\
+\end{bmatrix}
+$$
+
+```c
+#define BS 64 // Block size
+// Loop over blocks
+for (ii = 0; ii < M; ii += BS)
+    for (kk = 0; kk < K; kk += BS)
+        for (jj = 0; jj < N; jj += BS)
+
+            // Operate on blocks A[ii:ii+BS, kk:kk+BS],
+            // B[kk:kk+BS, jj:jj+BS], C[ii:ii+BS, jj:jj+BS]
+            for (i = ii; i < min(ii+BS, M); i++)
+                for (k = kk; k < min(kk+BS, K); k++)
+                    for (j = jj; j < min(jj+BS, N); j++)
+                        C[i][j] += A[i][k] * B[k][j];
+```
+
+## Parallelization
+
+- Each block operation is independent → parallelize over blocks
+
+```c
+#pragma omp parallel for collapse(3)
+for (ii = 0; ii < M; ii += BS)
+    for (jj = 0; jj < N; jj += BS)
+        for (kk = 0; kk < K; kk += BS)
+            // Block multiplication as before
+```
+
+- Each thread works on its own block → no false sharing
+- Synchronization only at the end of the parallel region
+- NUMA considerations: pin threads to cores, allocate memory close to threads
+- Load balancing: static scheduling usually works well for large matrices
+
+
+## Libraries & autotuners
+
+- Highly optimized SGEMM implementations exist:
+
+  - OpenBLAS, Intel MKL for CPU
+
+  - NVIDIA cuBLAS for GPU
+
+- Implementations use blocking, vectorization, parallelization, and many architecture-specific optimizations
+
+- Libraries are carefully tuned for different sizes and shapes of matrices.
+
+- Autotuners (e.g., ATLAS, TVM, **MLKAPS**) can generate optimized code for specific hardware and problem sizes.
+
+## Roofline model - Definitions
+
+- Hypothesis: performance is limited by either compute or memory bandwidth
+
+  - performance: FLOP/s (vertical axis)
+  - memory bandwidth: Bytes/s
+  - arithmetic intensity: FLOP/byte (horizontal axis)
+
+- Simple visual model to understand bottlenecks
+
+## Roofline model - Bounds
+
+![Roofline SGEMM](image/lecture5/roofline.svg)
+
+- *Compute bound*: horizontal line at peak FLOP/s
+- *Memory bound*: sloped line with slope = memory bandwidth
+  - $\frac{\text{Flop/s}}{\text{Flop/Byte}} = \text{Byte/s}$ 
+
+## Roofline model - SGEMM analysis
+
+![Roofline SGEMM](image/lecture5/roofline-sgemm.svg)
+
+- Interactive demonstration and analysis
+
 # Environmental impact of computation
 
 ## Introduction
@@ -162,24 +379,6 @@ double number of transistors and frequency increases:
 
 # AI energy and computation costs
 
-## Artificial Intelligence
-
-- 2012: **AI renaissance** brought by increased data
-    availability and computation ressources
-
-    - breakthroughs in multiple domains
-
-    - many innovations: algorithms, specialized processors,
-        optimizations
-
-- Most systems use **neural networks**:
-
-    - Training (stochastic gradient descent + backpropagation)
-
-    - Inference (forward pass)
-
-- For both, **the bottleneck is matrix multiplication**
-
 
 ## Training cost doubles every 3.4 months \[OpenAI, 2020\]
 
@@ -304,11 +503,14 @@ Treatment of febrile children illnesess in dispensaries.
 
     - Loss in explainability and verification of the algorithm.
 
+## References - HPC for AI applications
+
+- [S. Boehm Optimizing, How to Optimize a CUDA Matmul Kernel](https://siboehm.com/articles/22/CUDA-MMM)
 
 ## References - Environmental impact of computation 
 - Jones, Nicola (2018) ‘How to stop data centres from gobbling up the world’s electricity’. Nature, 561(7722), pp. 163–167.
 
-- Freitag, Charlotte, Berners-Lee, Mike, Widdicks, Kelly, Knowles, Bran, et al. (2021) ‘The real climate and transformative impact of ICT: A critique of estimates, trends, and regulations’. Patterns, 2(9), p. 100340. [https://www.sciencedirect.com/science/article/pii/S2666389921001884](online)
+- Freitag, Charlotte, Berners-Lee, Mike, Widdicks, Kelly, Knowles, Bran, et al. (2021) ‘The real climate and transformative impact of ICT: A critique of estimates, trends, and regulations’. Patterns, 2(9), p. 100340. [online](https://www.sciencedirect.com/science/article/pii/S2666389921001884)
 
 - Masanet, Eric, Shehabi, Arman, Lei, Nuoa, Smith, Sarah and Koomey, Jonathan (2020) ‘Recalibrating global data center energy-use estimates’. Science, 367(6481), pp. 984–986.
 
