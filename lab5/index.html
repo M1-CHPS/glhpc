@@ -989,11 +989,11 @@
 <td>Python/bash scripts for plotting and data analysis</td>
 </tr>
 <tr>
-<td><code>src/stability.py</code></td>
+<td><code>scripts/stability.py</code></td>
 <td>Monitors the system usage for 5 minutes to assess measurements stability</td>
 </tr>
 <tr>
-<td><code>src/strong_scaling.py</code></td>
+<td><code>scripts/strong_scaling.py</code></td>
 <td>Draft for a strong scaling analysis you will have to complete</td>
 </tr>
 <tr>
@@ -1009,15 +1009,15 @@
 <hr class="gradient" />
 
 <h2 id="1-plotting-and-data-analysis">1 - Plotting and data analysis<a class="headerlink" href="#1-plotting-and-data-analysis" title="Permanent link">&para;</a></h2>
-<p>Kepler generates time-series, that is data indexed by a timestep. First, look at the data inside <code>data/Kepler-8_light_curve.csv</code>. The <code>time</code> column denotes the time in days since the satelite reference. The <code>flux</code> column is the normalized measured luminosity of the Kepler 8 star at a given date.</p>
+<p>Kepler generates time-series, that is data indexed by a timestep. First, look at the data inside <code>data/Kepler-8_light_curve.csv</code>. The <code>time</code> column denotes the time in days since the satellite reference. The <code>flux</code> column is the normalized measured luminosity of the Kepler 8 star at a given date.</p>
 <h4 id="a-setup-python">a) Setup python<a class="headerlink" href="#a-setup-python" title="Permanent link">&para;</a></h4>
 <p>Run the following:
 <div class="language-bash highlight"><span class="filename">Setup bash environment</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">source</span><span class="w"> </span>./setup_env.sh
 </span></code></pre></div></p>
 <h4 id="b-plot-the-evolution-of-luminosity">b) Plot the evolution of luminosity<a class="headerlink" href="#b-plot-the-evolution-of-luminosity" title="Permanent link">&para;</a></h4>
-<p>Write a <code>script/plot_luminosity.py</code> script that:</p>
+<p>Write a <code>scripts/plot_luminosity.py</code> script that:</p>
 <ul>
-<li>Can be called with <code>./script/plot_luminosity.py ./results kepler-*</code> where * is an id (i.e., kepler-8, kepler-17, etc.)</li>
+<li>Can be called with <code>./scripts/plot_luminosity.py ./results kepler-*</code> where * is an id (i.e., kepler-8, kepler-17, etc.)</li>
 <li>Fetches the corresponding dataset in <code>data/</code></li>
 <li>Plots the dataset using <code>matplotlib</code> (x: Time (days), y: Flux)</li>
 <li>Save the plots as <code>results/luminosity_kepler-*.png</code></li>
@@ -1036,8 +1036,13 @@
 <li>The plot has a title, legend, and a <code>tight</code> or <code>constrained</code> layout.</li>
 <li>The figure format is correct (ratio between width and height)</li>
 </ul>
-<p>The final plot should look something like this:
-<img alt="Kepler 8 Light curve" src="../image/lab5/luminosity_Kepler-8.png" /></p>
+<p>The final plot should look something like this:</p>
+<figure>
+  <img src="/image/lab5/luminosity_Kepler-8.png" style="max-width: 100%; width: auto;">
+<br />
+<figcaption>Kepler 8 Light curve
+  </figcaption>
+</figure>
 <h4 id="e-give-a-possible-explanation-for-the-periodic-dips-in-luminosity">e) Give a possible explanation for the periodic dips in luminosity<a class="headerlink" href="#e-give-a-possible-explanation-for-the-periodic-dips-in-luminosity" title="Permanent link">&para;</a></h4>
 <p>On the previous light curve, we observe that the luminosity appears to "dip" sharply at regular intervals.
 What could cause this periodic phenomenon ?</p>
@@ -1058,8 +1063,8 @@ What could cause this periodic phenomenon ?</p>
 </span></code></pre></div>
 <p>Implement a <code>scripts/phase_folding.py</code> script that plots the phase-folded light curve (x: phase, y: flux). </p>
 <p>It should be used like so:
-<code>./script/phase_folding.py ./results kepler-* &lt;period&gt;</code>.</p>
-<p>Optionnaly, you can also plot a binned mean on top of the phase-folded light curve:</p>
+<code>./scripts/phase_folding.py ./results kepler-* &lt;period&gt;</code>.</p>
+<p>Optionally, you can also plot a binned mean on top of the phase-folded light curve:</p>
 <div class="language-python highlight"><span class="filename">Phase folding: Binning</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">bins</span> <span class="o">=</span> <span class="mi">200</span>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">bin_means</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic</span><span class="p">(</span><span class="n">phase_sorted</span><span class="p">,</span> <span class="n">flux_sorted</span><span class="p">,</span> <span class="n">statistic</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
@@ -1073,14 +1078,19 @@ What could cause this periodic phenomenon ?</p>
 <li>Does the light "dip" overlaps or is your plot noisy ? </li>
 <li>What can we say about the relationship between the light "dip" and Kepler 8b orbit ?</li>
 </ul>
-<p><img alt="Phase folded Kepler 8 Light curbe" src="../image/lab5/phase_folding_Kepler-8.png" /></p>
+<figure>
+  <img src="/image/lab5/phase_folding_Kepler-8.png" style="max-width: 100%; width: auto;">
+<br />
+<figcaption>Phase folded Kepler 8 Light curve
+  </figcaption>
+</figure>
 <hr class="gradient" />
 
 <h2 id="2-box-least-square">2 - Box Least Square<a class="headerlink" href="#2-box-least-square" title="Permanent link">&para;</a></h2>
 <p>The Box Least Square (BLS) signal processing algorithm is used to detect the transit of exoplanets in front of their stars by searching for characteristic box-shaped dips in the luminosity at regular frequency.</p>
 <p>The provided library implements a Python &lt;-&gt; C interface so that you can call BLS from a python script. It also simplifies the loading and manipulation of the data, which can be done in python, while the C code focuses on the high performance analysis.</p>
 <h4 id="a-run-the-provided-build_librarysh-script">a) Run the provided <code>build_library.sh</code> script<a class="headerlink" href="#a-run-the-provided-build_librarysh-script" title="Permanent link">&para;</a></h4>
-<h4 id="b-write-a-scriptbls_runnerpy-script-for-kepler-data">b) Write a <code>script/bls_runner.py</code> script for kepler data<a class="headerlink" href="#b-write-a-scriptbls_runnerpy-script-for-kepler-data" title="Permanent link">&para;</a></h4>
+<h4 id="b-write-a-scriptsbls_runnerpy-script-for-kepler-data">b) Write a <code>scripts/bls_runner.py</code> script for kepler data<a class="headerlink" href="#b-write-a-scriptsbls_runnerpy-script-for-kepler-data" title="Permanent link">&para;</a></h4>
 <p>The BLS library can be used like so:
 <div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">bls</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># ... Load data here</span>
@@ -1088,10 +1098,10 @@ What could cause this periodic phenomenon ?</p>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="mf">1.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </span></code></pre></div>
 BLS is very sensible to the hyperparameters, and as such you <strong>must use the ones provided here</strong>.</p>
-<p>Make sure that your script can be called with <code>script/run_bls.py kepler-*</code> and that it reports the match found.
+<p>Make sure that your script can be called with <code>scripts/run_bls.py kepler-*</code> and that it reports the match found.
 Check that the BLS output is coherent for the Kepler 8b exoplanet characteristic.</p>
 <figure>
-  <img alt="Processing Example" src="../image/lab5/kepler_principle.png" />
+  <img src="/image/lab5/kepler_principle.png" style="max-width: 70%; width: auto;">
 <br />
 <figcaption>Principle behind the Kepler exoplanet detection system
   <br>
@@ -1102,7 +1112,7 @@ Check that the BLS output is coherent for the Kepler 8b exoplanet characteristic
 </figure>
 <hr class="gradient" />
 
-<h2 id="3-profilers-for-energy-and-performance-characterization">3 - Profilers for energy and performance characterization<a class="headerlink" href="#3-profilers-for-energy-and-performance-characterization" title="Permanent link">&para;</a></h2>
+<h2 id="3-profiling-for-energy-and-performance-characterization">3 - Profiling for energy and performance characterization<a class="headerlink" href="#3-profiling-for-energy-and-performance-characterization" title="Permanent link">&para;</a></h2>
 <h3 id="1-measuring-energy">1. Measuring Energy<a class="headerlink" href="#1-measuring-energy" title="Permanent link">&para;</a></h3>
 <h4 id="a-disable-perf-event-paranoid">a) Disable perf event paranoid<a class="headerlink" href="#a-disable-perf-event-paranoid" title="Permanent link">&para;</a></h4>
 <p>By default, the linux kernel will restrict access to some perf counters to prevent malicious usage.
@@ -1139,9 +1149,13 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 <h4 id="a-whats-the-observed-variance-in-the-execution-time">a) What's the observed variance in the execution time ?<a class="headerlink" href="#a-whats-the-observed-variance-in-the-execution-time" title="Permanent link">&para;</a></h4>
 <h4 id="b-whats-the-mean-instructions-cycle">b) What's the mean instructions / cycle ?<a class="headerlink" href="#b-whats-the-mean-instructions-cycle" title="Permanent link">&para;</a></h4>
 <h4 id="c-is-the-application-compute-or-memory-intensive">c) Is the application compute or memory intensive ?<a class="headerlink" href="#c-is-the-application-compute-or-memory-intensive" title="Permanent link">&para;</a></h4>
-<p>Memory intensive application have very low intructions / cycles, and high memory metrics.
-Compute intensive applications are vectorized (High intructions / cycles) and threads are fully used.</p>
-<h4 id="d-what-is-costlier-running-the-bls-algorithm-or-loading-the-huge-dataset">d) What is costlier: running the BLS algorithm, or loading the huge dataset ?<a class="headerlink" href="#d-what-is-costlier-running-the-bls-algorithm-or-loading-the-huge-dataset" title="Permanent link">&para;</a></h4>
+<p>Put simply:</p>
+<ul>
+<li>Memory intensive application have relatively low instructions / cycles, and high memory metrics.</li>
+<li>Compute intensive applications are vectorized (High intructions / cycles) and threads are fully used.
+  Memory usage is relatively low because the arithmetic density is high.</li>
+</ul>
+<h4 id="d-what-is-costlier-running-the-bls-algorithm-or-loading-the-dataset">d) What is costlier: running the BLS algorithm, or loading the dataset ?<a class="headerlink" href="#d-what-is-costlier-running-the-bls-algorithm-or-loading-the-dataset" title="Permanent link">&para;</a></h4>
 <p>Run the following:
 <div class="language-sh highlight"><span class="filename">Perf Record</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>perf<span class="w"> </span>record<span class="w"> </span>-g<span class="w"> </span>--<span class="w"> </span>python3<span class="w"> </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
 </span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>perf<span class="w"> </span>report
@@ -1153,55 +1167,113 @@ Compute intensive applications are vectorized (High intructions / cycles) and th
 <p>Run the following
 <div class="language-sh highlight"><span class="filename">Flamegraph</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Download the flame graph toolsuit</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/brendangregg/FlameGraph
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w"> </span><span class="c1"># Convert perf output to a flamegraph-readable format</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Convert perf output to a flamegraph-readable format</span>
 </span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>perf<span class="w"> </span>script<span class="w"> </span>&gt;<span class="w"> </span>out.perf
 </span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
 </span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Preprocess the perf data</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>./FlameGraph/stackcollapse-perf.pl<span class="w"> </span>../out.perf<span class="w"> </span>&gt;<span class="w"> </span>out.folded
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>./FlameGraph/stackcollapse-perf.pl<span class="w"> </span>./out.perf<span class="w"> </span>&gt;<span class="w"> </span>out.folded
 </span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
 </span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="c1"># Generate a flame graph</span>
 </span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>./FlameGraph/flamegraph.pl<span class="w"> </span>--minwidth<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span>--bgcolors<span class="o">=</span><span class="s2">&quot;#ffffff&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span>--title<span class="w"> </span><span class="s2">&quot;FlameGraph for BLS algorithm&quot;</span><span class="w"> </span>out.folded<span class="w"> </span>&gt;<span class="w"> </span>flamegraph.svg
 </span></code></pre></div></p>
-<p>Look at the generated flamegraph.svg: does the flamegraph match the previous perf result ?</p>
+<p>Look at the generated <code>flamegraph.svg</code>: does the flamegraph match the previous perf result ?</p>
 <hr />
-<p><img alt="FlameGraph Example" src="../image/lab5/flamegraph.svg" /></p>
+<figure>
+  <img src="/image/lab5/flamegraph.svg" style="max-width: 100%; width: auto;">
+<br />
+<figcaption>FlameGraph Example
+  </figcaption>
+</figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Its unusual to measure a python application with <code>perf</code>. We used python for this lab because it was easier to build the data analysis pipeline in python. </p>
-<p>However, the same tools an be used to directly measure a C application, and precisely profile in which functions is the time spent using <code>perf record</code> and <code>perf report</code>.</p>
+<p>However, the same tools can be used to directly measure a C application, and precisely profile in which functions is the time spent using <code>perf record</code> and <code>perf report</code>.</p>
 </div>
+<h3 id="3-strong-scaling-analysis">3. Strong scaling analysis<a class="headerlink" href="#3-strong-scaling-analysis" title="Permanent link">&para;</a></h3>
+<p>Take a look at <code>scripts/strong_scaling.py</code>. It contains a code snippet for running the <code>scripts/run_bls.py</code> script with a given number of threads. Our goal is now to build a strong scaling plot.</p>
+<h4 id="a-look-and-try-to-understand-the-purpose-of-the-scriptsstabilitypy-script">a) Look and try to understand the purpose of the <code>scripts/stability.py</code> script<a class="headerlink" href="#a-look-and-try-to-understand-the-purpose-of-the-scriptsstabilitypy-script" title="Permanent link">&para;</a></h4>
+<p>What are we measuring ? What information does this script gives us on our environment ?</p>
+<h4 id="b-modify-stabilitypy-to-measure-the-stability-of-run_blspy">b) Modify <code>stability.py</code> to measure the stability of <code>run_bls.py</code><a class="headerlink" href="#b-modify-stabilitypy-to-measure-the-stability-of-run_blspy" title="Permanent link">&para;</a></h4>
+<p>To further assess the stability of our setup, we should try to measure the distribution of multiple runs of <code>run_bls.py</code></p>
+<p>Modify the script to:</p>
+<ul>
+<li>Load the kepler 8 Dataset, and subsample it (Reduce the size to ~2k randomly selected samples)</li>
+<li>Save the previous script, and execute <code>run_bls.py</code> on the subsampled dataset, measuring the time.</li>
+<li>Repeat the previous measurements ~100 time, and generate a distribution plot using seaborn. 
+    You can use a boxplot, kdeplot, violin plot, histogram, etc.
+    Save the raw data to <code>results/stability_bls.csv</code></li>
+</ul>
+<p>If your machine is stable, we would expect the performance distribution to follow a normal distribution.</p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Make sure to sort the dataset after subsampling by using <code>df.sort_values(by="time")</code> !</p>
+</div>
+<hr />
+<figure>
+  <img src="/image/lab5/bls_stability.png" style="max-width:80%; width: auto;">
+<br />
+<figcaption>Examples of different distribution plots.
+  <br>
+  The stability results here were gathered on a laptop that was in-use, thus the measures are quite unstable.
+  </figcaption>
+</figure>
+<hr />
+<h4 id="c-modify-scriptsstrong_scalingpy-to-build-a-strong-scaling-plot">c) Modify <code>scripts/strong_scaling.py</code> to build a strong scaling plot<a class="headerlink" href="#c-modify-scriptsstrong_scalingpy-to-build-a-strong-scaling-plot" title="Permanent link">&para;</a></h4>
+<p>Save the plot to <code>results/&lt;date&gt;/strong_scaling.png</code> where date is obtained via:
+<div class="language-python highlight"><span class="filename">Formatting a timestamp</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">date</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y_%m_</span><span class="si">%d</span><span class="s2">-%H_%M_%S&quot;</span><span class="p">)</span> <span class="c1"># e.g. 2025_08_28-12_08_40</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results/</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></code></pre></div></p>
+<hr class="gradient" />
+
 <h2 id="4-report">4 - Report<a class="headerlink" href="#4-report" title="Permanent link">&para;</a></h2>
 <p>You are tasked in making a <strong>maximum 3 page report (References not included)</strong>. Your report must use the following structure:</p>
 <ul>
 <li>1) Environment and context<ul>
-<li>Give details on the machine you used for the experiments: CPU/Memory specifications, compiler version, python version, OS name and version, and any other details that helps characterize your setup.</li>
+<li>Give details on the machine you used for the experiments: CPU/Memory specifications, compiler version, python version, OS name and version, and any other details that helps characterize your setup.<ul>
+<li>You can use <code>lscpu</code>, <code>free -h</code>, <code>python --version</code>, <code>gcc --version</code>, ...</li>
+</ul>
+</li>
 <li>A brief description of the context of BLS, the kepler datasets, etc.</li>
 </ul>
 </li>
 <li>2) Kepler result<ul>
 <li>Include both a lightcurve plot and a phase-folding plot for Kepler 8.</li>
-<li>The BLS algorithm scans through a range of Orbital Periods, and returns pairs of (Power, Period) which allows us to identify candidates 
-exoplanets. The function <code>bls.bls_periodogram(...)</code> returns an array containing all pairs, which allows us to build a <strong>Periodogram</strong>.
-Plot a periodogram for Kepler 8, 17, 45 and 785. <strong>You are required to use subplots</strong>. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Check that the periodograms match the known exoplanets for all these stars.</li>
+<li>The BLS algorithm scans through a range of Orbital Periods, and computes a <em>Power</em> score for each candidates. The higher the power, the better the candidate. The function <code>bls.bls_periodogram(...)</code> returns a 2D array containing all the scores, which allows us to build a <strong>Periodogram</strong>. Pairs are stored as (Power, Period).
+Plot a periodogram for Kepler 8, 17, 45 and 785. <strong>You are required to use subplots</strong> so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Check that the periodograms match the known exoplanets for all these stars.</li>
 </ul>
 </li>
 <li>3) Profiling results<ul>
 <li><strong>If your machine supports RAPL measurement</strong>: Give the approximate energy consumption of the BLS algorithm on the Kepler 8 dataset. </li>
 <li><strong>If your machine does not support RAPL measurement</strong>:<ul>
-<li>State it explicity</li>
+<li>State it explicity in your report.</li>
 <li>Try on another machine if able</li>
-<li>... OR replace this experiment by a stability assesment of the <code>run_bls.py</code> script (Distribution of runtime).</li>
+<li>... OR replace this experiment by a weak scaling plot if you can't get RAPL to work.</li>
 </ul>
 </li>
 <li>Give the perf results for <code>instructions,cycles,cache-references,cache-misses</code></li>
-<li>Generate a plot using <code>./scripts/stability.py</code> and include it in the report.</li>
+<li>Generate stability plots using <code>./scripts/stability.py</code> and include them in the report.</li>
 <li>Include the flamegraph</li>
-<li>Starting with the <code>./scripts/strong_scaling.py</code> script as a basis, make a strong scaling plot for the BLS algorithm on the Kepler 8 dataset.</li>
+<li>Include the strong scaling plot</li>
 </ul>
 </li>
 </ul>
+<hr class="gradient" />
+
+<div class="summary-section box-section">
+<h2 class="hidden-title" id="5-summary"> 5 - Summary<a class="headerlink" href="#5-summary" title="Permanent link">&para;</a></h2>
+<p>Upon completing this fifth lab, you should know how to:</p>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Build simple plots using python and matplotlib</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Improve a plot with titles, labels, formatting</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Manipulate simple data formats (csv, json)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Use <code>perf</code> for measuring energy and performance hardware counters</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Use <code>perf</code> sampling profiler to understand an application hotspots</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Organise a report around data analysis</li>
+</ul>
+</div>
 
 
 
