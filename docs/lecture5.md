@@ -141,7 +141,7 @@ Inner loop assembly for (i,k,j) ordering with AVX (8 `float` in a vector):
 - Temporal locality analysis:
   - **GOOD**: $A[i][k]$ reused in the inner loop, reuse distance $1$.
   - **MEDIUM** : For a fixed $(i,j)$, each $RES[i][j]$ revisited once per k. So reuse distance $K$ (one full row).
-    - To keep C in cache between uses you would need cache $\ge K \times 4B$
+    - To keep RES in cache between uses you would need cache $\ge K \times 4B$
   - **BAD** : For a fixed $(k,j)$, $B[k][j]$ used once per i. So reuse distance $K \times N$ (entire B matrix).
     - To keep B in cache between uses you would need cache $\ge K \times N \times 4B$
 
@@ -178,11 +178,11 @@ for (ii = 0; ii < M; ii += BS)
         for (jj = 0; jj < N; jj += BS)
 
             // Operate on blocks A[ii:ii+BS, kk:kk+BS],
-            // B[kk:kk+BS, jj:jj+BS], C[ii:ii+BS, jj:jj+BS]
+            // B[kk:kk+BS, jj:jj+BS], RES[ii:ii+BS, jj:jj+BS]
             for (i = ii; i < min(ii+BS, M); i++)
                 for (k = kk; k < min(kk+BS, K); k++)
                     for (j = jj; j < min(jj+BS, N); j++)
-                        C[i][j] += A[i][k] * B[k][j];
+                        RES[i][j] += A[i][k] * B[k][j];
 ```
 
 ## Parallelization
