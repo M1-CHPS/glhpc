@@ -141,7 +141,6 @@ Inner loop assembly for (i,k,j) ordering with AVX (8 `float` in a vector):
   - **MEDIUM** : For a fixed $(i,j)$, each $RES[i][j]$ revisited once per k. So reuse distance $K$ (one full row).
     - To keep C in cache between uses you would need cache $\ge K \times 4B$
   - **BAD** : For a fixed $(k,j)$, $B[k][j]$ used once per i. So reuse distance $K \times N$ (entire B matrix).
-
     - To keep B in cache between uses you would need cache $\ge K \times N \times 4B$
 
 - Still poor temporal locality for large matrices 
@@ -258,7 +257,7 @@ for (ii = 0; ii < M; ii += BS)
 
   - Consumes **21MW**: the energy of a small town ($16\,000$ french houses)
 
-![image](image/lecture5//frontier.jpg)
+![image](image/lecture5/frontier.jpg)
 
 ## Environmental impact of computation
 
@@ -295,7 +294,7 @@ for (ii = 0; ii < M; ii += BS)
 
 ## Evolution of processing units \[Batten, 2023\]
 
-![image](image/lecture5//50-years.svg)
+![image](image/lecture5/50-years.svg)
 
 
 ## Dennard's scaling 1970-2005 
@@ -353,10 +352,9 @@ double number of transistors and frequency increases:
 
 ## Analysis of TOP-100 HPC systems
 
-![image](image/lecture5//top500.png)
+![image](image/lecture5/top500.png)
 
 **Efficiency and Peak computation exponential increase.**
-
 
 ## Rebound effects
 
