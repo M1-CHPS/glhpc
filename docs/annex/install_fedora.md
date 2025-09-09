@@ -16,13 +16,18 @@ To install Fedora, you will need to:
 
 First, you should go to [the Fedora website (fedoraproject.org)](https://fedoraproject.org/workstation/), then download and install the **Fedora Media Writer**. Make sure you've plugged your USB Stick, then follow these steps:
 
-![](install_fedora/first_step.png)
+<figure markdown="span">
+  <img src="/annex/install_fedora/first_step.png" style="max-width:60%; width: auto;">
+</figure>
 
 ---
 
 ## Fedora Version
 
-![](install_fedora/second_step.png)
+
+<figure markdown="span">
+  <img src="/annex/install_fedora/second_step.png" style="max-width:60%; width: auto;">
+</figure>
 
 Here, I recommend you choose either Fedora Workstation or KDE Plasma Desktop:
 
@@ -34,9 +39,9 @@ Note that you can switch between the two without reinstalling Fedora, though it 
 ---
 
 ## Writing
-
-![](install_fedora/third_step.png)
-
+<figure markdown="span">
+  <img src="/annex/install_fedora/third_step.png" style="max-width:60%; width: auto;">
+</figure>
 
 Here, you should make sure that:
 
@@ -46,7 +51,9 @@ Here, you should make sure that:
 !!! Danger
     Remember that the USB drive will be completely erased when you press Download and Write !
 
-![](install_fedora/fourth_step.png)
+<figure markdown="span">
+  <img src="/annex/install_fedora/fourth_step.png" style="max-width:60%; width: auto;">
+</figure>
 
 Wait for the download to be complete, then safely remove the USB stick and plug it in the computer you want to install Fedora to.
 
@@ -60,7 +67,10 @@ When you start your device, you should see something akin to **PRESS DEL OR F2 T
 
 On some hardware, F12 or ESC may directly show a temporary boot menu.
 
-![](install_fedora/fifth_step.png)
+<figure markdown="span">
+  <img src="/annex/install_fedora/fifth_step.png" style="max-width:60%; width: auto;">
+</figure>
+
 
 You should see something *like this*. Note that it may look very different, as this menu is hardware dependant.
 
@@ -76,11 +86,15 @@ Make sure you save the settings if necessary, then exit the BIOS. **Do not modif
 
 Now, you PC should reboot into Fedora. It's possible a Grub menu appears with multiple options, you should select the first one named "Install Fedora" OR "Start Fedora Workstation Live".
 
-![](install_fedora/sixth_step.png)
+<figure markdown="span">
+  <img src="/annex/install_fedora/sixth_step.png" style="max-width:60%; width: auto;">
+</figure>
 
 You should then select to "Install Fedora to Hard Drive"
 
-![](install_fedora/seventh_step.png)
+<figure markdown="span">
+  <img src="/annex/install_fedora/seventh_step.png" style="max-width:60%; width: auto;">
+</figure>
 
 Then:
 
@@ -90,11 +104,15 @@ Then:
     - fr for AZERTY
 - Click next
 
-![](install_fedora/eighth_step.png)
+<figure markdown="span">
+  <img src="/annex/install_fedora/eighth_step.png" style="max-width:60%; width: auto;">
+</figure>
 
 Select the disk where you want to install Fedora, and make sure you select **Use entire disk**. Then click Next.
 
-![](install_fedora/ninth_step.png)
+<figure markdown="span">
+  <img src="/annex/install_fedora/ninth_step.png" style="max-width:60%; width: auto;">
+</figure>
 
 We will skip encryption for this guide, directly click Next.
 
