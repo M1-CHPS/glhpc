@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.19">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.7e37652d.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -1050,16 +1050,16 @@
 
 <h1 id="installing-fedora-step-by-step-guide">Installing Fedora (Step-by-Step Guide)<a class="headerlink" href="#installing-fedora-step-by-step-guide" title="Permanent link">&para;</a></h1>
 <p>This guide explains how to install Fedora and set up the required tools for this course. Following these steps will give you an environment suitable for the entire Master’s program.</p>
-<p>Note that Dual boot is not covered in this guide.</p>
+<p>Note that dual booting is not covered in this guide.</p>
 <h2 id="requirements">Requirements<a class="headerlink" href="#requirements" title="Permanent link">&para;</a></h2>
 <p>To install Fedora, you will need to:</p>
 <ul>
 <li>Make a complete backup of all your data (Installation will <strong>permanently</strong> delete everything already on the computer.)</li>
-<li>Grab a USB Stick, ~10GB should be enough. <strong>Note that the stick will be wiped out</strong></li>
-<li>A working computer to install Fedora on the USB stick.</li>
+<li>Use a USB drive; around 10GB should be sufficient. <strong>Note that the drive will be completely erased.</strong></li>
+<li>A working computer to write Fedora on USB.</li>
 </ul>
 <h2 id="downloading-fedora">Downloading Fedora<a class="headerlink" href="#downloading-fedora" title="Permanent link">&para;</a></h2>
-<p>First, you should go to <a href="https://fedoraproject.org/workstation/">the Fedora website (fedoraproject.org)</a>, then download and install the <strong>Fedora Media Writer</strong>. Make sure you've plugged your USB Stick, then follow these steps:</p>
+<p>First, go to <a href="https://fedoraproject.org/workstation/">the Fedora website (fedoraproject.org)</a>, then download and install the <strong>Fedora Media Writer</strong>. Make sure you have plugged in your USB stick, then follow these steps:</p>
 <figure>
   <img src="../install_fedora/first_step.png" style="max-width:60%; width: auto;">
 </figure>
@@ -1068,12 +1068,12 @@
 <figure>
   <img src="../install_fedora/second_step.png" style="max-width:60%; width: auto;">
 </figure>
-<p>Here, I recommend you choose either Fedora Workstation or KDE Plasma Desktop:</p>
+<p>Here, I recommend choosing either Fedora Workstation or KDE Plasma Desktop:</p>
 <ul>
-<li><strong>Fedora Workstation</strong> is the official Gnome version of Fedora: It is very stable and <strong>lightweight</strong>. The desktop is more akin to MacOS.</li>
-<li><strong>KDE Plasma Desktop</strong> is the official KDE Spin of Fedora. KDE is less stable and can be <strong>very heavy</strong>, but it's also more similar to Windows and the look-and-feel are easier to customize.</li>
+<li><strong>Fedora Workstation</strong> is the official GNOME version of Fedora: It is very stable and <strong>lightweight</strong>. The desktop is more akin to macOS.</li>
+<li><strong>KDE Plasma Desktop</strong> is the official KDE Spin of Fedora. KDE is less stable and can be <strong>very heavy</strong>, but it is also more similar to Windows and its look-and-feel are easier to customize.</li>
 </ul>
-<p>Note that you can switch between the two without reinstalling Fedora, though it requires some steps.</p>
+<p>Note that you can switch between the two without reinstalling Fedora, although it requires some additional steps.</p>
 <hr />
 <h2 id="writing">Writing<a class="headerlink" href="#writing" title="Permanent link">&para;</a></h2>
 <figure>
@@ -1081,72 +1081,72 @@
 </figure>
 <p>Here, you should make sure that:</p>
 <ul>
-<li>You select the correct hardware architecture for the target computer. It most likely is Intel/AMD 64 bit.</li>
-<li>Select your USB Drive, here <code>VendorCo</code> should be the name of your drive.</li>
+<li>You select the correct hardware architecture for the target computer. It is most likely Intel/AMD 64-bit.</li>
+<li>Select your USB drive; here, <code>VendorCo</code> should be the name of your drive.</li>
 </ul>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
-<p>Remember that the USB drive will be completely erased when you press Download and Write !</p>
 </div>
+<p>Remember that the USB drive will be completely erased when you press 'Download and Write'!</p>
 <figure>
   <img src="../install_fedora/fourth_step.png" style="max-width:60%; width: auto;">
 </figure>
-<p>Wait for the download to be complete, then safely remove the USB stick and plug it in the computer you want to install Fedora to.</p>
+<p>Wait for the download to complete, then safely remove the USB stick and plug it into the computer on which you want to install Fedora.</p>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
-<p>Remember to backup your important files !</p>
 </div>
+<p>Remember to back up your important files!</p>
 <h2 id="booting-on-fedora">Booting on Fedora<a class="headerlink" href="#booting-on-fedora" title="Permanent link">&para;</a></h2>
-<p>Now, you will need to boot on the Fedora drive to begin the installation. 
-When you start your device, you should see something akin to <strong>PRESS DEL OR F2 TO ENTER BIOS SETTING</strong>. Press the corresponding key when you see this screen until your BIOS shows up. You can restart your computer if you need to.</p>
+<p>Now, you will need to boot from the Fedora drive to begin the installation. 
+When you start your device, you should see something akin to <strong>PRESS DEL OR F2 TO ENTER BIOS SETTING</strong>. Press the corresponding key when you see this screen until your BIOS appears. You can restart your computer if necessary.</p>
 <p>On some hardware, F12 or ESC may directly show a temporary boot menu.</p>
 <figure>
   <img src="../install_fedora/fifth_step.png" style="max-width:60%; width: auto;">
 </figure>
-<p>You should see something <em>like this</em>. Note that it may look very different, as this menu is hardware dependant.</p>
+<p>You should see something <em>similar</em> to this. Note that it may look very different, as this menu is hardware dependent.</p>
 <p>You should look for something named <strong>Boot Priorities</strong> or <strong>Boot Order</strong>, and modify the boot order so that the <strong>first item is either:</strong></p>
 <ul>
 <li>The name of your USB Drive</li>
 <li>OR Something like "Fedora Live Image"</li>
 <li>OR "Boot from USB"</li>
 </ul>
-<p>Make sure you save the settings if necessary, then exit the BIOS. <strong>Do not modify anything else in this menu if you don't know what you're doing</strong>.</p>
+<p>Make sure to save the settings if necessary, then exit the BIOS. <strong>Do not modify anything else in this menu unless you know what you are doing.</strong></p>
 <h2 id="installing-fedora">Installing Fedora<a class="headerlink" href="#installing-fedora" title="Permanent link">&para;</a></h2>
-<p>Now, you PC should reboot into Fedora. It's possible a Grub menu appears with multiple options, you should select the first one named "Install Fedora" OR "Start Fedora Workstation Live".</p>
+<p>Now, your PC should reboot into Fedora. It is possible that a GRUB menu appears with multiple options; you should select the first one named "Install Fedora" or "Start Fedora Workstation Live".</p>
 <figure>
   <img src="../install_fedora/sixth_step.png" style="max-width:60%; width: auto;">
 </figure>
-<p>You should then select to "Install Fedora to Hard Drive"</p>
+<p>You should then select "Install Fedora to Hard Drive".</p>
 <figure>
   <img src="../install_fedora/seventh_step.png" style="max-width:60%; width: auto;">
 </figure>
 <p>Then:</p>
 <ul>
-<li>Select the language of your choice, though I recommend English (United States)</li>
+<li>Select the language of your choice, although I recommend English (United States).</li>
 <li>Select the correct keyboard layout:<ul>
 <li>us for QWERTY</li>
 <li>fr for AZERTY</li>
 </ul>
 </li>
-<li>Click next</li>
+<li>Click Next.</li>
 </ul>
 <figure>
   <img src="../install_fedora/eighth_step.png" style="max-width:60%; width: auto;">
 </figure>
-<p>Select the disk where you want to install Fedora, and make sure you select <strong>Use entire disk</strong>. Then click Next.</p>
+<p>Select the disk where you want to install Fedora, and make sure to select <strong>Use entire disk</strong>. Then click Next.</p>
 <figure>
   <img src="../install_fedora/ninth_step.png" style="max-width:60%; width: auto;">
 </figure>
-<p>We will skip encryption for this guide, directly click Next.</p>
+<p>We will skip encryption for this guide; simply click Next.</p>
 <p>The next page will summarize the changes and ask you to confirm before starting the installation.
-You may be asked to create a new used. Make sure to remember the password !</p>
+You may be asked to create a new user. Make sure to remember the password!</p>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
-<p>Make sure your device is plugged in if its a laptop !</p>
 </div>
-<p>When the installation is finished, power off the device, <strong>THEN</strong> remove the USB drive, then power on.
-<strong>Do not unplug the USB drive while installation is ongoing.</strong></p>
-<p>Congratulations, Fedora is now installed! You can log in with the user account you created and begin installing the course packages.</p>
+<p>Make sure your device is plugged in if it is a laptop!</p>
+<p>When the installation is finished, power off the device, <strong>then</strong> remove the USB drive, and then power it on.
+<strong>Do not unplug the USB drive while the installation is ongoing.</strong></p>
+<p>Congratulations, Fedora is now installed! You can log in with the user account you created and begin installing the required course packages.</p>
 
 
 
@@ -1246,7 +1246,7 @@ You may be asked to create a new used. Make sure to remember the password !</p>
       <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.path", "navigation.instant", "navigation.instant.progress", "navigation.expand", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "navigation.footer", "header.autohide", "toc.integrate", "content.code.annotate", "content.tabs.link", "content.code.copy"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.92b07e13.min.js"></script>
+      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
         <script src="../../javascripts/mathjax.js"></script>
       
