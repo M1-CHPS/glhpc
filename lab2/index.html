@@ -1154,14 +1154,14 @@
 <h2 id="2-allocating-manipulating-memory">2 - Allocating &amp; Manipulating memory<a class="headerlink" href="#2-allocating-manipulating-memory" title="Permanent link">&para;</a></h2>
 <p>Look at <code>image.c</code> and <code>image.h</code>, and try to understand the provided structure.</p>
 <ul>
-<li>Pixels are stored as <code>unsigned char* pixels[3]</code>: what does that mean in practice ? How many arrays do we have to allocate to store an <strong>RGB</strong> Image ? What's the size of each arrray ? What happens if we have a <strong>grayscale</strong> image (black &amp; white).</li>
+<li>Pixels are stored as <code>unsigned char* pixels[3]</code>: what does that mean in practice ? How many arrays do we have to allocate to store an <strong>RGB</strong> Image ? What's the size of each array ? What happens if we have a <strong>grayscale</strong> image (black &amp; white).</li>
 <li>How do we distinguish between <strong>grayscale</strong> and <strong>RGB</strong> images ?</li>
 </ul>
 <h3 id="1-implement-memory-allocation">1. Implement Memory Allocation<a class="headerlink" href="#1-implement-memory-allocation" title="Permanent link">&para;</a></h3>
 <h4 id="a-implement-image-allocation">a) Implement image allocation<a class="headerlink" href="#a-implement-image-allocation" title="Permanent link">&para;</a></h4>
 <p>You must implement the function <code>image.c:create_image(...)</code>.</p>
 <p>This function should allocate memory buffers big enough to hold an image of size <span class="arithmatex">\(\text{width} \cdot \text{height}\)</span>. Note for this lab, channels can either be 1 (<strong>grayscale</strong>) or 3 (<strong>RGB</strong>).</p>
-<h4 id="b-implement-image-deallocaiton">b) Implement image deallocaiton<a class="headerlink" href="#b-implement-image-deallocaiton" title="Permanent link">&para;</a></h4>
+<h4 id="b-implement-image-deallocation">b) Implement image deallocation<a class="headerlink" href="#b-implement-image-deallocation" title="Permanent link">&para;</a></h4>
 <p>You must implement <code>image.c:free_image(...)</code>.</p>
 <p>Make sure you can free both <strong>grayscale</strong> and <strong>RGB</strong> images. <strong>Note</strong>: you must also free the <code>Image</code> structure itself.</p>
 <h4 id="c-execute-the-memory-implementation-test">c) Execute the memory implementation test<a class="headerlink" href="#c-execute-the-memory-implementation-test" title="Permanent link">&para;</a></h4>
@@ -1176,8 +1176,8 @@
 <h3 id="2-image-copying">2. Image Copying<a class="headerlink" href="#2-image-copying" title="Permanent link">&para;</a></h3>
 <h4 id="a-implement-image-copy">a) Implement image copy<a class="headerlink" href="#a-implement-image-copy" title="Permanent link">&para;</a></h4>
 <p>You must implement <code>Image* copy_image(const Image* image)</code> inside <code>src/image.c</code></p>
-<p>This functions receives an <code>Image*</code>, and produces a <strong>deepcopy</strong>, meaning that we are not copying the pointers, but allocating new pixels buffers and duplicating the image in memory.</p>
-<p>You shall not use <code>memcpy</code> or <code>strcpy</code> for this exercise: perform a manual copy.</p>
+<p>This function receives an <code>Image*</code>, and produces a <strong>deepcopy</strong>, meaning that we are not copying the pointers, but allocating new pixels buffers and duplicating the image in memory.</p>
+<p>You should not use <code>memcpy</code> or <code>strcpy</code> for this exercise: perform a manual copy.</p>
 <h4 id="b-execute-the-memory-implementation-test">b) Execute the memory implementation test<a class="headerlink" href="#b-execute-the-memory-implementation-test" title="Permanent link">&para;</a></h4>
 <p>Compile again and run:
 <div class="language-sh highlight"><span class="filename">Memory Test</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./mytransform<span class="w"> </span>--memory-test
@@ -1204,25 +1204,25 @@ Optionally, make multiple versions of <code>copy_image</code> with different nam
 <p>Now, try swapping out the loop. First iterate on <code>y</code>, then <code>x</code>, then<code>c</code>. Try all possible combinations to find which one is faster. Can you explain why ?</p>
 <h4 id="d-implement-the-linear-versions">d) Implement the linear versions<a class="headerlink" href="#d-implement-the-linear-versions" title="Permanent link">&para;</a></h4>
 <p>While images are 3D structures (When taking the channels into account), you may have noticed that we have stored them as 2D arrays (One linear array per channel). 
-Each channel is stored in ROW-MAJOR.</p>
+Each channel is stored in row-major order.</p>
 <ul>
 <li>Implement two nested loops: the upper levels iterating on the channels, the inner loop iterating over each pixel.</li>
 <li>Implement one loop: iterate only over the pixel, copying RGB in a single loop.</li>
 </ul>
-<p>Compare the performance by running the <code>--memory-check</code> option. Which loops give you the best performance ? Do you understand why ?</p>
+<p>Compare the performance by running the <code>--memory-check</code> option. Which loops gives you the best performance ? Do you understand why ?</p>
 </div>
 <hr class="gradient" />
 
 <h2 id="3-executing-a-transformation-pipeline">3 - Executing a transformation pipeline<a class="headerlink" href="#3-executing-a-transformation-pipeline" title="Permanent link">&para;</a></h2>
 <p>Look at <code>src/parser.h</code> and try to understand the different structures of the parser. Do the same for <code>src/transformation.c</code></p>
 <h3 id="1-implementing-grayscale">1. Implementing Grayscale<a class="headerlink" href="#1-implementing-grayscale" title="Permanent link">&para;</a></h3>
-<p>The grayscale transform receives an RGB image and converts it into a black and white, single channel image.
+<p>The grayscale transform receives an RGB image and converts it into a black-and-white, single channel image.
 The formula for the transformation is:</p>
 <div class="arithmatex">\[
 C_{out} = 0.299 \cdot R_{in} + 0.587 \cdot G_{in} + 0.114 \cdot B_{in}
 \]</div>
 <p>Where C is the grayscale channel, and R,G,B are the corresponding components of the RGB image.
- Note: if the grayscale transform receives a grayscale image as input, it should output a (deep) copy of the input.</p>
+Note: If the grayscale transform receives a grayscale image as input, it should output a (deep) copy of the input.</p>
 <h4 id="a-implement-this-transformation">a) Implement this transformation<a class="headerlink" href="#a-implement-this-transformation" title="Permanent link">&para;</a></h4>
 <p>You should read data from <code>node.input</code>, and <strong>allocate and write data</strong> to <code>node.output</code>. 
 You do not need to free the <code>input</code> and <code>output</code> buffer of any of the nodes: it will be handled for you.</p>
@@ -1233,7 +1233,7 @@ You do not need to free the <code>input</code> and <code>output</code> buffer of
 <p>At this stage, <code>output/test_grayscale.png</code> should contain the grayscale of <code>images/test.png</code></p>
 <hr />
 <h3 id="2-implementing-inversion">2. Implementing Inversion<a class="headerlink" href="#2-implementing-inversion" title="Permanent link">&para;</a></h3>
-<p>The inversion transform is a simple one</p>
+<p>The inversion transform is simple:</p>
 <div class="arithmatex">\[
 C_{out} = 255 - C_{in}
 \]</div>
@@ -1247,7 +1247,7 @@ C_{out} &amp;= \text{round}\left(\frac{C_{in}}{\text{step}}\right) \cdot \text{s
 \end{aligned}\]</div>
 <p>Where <span class="arithmatex">\(\text{levels}\)</span> is the target number of discrete values per component. This maps each input color channel value <span class="arithmatex">\(C_{in} \in [0, 255]\)</span> to a quantized output <span class="arithmatex">\(C_{out}\)</span> in the same range.</p>
 <h4 id="a-implement-this-transformation-using-the-formula-provided-above">a) Implement this transformation using the formula provided above.<a class="headerlink" href="#a-implement-this-transformation-using-the-formula-provided-above" title="Permanent link">&para;</a></h4>
-<p>You must implement this method in <code>transformation.c:quantize_image_naive(...)</code></p>
+<p>You must implement this function in <code>transformation.c:quantize_image_naive(...)</code></p>
 <h4 id="b-optimize-using-a-lookup-table">b) Optimize using a lookup table<a class="headerlink" href="#b-optimize-using-a-lookup-table" title="Permanent link">&para;</a></h4>
 <p>Division and floating-point operations can be costly. Since <span class="arithmatex">\(C_{in} \in [0, 255]\)</span>, we can easily precompute all possible outputs in a <strong>lookup table (LUT)</strong> of size 256, 
 then convert each pixel using:</p>
@@ -1255,12 +1255,12 @@ then convert each pixel using:</p>
 C_{out} = LUT[C_{in}]
 \]</div>
 <p>We are trading <strong>memory overhead for performance</strong>, which is a very common pattern.</p>
-<p>Implement this method in <code>transformation.c:quantize_image_lut(...)</code>, and be sure to correctly allocate and free the LUT.</p>
+<p>Implement this function in <code>transformation.c:quantize_image_lut(...)</code>, and be sure to correctly allocate and free the LUT.</p>
 <h4 id="c-compare-performance">c) Compare performance<a class="headerlink" href="#c-compare-performance" title="Permanent link">&para;</a></h4>
 <p>Modify <code>transformation.c:quantize_image(...)</code> to either use the LUT or the naive version, and run the following code:
 <div class="language-text highlight"><span class="filename">Benchmarking</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>time ./mytransform ./pipelines/quantize_benchmark.pipeline
 </span></code></pre></div></p>
-<p>Which version is faster ? What's the speedup of the LUT method over the naive version ?</p>
+<p>Which version is faster ? What's the speedup of the LUT algorithm over the naive version ?</p>
 <hr class="gradient" />
 
 <h2 id="4-validation">4) Validation<a class="headerlink" href="#4-validation" title="Permanent link">&para;</a></h2>
@@ -1290,7 +1290,7 @@ Re-run the benchmark after every meaningful optimization, and check <code>./resu
 
 <div class="summary-section box-section">
 <h2 class="hidden-title" id="5-summary"> 5 - Summary<a class="headerlink" href="#5-summary" title="Permanent link">&para;</a></h2>
-<p>Upon completing this second lab, you should know how to:</p>
+<p>Upon completing this second lab, you should be able to:</p>
 <ul class="task-list">
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Create a makefile, link to a dynamic library.</li>
 <li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Explore compilation flags for performance</li>
