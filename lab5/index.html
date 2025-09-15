@@ -1135,7 +1135,7 @@
 </ul>
 <p>The final plot should look something like this:</p>
 <figure>
-  <img src="/image/lab5/luminosity_Kepler-8.png" style="max-width: 100%; width: auto;">
+  <img src="image/lab5/luminosity_Kepler-8.png" style="max-width: 100%; width: auto;">
 <br />
 <figcaption>Kepler 8 Light curve
   </figcaption>
@@ -1172,11 +1172,11 @@ What could cause this periodic phenomenon ?</p>
 <p>Run the previous script by phase folding over the Kepler 8b Period. </p>
 <ul>
 <li>What do you observe ? </li>
-<li>Does the light "dip" overlaps or is your plot noisy ? </li>
+<li>Does the light "dip" overlap or is your plot noisy?</li>
 <li>What can we say about the relationship between the light "dip" and Kepler 8b orbit ?</li>
 </ul>
 <figure>
-  <img src="/image/lab5/phase_folding_Kepler-8.png" style="max-width: 100%; width: auto;">
+  <img src="image/lab5/phase_folding_Kepler-8.png" style="max-width: 100%; width: auto;">
 <br />
 <figcaption>Phase folded Kepler 8 Light curve
   </figcaption>
@@ -1185,7 +1185,7 @@ What could cause this periodic phenomenon ?</p>
 
 <h2 id="2-box-least-square">2 - Box Least Square<a class="headerlink" href="#2-box-least-square" title="Permanent link">&para;</a></h2>
 <p>The Box Least Square (BLS) signal processing algorithm is used to detect the transit of exoplanets in front of their stars by searching for characteristic box-shaped dips in the luminosity at regular frequency.</p>
-<p>The provided library implements a Python &lt;-&gt; C interface so that you can call BLS from a python script. It also simplifies the loading and manipulation of the data, which can be done in python, while the C code focuses on the high performance analysis.</p>
+<p>The provided library implements a Python &lt;-&gt; C interface so that you can call BLS from a Python script. It also simplifies the loading and manipulation of the data, which can be done in Python, while the C code focuses on high-performance analysis.</p>
 <h4 id="a-run-the-provided-build_librarysh-script">a) Run the provided <code>build_library.sh</code> script<a class="headerlink" href="#a-run-the-provided-build_librarysh-script" title="Permanent link">&para;</a></h4>
 <h4 id="b-write-a-scriptsbls_runnerpy-script-for-kepler-data">b) Write a <code>scripts/bls_runner.py</code> script for kepler data<a class="headerlink" href="#b-write-a-scriptsbls_runnerpy-script-for-kepler-data" title="Permanent link">&para;</a></h4>
 <p>The BLS library can be used like so:
@@ -1194,11 +1194,11 @@ What could cause this periodic phenomenon ?</p>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">match</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">bls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="mf">1.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </span></code></pre></div>
-BLS is very sensitive to the hyperparameters, and as such you <strong>must use the ones provided here</strong>.</p>
-<p>Make sure that your script can be called with <code>scripts/run_bls.py kepler-*</code> and that it reports the match found.
-Verify that the BLS output is consistent with the characteristics of the Kepler 8b exoplanet.</p>
+BLS is very sensitive to the hyperparameters, so you <strong>must use the ones provided here</strong>.</p>
+<p>Ensure that your script can be called with <code>scripts/run_bls.py kepler-*</code> and that it reports the match found.
+Check that the BLS output is consistent with the characteristics of the Kepler 8b exoplanet.</p>
 <figure>
-  <img src="/image/lab5/kepler_principle.png" style="max-width: 70%; width: auto;">
+  <img src="image/lab5/kepler_principle.png" style="max-width: 70%; width: auto;">
 <br />
 <figcaption>Principle behind the Kepler exoplanet detection system
   <br>
@@ -1231,8 +1231,8 @@ P_{idle} = \frac{\text{energy-pkg}_{idle}}{t}
 <div class="language-sh highlight"><span class="filename">Workload Consumption</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
 </span></code></pre></div>
-<p>Note that the -r 5 flag causes perf to perform five (meta-) repetitions. The <code>time</code> command reports the sum of the timings for all runs.
-Calculate the effective power and energy consumption of BLS.</p>
+<p>Note that the <code>-r 5</code> flag causes <code>perf</code> to perform five repetitions. The <code>time</code> command reports the sum of the timings for all runs.
+Calculate the effective power and energy consumption for BLS.</p>
 <div class="arithmatex">\[
 P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 \]</div>
@@ -1246,7 +1246,7 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 <h4 id="a-whats-the-observed-variance-in-the-execution-time">a) What's the observed variance in the execution time ?<a class="headerlink" href="#a-whats-the-observed-variance-in-the-execution-time" title="Permanent link">&para;</a></h4>
 <h4 id="b-whats-the-mean-instructions-cycle">b) What's the mean instructions / cycle ?<a class="headerlink" href="#b-whats-the-mean-instructions-cycle" title="Permanent link">&para;</a></h4>
 <h4 id="c-is-the-application-compute-or-memory-intensive">c) Is the application compute or memory intensive ?<a class="headerlink" href="#c-is-the-application-compute-or-memory-intensive" title="Permanent link">&para;</a></h4>
-<p>Put simply:</p>
+<p>In summary:</p>
 <ul>
 <li>Memory-intensive applications have low instructions per cycle and high memory metrics</li>
 <li>Compute-intensive applications are vectorized (high instructions per cycle) and fully utilize threads.
@@ -1259,9 +1259,9 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 </span></code></pre></div></p>
 <p>You can move around the perf report using the arrow keys, and you can press <code>+</code> to expand a particular call tree.</p>
 <p>How much time is spent in the BLS algorithm ?</p>
-<p>Which would be more time-efficient for an engineer: optimizing the data loading process or the BLS algorithm?</p>
+<p>Which would be more time-efficient for an engineer: optimizing the data loading process or optimizing the BLS algorithm?</p>
 <h4 id="e-build-a-flamegraph-for-bls">e) Build a flamegraph for bls<a class="headerlink" href="#e-build-a-flamegraph-for-bls" title="Permanent link">&para;</a></h4>
-<p>Run the following
+<p>Run the following commands
 <div class="language-sh highlight"><span class="filename">Flamegraph</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Download the Flamegraph tool suite</span>
 </span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/brendangregg/FlameGraph
 </span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Convert perf output to a flamegraph-readable format</span>
@@ -1275,10 +1275,10 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 </span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span>--bgcolors<span class="o">=</span><span class="s2">&quot;#ffffff&quot;</span><span class="w"> </span><span class="se">\</span>
 </span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span>--title<span class="w"> </span><span class="s2">&quot;FlameGraph for BLS algorithm&quot;</span><span class="w"> </span>out.folded<span class="w"> </span>&gt;<span class="w"> </span>flamegraph.svg
 </span></code></pre></div></p>
-<p>Examine the generated <code>flamegraph.svg</code>: does the flamegraph match the previous perf results?</p>
+<p>Examine the generated <code>flamegraph.svg</code>. Does the flamegraph match the previous perf results?</p>
 <hr />
 <figure>
-  <img src="/image/lab5/flamegraph.svg" style="max-width: 100%; width: auto;">
+  <img src="image/lab5/flamegraph.svg" style="max-width: 100%; width: auto;">
 <br />
 <figcaption>FlameGraph Example
   </figcaption>
@@ -1309,7 +1309,7 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 </div>
 <hr />
 <figure>
-  <img src="/image/lab5/bls_stability.png" style="max-width:80%; width: auto;">
+  <img src="image/lab5/bls_stability.png" style="max-width:80%; width: auto;">
 <br />
 <figcaption>Examples of different distribution plots.
   <br>
