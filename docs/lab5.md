@@ -69,7 +69,7 @@ Make sure that:
 The final plot should look something like this:
 
 <figure markdown="span">
-  <img src="/image/lab5/luminosity_Kepler-8.png" style="max-width: 100%; width: auto;">
+  <img src="image/lab5/luminosity_Kepler-8.png" style="max-width: 100%; width: auto;">
   <figcaption>Kepler 8 Light curve
   </figcaption>
 </figure>
@@ -118,11 +118,11 @@ ax.plot(bin_centers, bin_means, color="red", lw=1.5)
 Run the previous script by phase folding over the Kepler 8b Period. 
 
 - What do you observe ? 
-- Does the light "dip" overlaps or is your plot noisy ? 
+- Does the light "dip" overlap or is your plot noisy?
 - What can we say about the relationship between the light "dip" and Kepler 8b orbit ?
 
 <figure markdown="span">
-  <img src="/image/lab5/phase_folding_Kepler-8.png" style="max-width: 100%; width: auto;">
+  <img src="image/lab5/phase_folding_Kepler-8.png" style="max-width: 100%; width: auto;">
   <figcaption>Phase folded Kepler 8 Light curve
   </figcaption>
 </figure>
@@ -133,7 +133,7 @@ Run the previous script by phase folding over the Kepler 8b Period.
 
 The Box Least Square (BLS) signal processing algorithm is used to detect the transit of exoplanets in front of their stars by searching for characteristic box-shaped dips in the luminosity at regular frequency.
 
-The provided library implements a Python <-> C interface so that you can call BLS from a python script. It also simplifies the loading and manipulation of the data, which can be done in python, while the C code focuses on the high performance analysis.
+The provided library implements a Python <-> C interface so that you can call BLS from a Python script. It also simplifies the loading and manipulation of the data, which can be done in Python, while the C code focuses on high-performance analysis.
 
 #### a) Run the provided `build_library.sh` script
 #### b) Write a `scripts/bls_runner.py` script for kepler data
@@ -145,13 +145,13 @@ import bls
 match = bls.bls(data["time"].values.astype(np.float64), data["flux"].values.astype(np.float64),
     1.0, 4, 250, 0.02, 0.15, 100)
 ```
-BLS is very sensitive to the hyperparameters, and as such you **must use the ones provided here**.
+BLS is very sensitive to the hyperparameters, so you **must use the ones provided here**.
 
-Make sure that your script can be called with `scripts/run_bls.py kepler-*` and that it reports the match found.
-Verify that the BLS output is consistent with the characteristics of the Kepler 8b exoplanet.
+Ensure that your script can be called with `scripts/run_bls.py kepler-*` and that it reports the match found.
+Check that the BLS output is consistent with the characteristics of the Kepler 8b exoplanet.
 
 <figure markdown="span">
-  <img src="/image/lab5/kepler_principle.png" style="max-width: 70%; width: auto;">
+  <img src="image/lab5/kepler_principle.png" style="max-width: 70%; width: auto;">
   <figcaption markdown="span">Principle behind the Kepler exoplanet detection system
   <br>
   Hannah R. Wakeford, Laura C. Mayorga
@@ -201,8 +201,8 @@ time perf stat -r 5 -a -j -e power/energy-pkg/,power/energy-cores/ \
     ./scripts/run_bls.py kepler-8
 ```
 
-Note that the -r 5 flag causes perf to perform five (meta-) repetitions. The `time` command reports the sum of the timings for all runs.
-Calculate the effective power and energy consumption of BLS.
+Note that the `-r 5` flag causes `perf` to perform five repetitions. The `time` command reports the sum of the timings for all runs.
+Calculate the effective power and energy consumption for BLS.
 
 $$
 P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
@@ -224,7 +224,7 @@ Execute this command and answer the following questions.
 #### b) What's the mean instructions / cycle ?
 #### c) Is the application compute or memory intensive ?
 
-Put simply:
+In summary:
 
 - Memory-intensive applications have low instructions per cycle and high memory metrics
 - Compute-intensive applications are vectorized (high instructions per cycle) and fully utilize threads.
@@ -242,11 +242,11 @@ You can move around the perf report using the arrow keys, and you can press `+` 
 
 How much time is spent in the BLS algorithm ?
 
-Which would be more time-efficient for an engineer: optimizing the data loading process or the BLS algorithm?
+Which would be more time-efficient for an engineer: optimizing the data loading process or optimizing the BLS algorithm?
 
 #### e) Build a flamegraph for bls
 
-Run the following
+Run the following commands
 ```sh title="Flamegraph"
 # Download the Flamegraph tool suite
 git clone https://github.com/brendangregg/FlameGraph
@@ -262,12 +262,12 @@ perf script > out.perf
     --title "FlameGraph for BLS algorithm" out.folded > flamegraph.svg
 ```
 
-Examine the generated `flamegraph.svg`: does the flamegraph match the previous perf results?
+Examine the generated `flamegraph.svg`. Does the flamegraph match the previous perf results?
 
 ---
 
 <figure markdown="span">
-  <img src="/image/lab5/flamegraph.svg" style="max-width: 100%; width: auto;">
+  <img src="image/lab5/flamegraph.svg" style="max-width: 100%; width: auto;">
   <figcaption>FlameGraph Example
   </figcaption>
 </figure>
@@ -305,7 +305,7 @@ If your machine is stable, the performance distribution should follow a normal d
 ---
 
 <figure markdown="span">
-  <img src="/image/lab5/bls_stability.png" style="max-width:80%; width: auto;">
+  <img src="image/lab5/bls_stability.png" style="max-width:80%; width: auto;">
   <figcaption>Examples of different distribution plots.
   <br>
   The stability results here were gathered on a laptop that was in-use, thus the measures are quite unstable.
