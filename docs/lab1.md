@@ -4,17 +4,17 @@
 
 ### Objective
 
-In this lab, you will get familliar with the very basics of using the linux shell, using and installing a code editor, and setup git.
+In this lab, you will get familiar with the very basics of using the Linux shell, installing and using a code editor, and setting up git.
 
-The final section of this lab will have you combine all this tools to setup a simple project for a Hello World program in C.
+The final section of this lab will have you combine all these tools to set up a simple project for a Hello World program in C.
 
 ---
 
 ## 0 - Linux
 
-[Linux](https://en.wikipedia.org/wiki/Linux) is a family of Operating Systems (like Windows or MacOS) that are suited for programming. Most High-Performance clusters will run a version of linux, and as such **it is mandatory that you learn how to use it.**
+[Linux](https://en.wikipedia.org/wiki/Linux) is a family of Operating Systems (like Windows or MacOS) that are suited for programming. Most high-performance clusters will run a version of Linux, and as such **it is mandatory that you learn how to use it.**
 
-If you have a personal laptop, I **highly** recommend you to setup linux (Or MacOS) on it. Alternatively, you can use [Docker](https://hub.docker.com/_/ubuntu/) or a [virtual machine](https://www.virtualbox.org/) on Windows, but note that this is highly impractical. Lastly, you can setup and use WSL.
+If you have a personal laptop, I **highly** recommend you set up Linux (or MacOS) on it. Alternatively, you can use [Docker](https://hub.docker.com/_/ubuntu/) or a [virtual machine](https://www.virtualbox.org/) on Windows, but note that this is highly impractical. Lastly, you can set up and use WSL.
 
 !!! tip
     The university may be able to lend laptops while you're on-site, but you likely won't be able to bring them home for assignments.
@@ -58,7 +58,7 @@ Look for an app called `terminal`, `console` or even `konsole`. In some linux di
 
 ### 1. Basic Exercices
 
-We will now dive in the very basics on how to use the shell. Note that the exercices presented here are minimal, and there's much to discover.
+We will now dive into the very basics of how to use the shell. Note that the exercises presented here are minimal, and there's much to discover.
 Lines starting with a `#` are comments and should not be executed.
 
 #### a) Try inputing the following commands. What does the `ls` command do ?
@@ -134,9 +134,9 @@ Press the `q` key to exit `man`.
 
 ---
 
-### 2. More Exercices
+### 2. More Exercises
 
-#### a) Find what `~` is the shortcut for
+#### a) Find what `~` is a shortcut for
 ```bash
 cd ~
 ```
@@ -275,7 +275,7 @@ From there, try creating a file, installing extensions (Python, C++, cmake, etc.
 
 ## 4 - Getting ready for git
 
-A critical part of programming is called "versionning" or "Version Control System" (VCS). This answers the following questions:
+A critical part of programming is called "versioning" or "Version Control System" (VCS). This answers the following questions:
 
 - How can I share my code with my colleagues / classmates / friends / everyone ?
 - How can I keep a history of the different versions of my code ? Say `version 1.0`, `v2.0`, `v3.0.1.alpha-prelease`, etc.

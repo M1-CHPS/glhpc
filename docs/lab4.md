@@ -34,9 +34,9 @@ piestimator 1000000
 
 #### a) Modify the function `src/main.c:mc_harness(...)` to measure the execution time of your method. 
 
-You must repeat the measurements `nmeta` times, and record the values of Pi as well as the execution time for every execution.
+You must repeat the measurements `nmeta` times, and record the values of Pi as well as the execution time for each execution.
 
-What function did you use to measure time ? How accurate is it ? Is it monotonic ?
+What function did you use to measure time? How accurate is it? Is it monotonic?
 
 #### b) Modify the function `src/main.c:print_results(...)` to print a table with the following values:
 
@@ -44,7 +44,7 @@ What function did you use to measure time ? How accurate is it ? Is it monotonic
 |---------------------|--------------------------|------------------------|--------------------------------------|--------------------|--------------------|
 | Average Value of Pi | Standard Deviation of Pi | Average execution time | Standard Deviation of execution time | Min execution time | Max Execution time |
 
-You may need to modify other functions or the provided structure(s) to achieve this.
+You may need to modify other functions or the provided structures to achieve this.
 
 #### c) Implement csv serialization inside the program. 
 
@@ -77,19 +77,19 @@ If you correctly implemented csv serialization, this will generate plots inside 
 ```
 
 #### a) First, look at the top figure in `convergence.png`
-How do you observe ? How does the error evolve when increasing the number of Monte-Carlo samples ?  
-If needed, fix your program so that the relative error converges towards zero.
+What do you observe? How does the error evolve when increasing the number of Monte-Carlo samples?  
+If needed, fix your program so that the relative error converges toward zero.
 
-####  b) Look at the bottom figure: how does execution time evolve when increasing the number of samples ? 
+####  b) Look at the bottom figure: how does execution time evolve when increasing the number of samples? 
 If needed, fix your program so that the execution time scales linearly with the number of samples.
 
 ####  c) Look at the top figure in `stability.png`
-How are the values of the Pi estimations distributed ? Is there any bias, and if yes, why ?  
+How are the values of the Pi estimations distributed? Is there any bias, and if so, why?
 If needed, fix your program so that the Pi estimations are normally distributed around 3.14.
 
-#### d) Look at the bottom figure: how is the execution time distributed ?
+#### d) Look at the bottom figure: how is the execution time distributed?
 Check whether the timings are stable, and if not, propose an explanation.
-Do you observe any measurement noise ? How would you qualify it ?  
+Do you observe any measurement noise? How would you characterize it?
 
 If needed, fix your measurements so that the execution time is mostly normally distributed, and the measurement noise is tolerable.
 
@@ -104,11 +104,11 @@ If needed, fix your measurements so that the execution time is mostly normally d
 
 ### 1. Look at `run_all.sh`, and try to understand each line.
 
-#### a) What does `set -e`, `set -o pipefail` and `2>&1 | tee ...` do ?
+#### a) What does `set -e`, `set -o pipefail` and `2>&1 | tee ...` do?
 
-#### b) What is the purpose of the `run_label` argument (Why should we label our data) ? 
+#### b) What is the purpose of the `run_label` argument (Why should we label our data)? 
 
-What files are generated, and what's the purpose of every one of them ?
+What files are generated, and what's the purpose of every one of them?
 
 ### 2. Look at `scripts/analyse.py` and try to understand how each plot is built. 
 Try to link every components of `convergence.png` and `stability.png` (The titles, the axis label, the axis ticks, the distributions, the grid, ...) with the code that generates it.
@@ -125,7 +125,7 @@ Try to link every components of `convergence.png` and `stability.png` (The title
 
 Remember that you can run `run_all.sh <run_label>` to compare the different runs later.  
 
-What configuration gives you the fastest execution time ? Can you understand why ?
+What configuration gives you the fastest execution time? Can you understand why?
 
 ### 2. Use OpenMP to parallelize your Monte-Carlo algorithm. 
 
@@ -145,7 +145,7 @@ You may need to modify the `makefile` to link to OpenMP.
     - If you accumulate in a shared variable, do you protect it using mutexes, locks, or OpenMP critical sections?
 
 
-#### c) Do you see any performans gains compared to the sequential version ?
+#### c) Do you see any performance gains compared to the sequential version?
 
 #### d) Rerun the provided experiments, and compare with your previous sequential result.
 
@@ -153,7 +153,7 @@ You may need to modify the `makefile` to link to OpenMP.
 ./run_all.sh parallel
 ```
 
-Is your program faster using OpenMP ? If not, ensure you are correctly running multiple threads.
+Is your program faster using OpenMP? If not, ensure you are correctly running multiple threads.
 
 #### e) Is the performance stable? Is there any impact on the accuracy of your estimator?
 
@@ -167,7 +167,7 @@ lscpu | grep "Model name"
 
 <div class="optional-section box-section" markdown>
 
-#### e - Bonus) For students with an heterogeneous CPU (Efficiency (E) Cores and Performance (P) Coress)
+#### e - Bonus) For students with an heterogeneous CPU (Efficiency (E) Cores and Performance (P) Cores)
 
 Using both E and P cores can introduce instabilities in your measurements, load balancing issues, and should be avoided.  
 Run the following to check your CPU topology:
@@ -235,7 +235,7 @@ OMP_NUM_THREADS=4 ./piestimator 1000000
 OMP_NUM_THREADS=8 ./piestimator 1000000
 ```
 
-Does using 2 threads instead of 1 make your code twice as fast ? Propose an explanation.
+Does using 2 threads instead of 1 make your code twice as fast? Propose an explanation.
 
 #### g) Verify your implementation's weak-scaling:
 
@@ -246,7 +246,7 @@ OMP_NUM_THREADS=4 ./piestimator 4000000
 OMP_NUM_THREADS=8 ./piestimator 8000000
 ```
 
-What results do you expect to see ? Does that match your empirical observations ? Propose an explanation.
+What results do you expect to see? Does that match your empirical observations? Propose an explanation.
 
 <hr class="gradient" />
 
@@ -254,7 +254,7 @@ What results do you expect to see ? Does that match your empirical observations 
 
 <h2 class="hidden-title"> 5 - Summary</h2>
 
-Upon completing this third lab, you should know how to:
+Upon completing this third lab, you should be able to:
 
 - [x] Explain the principle of Monte-Carlo algorithms and apply them to numerical estimation
 - [x] Implement and benchmark a Monte-Carlo estimator with statistical analysis (mean, stddev, min/max)

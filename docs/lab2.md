@@ -88,7 +88,7 @@ This indicates that your build works correctly and you can continue the lab. If 
 
 Look at `image.c` and `image.h`, and try to understand the provided structure.
 
-- Pixels are stored as `unsigned char* pixels[3]`: what does that mean in practice ? How many arrays do we have to allocate to store an **RGB** Image ? What's the size of each arrray ? What happens if we have a **grayscale** image (black & white).
+- Pixels are stored as `unsigned char* pixels[3]`: what does that mean in practice ? How many arrays do we have to allocate to store an **RGB** Image ? What's the size of each array ? What happens if we have a **grayscale** image (black & white).
 - How do we distinguish between **grayscale** and **RGB** images ?
 
 ### 1. Implement Memory Allocation
@@ -98,7 +98,7 @@ You must implement the function `image.c:create_image(...)`.
  
 This function should allocate memory buffers big enough to hold an image of size $\text{width} \cdot \text{height}$. Note for this lab, channels can either be 1 (**grayscale**) or 3 (**RGB**).
 
-#### b) Implement image deallocaiton
+#### b) Implement image deallocation
 You must implement `image.c:free_image(...)`.
 
 Make sure you can free both **grayscale** and **RGB** images. **Note**: you must also free the `Image` structure itself.
@@ -124,9 +124,9 @@ Memory Allocations tests completed successfully
 
 You must implement `Image* copy_image(const Image* image)` inside `src/image.c`
 
-This functions receives an `Image*`, and produces a **deepcopy**, meaning that we are not copying the pointers, but allocating new pixels buffers and duplicating the image in memory.
+This function receives an `Image*`, and produces a **deepcopy**, meaning that we are not copying the pointers, but allocating new pixels buffers and duplicating the image in memory.
 
-You shall not use `memcpy` or `strcpy` for this exercise: perform a manual copy.
+You should not use `memcpy` or `strcpy` for this exercise: perform a manual copy.
 
 #### b) Execute the memory implementation test
 
@@ -166,12 +166,12 @@ Now, try swapping out the loop. First iterate on `y`, then `x`, then`c`. Try all
 #### d) Implement the linear versions
 
 While images are 3D structures (When taking the channels into account), you may have noticed that we have stored them as 2D arrays (One linear array per channel). 
-Each channel is stored in ROW-MAJOR.
+Each channel is stored in row-major order.
 
 - Implement two nested loops: the upper levels iterating on the channels, the inner loop iterating over each pixel.
 - Implement one loop: iterate only over the pixel, copying RGB in a single loop.
 
-Compare the performance by running the `--memory-check` option. Which loops give you the best performance ? Do you understand why ?
+Compare the performance by running the `--memory-check` option. Which loops gives you the best performance ? Do you understand why ?
 
 </div>
 
@@ -183,7 +183,7 @@ Look at `src/parser.h` and try to understand the different structures of the par
 
 ### 1. Implementing Grayscale
 
-The grayscale transform receives an RGB image and converts it into a black and white, single channel image.
+The grayscale transform receives an RGB image and converts it into a black-and-white, single channel image.
 The formula for the transformation is:
 
 $$
@@ -191,7 +191,7 @@ C_{out} = 0.299 \cdot R_{in} + 0.587 \cdot G_{in} + 0.114 \cdot B_{in}
 $$
 
 Where C is the grayscale channel, and R,G,B are the corresponding components of the RGB image.
- Note: if the grayscale transform receives a grayscale image as input, it should output a (deep) copy of the input.
+Note: If the grayscale transform receives a grayscale image as input, it should output a (deep) copy of the input.
 
 
 #### a) Implement this transformation
@@ -210,7 +210,7 @@ At this stage, `output/test_grayscale.png` should contain the grayscale of `imag
 
 ### 2. Implementing Inversion
 
-The inversion transform is a simple one
+The inversion transform is simple:
 
 $$
 C_{out} = 255 - C_{in}
@@ -233,7 +233,7 @@ Where $\text{levels}$ is the target number of discrete values per component. Thi
 
 #### a) Implement this transformation using the formula provided above.
 
-You must implement this method in `transformation.c:quantize_image_naive(...)`
+You must implement this function in `transformation.c:quantize_image_naive(...)`
 
 #### b) Optimize using a lookup table
 
@@ -246,7 +246,7 @@ $$
 
 We are trading **memory overhead for performance**, which is a very common pattern.
 
-Implement this method in `transformation.c:quantize_image_lut(...)`, and be sure to correctly allocate and free the LUT.
+Implement this function in `transformation.c:quantize_image_lut(...)`, and be sure to correctly allocate and free the LUT.
 
 #### c) Compare performance
 
@@ -255,7 +255,7 @@ Modify `transformation.c:quantize_image(...)` to either use the LUT or the naive
 time ./mytransform ./pipelines/quantize_benchmark.pipeline
 ```
 
-Which version is faster ? What's the speedup of the LUT method over the naive version ?
+Which version is faster ? What's the speedup of the LUT algorithm over the naive version ?
 
 <hr class="gradient" />
 
@@ -297,7 +297,7 @@ To remove a version, remove the corresponding folder in `./results`
 
 <h2 class="hidden-title"> 5 - Summary</h2>
 
-Upon completing this second lab, you should know how to:
+Upon completing this second lab, you should be able to:
 
 - [x] Create a makefile, link to a dynamic library.
 - [x] Explore compilation flags for performance
