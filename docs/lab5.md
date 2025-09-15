@@ -69,7 +69,7 @@ Make sure that:
 The final plot should look something like this:
 
 <figure markdown="span">
-  <img src="image/lab5/luminosity_Kepler-8.png" style="max-width: 100%; width: auto;">
+  ![Kepler 8 Light curve](image/lab5/luminosity_Kepler-8.png){ style="max-width: 80%; height: auto;" }
   <figcaption>Kepler 8 Light curve
   </figcaption>
 </figure>
@@ -122,7 +122,7 @@ Run the previous script by phase folding over the Kepler 8b Period.
 - What can we say about the relationship between the light "dip" and Kepler 8b orbit ?
 
 <figure markdown="span">
-  <img src="image/lab5/phase_folding_Kepler-8.png" style="max-width: 100%; width: auto;">
+  ![Phase folded Kepler 8 Light curve](image/lab5/phase_folding_Kepler-8.png){ style="max-width: 80%; height: auto;" }
   <figcaption>Phase folded Kepler 8 Light curve
   </figcaption>
 </figure>
@@ -151,7 +151,7 @@ Ensure that your script can be called with `scripts/run_bls.py kepler-*` and tha
 Check that the BLS output is consistent with the characteristics of the Kepler 8b exoplanet.
 
 <figure markdown="span">
-  <img src="image/lab5/kepler_principle.png" style="max-width: 70%; width: auto;">
+  ![Principle behind the Kepler exoplanet detection system.](image/lab5/kepler_principle.png){ style="max-width: 80%; height: auto;" }
   <figcaption markdown="span">Principle behind the Kepler exoplanet detection system
   <br>
   Hannah R. Wakeford, Laura C. Mayorga
@@ -267,7 +267,7 @@ Examine the generated `flamegraph.svg`. Does the flamegraph match the previous p
 ---
 
 <figure markdown="span">
-  <img src="image/lab5/flamegraph.svg" style="max-width: 100%; width: auto;">
+  ![FlameGraph Example](image/lab5/flamegraph.svg){ style="max-width: 100%; height: auto;" }
   <figcaption>FlameGraph Example
   </figcaption>
 </figure>
@@ -305,7 +305,7 @@ If your machine is stable, the performance distribution should follow a normal d
 ---
 
 <figure markdown="span">
-  <img src="image/lab5/bls_stability.png" style="max-width:80%; width: auto;">
+  ![Examples of different distribution plots.](image/lab5/bls_stability.png){ style="max-width: 60%; height: auto;" }
   <figcaption>Examples of different distribution plots.
   <br>
   The stability results here were gathered on a laptop that was in-use, thus the measures are quite unstable.
