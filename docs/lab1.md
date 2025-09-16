@@ -300,12 +300,25 @@ You should setup two factor authentication (2FA) ASAP.
 
 ## 5 - First C Project
 
+
+### 0. Pulling from github Classroom
+
+You will receive a link to GitHub classroom during this lab. Accept the invite and click on your name. This will automatically create a glhpc-lab1 repository on GitHub for you.
+
+First, clone this repository:
+
+```bash
+git clone <repo_url> 
+```
+
+You should see a simple `Readme.md` and `.gitignore` files inside the newly created folder.
+
 ### 1. Creating the project
 
 #### a) Create the following file structure:
 
 ```
-lab1/
+glhpc-lab1/
     first_c_project/
         build.sh # Empty text file
         src/
@@ -313,6 +326,8 @@ lab1/
 ```
 
 Try to do this only using the shell. If you're using **VSCode** you can `cd` into `first_c_project` and run `code .`
+**Make sure to create this structure inside the cloned repo.**
+
 
 #### b) Modify `main.c` so that it contains:
 
@@ -326,33 +341,18 @@ int main(int argc, char** argv) {
 }
 ```
 
-#### c) Create a .gitignore text file inside the `first_c_project` folder, with the content:
-
-```gitignore title=".gitignore"
-*.o
-*.a
-*.so
-*.out
-main
-```
-
-A `.gitignore` file act as a recursive filter for git: all files that match a pattern contained in the `.gitignore` will be ignored and invisible to git.
-
-The `*` character is called a wildcard: it matches everything. For example, the `*.o` pattern will filter the files `main.o`, `aaababa.o`, etc.
-
 ---
 
 ### 2. Setup git
 
 Please refer to Lecture 1 for all the git commands you will need in this section.
 
-#### a) Initialize a new git repository inside the lab1 folder.
-#### b) Run `git status`, then stage all files from `first_c_project` as well as `.gitignore` in git.
-#### c) Create a first commit with the message "My first commit"
+#### a) Run `git status`, then stage all files from `first_c_project` in git.
+#### b) Create a first commit with the message "My first commit"
 
 I recommend you use the command `git commit -m "<message>"` or git may open nano/vim for you to edit the commit message, which may be confusing.
 
-#### d) Ensure the commit worked:
+#### c) Ensure the commit worked:
 
 `git log` should display the previous commit, and `git status` should no longer display the content of `first_c_project`. Feel free to commit files from the previous exercises of the lab if you want.
 
@@ -470,26 +470,7 @@ Use this to find the command needed to only give permissions to yourself.
 !!! Tip
     Git is recursive: it doesn't matter whether you run the git commands from `lab1` or `first_c_project`: git knows whether the `cwd` is contained inside a git repository.
 
-#### b) Create an **empty** repository on the GitHub website
-
-Make sure the repository is empty, or you'll have to force push later on to overwrite it.
-
-#### c) Setup the remote on your local repository
-
-On the github website, you should see a green `code` button with an `ssh` option. Copy the link here. It should look something like:
-
-```
-git@github.com:user/lab1_repository.git
-```
-
-Then run:
-```sh
-git remote add origin <Your github link here>
-```
-This registers the GitHub repository repository as the remote repository. Origin is the name of the remote.
-
-
-#### d) Push on GitHub
+#### b) Push on GitHub
 
 The first time you push on the repository, git might:
 
