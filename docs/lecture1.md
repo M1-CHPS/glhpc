@@ -85,11 +85,15 @@ for (int i = 0; i < num_particles; i++) {
 Introduce a time step `dt` and update positions based on gravitational forces.
 
 ```c
-// Update positions based on computed accelerations
+// Update velocity and positions based on computed accelerations
 for (int i = 0; i < num_particles; i++) {
-  p[i].x += p[i].ax * dt * dt;
-  p[i].y += p[i].ay * dt * dt;
-  p[i].z += p[i].az * dt * dt;
+  p[i].vx += p[i].ax * dt;
+  p[i].vy += p[i].ay * dt;
+  p[i].vz += p[i].az * dt;
+
+  p[i].x += p[i].vx * dt;
+  p[i].y += p[i].vy * dt;
+  p[i].z += p[i].vz * dt;
 }
 ```
 
