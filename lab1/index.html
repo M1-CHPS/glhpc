@@ -1314,41 +1314,38 @@ Some tools also provide <code>man pages</code> when installed, so that you can a
 <hr class="gradient" />
 
 <h2 id="5-first-c-project">5 - First C Project<a class="headerlink" href="#5-first-c-project" title="Permanent link">&para;</a></h2>
+<h3 id="0-pulling-from-github-classroom">0. Pulling from github Classroom<a class="headerlink" href="#0-pulling-from-github-classroom" title="Permanent link">&para;</a></h3>
+<p>You will receive a link to GitHub classroom during this lab. Accept the invite and click on your name. This will automatically create a glhpc-lab1 repository on GitHub for you.</p>
+<p>First, clone this repository:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>git<span class="w"> </span>clone<span class="w"> </span>&lt;repo_url&gt;<span class="w"> </span>
+</span></code></pre></div>
+<p>You should see a simple <code>Readme.md</code> and <code>.gitignore</code> files inside the newly created folder.</p>
 <h3 id="1-creating-the-project">1. Creating the project<a class="headerlink" href="#1-creating-the-project" title="Permanent link">&para;</a></h3>
 <h4 id="a-create-the-following-file-structure">a) Create the following file structure:<a class="headerlink" href="#a-create-the-following-file-structure" title="Permanent link">&para;</a></h4>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>lab1/
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>    first_c_project/
-</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>        build.sh # Empty text file
-</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>        src/
-</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>            main.c # Empty text file
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>glhpc-lab1/
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>    first_c_project/
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>        build.sh # Empty text file
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>        src/
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>            main.c # Empty text file
 </span></code></pre></div>
-<p>Try to do this only using the shell. If you're using <strong>VSCode</strong> you can <code>cd</code> into <code>first_c_project</code> and run <code>code .</code></p>
+<p>Try to do this only using the shell. If you're using <strong>VSCode</strong> you can <code>cd</code> into <code>first_c_project</code> and run <code>code .</code>
+<strong>Make sure to create this structure inside the cloned repo.</strong></p>
 <h4 id="b-modify-mainc-so-that-it-contains">b) Modify <code>main.c</code> so that it contains:<a class="headerlink" href="#b-modify-mainc-so-that-it-contains" title="Permanent link">&para;</a></h4>
-<div class="language-c highlight"><span class="filename">main.c</span><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World !&quot;</span><span class="p">);</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="p">}</span>
+<div class="language-c highlight"><span class="filename">main.c</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdio.h&gt;</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;stdlib.h&gt;</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="kt">int</span><span class="w"> </span><span class="nf">main</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">argc</span><span class="p">,</span><span class="w"> </span><span class="kt">char</span><span class="o">**</span><span class="w"> </span><span class="n">argv</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="n">printf</span><span class="p">(</span><span class="s">&quot;Hello World !&quot;</span><span class="p">);</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="p">}</span>
 </span></code></pre></div>
-<h4 id="c-create-a-gitignore-text-file-inside-the-first_c_project-folder-with-the-content">c) Create a .gitignore text file inside the <code>first_c_project</code> folder, with the content:<a class="headerlink" href="#c-create-a-gitignore-text-file-inside-the-first_c_project-folder-with-the-content" title="Permanent link">&para;</a></h4>
-<div class="language-text highlight"><span class="filename">.gitignore</span><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>*.o
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>*.a
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>*.so
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>*.out
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>main
-</span></code></pre></div>
-<p>A <code>.gitignore</code> file act as a recursive filter for git: all files that match a pattern contained in the <code>.gitignore</code> will be ignored and invisible to git.</p>
-<p>The <code>*</code> character is called a wildcard: it matches everything. For example, the <code>*.o</code> pattern will filter the files <code>main.o</code>, <code>aaababa.o</code>, etc.</p>
 <hr />
 <h3 id="2-setup-git">2. Setup git<a class="headerlink" href="#2-setup-git" title="Permanent link">&para;</a></h3>
 <p>Please refer to Lecture 1 for all the git commands you will need in this section.</p>
-<h4 id="a-initialize-a-new-git-repository-inside-the-lab1-folder">a) Initialize a new git repository inside the lab1 folder.<a class="headerlink" href="#a-initialize-a-new-git-repository-inside-the-lab1-folder" title="Permanent link">&para;</a></h4>
-<h4 id="b-run-git-status-then-stage-all-files-from-first_c_project-as-well-as-gitignore-in-git">b) Run <code>git status</code>, then stage all files from <code>first_c_project</code> as well as <code>.gitignore</code> in git.<a class="headerlink" href="#b-run-git-status-then-stage-all-files-from-first_c_project-as-well-as-gitignore-in-git" title="Permanent link">&para;</a></h4>
-<h4 id="c-create-a-first-commit-with-the-message-my-first-commit">c) Create a first commit with the message "My first commit"<a class="headerlink" href="#c-create-a-first-commit-with-the-message-my-first-commit" title="Permanent link">&para;</a></h4>
+<h4 id="a-run-git-status-then-stage-all-files-from-first_c_project-in-git">a) Run <code>git status</code>, then stage all files from <code>first_c_project</code> in git.<a class="headerlink" href="#a-run-git-status-then-stage-all-files-from-first_c_project-in-git" title="Permanent link">&para;</a></h4>
+<h4 id="b-create-a-first-commit-with-the-message-my-first-commit">b) Create a first commit with the message "My first commit"<a class="headerlink" href="#b-create-a-first-commit-with-the-message-my-first-commit" title="Permanent link">&para;</a></h4>
 <p>I recommend you use the command <code>git commit -m "&lt;message&gt;"</code> or git may open nano/vim for you to edit the commit message, which may be confusing.</p>
-<h4 id="d-ensure-the-commit-worked">d) Ensure the commit worked:<a class="headerlink" href="#d-ensure-the-commit-worked" title="Permanent link">&para;</a></h4>
+<h4 id="c-ensure-the-commit-worked">c) Ensure the commit worked:<a class="headerlink" href="#c-ensure-the-commit-worked" title="Permanent link">&para;</a></h4>
 <p><code>git log</code> should display the previous commit, and <code>git status</code> should no longer display the content of <code>first_c_project</code>. Feel free to commit files from the previous exercises of the lab if you want.</p>
 <hr />
 <h3 id="3-compiling-and-running-c-code">3. Compiling and running C code<a class="headerlink" href="#3-compiling-and-running-c-code" title="Permanent link">&para;</a></h3>
@@ -1421,17 +1418,7 @@ These permissions are user dependent: you are allowed to read your own files, bu
 <p class="admonition-title">Tip</p>
 <p>Git is recursive: it doesn't matter whether you run the git commands from <code>lab1</code> or <code>first_c_project</code>: git knows whether the <code>cwd</code> is contained inside a git repository.</p>
 </div>
-<h4 id="b-create-an-empty-repository-on-the-github-website">b) Create an <strong>empty</strong> repository on the GitHub website<a class="headerlink" href="#b-create-an-empty-repository-on-the-github-website" title="Permanent link">&para;</a></h4>
-<p>Make sure the repository is empty, or you'll have to force push later on to overwrite it.</p>
-<h4 id="c-setup-the-remote-on-your-local-repository">c) Setup the remote on your local repository<a class="headerlink" href="#c-setup-the-remote-on-your-local-repository" title="Permanent link">&para;</a></h4>
-<p>On the github website, you should see a green <code>code</code> button with an <code>ssh</code> option. Copy the link here. It should look something like:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>git@github.com:user/lab1_repository.git
-</span></code></pre></div>
-<p>Then run:
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>&lt;Your<span class="w"> </span>github<span class="w"> </span>link<span class="w"> </span>here&gt;
-</span></code></pre></div>
-This registers the GitHub repository repository as the remote repository. Origin is the name of the remote.</p>
-<h4 id="d-push-on-github">d) Push on GitHub<a class="headerlink" href="#d-push-on-github" title="Permanent link">&para;</a></h4>
+<h4 id="b-push-on-github">b) Push on GitHub<a class="headerlink" href="#b-push-on-github" title="Permanent link">&para;</a></h4>
 <p>The first time you push on the repository, git might:</p>
 <ul>
 <li>Ask you to setup your email/username: Follow git instructions and make sure to use the same as the one you've used on GitHub.</li>
