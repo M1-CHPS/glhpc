@@ -82,7 +82,7 @@ for (int i = 0; i < num_particles; i++) {
 
 ## Naive n-Body Simulation in C
 
-Introduce a time step `dt` and update positions based on gravitational forces.
+Introduce a small time step `dt` and update positions based on gravitational forces.
 
 ```c
 // Update velocity and positions based on computed accelerations
@@ -142,7 +142,7 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 
 ## System hierarchy (physical view)
 
-- Rack → chassis → node → socket → core → hardware thread: a multi-level physical organization.
+- Chassis → rack → node → socket → core → hardware thread: a multi-level physical organization.
 - Nodes often include accelerators (GPUs, TPUs, FPGAs) and have their own memory (DRAM, sometimes HBM).
 - Heterogeneous hardware and multi-level parallelism are the norm in modern HPC systems.
 
