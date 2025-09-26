@@ -20,7 +20,7 @@ Since the area of the circle is $\pi \cdot r^2 = \pi$, and the area of the squar
 
 Implement your own version of the $\pi$ estimator inside `src/compute_pi.c` using the Monte-Carlo method. This method receives $n$ the number of Monte-Carlo samples to take as arguments, and must return the approximation of $\pi$ in `double` precision.
 
-Build your program using `make` and validate your implementation. The program can be run using:
+You will have to setup a CMake for this lab. The program can be run using:
 ```bash title="Run the estimator"
 # piestimator <nsamples>
 piestimator 1000000
