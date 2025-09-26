@@ -54,7 +54,7 @@ Write a `scripts/plot_luminosity.py` script that:
 Ensure the script is executable using `chmod +x <file>` and that the file starts with the shebang `#!/usr/bin/env python3` 
 
 !!! Tip
-    Ensure that the `results` folder exists before saving to it. You can use `os.makedirs(<path>, exists_ok=True)` in your script. Note that the datasets paths are capitalized!
+    Ensure that the `results` folder exists before saving to it. You can use `os.makedirs(<path>, exists_ok=True)` in your script.
 
 #### c) Run the previous script for the Kepler 8 dataset. What do you observe ?
 #### d) Refine your previous plot
@@ -113,7 +113,7 @@ bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
 ax.plot(bin_centers, bin_means, color="red", lw=1.5)
 ```
 
-#### h) Check the file `data/Kepler-8_known_planets.json`
+#### h) Check the file `data/kepler-8_known_planets.json`
 
 Run the previous script by phase folding over the Kepler 8b Period. 
 
@@ -136,10 +136,10 @@ The Box Least Square (BLS) signal processing algorithm is used to detect the tra
 The provided library implements a Python <-> C interface so that you can call BLS from a Python script. It also simplifies the loading and manipulation of the data, which can be done in Python, while the C code focuses on high-performance analysis.
 
 #### a) Run the provided `build_library.sh` script
-#### b) Write a `scripts/bls_runner.py` script for kepler data
+#### b) Write a `scripts/run_bls.py` script for kepler data
 
 The BLS library can be used like so:
-```python title="bls_runner.py"
+```python title="run_bls.py"
 import bls
 # ... Load data here
 match = bls.bls(data["time"].values.astype(np.float64), data["flux"].values.astype(np.float64),
@@ -292,15 +292,13 @@ To further assess the stability of our setup, we should try to measure the distr
 Modify the script to:
 
 - Load the kepler 8 Dataset, and subsample it (Reduce the size to ~2k randomly selected samples)
-- Save the previous script, and execute `run_bls.py` on the subsampled dataset, measuring the time.
+    - Be sure to sort the dataset after subsampling by using `df.sort_values(by="time")` !
+- Save the previous dataset, and execute `run_bls.py` on the subsampled dataset, measuring the time.
 - Repeat the previous measurements approximately 100 times, and generate a distribution plot using seaborn.
     You can use a boxplot, kdeplot, violin plot, histogram, etc.
     Save the raw data to `results/stability_bls.csv`
 
 If your machine is stable, the performance distribution should follow a normal distribution.
-
-!!! Danger
-    Be sure to sort the dataset after subsampling by using `df.sort_values(by="time")` !
 
 ---
 
@@ -336,7 +334,11 @@ You are tasked with creating a report of **no more than 3 pages (excluding refer
 - 2) Kepler result
     - Include both a lightcurve plot and a phase-folding plot for Kepler 8.
     - The BLS algorithm scans through a range of Orbital Periods, and computes a *Power* score for each candidates. The higher the power, the better the candidate. The function `bls.bls_periodogram(...)` returns a 2D array containing all the scores, which allows us to build a **Periodogram**. Pairs are stored as (Power, Period).
-    Plot a periodogram for Kepler 8, 17, 45 and 785. **You are required to use subplots** so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Verify that the periodograms match the known exoplanets for all these stars.
+
+        - Plot a periodogram for Kepler 8, 17, 45 and 785. **You are required to use subplots** so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Verify that the periodograms match the known exoplanets for all these stars.
+
+        - Note that you should use the same arguments for `bls.bls_periodogram(...)` that the ones used for `bls.bls(...)` earlier in the lab.
+
 - 3) Profiling results
     - **If your machine supports RAPL measurement**: Give the approximate energy consumption of the BLS algorithm on the Kepler 8 dataset. 
     - **If your machine does not support RAPL measurement**:
