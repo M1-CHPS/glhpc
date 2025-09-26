@@ -37,7 +37,11 @@ If you're new to Linux and want something simple to use, Fedora is a great place
 
 On Windows/MacOS, you most likely use the file manager or other graphical interfaces to interact with your computer. On linux however, we use the **Linux Shell** via a terminal/console.
 
-![The Shell](image/lab1/the_shell.png)
+<figure markdown="span">
+  ![The Shell](image/lab1/the_shell.png){ style="max-width: 80%; height: auto;" }
+  <figcaption>The Shell
+  </figcaption>
+</figure>
 
 The shell is a very powerful tool that allows you to interact with your computer in many ways. We will only cover the basics in this lab.
 
@@ -144,19 +148,23 @@ cd ~
 #### b) Create the following file structure using only your terminal:
 ```
 exo7/
-    readme.md # With the text "Bonjour !"
+    readme.md # With the text "Bonjour"
     dossier0/
         test.txt  # With the text "test0"
     dossier1/
         test.txt # With the text "test1"
 ```
 
-This directory should be located inside `~/glhpc/lab1/exo7`
-
+Where `exo7/`, `dossier0` and `dossier1` are folders/directories.
+This directory should be located inside `~/glhpc/lab1/exo7`.
 
 It should look something like this (the `tree` command may not be available on your shell):
 
-![Final output](image/lab1/tree_exo7.png)
+<figure markdown="span">
+  ![Final output](image/lab1/tree_exo7.png){ style="max-width: 80%; height: auto;" }
+  <figcaption>Final output
+  </figcaption>
+</figure>
 
 #### c) Finally, run the following from `~/glhpc/lab1`
 
@@ -169,7 +177,7 @@ What does `cp` do ? Why do we use the `-r` flag ?
 The `rm` command is used to remove files, while the `rmdir` command is used to delete **empty folders**. In order to delete a folder, and all the files it contains, we must use the `--force` and `--recursive` flags, also known as `rm -rf`.
 
 Try the following:
-```
+```bash
 rm -rf ./exo7_copy
 ```
 
@@ -222,7 +230,11 @@ A minimalist `oh-my-zsh` setup is described [here](annex/oh-my-zsh.md). `fish` i
 
 We are now going to see the second most critical tool you will use during the Master, second only to the shell: a code editor. Modern code editors allow you to open source files, images, pdf, or even videos. You use your editor to create programs, and the shell to execute them. 
 
-![vscode](image/lab1/vscode.png)
+<figure markdown="span">
+  ![vscode](image/lab1/vscode.png){ style="max-width: 80%; height: auto;" }
+  <figcaption>Visual Studio Code (VSCode) Example
+  </figcaption>
+</figure>
 
 As a starting point, you should download `VSCode` which will cover most of your needs in the future. Do NOT listen to your obnoxious classmates telling you to "just use vim". They cannot be saved.
 
@@ -289,17 +301,16 @@ You may wish to keep this account after the master: you should use your personal
 
 You should setup two factor authentication (2FA) ASAP.
 
+#### b) Follow the [official guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to generate and add an ssh key to your github account.
+
 !!! Note
     Your github page is your portfolio. Your recruiter may look it up, or you may be able to bring it up during interviews to show projects you worked on previously. 
     
     You should take care of it, and have a few clean projects to show !
 
-#### b) Follow the [official guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to generate and add an ssh key to your github account.
-
 <hr class="gradient" />
 
 ## 5 - First C Project
-
 
 ### 0. Pulling from github Classroom
 
