@@ -49,13 +49,13 @@ The parsing and pipeline execution logic have already been implemented so you ca
 #### a) Write a `Makefile` that:
 
 - Compiles `main.c`, `image.c`, `parser.c` and `transformation.c` using `gcc`
-- Produces a binary named `mystransform` at the root of the project
+- Produces a binary named `mytransform` at the root of the project
 - Exposes a `clean` target that removes compiled artifacts
     - This includes any `.o`, `.so`, `.out`, as well as the `mytransform` binary
 - You should link to the math standard library by using the `-lm` compilation flag 
 
 !!! Danger
-    The output binary **must** be named `mystransform`, or later parts of the lab may not work correctly.
+    The output binary **must** be named `mytransform`, or later parts of the lab may not work correctly.
 
 #### b) Define a `CFLAGS` variable inside the `Makefile`
 
@@ -132,10 +132,10 @@ You should not use `memcpy` or `strcpy` for this exercise: perform a manual copy
 
 Compile again and run:
 ```sh title="Memory Test"
-./mytransform --memory-test
+./mytransform --memory-check
 ```
 
-You should get the following:
+You should get the following (Exact results may vary depending on your machine):
 ```
 Memory Allocations tests completed in 5 seconds
 Copy Test: 3000x3000x3 image -> 3524.74 MIOPS, 3.52 GB/s
@@ -159,7 +159,7 @@ for c in channels
 
 !!! Tip
     You should make a copy of your current implementation before implementing this structure, so you can compare the different versions. 
-    Optionally, make multiple versions of `copy_image` with different names, and have `copy_image` call the version you want to test.
+    Optionally, make multiple versions of `copy_image` with different names (e.g. `copy_image_cxy`, `copy_image_xyc`), and have `copy_image` call the version you want to test.
 
 Now, try swapping out the loop. First iterate on `y`, then `x`, then`c`. Try all possible combinations to find which one is faster. Can you explain why ?
 
