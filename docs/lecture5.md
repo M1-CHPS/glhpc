@@ -44,6 +44,118 @@ header-includes:
 * Use Roofline model to identify bottlenecks
 * Understand mixed precision & quantization tradeoffs for energy/perf
 
+## Short introduction to Neural Networks
+
+- Neural networks are composed of layers of neurons
+- Each neuron computes a weighted sum of its inputs followed by a non-linear activation function $f$
+
+$$ \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} \rightarrow \textbf{neuron} \rightarrow y $$ 
+$$ y = f\left(\sum_{i} w_i x_i + b\right) $$
+
+- Common activation functions: ReLU, sigmoid, ...
+
+- **Perceptron**: single layer of neurons (1958 Rosenblatt)
+
+## Architectures
+
+- Different architectures for different tasks:
+  - Fully connected layers
+  - Convolutional layers
+  - Recursive layers
+  - Transformers (attention mechanism)
+
+![Feed-forward NN](image/lecture5/ffn.svg)
+
+## Inference
+
+- Inference: use the trained model to make predictions on new data
+- Forward pass through the network:
+- For each layer, compute the weighted sum and apply activation function
+
+- The weighted sum is a matrix-vector multiplication for fully connected layers and convolutions (often implemented as GEMM).
+
+## Two layer network
+
+Layer 1:
+- $X$: input data [K × B]  → K features, B batch size
+- $W_1$: weights of layer1 [H × K]  → H hidden units
+- $b_1$: bias of layer1 [H × 1]
+
+Layer 2:
+- $W_2$: weights of layer2 [O × H]  → O outputs
+- $b_2$: bias of layer2 [O × 1]
+
+ReLU $f(x) = max(0,x)$, $f'(x) = 1_{x>0}$
+
+## Forward inference
+
+- Layer 1:
+  - Pre-activation hidden (GEMM, H×K × K×B → H×B) 
+     $$Z_1 = W_1 · X + B_1$$
+  - Activation - ReLU (elementwise)
+      $$H = f(Z_1)$$
+- Layer 2:
+  - Output pre-activation (GEMM, O×H × H×B → O×B)
+      $$Z_2 = W_2 · H + B_2$$
+  - Activation - ReLU (elementwise)
+      $$Y = f(Z_2)$$ 
+
+- Forward is dominated by the two large GEMMs Z1 and Z2.
+
+## Training
+
+- Training: adjust weights $W$ and biases $b$ to minimize a loss function $L$ over a training datase
+- Use **backpropagation** to compute gradients on each layer (chain rule)
+
+- Example with one neuron and MSE loss:
+
+$$ y = f(w_1 x_1 + w_2 x_2 + b) $$
+$$ L = (y - y_{true})^2 $$
+$$ \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial w_1} = 2(y - y_{true}) \cdot f'(w_1 x_1 + w_2 x_2 + b) \cdot x_1 $$
+
+- Backward pass can be efficiently implemented using automatic differentiation and matrix multiplications.
+ 
+## Stochastic Gradient Descent
+
+- Use **stochastic gradient descent** to update weights:
+ $$ w_1 \leftarrow w_1 - \eta \cdot \frac{\partial L}{\partial w_1} $$
+ $$ w_2 \leftarrow w_2 - \eta \cdot \frac{\partial L}{\partial w_2} $$
+ $$ b \leftarrow b - \eta \cdot \frac{\partial L}{\partial b} $$
+
+- $\eta$ is the learning rate
+- Repeat for many epochs over the training dataset
+
+## Training
+
+1. Forward pass to compute $H$ and $Y$
+2. Compute loss $L(Y, Y_{true})$
+3. Backward pass to compute gradients.
+
+The backward pass is also dominated by GEMMs.
+
+## Frameworks
+- Popular frameworks: TensorFlow, PyTorch, JAX, ... 
+- High-level APIs for defining models, automatic differentiation, GPU acceleration
+
+```python
+import torch
+import torch.nn as nn
+
+class Net(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(28*28, 512)
+        self.fc2 = nn.Linear(512, 10)
+
+    def forward(self, x):
+        x = torch.flatten(x, 1)
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        return x
+```
+
+
+
 ## SGEMM
 
 Single-precision General Matrix-Matrix multiplication (SGEMM):
