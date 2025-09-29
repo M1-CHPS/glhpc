@@ -409,9 +409,6 @@ install(TARGETS my_library
   - Group related targets together.
   - Use comments to explain sections.
 
-- **Avoid Global Commands:**
-  - Avoid `include_directories` and `link_libraries` globally.
-
 - **Use Modern CMake Features:**
   - Generator expressions for conditional configurations.
   - `FetchContent` for managing external dependencies.
