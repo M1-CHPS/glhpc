@@ -1122,7 +1122,7 @@
 <p>Ensure the script is executable using <code>chmod +x &lt;file&gt;</code> and that the file starts with the shebang <code>#!/usr/bin/env python3</code> </p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Ensure that the <code>results</code> folder exists before saving to it. You can use <code>os.makedirs(&lt;path&gt;, exists_ok=True)</code> in your script. Note that the datasets paths are capitalized!</p>
+<p>Ensure that the <code>results</code> folder exists before saving to it. You can use <code>os.makedirs(&lt;path&gt;, exists_ok=True)</code> in your script.</p>
 </div>
 <h4 id="c-run-the-previous-script-for-the-kepler-8-dataset-what-do-you-observe">c) Run the previous script for the Kepler 8 dataset. What do you observe ?<a class="headerlink" href="#c-run-the-previous-script-for-the-kepler-8-dataset-what-do-you-observe" title="Permanent link">&para;</a></h4>
 <h4 id="d-refine-your-previous-plot">d) Refine your previous plot<a class="headerlink" href="#d-refine-your-previous-plot" title="Permanent link">&para;</a></h4>
@@ -1168,7 +1168,7 @@ What could cause this periodic phenomenon ?</p>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">bin_centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
 </span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">bin_means</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 </span></code></pre></div>
-<h4 id="h-check-the-file-datakepler-8_known_planetsjson">h) Check the file <code>data/Kepler-8_known_planets.json</code><a class="headerlink" href="#h-check-the-file-datakepler-8_known_planetsjson" title="Permanent link">&para;</a></h4>
+<h4 id="h-check-the-file-datakepler-8_known_planetsjson">h) Check the file <code>data/kepler-8_known_planets.json</code><a class="headerlink" href="#h-check-the-file-datakepler-8_known_planetsjson" title="Permanent link">&para;</a></h4>
 <p>Run the previous script by phase folding over the Kepler 8b Period. </p>
 <ul>
 <li>What do you observe ? </li>
@@ -1187,9 +1187,9 @@ What could cause this periodic phenomenon ?</p>
 <p>The Box Least Square (BLS) signal processing algorithm is used to detect the transit of exoplanets in front of their stars by searching for characteristic box-shaped dips in the luminosity at regular frequency.</p>
 <p>The provided library implements a Python &lt;-&gt; C interface so that you can call BLS from a Python script. It also simplifies the loading and manipulation of the data, which can be done in Python, while the C code focuses on high-performance analysis.</p>
 <h4 id="a-run-the-provided-build_librarysh-script">a) Run the provided <code>build_library.sh</code> script<a class="headerlink" href="#a-run-the-provided-build_librarysh-script" title="Permanent link">&para;</a></h4>
-<h4 id="b-write-a-scriptsbls_runnerpy-script-for-kepler-data">b) Write a <code>scripts/bls_runner.py</code> script for kepler data<a class="headerlink" href="#b-write-a-scriptsbls_runnerpy-script-for-kepler-data" title="Permanent link">&para;</a></h4>
+<h4 id="b-write-a-scriptsrun_blspy-script-for-kepler-data">b) Write a <code>scripts/run_bls.py</code> script for kepler data<a class="headerlink" href="#b-write-a-scriptsrun_blspy-script-for-kepler-data" title="Permanent link">&para;</a></h4>
 <p>The BLS library can be used like so:
-<div class="language-python highlight"><span class="filename">bls_runner.py</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">bls</span>
+<div class="language-python highlight"><span class="filename">run_bls.py</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">bls</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># ... Load data here</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="n">match</span> <span class="o">=</span> <span class="n">bls</span><span class="o">.</span><span class="n">bls</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="mf">1.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
@@ -1296,17 +1296,16 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 <p>To further assess the stability of our setup, we should try to measure the distribution of multiple runs of <code>run_bls.py</code></p>
 <p>Modify the script to:</p>
 <ul>
-<li>Load the kepler 8 Dataset, and subsample it (Reduce the size to ~2k randomly selected samples)</li>
-<li>Save the previous script, and execute <code>run_bls.py</code> on the subsampled dataset, measuring the time.</li>
+<li>Load the kepler 8 Dataset, and subsample it (Reduce the size to ~2k randomly selected samples)<ul>
+<li>Be sure to sort the dataset after subsampling by using <code>df.sort_values(by="time")</code> !</li>
+</ul>
+</li>
+<li>Save the previous dataset, and execute <code>run_bls.py</code> on the subsampled dataset, measuring the time.</li>
 <li>Repeat the previous measurements approximately 100 times, and generate a distribution plot using seaborn.
     You can use a boxplot, kdeplot, violin plot, histogram, etc.
     Save the raw data to <code>results/stability_bls.csv</code></li>
 </ul>
 <p>If your machine is stable, the performance distribution should follow a normal distribution.</p>
-<div class="admonition danger">
-<p class="admonition-title">Danger</p>
-<p>Be sure to sort the dataset after subsampling by using <code>df.sort_values(by="time")</code> !</p>
-</div>
 <hr />
 <figure>
   <img alt="Examples of different distribution plots." src="../image/lab5/bls_stability.png" style="max-width: 60%; height: auto;" />
@@ -1336,13 +1335,26 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 <li>A brief description of the context of BLS, the kepler datasets, etc.</li>
 </ul>
 </li>
-<li>2) Kepler result<ul>
+<li>
+<p>2) Kepler result</p>
+<ul>
 <li>Include both a lightcurve plot and a phase-folding plot for Kepler 8.</li>
-<li>The BLS algorithm scans through a range of Orbital Periods, and computes a <em>Power</em> score for each candidates. The higher the power, the better the candidate. The function <code>bls.bls_periodogram(...)</code> returns a 2D array containing all the scores, which allows us to build a <strong>Periodogram</strong>. Pairs are stored as (Power, Period).
-Plot a periodogram for Kepler 8, 17, 45 and 785. <strong>You are required to use subplots</strong> so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Verify that the periodograms match the known exoplanets for all these stars.</li>
+<li>
+<p>The BLS algorithm scans through a range of Orbital Periods, and computes a <em>Power</em> score for each candidates. The higher the power, the better the candidate. The function <code>bls.bls_periodogram(...)</code> returns a 2D array containing all the scores, which allows us to build a <strong>Periodogram</strong>. Pairs are stored as (Power, Period).</p>
+<ul>
+<li>
+<p>Plot a periodogram for Kepler 8, 17, 45 and 785. <strong>You are required to use subplots</strong> so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Verify that the periodograms match the known exoplanets for all these stars.</p>
+</li>
+<li>
+<p>Note that you should use the same arguments for <code>bls.bls_periodogram(...)</code> that the ones used for <code>bls.bls(...)</code> earlier in the lab.</p>
+</li>
 </ul>
 </li>
-<li>3) Profiling results<ul>
+</ul>
+</li>
+<li>
+<p>3) Profiling results</p>
+<ul>
 <li><strong>If your machine supports RAPL measurement</strong>: Give the approximate energy consumption of the BLS algorithm on the Kepler 8 dataset. </li>
 <li><strong>If your machine does not support RAPL measurement</strong>:<ul>
 <li>State this explicity in your report.</li>

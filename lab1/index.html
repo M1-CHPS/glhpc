@@ -1074,7 +1074,12 @@
 
 <h2 id="2-the-linux-shell-and-bash">2 - The linux Shell and Bash<a class="headerlink" href="#2-the-linux-shell-and-bash" title="Permanent link">&para;</a></h2>
 <p>On Windows/MacOS, you most likely use the file manager or other graphical interfaces to interact with your computer. On linux however, we use the <strong>Linux Shell</strong> via a terminal/console.</p>
-<p><img alt="The Shell" src="../image/lab1/the_shell.png" /></p>
+<figure>
+  <img alt="The Shell" src="../image/lab1/the_shell.png" style="max-width: 80%; height: auto;" />
+<br />
+<figcaption>The Shell
+  </figcaption>
+</figure>
 <p>The shell is a very powerful tool that allows you to interact with your computer in many ways. We will only cover the basics in this lab.</p>
 <h4 id="a-first-try-starting-a-new-terminal">a) First, try starting a new terminal<a class="headerlink" href="#a-first-try-starting-a-new-terminal" title="Permanent link">&para;</a></h4>
 <p>Look for an app called <code>terminal</code>, <code>console</code> or even <code>konsole</code>. In some linux distribution, <code>CTRL+ALT+T</code> will open a new terminal.</p>
@@ -1156,22 +1161,28 @@ Some tools also provide <code>man pages</code> when installed, so that you can a
 </span></code></pre></div>
 <h4 id="b-create-the-following-file-structure-using-only-your-terminal">b) Create the following file structure using only your terminal:<a class="headerlink" href="#b-create-the-following-file-structure-using-only-your-terminal" title="Permanent link">&para;</a></h4>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>exo7/
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    readme.md # With the text &quot;Bonjour !&quot;
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    readme.md # With the text &quot;Bonjour&quot;
 </span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    dossier0/
 </span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        test.txt  # With the text &quot;test0&quot;
 </span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>    dossier1/
 </span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        test.txt # With the text &quot;test1&quot;
 </span></code></pre></div>
-<p>This directory should be located inside <code>~/glhpc/lab1/exo7</code></p>
+<p>Where <code>exo7/</code>, <code>dossier0</code> and <code>dossier1</code> are folders/directories.
+This directory should be located inside <code>~/glhpc/lab1/exo7</code>.</p>
 <p>It should look something like this (the <code>tree</code> command may not be available on your shell):</p>
-<p><img alt="Final output" src="../image/lab1/tree_exo7.png" /></p>
+<figure>
+  <img alt="Final output" src="../image/lab1/tree_exo7.png" style="max-width: 80%; height: auto;" />
+<br />
+<figcaption>Final output
+  </figcaption>
+</figure>
 <h4 id="c-finally-run-the-following-from-glhpclab1">c) Finally, run the following from <code>~/glhpc/lab1</code><a class="headerlink" href="#c-finally-run-the-following-from-glhpclab1" title="Permanent link">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>cp<span class="w"> </span>-r<span class="w"> </span>./exo7<span class="w"> </span>./exo7_copy
 </span></code></pre></div>
 <p>What does <code>cp</code> do ? Why do we use the <code>-r</code> flag ?</p>
 <p>The <code>rm</code> command is used to remove files, while the <code>rmdir</code> command is used to delete <strong>empty folders</strong>. In order to delete a folder, and all the files it contains, we must use the <code>--force</code> and <code>--recursive</code> flags, also known as <code>rm -rf</code>.</p>
 <p>Try the following:
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>rm -rf ./exo7_copy
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>rm<span class="w"> </span>-rf<span class="w"> </span>./exo7_copy
 </span></code></pre></div></p>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
@@ -1264,7 +1275,12 @@ Some tools also provide <code>man pages</code> when installed, so that you can a
 <div class="optional-section box-section">
 <h2 id="3-optional-code-editor-vscode">3 - <span class="toc-title"> (Optional) </span> Code Editor (VSCode)<a class="headerlink" href="#3-optional-code-editor-vscode" title="Permanent link">&para;</a></h2>
 <p>We are now going to see the second most critical tool you will use during the Master, second only to the shell: a code editor. Modern code editors allow you to open source files, images, pdf, or even videos. You use your editor to create programs, and the shell to execute them. </p>
-<p><img alt="vscode" src="../image/lab1/vscode.png" /></p>
+<figure>
+  <img alt="vscode" src="../image/lab1/vscode.png" style="max-width: 80%; height: auto;" />
+<br />
+<figcaption>Visual Studio Code (VSCode) Example
+  </figcaption>
+</figure>
 <p>As a starting point, you should download <code>VSCode</code> which will cover most of your needs in the future. Do NOT listen to your obnoxious classmates telling you to "just use vim". They cannot be saved.</p>
 <h3 id="1-installation">1. Installation:<a class="headerlink" href="#1-installation" title="Permanent link">&para;</a></h3>
 <h4 id="a-direct-download">a) Direct download<a class="headerlink" href="#a-direct-download" title="Permanent link">&para;</a></h4>
@@ -1305,12 +1321,12 @@ Some tools also provide <code>man pages</code> when installed, so that you can a
 <h4 id="a-create-a-github-account-if-you-dont-already-have-one">a) Create a <a href="https://github.com/signup">Github account</a> if you don't already have one.<a class="headerlink" href="#a-create-a-github-account-if-you-dont-already-have-one" title="Permanent link">&para;</a></h4>
 <p>You may wish to keep this account after the master: you should use your personal email so you won't lose acces to it.</p>
 <p>You should setup two factor authentication (2FA) ASAP.</p>
+<h4 id="b-follow-the-official-guide-on-how-to-generate-and-add-an-ssh-key-to-your-github-account">b) Follow the <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">official guide</a> on how to generate and add an ssh key to your github account.<a class="headerlink" href="#b-follow-the-official-guide-on-how-to-generate-and-add-an-ssh-key-to-your-github-account" title="Permanent link">&para;</a></h4>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Your github page is your portfolio. Your recruiter may look it up, or you may be able to bring it up during interviews to show projects you worked on previously. </p>
 <p>You should take care of it, and have a few clean projects to show !</p>
 </div>
-<h4 id="b-follow-the-official-guide-on-how-to-generate-and-add-an-ssh-key-to-your-github-account">b) Follow the <a href="https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">official guide</a> on how to generate and add an ssh key to your github account.<a class="headerlink" href="#b-follow-the-official-guide-on-how-to-generate-and-add-an-ssh-key-to-your-github-account" title="Permanent link">&para;</a></h4>
 <hr class="gradient" />
 
 <h2 id="5-first-c-project">5 - First C Project<a class="headerlink" href="#5-first-c-project" title="Permanent link">&para;</a></h2>

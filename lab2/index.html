@@ -1121,7 +1121,7 @@
 <h4 id="a-write-a-makefile-that">a) Write a <code>Makefile</code> that:<a class="headerlink" href="#a-write-a-makefile-that" title="Permanent link">&para;</a></h4>
 <ul>
 <li>Compiles <code>main.c</code>, <code>image.c</code>, <code>parser.c</code> and <code>transformation.c</code> using <code>gcc</code></li>
-<li>Produces a binary named <code>mystransform</code> at the root of the project</li>
+<li>Produces a binary named <code>mytransform</code> at the root of the project</li>
 <li>Exposes a <code>clean</code> target that removes compiled artifacts<ul>
 <li>This includes any <code>.o</code>, <code>.so</code>, <code>.out</code>, as well as the <code>mytransform</code> binary</li>
 </ul>
@@ -1130,7 +1130,7 @@
 </ul>
 <div class="admonition danger">
 <p class="admonition-title">Danger</p>
-<p>The output binary <strong>must</strong> be named <code>mystransform</code>, or later parts of the lab may not work correctly.</p>
+<p>The output binary <strong>must</strong> be named <code>mytransform</code>, or later parts of the lab may not work correctly.</p>
 </div>
 <h4 id="b-define-a-cflags-variable-inside-the-makefile">b) Define a <code>CFLAGS</code> variable inside the <code>Makefile</code><a class="headerlink" href="#b-define-a-cflags-variable-inside-the-makefile" title="Permanent link">&para;</a></h4>
 <p>To get started, you should use <code>-Og -g -Wall -Wextra</code> as compilation flags. We will update this later. Ensure the flags are in effect.</p>
@@ -1180,9 +1180,9 @@
 <p>You should not use <code>memcpy</code> or <code>strcpy</code> for this exercise: perform a manual copy.</p>
 <h4 id="b-execute-the-memory-implementation-test">b) Execute the memory implementation test<a class="headerlink" href="#b-execute-the-memory-implementation-test" title="Permanent link">&para;</a></h4>
 <p>Compile again and run:
-<div class="language-sh highlight"><span class="filename">Memory Test</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./mytransform<span class="w"> </span>--memory-test
+<div class="language-sh highlight"><span class="filename">Memory Test</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>./mytransform<span class="w"> </span>--memory-check
 </span></code></pre></div></p>
-<p>You should get the following:
+<p>You should get the following (Exact results may vary depending on your machine):
 <div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Memory Allocations tests completed in 5 seconds
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Copy Test: 3000x3000x3 image -&gt; 3524.74 MIOPS, 3.52 GB/s
 </span></code></pre></div></p>
@@ -1199,7 +1199,7 @@
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
 <p>You should make a copy of your current implementation before implementing this structure, so you can compare the different versions. 
-Optionally, make multiple versions of <code>copy_image</code> with different names, and have <code>copy_image</code> call the version you want to test.</p>
+Optionally, make multiple versions of <code>copy_image</code> with different names (e.g. <code>copy_image_cxy</code>, <code>copy_image_xyc</code>), and have <code>copy_image</code> call the version you want to test.</p>
 </div>
 <p>Now, try swapping out the loop. First iterate on <code>y</code>, then <code>x</code>, then<code>c</code>. Try all possible combinations to find which one is faster. Can you explain why ?</p>
 <h4 id="d-implement-the-linear-versions">d) Implement the linear versions<a class="headerlink" href="#d-implement-the-linear-versions" title="Permanent link">&para;</a></h4>
