@@ -114,7 +114,7 @@ $$ L = (y - y_{true})^2 $$
 $$ \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial w_1} = 2(y - y_{true}) \cdot f'(w_1 x_1 + w_2 x_2 + b) \cdot x_1 $$
 
 - Backward pass can be efficiently implemented using automatic differentiation and matrix multiplications.
- 
+
 ## Stochastic Gradient Descent
 
 - Use **stochastic gradient descent** to update weights:
@@ -138,6 +138,7 @@ The backward pass is also dominated by GEMMs.
 - High-level APIs for defining models, automatic differentiation, GPU acceleration
 
 ```python
+# Simple 2-layer NN in PyTorch
 import torch
 import torch.nn as nn
 
