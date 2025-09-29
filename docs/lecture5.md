@@ -50,6 +50,7 @@ header-includes:
 - Each neuron computes a weighted sum of its inputs followed by a non-linear activation function $f$
 
 $$ \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} \rightarrow \textbf{neuron} \rightarrow y $$ 
+
 $$ y = f\left(\sum_{i} w_i x_i + b\right) $$
 
 - Common activation functions: ReLU, sigmoid, ...
@@ -90,16 +91,21 @@ ReLU $f(x) = max(0,x)$, $f'(x) = 1_{x>0}$
 
 ## Forward inference
 
-- Layer 1:
-  - Pre-activation hidden (GEMM, H×K × K×B → H×B) 
-      $$Z_1 = W_1 · X + B_1$$
-  - Activation - ReLU (elementwise)
-      $$H = f(Z_1)$$
-- Layer 2:
-  - Output pre-activation (GEMM, O×H × H×B → O×B)
-      $$Z_2 = W_2 · H + B_2$$
-  - Activation - ReLU (elementwise)
-      $$Y = f(Z_2)$$ 
+- Layer 1 Pre-activation hidden (GEMM, H×K × K×B → H×B)
+
+$$Z_1 = W_1 · X + B_1$$
+
+- Layer 1 ctivation - ReLU (elementwise)
+
+$$H = f(Z_1)$$
+
+- Layer 2 Output pre-activation (GEMM, O×H × H×B → O×B)
+
+$$Z_2 = W_2 · H + B_2$$
+
+- Layer 2 Activation - ReLU (elementwise)
+
+$$Y = f(Z_2)$$
 
 - Forward is dominated by the two large GEMMs Z1 and Z2.
 
@@ -111,7 +117,9 @@ ReLU $f(x) = max(0,x)$, $f'(x) = 1_{x>0}$
 - Example with one neuron and MSE loss:
 
 $$ y = f(w_1 x_1 + w_2 x_2 + b) $$
+
 $$ L = (y - y_{true})^2 $$
+
 $$ \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial w_1} = 2(y - y_{true}) \cdot f'(w_1 x_1 + w_2 x_2 + b) \cdot x_1 $$
 
 - Backward pass can be efficiently implemented using automatic differentiation and matrix multiplications.
@@ -119,9 +127,12 @@ $$ \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial y} \cdot \frac{\
 ## Stochastic Gradient Descent
 
 - Use **stochastic gradient descent** to update weights:
- $$ w_1 \leftarrow w_1 - \eta \cdot \frac{\partial L}{\partial w_1} $$
- $$ w_2 \leftarrow w_2 - \eta \cdot \frac{\partial L}{\partial w_2} $$
- $$ b \leftarrow b - \eta \cdot \frac{\partial L}{\partial b} $$
+
+$$ w_1 \leftarrow w_1 - \eta \cdot \frac{\partial L}{\partial w_1} $$
+
+$$ w_2 \leftarrow w_2 - \eta \cdot \frac{\partial L}{\partial w_2} $$
+
+$$ b \leftarrow b - \eta \cdot \frac{\partial L}{\partial b} $$
 
 - $\eta$ is the learning rate
 - Repeat for many epochs over the training dataset
@@ -552,7 +563,6 @@ for specific tasks with LoRA.
 ## Save energy by computing slower: 1GHz
 
 ![image](image/lecture5//lu-pareto1.svg)
-
 
 ## When accounting for the whole system
 
