@@ -63,7 +63,6 @@ $$ y = f\left(\sum_{i} w_i x_i + b\right) $$
   - Convolutional layers
   - Recursive layers
   - Transformers (attention mechanism)
-
 ![Feed-forward NN](image/lecture5/ffn.svg)
 
 ## Inference
@@ -77,13 +76,15 @@ $$ y = f\left(\sum_{i} w_i x_i + b\right) $$
 ## Two layer network
 
 Layer 1:
+
 - $X$: input data [K × B]  → K features, B batch size
-- $W_1$: weights of layer1 [H × K]  → H hidden units
-- $b_1$: bias of layer1 [H × 1]
+- $W_1$: weights [H × K]  → H hidden units
+- $b_1$: bias [H × 1]
 
 Layer 2:
-- $W_2$: weights of layer2 [O × H]  → O outputs
-- $b_2$: bias of layer2 [O × 1]
+
+- $W_2$: weights [O × H]  → O outputs
+- $b_2$: bias [O × 1]
 
 ReLU $f(x) = max(0,x)$, $f'(x) = 1_{x>0}$
 
@@ -91,7 +92,7 @@ ReLU $f(x) = max(0,x)$, $f'(x) = 1_{x>0}$
 
 - Layer 1:
   - Pre-activation hidden (GEMM, H×K × K×B → H×B) 
-     $$Z_1 = W_1 · X + B_1$$
+      $$Z_1 = W_1 · X + B_1$$
   - Activation - ReLU (elementwise)
       $$H = f(Z_1)$$
 - Layer 2:
@@ -366,7 +367,9 @@ for (ii = 0; ii < M; ii += BS)
 - HPC **part of the solution**: modeling and improving complex
     systems
 
-- HPC **part of the problem**: Frontier system at ORNL
+## HPC **part of the problem**
+
+- Frontier system at ORNL
 
   - More than $10^{18}$ floating point operations per second
 
@@ -467,7 +470,7 @@ double number of transistors and frequency increases:
 
 ## Analysis of TOP-100 HPC systems
 
-![image](image/lecture5/top500.png)
+![Evolution of TOP 100 systems](image/lecture5/top500.png)
 
 **Efficiency and Peak computation exponential increase.**
 
@@ -492,11 +495,9 @@ double number of transistors and frequency increases:
 
 # AI energy and computation costs
 
-
 ## Training cost doubles every 3.4 months \[OpenAI, 2020\]
 
-![image](image/lecture5//ai-and-compute-all-error-no-title.png)
-
+![OpenAI, 2020](image/lecture5//ai-and-compute-all-error-no-title.png)
 
 ## Should we study training or inference?
 
@@ -516,15 +517,14 @@ double number of transistors and frequency increases:
 ![image](image/lecture5//flops-acc.png)
 ![image](image/lecture5//joules-acc.png)
 
-Exponential increase in compute for linear accuracy gain \[Desislavov,
-2023 / Schwartz, 2019\]
+Exponential increase in compute for linear accuracy gain \[Desislavov, 2023 / Schwartz, 2019\]
 
 
 # More frugal computing?
 
 ## Smaller precision / Smaller models for AI
 
-![image](image/lecture5//accelerators-joules.png)
+![Shankar 2022](image/lecture5//accelerators-joules.png)
 
 LLM success of smaller models (Llama, Chinchilla) fine-tuned
 for specific tasks with LoRA.
@@ -541,37 +541,27 @@ for specific tasks with LoRA.
 - DNN not necessary for all tasks
 
 
-
 ## DVFS study of LU decomposition
-
-
-![image](image/lecture5//lu-pareto1.svg)
-
 - Knights Mill 72 cores
-
 - Intel MKL dgetrf
-
 - $n \in [1000,3000]$
-
 - RAPL estimation
 
+(Thomas Roglin, M1 UVSQ/INTEL internship 2023)
 
-Save energy by computing slower: 1GHz
+## Save energy by computing slower: 1GHz
 
-Thomas Roglin, M1 UVSQ/INTEL internship 2023
+![image](image/lecture5//lu-pareto1.svg)
 
 
 ## When accounting for the whole system
 
-![image](image/lecture5/lu-pareto2.svg)
-
 - Model: RAPL + **40W**
+- System power dominates at low frequencies
 
-- **Optimal 2.6 GHz**: compute faster and turn off machine
+## Race to idle: 2.6 GHz compute faster and turn off machine 
 
-- Saves idle power (race to idle)
-
-Thomas Roglin, M1 UVSQ/INTEL internship 2023
+![image](image/lecture5/lu-pareto2.svg)
  
 ## Need for an interdisciplinary discussion
 
