@@ -1108,9 +1108,9 @@ $$ y = f\left(\sum_{i} w_i x_i + b\right) \]</div>
 <li>Fully connected layers</li>
 <li>Convolutional layers</li>
 <li>Recursive layers</li>
-<li>Transformers (attention mechanism)</li>
+<li>Transformers (attention mechanism)
+<img alt="Feed-forward NN" src="../image/lecture5/ffn.svg" /></li>
 </ul>
-<p><img alt="Feed-forward NN" src="../image/lecture5/ffn.svg" /></p>
 <h2 id="inference">Inference<a class="headerlink" href="#inference" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Inference: use the trained model to make predictions on new data</li>
@@ -1123,19 +1123,23 @@ $$ y = f\left(\sum_{i} w_i x_i + b\right) \]</div>
 </li>
 </ul>
 <h2 id="two-layer-network">Two layer network<a class="headerlink" href="#two-layer-network" title="Permanent link">&para;</a></h2>
-<p>Layer 1:
-- <span class="arithmatex">\(X\)</span>: input data [K × B]  → K features, B batch size
-- <span class="arithmatex">\(W_1\)</span>: weights of layer1 [H × K]  → H hidden units
-- <span class="arithmatex">\(b_1\)</span>: bias of layer1 [H × 1]</p>
-<p>Layer 2:
-- <span class="arithmatex">\(W_2\)</span>: weights of layer2 [O × H]  → O outputs
-- <span class="arithmatex">\(b_2\)</span>: bias of layer2 [O × 1]</p>
+<p>Layer 1:</p>
+<ul>
+<li><span class="arithmatex">\(X\)</span>: input data [K × B]  → K features, B batch size</li>
+<li><span class="arithmatex">\(W_1\)</span>: weights [H × K]  → H hidden units</li>
+<li><span class="arithmatex">\(b_1\)</span>: bias [H × 1]</li>
+</ul>
+<p>Layer 2:</p>
+<ul>
+<li><span class="arithmatex">\(W_2\)</span>: weights [O × H]  → O outputs</li>
+<li><span class="arithmatex">\(b_2\)</span>: bias [O × 1]</li>
+</ul>
 <p>ReLU <span class="arithmatex">\(f(x) = max(0,x)\)</span>, <span class="arithmatex">\(f'(x) = 1_{x&gt;0}\)</span></p>
 <h2 id="forward-inference">Forward inference<a class="headerlink" href="#forward-inference" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Layer 1:</li>
 <li>Pre-activation hidden (GEMM, H×K × K×B → H×B) 
-     <span class="arithmatex">\(<span class="arithmatex">\(Z_1 = W_1 · X + B_1\)</span>\)</span></li>
+      <span class="arithmatex">\(<span class="arithmatex">\(Z_1 = W_1 · X + B_1\)</span>\)</span></li>
 <li>Activation - ReLU (elementwise)
       <span class="arithmatex">\(<span class="arithmatex">\(H = f(Z_1)\)</span>\)</span></li>
 <li>Layer 2:</li>
@@ -1423,8 +1427,11 @@ A_{21}B_{11} + A_{22}B_{21} &amp; A_{21}B_{12} + A_{22}B_{22} \\
 <p>HPC <strong>part of the solution</strong>: modeling and improving complex
     systems</p>
 </li>
+</ul>
+<h2 id="hpc-part-of-the-problem">HPC <strong>part of the problem</strong><a class="headerlink" href="#hpc-part-of-the-problem" title="Permanent link">&para;</a></h2>
+<ul>
 <li>
-<p>HPC <strong>part of the problem</strong>: Frontier system at ORNL</p>
+<p>Frontier system at ORNL</p>
 </li>
 <li>
 <p>More than <span class="arithmatex">\(10^{18}\)</span> floating point operations per second</p>
@@ -1555,7 +1562,7 @@ double number of transistors and frequency increases:</p>
 </li>
 </ul>
 <h2 id="analysis-of-top-100-hpc-systems">Analysis of TOP-100 HPC systems<a class="headerlink" href="#analysis-of-top-100-hpc-systems" title="Permanent link">&para;</a></h2>
-<p><img alt="image" src="../image/lecture5/top500.png" /></p>
+<p><img alt="Evolution of TOP 100 systems" src="../image/lecture5/top500.png" /></p>
 <p><strong>Efficiency and Peak computation exponential increase.</strong></p>
 <h2 id="rebound-effects">Rebound effects<a class="headerlink" href="#rebound-effects" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1584,7 +1591,7 @@ double number of transistors and frequency increases:</p>
 </ul>
 <h1 id="ai-energy-and-computation-costs">AI energy and computation costs<a class="headerlink" href="#ai-energy-and-computation-costs" title="Permanent link">&para;</a></h1>
 <h2 id="training-cost-doubles-every-34-months-openai-2020">Training cost doubles every 3.4 months [OpenAI, 2020]<a class="headerlink" href="#training-cost-doubles-every-34-months-openai-2020" title="Permanent link">&para;</a></h2>
-<p><img alt="image" src="../image/lecture5/ai-and-compute-all-error-no-title.png" /></p>
+<p><img alt="OpenAI, 2020" src="../image/lecture5/ai-and-compute-all-error-no-title.png" /></p>
 <h2 id="should-we-study-training-or-inference">Should we study training or inference?<a class="headerlink" href="#should-we-study-training-or-inference" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
@@ -1609,11 +1616,10 @@ double number of transistors and frequency increases:</p>
 <h2 id="inference-cost-diminishing-returns-for-computer-vision">Inference cost - Diminishing returns for computer vision<a class="headerlink" href="#inference-cost-diminishing-returns-for-computer-vision" title="Permanent link">&para;</a></h2>
 <p><img alt="image" src="../image/lecture5/flops-acc.png" />
 <img alt="image" src="../image/lecture5/joules-acc.png" /></p>
-<p>Exponential increase in compute for linear accuracy gain [Desislavov,
-2023 / Schwartz, 2019]</p>
+<p>Exponential increase in compute for linear accuracy gain [Desislavov, 2023 / Schwartz, 2019]</p>
 <h1 id="more-frugal-computing">More frugal computing?<a class="headerlink" href="#more-frugal-computing" title="Permanent link">&para;</a></h1>
 <h2 id="smaller-precision-smaller-models-for-ai">Smaller precision / Smaller models for AI<a class="headerlink" href="#smaller-precision-smaller-models-for-ai" title="Permanent link">&para;</a></h2>
-<p><img alt="image" src="../image/lecture5/accelerators-joules.png" /></p>
+<p><img alt="Shankar 2022" src="../image/lecture5/accelerators-joules.png" /></p>
 <p>LLM success of smaller models (Llama, Chinchilla) fine-tuned
 for specific tasks with LoRA.</p>
 <h2 id="tradeoff-model-complexity-cost-explainability">Tradeoff: Model complexity - Cost - Explainability<a class="headerlink" href="#tradeoff-model-complexity-cost-explainability" title="Permanent link">&para;</a></h2>
@@ -1632,37 +1638,22 @@ for specific tasks with LoRA.</p>
 </li>
 </ul>
 <h2 id="dvfs-study-of-lu-decomposition">DVFS study of LU decomposition<a class="headerlink" href="#dvfs-study-of-lu-decomposition" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Knights Mill 72 cores</li>
+<li>Intel MKL dgetrf</li>
+<li><span class="arithmatex">\(n \in [1000,3000]\)</span></li>
+<li>RAPL estimation</li>
+</ul>
+<p>(Thomas Roglin, M1 UVSQ/INTEL internship 2023)</p>
+<h2 id="save-energy-by-computing-slower-1ghz">Save energy by computing slower: 1GHz<a class="headerlink" href="#save-energy-by-computing-slower-1ghz" title="Permanent link">&para;</a></h2>
 <p><img alt="image" src="../image/lecture5/lu-pareto1.svg" /></p>
-<ul>
-<li>
-<p>Knights Mill 72 cores</p>
-</li>
-<li>
-<p>Intel MKL dgetrf</p>
-</li>
-<li>
-<p><span class="arithmatex">\(n \in [1000,3000]\)</span></p>
-</li>
-<li>
-<p>RAPL estimation</p>
-</li>
-</ul>
-<p>Save energy by computing slower: 1GHz</p>
-<p>Thomas Roglin, M1 UVSQ/INTEL internship 2023</p>
 <h2 id="when-accounting-for-the-whole-system">When accounting for the whole system<a class="headerlink" href="#when-accounting-for-the-whole-system" title="Permanent link">&para;</a></h2>
-<p><img alt="image" src="../image/lecture5/lu-pareto2.svg" /></p>
 <ul>
-<li>
-<p>Model: RAPL + <strong>40W</strong></p>
-</li>
-<li>
-<p><strong>Optimal 2.6 GHz</strong>: compute faster and turn off machine</p>
-</li>
-<li>
-<p>Saves idle power (race to idle)</p>
-</li>
+<li>Model: RAPL + <strong>40W</strong></li>
+<li>System power dominates at low frequencies</li>
 </ul>
-<p>Thomas Roglin, M1 UVSQ/INTEL internship 2023</p>
+<h2 id="race-to-idle-26-ghz-compute-faster-and-turn-off-machine">Race to idle: 2.6 GHz compute faster and turn off machine<a class="headerlink" href="#race-to-idle-26-ghz-compute-faster-and-turn-off-machine" title="Permanent link">&para;</a></h2>
+<p><img alt="image" src="../image/lecture5/lu-pareto2.svg" /></p>
 <h2 id="need-for-an-interdisciplinary-discussion">Need for an interdisciplinary discussion<a class="headerlink" href="#need-for-an-interdisciplinary-discussion" title="Permanent link">&para;</a></h2>
 <ul>
 <li>
