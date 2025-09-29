@@ -1092,8 +1092,8 @@
 <li>Neural networks are composed of layers of neurons</li>
 <li>Each neuron computes a weighted sum of its inputs followed by a non-linear activation function <span class="arithmatex">\(f\)</span></li>
 </ul>
-<div class="arithmatex">\[ \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} \rightarrow \textbf{neuron} \rightarrow y $$ 
-$$ y = f\left(\sum_{i} w_i x_i + b\right) \]</div>
+<div class="arithmatex">\[ \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} \rightarrow \textbf{neuron} \rightarrow y \]</div>
+<div class="arithmatex">\[ y = f\left(\sum_{i} w_i x_i + b\right) \]</div>
 <ul>
 <li>
 <p>Common activation functions: ReLU, sigmoid, ...</p>
@@ -1137,21 +1137,23 @@ $$ y = f\left(\sum_{i} w_i x_i + b\right) \]</div>
 <p>ReLU <span class="arithmatex">\(f(x) = max(0,x)\)</span>, <span class="arithmatex">\(f'(x) = 1_{x&gt;0}\)</span></p>
 <h2 id="forward-inference">Forward inference<a class="headerlink" href="#forward-inference" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Layer 1:</li>
-<li>Pre-activation hidden (GEMM, H×K × K×B → H×B) 
-      <span class="arithmatex">\(<span class="arithmatex">\(Z_1 = W_1 · X + B_1\)</span>\)</span></li>
-<li>Activation - ReLU (elementwise)
-      <span class="arithmatex">\(<span class="arithmatex">\(H = f(Z_1)\)</span>\)</span></li>
-<li>Layer 2:</li>
-<li>Output pre-activation (GEMM, O×H × H×B → O×B)
-      <span class="arithmatex">\(<span class="arithmatex">\(Z_2 = W_2 · H + B_2\)</span>\)</span></li>
-<li>
-<p>Activation - ReLU (elementwise)
-      <span class="arithmatex">\(<span class="arithmatex">\(Y = f(Z_2)\)</span>\)</span> </p>
-</li>
-<li>
-<p>Forward is dominated by the two large GEMMs Z1 and Z2.</p>
-</li>
+<li>Layer 1 Pre-activation hidden (GEMM, H×K × K×B → H×B)</li>
+</ul>
+<div class="arithmatex">\[Z_1 = W_1 · X + B_1\]</div>
+<ul>
+<li>Layer 1 ctivation - ReLU (elementwise)</li>
+</ul>
+<div class="arithmatex">\[H = f(Z_1)\]</div>
+<ul>
+<li>Layer 2 Output pre-activation (GEMM, O×H × H×B → O×B)</li>
+</ul>
+<div class="arithmatex">\[Z_2 = W_2 · H + B_2\]</div>
+<ul>
+<li>Layer 2 Activation - ReLU (elementwise)</li>
+</ul>
+<div class="arithmatex">\[Y = f(Z_2)\]</div>
+<ul>
+<li>Forward is dominated by the two large GEMMs Z1 and Z2.</li>
 </ul>
 <h2 id="training">Training<a class="headerlink" href="#training" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1163,23 +1165,21 @@ $$ y = f\left(\sum_{i} w_i x_i + b\right) \]</div>
 <p>Example with one neuron and MSE loss:</p>
 </li>
 </ul>
-<div class="arithmatex">\[ y = f(w_1 x_1 + w_2 x_2 + b) $$
-$$ L = (y - y_{true})^2 $$
-$$ \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial w_1} = 2(y - y_{true}) \cdot f'(w_1 x_1 + w_2 x_2 + b) \cdot x_1 \]</div>
+<div class="arithmatex">\[ y = f(w_1 x_1 + w_2 x_2 + b) \]</div>
+<div class="arithmatex">\[ L = (y - y_{true})^2 \]</div>
+<div class="arithmatex">\[ \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial w_1} = 2(y - y_{true}) \cdot f'(w_1 x_1 + w_2 x_2 + b) \cdot x_1 \]</div>
 <ul>
 <li>Backward pass can be efficiently implemented using automatic differentiation and matrix multiplications.</li>
 </ul>
 <h2 id="stochastic-gradient-descent">Stochastic Gradient Descent<a class="headerlink" href="#stochastic-gradient-descent" title="Permanent link">&para;</a></h2>
 <ul>
-<li>
-<p>Use <strong>stochastic gradient descent</strong> to update weights:
- $$ w_1 \leftarrow w_1 - \eta \cdot \frac{\partial L}{\partial w_1} $$
- $$ w_2 \leftarrow w_2 - \eta \cdot \frac{\partial L}{\partial w_2} $$
- $$ b \leftarrow b - \eta \cdot \frac{\partial L}{\partial b} $$</p>
-</li>
-<li>
-<p><span class="arithmatex">\(\eta\)</span> is the learning rate</p>
-</li>
+<li>Use <strong>stochastic gradient descent</strong> to update weights:</li>
+</ul>
+<div class="arithmatex">\[ w_1 \leftarrow w_1 - \eta \cdot \frac{\partial L}{\partial w_1} \]</div>
+<div class="arithmatex">\[ w_2 \leftarrow w_2 - \eta \cdot \frac{\partial L}{\partial w_2} \]</div>
+<div class="arithmatex">\[ b \leftarrow b - \eta \cdot \frac{\partial L}{\partial b} \]</div>
+<ul>
+<li><span class="arithmatex">\(\eta\)</span> is the learning rate</li>
 <li>Repeat for many epochs over the training dataset</li>
 </ul>
 <h2 id="training_1">Training<a class="headerlink" href="#training_1" title="Permanent link">&para;</a></h2>
