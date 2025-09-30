@@ -21,7 +21,7 @@ In this first part, you will learn how to write a `CMakeLists.txt` file for a C 
 
 ### 1. Minimal Build
 
-Create a minimal `CMakeLists.txt` that builds the shared library `libparser.so` and the executable `mytransform`.
+Create a minimal `CMakeLists.txt` that builds the shared library `libimage.so` and the executable `mytransform`.
 
 #### a) Set the minimum required CMake version and project name
 
@@ -36,15 +36,15 @@ project(parser LANGUAGES C)
 include_directories(src include)
 ```
 
-The `include_directories` command specifies the directories to search for header files during compilation. Here, `include` contains the public header of the parser library, and `src` contains the private headers used internally by the library and the executable.
+The `include_directories` command specifies the directories to search for header files during compilation. Here, `include` contains the public header of the image library, and `src` contains the private headers used internally by the library and the executable.
 
 #### c) Add the shared library target
 
 ```cmake title="CMakeLists.txt"
-add_library(parser SHARED src/parser.c)
+add_library(image SHARED src/image.c)
 ```
 
-In Linux a shared library has the extension `.so` (shared object). The `add_library` command creates a target named `parser` that builds a shared library from the source file `src/parser.c`. The final library will be named `libparser.so` by default.
+In Linux a shared library has the extension `.so` (shared object). The `add_library` command creates a target named `image` that builds a shared library from the source file `src/image.c`. The final library will be named `libimage.so` by default.
 
 #### d) Add the executable target
 
@@ -57,10 +57,10 @@ The `add_executable` command builds an executable `mytransform` from the specifi
 #### e) Link the shared library to the executable
 
 ```cmake
-target_link_libraries(mytransform PRIVATE parser m)
+target_link_libraries(mytransform PRIVATE image m)
 ```
 
-This command ensures that the `mytransform` executable is linked against the `parser` shared library and the math library `m`. 
+This command ensures that the `mytransform` executable is linked against the `image` shared library and the math library `m`. 
 
 !!! Note
     The `PRIVATE` keyword indicates that the dependency is only required for building the `mytransform` target and does not propagate to other targets that may link against `mytransform`.
@@ -86,7 +86,7 @@ $ make -C build/
 #### h) Answer the following questions
 
 - Where are the generated files located?
-- Can you find the `libparser.so` library? the `mytransform` executable?
+- Can you find the `libimage.so` library? the `mytransform` executable?
 - Can you run the program? 
 
 ### 2. Build Configurations
@@ -116,7 +116,7 @@ set(COMMON_COMPILE_FLAGS
 Apply the flags to the targets:
 
 ```cmake title="CMakeLists.txt"
-target_compile_options(parser PRIVATE ${COMMON_COMPILE_FLAGS})
+target_compile_options(image PRIVATE ${COMMON_COMPILE_FLAGS})
 target_compile_options(mytransform PRIVATE ${COMMON_COMPILE_FLAGS})
 ```
 
@@ -156,7 +156,7 @@ This module provides standard installation directory variables like `CMAKE_INSTA
 #### c) Add installation rules for the shared library
 
 ```cmake title="CMakeLists.txt"
-install(TARGETS parser
+install(TARGETS image 
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
@@ -186,18 +186,18 @@ Since `install_dir` is not a standard system directory, you need to set the `LD_
 
 #### f) Install the public header file
 
-As you can see, the public header file `parser.h` is not installed.
+As you can see, the public header file `image.h` is not installed.
 To inform CMake about the public headers, you should add the following command:
 
 ```cmake title="CMakeLists.txt"
-set_target_properties(parser PROPERTIES
+set_target_properties(image PROPERTIES
     VERSION ${PROJECT_VERSION}
     SOVERSION ${PROJECT_VERSION_MAJOR}
-    PUBLIC_HEADER include/parser.h
+    PUBLIC_HEADER include/image.h
 )
 ```
 
-Rebuild and install the project again, you should see the `parser.h` file in the `include` directory of the installation prefix. Additionally, the shared library should now have a versioned name like `libparser.so.1.0.0`.
+Rebuild and install the project again, you should see the `image.h` file in the `include` directory of the installation prefix. Additionally, the shared library should now have a versioned name like `libimage.so.1.0.0`.
 
 ### 3. Better handling of include directories
 
@@ -208,7 +208,7 @@ Our current way of handling include directories is not ideal. We will improve it
 #### b) Add the following commands to specify include directories for each target
 
 ```cmake title="CMakeLists.txt"
-target_include_directories(parser 
+target_include_directories(image
     PUBLIC 
         $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>
@@ -317,15 +317,15 @@ As you can see, we are using systematically the Unity assertion macros to check 
 To run our tests, we need to create a new executable target for the test runner in our `CMakeLists.txt` file.
 
 ```cmake title="CMakeLists.txt"
-add_executable(test_runner tests/test_runner.c tests/test_image.c src/transformation.c src/image.c)
+add_executable(test_runner tests/test_runner.c tests/test_image.c src/transformation.c src/parser.c)
 target_include_directories(test_runner 
     PRIVATE 
         ${PROJECT_SOURCE_DIR}/src
 )
-target_link_libraries(test_runner unity m parser)
+target_link_libraries(test_runner unity m image)
 ```
 
-Observe that we link the `test_runner` target against the `unity` library, the math library `m`, and our `parser` library.
+Observe that we link the `test_runner` target against the `unity` library, the math library `m`, and our `image` library.
 
 ### 4. Add a custom target to run the tests
 

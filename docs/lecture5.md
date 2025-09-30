@@ -44,6 +44,131 @@ header-includes:
 * Use Roofline model to identify bottlenecks
 * Understand mixed precision & quantization tradeoffs for energy/perf
 
+## Short introduction to Neural Networks
+
+- Neural networks are composed of layers of neurons
+- Each neuron computes a weighted sum of its inputs followed by a non-linear activation function $f$
+
+$$ \begin{bmatrix} x_1 \\ x_2 \\ \vdots \\ x_n \end{bmatrix} \rightarrow \textbf{neuron} \rightarrow y $$ 
+
+$$ y = f\left(\sum_{i} w_i x_i + b\right) $$
+
+- Common activation functions: ReLU, sigmoid, ...
+
+- **Perceptron**: single layer of neurons (1958 Rosenblatt)
+
+## Architectures
+
+- Different architectures for different tasks:
+  - Fully connected layers
+  - Convolutional layers
+  - Recursive layers
+  - Transformers (attention mechanism)
+![Feed-forward NN](image/lecture5/ffn.svg)
+
+## Inference
+
+- Inference: use the trained model to make predictions on new data
+- Forward pass through the network:
+- For each layer, compute the weighted sum and apply activation function
+
+- The weighted sum is a matrix-vector multiplication for fully connected layers and convolutions (often implemented as GEMM).
+
+## Two layer network
+
+Layer 1:
+
+- $X$: input data [K × B]  → K features, B batch size
+- $W_1$: weights [H × K]  → H hidden units
+- $b_1$: bias [H × 1]
+
+Layer 2:
+
+- $W_2$: weights [O × H]  → O outputs
+- $b_2$: bias [O × 1]
+
+ReLU $f(x) = max(0,x)$, $f'(x) = 1_{x>0}$
+
+## Forward inference
+
+- Layer 1 Pre-activation hidden (GEMM, H×K × K×B → H×B)
+
+$$Z_1 = W_1 · X + B_1$$
+
+- Layer 1 ctivation - ReLU (elementwise)
+
+$$H = f(Z_1)$$
+
+- Layer 2 Output pre-activation (GEMM, O×H × H×B → O×B)
+
+$$Z_2 = W_2 · H + B_2$$
+
+- Layer 2 Activation - ReLU (elementwise)
+
+$$Y = f(Z_2)$$
+
+- Forward is dominated by the two large GEMMs Z1 and Z2.
+
+## Training
+
+- Training: adjust weights $W$ and biases $b$ to minimize a loss function $L$ over a training datase
+- Use **backpropagation** to compute gradients on each layer (chain rule)
+
+- Example with one neuron and MSE loss:
+
+$$ y = f(w_1 x_1 + w_2 x_2 + b) $$
+
+$$ L = (y - y_{true})^2 $$
+
+$$ \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial w_1} = 2(y - y_{true}) \cdot f'(w_1 x_1 + w_2 x_2 + b) \cdot x_1 $$
+
+- Backward pass can be efficiently implemented using automatic differentiation and matrix multiplications.
+
+## Stochastic Gradient Descent
+
+- Use **stochastic gradient descent** to update weights:
+
+$$ w_1 \leftarrow w_1 - \eta \cdot \frac{\partial L}{\partial w_1} $$
+
+$$ w_2 \leftarrow w_2 - \eta \cdot \frac{\partial L}{\partial w_2} $$
+
+$$ b \leftarrow b - \eta \cdot \frac{\partial L}{\partial b} $$
+
+- $\eta$ is the learning rate
+- Repeat for many epochs over the training dataset
+
+## Training
+
+1. Forward pass to compute $H$ and $Y$
+2. Compute loss $L(Y, Y_{true})$
+3. Backward pass to compute gradients.
+
+The backward pass is also dominated by GEMMs.
+
+## Frameworks
+- Popular frameworks: TensorFlow, PyTorch, JAX, ... 
+- High-level APIs for defining models, automatic differentiation, GPU acceleration
+
+```python
+# Simple 2-layer NN in PyTorch
+import torch
+import torch.nn as nn
+
+class Net(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.fc1 = nn.Linear(28*28, 512)
+        self.fc2 = nn.Linear(512, 10)
+
+    def forward(self, x):
+        x = torch.flatten(x, 1)
+        x = torch.relu(self.fc1(x))
+        x = torch.relu(self.fc2(x))
+        return x
+```
+
+
+
 ## SGEMM
 
 Single-precision General Matrix-Matrix multiplication (SGEMM):
@@ -253,7 +378,9 @@ for (ii = 0; ii < M; ii += BS)
 - HPC **part of the solution**: modeling and improving complex
     systems
 
-- HPC **part of the problem**: Frontier system at ORNL
+## HPC **part of the problem**
+
+- Frontier system at ORNL
 
   - More than $10^{18}$ floating point operations per second
 
@@ -354,7 +481,7 @@ double number of transistors and frequency increases:
 
 ## Analysis of TOP-100 HPC systems
 
-![image](image/lecture5/top500.png)
+![Evolution of TOP 100 systems](image/lecture5/top500.png)
 
 **Efficiency and Peak computation exponential increase.**
 
@@ -379,11 +506,9 @@ double number of transistors and frequency increases:
 
 # AI energy and computation costs
 
-
 ## Training cost doubles every 3.4 months \[OpenAI, 2020\]
 
-![image](image/lecture5//ai-and-compute-all-error-no-title.png)
-
+![OpenAI, 2020](image/lecture5//ai-and-compute-all-error-no-title.png)
 
 ## Should we study training or inference?
 
@@ -403,15 +528,14 @@ double number of transistors and frequency increases:
 ![image](image/lecture5//flops-acc.png)
 ![image](image/lecture5//joules-acc.png)
 
-Exponential increase in compute for linear accuracy gain \[Desislavov,
-2023 / Schwartz, 2019\]
+Exponential increase in compute for linear accuracy gain \[Desislavov, 2023 / Schwartz, 2019\]
 
 
 # More frugal computing?
 
 ## Smaller precision / Smaller models for AI
 
-![image](image/lecture5//accelerators-joules.png)
+![Shankar 2022](image/lecture5//accelerators-joules.png)
 
 LLM success of smaller models (Llama, Chinchilla) fine-tuned
 for specific tasks with LoRA.
@@ -428,37 +552,26 @@ for specific tasks with LoRA.
 - DNN not necessary for all tasks
 
 
-
 ## DVFS study of LU decomposition
+- Knights Mill 72 cores
+- Intel MKL dgetrf
+- $n \in [1000,3000]$
+- RAPL estimation
 
+(Thomas Roglin, M1 UVSQ/INTEL internship 2023)
+
+## Save energy by computing slower: 1GHz
 
 ![image](image/lecture5//lu-pareto1.svg)
 
-- Knights Mill 72 cores
-
-- Intel MKL dgetrf
-
-- $n \in [1000,3000]$
-
-- RAPL estimation
-
-
-Save energy by computing slower: 1GHz
-
-Thomas Roglin, M1 UVSQ/INTEL internship 2023
-
-
 ## When accounting for the whole system
 
-![image](image/lecture5/lu-pareto2.svg)
-
 - Model: RAPL + **40W**
+- System power dominates at low frequencies
 
-- **Optimal 2.6 GHz**: compute faster and turn off machine
+## Race to idle: 2.6 GHz compute faster and turn off machine 
 
-- Saves idle power (race to idle)
-
-Thomas Roglin, M1 UVSQ/INTEL internship 2023
+![image](image/lecture5/lu-pareto2.svg)
  
 ## Need for an interdisciplinary discussion
 
