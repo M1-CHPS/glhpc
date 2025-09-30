@@ -1080,7 +1080,7 @@ Now you must implement and optimize the other operations (add, relu, flatten) an
 <p><code>image_0.ubyte</code> to <code>image_99.ubyte</code>: 100 test images of handwritten digits in binary format; extracted from the <a href="https://en.wikipedia.org/wiki/MNIST_database">MNIST</a> database. Each file contains 784 bytes (28x28 pixels) representing a grayscale image.</p>
 </li>
 <li>
-<p><code>labels.txt</code>: Text file containing the expected labels for the test images separated by commas. Each value corresponds to the label of the image with the same index (e.g., the first label is the label for image_0.ubyte).</p>
+<p><code>labels.csv</code>: Text file containing the expected labels for the test images separated by commas. Each value corresponds to the label of the image with the same index (e.g., the first label is the label for image_0.ubyte).</p>
 </li>
 </ul>
 </li>
@@ -1212,7 +1212,7 @@ The <code>get_weight_matrix()</code> function takes care of this for you by tran
 <p>Add and Relu can be implemented using simple loops. You can optimize them using techniques like loop unrolling or SIMD intrinsics.</p>
 </li>
 <li>
-<p>For Gemm, you can use the optimized sgemm library you implemented in the previous lab.</p>
+<p>For Gemm, you can use the optimized sgemm library you implemented in the previous lab. You should copy the relevant files and modify the CMakeLists.txt to build and link against the sgemm library.</p>
 </li>
 </ul>
 <div class="admonition tip">
