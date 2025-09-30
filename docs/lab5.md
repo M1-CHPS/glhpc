@@ -15,6 +15,30 @@ The [Kepler space telescope](https://en.wikipedia.org/wiki/Kepler_space_telescop
 
 Kepler generates relatively simple datasets: a photon flux (the intensity of the received light) at specific dates for a particular stars. However, by carefully preprocessing this data and using specialized signal analysis techniques, we can make major discoveries.
 
+
+## Report
+
+You should keep all images and results produced during this lab. You should progressively build a report (in markdown, latex, typst or other) following this structure:
+
+- 1) Environment and context
+    - Give details on the machine you used for the experiments: CPU/Memory specifications, compiler version, python version, OS name and version, and any other details that helps characterize your setup.
+        - You can use `lscpu`, `free -h`, `python --version`, `gcc --version`, ...
+    - A brief description of the context of BLS, the kepler datasets, etc.
+- 2) Kepler result
+    - Include both a lightcurve plot and a phase-folding plot for Kepler 8.
+    - The periodogram plot built at the end of this lab.
+
+- 3) Profiling results
+    - **If your machine supports RAPL measurement**: Give the approximate energy consumption of the BLS algorithm on the Kepler 8 dataset. 
+    - **If your machine does not support RAPL measurement**:
+        - State this explicity in your report.
+        - Try on another machine if possible
+        - ... OR replace this experiment by a weak scaling plot if you can't get RAPL to work.
+    - Give the perf results for `instructions,cycles,cache-references,cache-misses` of `bls(...)` on the Kepler-8 dataset.
+    - Generate stability plots using `./scripts/stability.py` and include them in the report.
+    - Include the flamegraph
+    - Include the strong scaling plot
+
 ---
 
 ### Provided files
@@ -321,34 +345,15 @@ date = time.strftime("%Y_%m_%d-%H_%M_%S") # e.g. 2025_08_28-12_08_40
 os.makedirs(f"results/{date}/", exist_ok=True)
 ```
 
-<hr class="gradient" />
+#### d) Build a periodogram
 
-## 4 - Report
+The BLS algorithm scans through a range of Orbital Periods, and computes a *Power* score for each candidates. The higher the power, the better the candidate. 
 
-You are tasked with creating a report of **no more than 3 pages (excluding references)**. Your report must use the following structure:
+The function `bls.bls_periodogram(...)` returns a 2D array containing all the scores, which allows us to build a **Periodogram**. Pairs are stored as (Power, Period).
 
-- 1) Environment and context
-    - Give details on the machine you used for the experiments: CPU/Memory specifications, compiler version, python version, OS name and version, and any other details that helps characterize your setup.
-        - You can use `lscpu`, `free -h`, `python --version`, `gcc --version`, ...
-    - A brief description of the context of BLS, the kepler datasets, etc.
-- 2) Kepler result
-    - Include both a lightcurve plot and a phase-folding plot for Kepler 8.
-    - The BLS algorithm scans through a range of Orbital Periods, and computes a *Power* score for each candidates. The higher the power, the better the candidate. The function `bls.bls_periodogram(...)` returns a 2D array containing all the scores, which allows us to build a **Periodogram**. Pairs are stored as (Power, Period).
-
-        - Plot a periodogram for Kepler 8, 17, 45 and 785. **You are required to use subplots** so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results. Verify that the periodograms match the known exoplanets for all these stars.
-
-        - Note that you should use the same arguments for `bls.bls_periodogram(...)` that the ones used for `bls.bls(...)` earlier in the lab.
-
-- 3) Profiling results
-    - **If your machine supports RAPL measurement**: Give the approximate energy consumption of the BLS algorithm on the Kepler 8 dataset. 
-    - **If your machine does not support RAPL measurement**:
-        - State this explicity in your report.
-        - Try on another machine if possible
-        - ... OR replace this experiment by a weak scaling plot if you can't get RAPL to work.
-    - Give the perf results for `instructions,cycles,cache-references,cache-misses`
-    - Generate stability plots using `./scripts/stability.py` and include them in the report.
-    - Include the flamegraph
-    - Include the strong scaling plot
+- Take a look at `scripts/periodogram.py` and understand the provided code snippets
+- Plot a periodogram for Kepler 8, 17, 45 and 785. **You are required to use subplots** so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results.
+- Note that you should use the same arguments for `bls.bls_periodogram(...)` that the ones used for `bls.bls(...)` earlier in the lab.
 
 <hr class="gradient" />
 

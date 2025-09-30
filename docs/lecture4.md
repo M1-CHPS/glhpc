@@ -95,28 +95,26 @@ Raise your hands when ready to propose an explanation.
   **Prof Example** - (SPR): Geometric mean Speedup (higher is better)  against the MKL reference configuration on `dgetrf` (LU), depending on the sampling algorithm. 46x46 validation grid. 7k/15k/30k denotes the samples count. GA-Adaptive outperforms all other sampling strategies for auto-tuning. With 30k samples it achieves a mean speedup of $\times 1.3$ of the MKL dgetrf kernel.
 </div>
 
-
-## Plot Example - What makes a good plot
-
-Ask yourself:
-
-- What do I want to communicate ?
-- What data do I need ?
-- **Is my plot understandable in ~10 seconds ?**
-- Is my plot self-contained ?
-- Is the context, environment, and methodology clear ?
-
-
-
 ## Plot Example - Summary
 
-HPC is a scientific endeavour; data analysis and plotting are essential.
+**HPC is a scientific endeavour**; data analysis and plotting are first class citizens.
 
 - Plots drive decisions
 - Plots make results trustworthy
 - Plots explain complex behaviors
 
 Datasets are large, multi-disciplinary, and often hard to reproduce.
+
+## Plot Example - What makes a good plot
+
+Ask yourself:
+
+- **Who am I speaking to ?**
+- What's my narrative?
+- **Is my plot understandable in ~10 seconds?**
+- Is my plot self-contained?
+- Is the context, environment, and methodology clear?
+
 
 # Experimental Methodology
 
@@ -194,6 +192,11 @@ Plots usually show $\bar{x} \pm 1 \sigma$ as a shaded region around the mean to 
   Distribution plots can be useful: stable measurements are often close to Gaussian, 
   even if systematic noise may lead to skewed or heavy-tailed distributions.
 
+## Statistical significance - Confidence Intervals
+
+![](./image/lecture4/confidence_intervals.png){ width=100% }
+
+Plotting variance/uncertainty through confidence intervals can change interpretation.  
 
 
 ## Statistical significance - Confidence Intervals
@@ -285,7 +288,7 @@ A figure is built hierarchically from nested elements:
       - Artists (Lines, markers, text, patches, etc.)
 ```
 
-- Data is plotted using axis-level functions like `ax.plot`, `ax.histogram`
+- Data is plotted using axes-level functions like `ax.plot`, `ax.histogram`
 - Customization occurs at both the Figure and Axes levels
 - Complex multi plots layout occur at the Figure level
 
@@ -415,21 +418,22 @@ The 20% are a bottleneck !
 ## Profiling - Steps
 
 1. Where (Hotspots) ?
-  - What functions are we spending time/energy in ?
-  - What **call-tree** are we spending time/energy in ?
+    - What functions are we spending time/energy in ?
+    - What **call-tree** are we spending time/energy in ?
 2. Why ?
-  - Arithmetic density, memory access patterns
-  - Cache misses, branch misspredictions, vectorization efficieny (Hardware counters)
+    - Arithmetic density, memory access patterns
+    - Cache misses, branch misspredictions, vectorization efficieny (Hardware counters)
 3. What goal ?
-  - Should I optimize for speed ? For energy ? Memory footprint ?
-    - What about cold storage size/compression ?
-  - Do I have constraints (i.e. limited memory) ?
-  - Should I optimize or switch algorithm ?
+    - Should I optimize for speed ? For energy ? Memory footprint ?
+      - What about cold storage size/compression ?
+    - Do I have constraints (i.e. limited memory) ?
+    - Should I optimize or switch algorithm ?
 
 
 ## Profiling - Time
 
-It's rather easy to benchmark a single function using a (high-resolution monotonic) clock:
+It's rather easy to benchmark a single function using a (high-resolution, monotonic) clock:
+
 ```python 
 begin = time.now()
 my_function()
@@ -437,7 +441,7 @@ end = time.now()
 elapsed = end - begin
 ```
 
-Very simple way to evalute a function cost
+Quick-and-dirty way to profile part of my program.
 
 ## Profiling - Time (Stability)
 
@@ -448,17 +452,23 @@ for _ in range(NWarmup):
   my_function()
 
 times = []
-for _ in range(NMeta):
+for i in range(NMeta):
   begin = time.perf_counter()
   my_function()
-  times.append(time.perf_counter() - begin) 
+  times.append((i, time.perf_counter() - begin))
 
-median = np.median(times)
-std = np.std(times)
+df = pd.DataFrame(times, columns=["Iteration", "Time"])
+
+median = np.median(df["Time"])
+std = np.std(df["Time"])
 print(f"Time: {median} +/- {std}")
+...
+# Plot through seaborn !
+sns.plot(data=df, x="Iteration", y="Time", ax=ax)
+...
 ```
 
-We must check that our measures are valid !
+We must check that our measures are acceptable!
 
 ## Profilers - Introduction
 
@@ -477,20 +487,23 @@ Profilers can also check for thread usage, vectorization, memory access, etc.
 Linux Perf is a powerful and versatile profiler:
 
 ```bash
-perf record -g -- python3 ./scripts/run_bls.py kepler-8
-[ perf record: Woken up 255 times to write data ]
-[ perf record: Wrote 85.474 MB perf.data (1220354 samples) ]
+gcc ... -g -fno-omit-frame-pointer
+perf record -g -- ./mytransform ./pipelines/big.pipeline
+Loaded image: images/image1.bmp (3660x4875, 3 channels)
+[ perf record: Woken up 3 times to write data ]
+[ perf record: Captured and wrote 0.484 MB perf.data (2941 samples) ]
 
-pert report perf.out
+
+perf report
 ```
 
 ![](image/lecture4/perf_report.png)
 
-It's a great tool to quickly get a Tree stack without any dependencies.
+It's a great tool to quickly get call stacks with few dependencies.
 
 ## Profiling - Hardware counters
 
-In reality, perf is not realy a profiler !
+In reality, perf is not just a profiler !
 
 - The Linux Perf API can be used to access many hardware counters
 - Perf record is just one usage of perf
@@ -498,29 +511,85 @@ In reality, perf is not realy a profiler !
 Most CPUs/GPUs have hardware counters that monitors different events:
 
 - Number of cycles
-- Number of instructions
+- Number of retired instructions
 - Number of memory access
-- RAPL
+- RAPL energy counters
 
 ## Profiling - Perf for Hardware counters
 
 ```bash
-perf stat -e cycles,instructions python3 ./scripts/run_bls.py kepler-8
-{'period': 3.520136229965055, 'duration': 0.11662673569985234, 'phase': 0.43, 'depth': 0.004983530583444806, 'power': 0.028861678651344452}
+perf stat -e cycles,instructions python3 ./scripts/run_bls.py ...
+...
 
- Performance counter stats for 'python3 ./scripts/run_bls.py kepler-8':
+ Performance counter stats:
+   749,352,412,722      cpu_core/cycles/                                                      
+ 3,142,707,494,308      cpu_core/instructions/           #    4.19  insn per cycle               
 
-   962,187,248,452      cpu_atom/cycles/                                                        (43.66%)
- 1,119,319,677,606      cpu_core/cycles/                                                        (56.34%)
- 3,547,146,665,075      cpu_atom/instructions/           #    3.69  insn per cycle              (43.66%)
- 2,837,633,772,530      cpu_core/instructions/           #    2.54  insn per cycle              (56.34%)
-
-      12.507192456 seconds time elapsed
+      32.363472139 seconds time elapsed
+     225.351168000 seconds user
+       0.111367000 seconds sys
 ```
 
-## VTune
+- 4.19 instruction per cycle -> Very good vectorization
+- time elapsed -> "Wall clock time"
+- seconds user -> CPU time in user space -> $225 / 30 \approx 7$ threads !
 
-The Intel VTune profiler is more complex but more self-contained than perf:
+## Profiling - Perf for Hardware counters
+
+```bash
+perf stat -e cache-references,cache-misses python3 ./scripts/run_bls.py ...
+...
+
+ Performance counter stats:    
+       394,258,269      cpu_core/cache-references/                                            
+        36,823,151      cpu_core/cache-misses/           #    9.34% of all cache refs         
+
+      32.363472139 seconds time elapsed
+     225.351168000 seconds user
+       0.111367000 seconds sys
+```
+
+- 394,258,269 references to the LLC (On Intel)
+- 36,283,151 LLC misses -> 9.3% miss rate 
+
+## Profiling - Perf for Hardware counters
+
+```bash
+perf stat -e branches,branch-misses python3 ./scripts/run_bls.py ...
+...
+
+ Performance counter stats:    
+   761,974,570,065      cpu_core/branches/                                                    
+       248,674,718      cpu_core/branch-misses/          #    0.03% of all branches       
+
+      32.363472139 seconds time elapsed
+     225.351168000 seconds user
+       0.111367000 seconds sys
+```
+
+- 761,974,570,065 execution flow breaks (ifs, returns, loops, etc.)
+- 248,674,718 branch misses -> Good branch prediction! ($0.9%$ miss rate)
+
+
+## Perf - Record with other events
+
+We can also use `perf record` with other events !
+
+```bash
+perf record -e "cache-references,cache-misses,branches,branch-misses" -g -- ./mytransform ./pipelines/big.pipeline
+Loaded image: images/image1.bmp (3660x4875, 3 channels)
+[ perf record: Woken up 7 times to write data ]
+[ perf record: Captured and wrote 1.709 MB perf.data (10260 samples) ]
+
+perf report
+```
+
+![](image/lecture4/perf_report_branch_misses.png)
+
+
+## Intel VTune
+
+Perf is a bit "barebone": many profilers build upon perf like Intel VTune
 
 ![](image/lecture4/vtune.png)
 
@@ -529,6 +598,11 @@ The Intel VTune profiler is more complex but more self-contained than perf:
 ![](image/lecture4/cpu_usage_vtune.png)
 ![](image/lecture4/vtune_hpc_thread_usage.png)
 
+
+## VTune - Collections Mode
+VTune has multiple collection mode:
+
+![](image/lecture4/vtune_collections_mode.png)
 
 ## VTune - HPC Performance
 
@@ -573,7 +647,7 @@ perf stat -a -j -e power/energy-pkg,power/energy-cores <app>
 {"counter-value" : "10.848633", "unit" : "Joules", "event" : "power/energy-cores/", "event-runtime" : 10002166697, "pcnt-running" : 100.00}
 ```
 
-## Profiling - Watt-Meter
+## Profiling - Watt-Meter (Yokogawa)
 
 ![Yokogawa](image/lecture4/yokogawa.png)
 
