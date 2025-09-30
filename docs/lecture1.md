@@ -52,9 +52,9 @@ Solved by Bernoulli in 1734, $x_1$ and $x_2$ can be expressed as simple equation
 - For $n=3$ or more, no practical analytical solution exists.
 - Even advanced mathematical solutions (e.g., Sundman, 1909) are too slow for real use.
 - **Computer simulations** allow us to study the motion of many interacting particles.
-  - Efficient algorithms (e.g., Barnes-Hut, Fast Multipole) make large-scale simulations possible.
+    - Efficient algorithms (e.g., Barnes-Hut, Fast Multipole) make large-scale simulations possible.
 - **HPC is essential** to simulate realistic systems in physics, astronomy, and AI.
-  - Simulation + HPC = understanding complex systems!
+    - Simulation + HPC = understanding complex systems!
 
 ## Naive n-Body Simulation in C
 
@@ -106,7 +106,7 @@ for (int i = 0; i < num_particles; i++) {
 **How to achieve such performance?**
 
 - Algorithmic improvements:
-  - Use tree-based methods (Barnes-Hut) to reduce complexity from $O(n^2)$ to $O(n \log n)$ or better.
+    - Use tree-based methods (Barnes-Hut) to reduce complexity from $O(n^2)$ to $O(n \log n)$ or better.
 - Parallelization: distribute computation accross many cores.
 - Vectorization: use SIMD instructions to process multiple data points in parallel.
 - Data locality: optimize data access patterns to minimize memory latency and maximize cache usage.
@@ -120,7 +120,7 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 
 - CPU core executes instructions; machine state = registers, program counter and flags.
 - Assembly encodes the instructions; compilers translate high-level code into the ISA.
-  - types: arithmetic/logical, load/store (memory), control flow (branches, calls), system calls
+    - types: arithmetic/logical, load/store (memory), control flow (branches, calls), system calls
 - Registers are the fastest storage; register pressure influence performance.
 
 ## Example: Intel Core2 Architecture
@@ -130,7 +130,7 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 ## Pipeline, Memory Hierarchy & Interrupts
 
 - **Pipeline** increases instruction throughput, classic 5-stages:
-  - Fetch → Decode → Execute → Memory → Write-back
+    - Fetch → Decode → Execute → Memory → Write-back
 - **Hazards**: data hazards (dependencies), control hazards (branch prediction), resource conflicts.
 - **Memory hierarchy**: registers → L1/L2/L3 caches → DRAM → persistent storage; spatial and temporal locality drive cache effectiveness.
 - Buses, **coherence and NUMA**: cross-socket memory access has higher latency; cache coherence and memory bandwidth limit scalability.
@@ -176,51 +176,51 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 - **Purpose**: Execute commands, run programs, and automate tasks.
 - **Common Shells**: `bash`, `zsh`, `fish`, `sh`.
 - **Why Learn It?**
-  - Essential for HPC environments.
-  - Enables automation and efficient system interaction.
+    - Essential for HPC environments.
+    - Enables automation and efficient system interaction.
 
 ## Basic Shell Commands
 
 - **File and Directory Management**:
-  - `ls`: List files and directories.
-  - `cd <directory>`: Change directory.
-  - `pwd`: Print current working directory.
-  - `mkdir <directory>`: Create a new directory.
-  - `rm <file>`: Remove a file.
+    - `ls`: List files and directories.
+    - `cd <directory>`: Change directory.
+    - `pwd`: Print current working directory.
+    - `mkdir <directory>`: Create a new directory.
+    - `rm <file>`: Remove a file.
 - **File Viewing**:
-  - `cat <file>`: Display file contents.
-  - `less <file>`: View file contents interactively.
-  - `head <file>`: Show the first 10 lines.
-  - `tail <file>`: Show the last 10 lines.
+    - `cat <file>`: Display file contents.
+    - `less <file>`: View file contents interactively.
+    - `head <file>`: Show the first 10 lines.
+    - `tail <file>`: Show the last 10 lines.
 
 ## Redirections
 
 - **Standard Input/Output**:
-  - `<`: Redirect input from a file.
-  - `>`: Redirect output to a file (overwrite).
-  - `>>`: Append output to a file.
+    - `<`: Redirect input from a file.
+    - `>`: Redirect output to a file (overwrite).
+    - `>>`: Append output to a file.
 - **Examples**:
-  - `cat file.txt > output.txt`: Save contents of `file.txt` to `output.txt`.
-  - `grep "error" log.txt >> errors.txt`: Append lines containing "error" to `errors.txt`.
+    - `cat file.txt > output.txt`: Save contents of `file.txt` to `output.txt`.
+    - `grep "error" log.txt >> errors.txt`: Append lines containing "error" to `errors.txt`.
 
 ## Pipes
 
 - **Definition**: Pipes (`|`) connect the output of one command to the input of another.
 - **Examples**:
-  - `ls | grep ".txt"`: List `.txt` files.
-  - `cat file.txt | wc -l`: Count the number of lines in `file.txt`.
+    - `ls | grep ".txt"`: List `.txt` files.
+    - `cat file.txt | wc -l`: Count the number of lines in `file.txt`.
 - **Why Use Pipes?**
-  - Combine simple commands to perform complex tasks.
-  - Avoid creating intermediate files.
+    - Combine simple commands to perform complex tasks.
+    - Avoid creating intermediate files.
 
 ## Variables and Environment
 
 - **Variables**:
-  - `VAR=value`: Define a variable.
-  - `$VAR`: Access the variable's value.
+    - `VAR=value`: Define a variable.
+    - `$VAR`: Access the variable's value.
 - **Environment Variables**:
-  - `echo $HOME`: Display the home directory.
-  - `export PATH=$PATH:/new/path`: Add a directory to the `PATH`.
+    - `echo $HOME`: Display the home directory.
+    - `export PATH=$PATH:/new/path`: Add a directory to the `PATH`.
 
 - **Example**:
 
@@ -234,18 +234,18 @@ Compiler optimizations, performance tuning, hardware acceleration are also cruci
 ## Writing a Simple Script
 
 - **What is a Script?**
-  - A file containing a sequence of shell commands.
+    - A file containing a sequence of shell commands.
 - **Creating a Script**:
-  1. Create a file: `vim script.sh`.
-  2. Add commands:
+    1. Create a file: `vim script.sh`.
+    2. Add commands:
 
-     ```bash
-     #!/bin/bash
-     echo "Hello, World!"
-     ```
+         ```bash
+         #!/bin/bash
+         echo "Hello, World!"
+         ```
 
-  3. Make it executable: `chmod +x script.sh`.
-  4. Run it: `./script.sh`.
+    3. Make it executable: `chmod +x script.sh`.
+    4. Run it: `./script.sh`.
 
 ## Conditional Statements
 
@@ -281,13 +281,13 @@ run_simulation "simulation_config.json" 8
 ## Debugging and Best Practices
 
 - **Debugging**:
-  - Run with `bash -x script.sh` to trace execution.
-  - Use `set -e` to exit on errors as the first command.
+    - Run with `bash -x script.sh` to trace execution.
+    - Use `set -e` to exit on errors as the first command.
 - **Best Practices**:
-  - Use comments (`#`) to explain code.
-  - Write reusable functions.
-  - Check for errors (`if [ $? -ne 0 ]; then`).
-  - Test scripts on small inputs before scaling up.
+    - Use comments (`#`) to explain code.
+    - Write reusable functions.
+    - Check for errors (`if [ $? -ne 0 ]; then`).
+    - Test scripts on small inputs before scaling up.
 
 # Package Management
 
@@ -408,9 +408,9 @@ Object types include:
 ## Git Repository
 
 - **.git directory**:  
-  - Stores the project's history.  
-  - Contains metadata for version control.  
-  - Located at the root of the project.
+    - Stores the project's history.  
+    - Contains metadata for version control.  
+    - Located at the root of the project.
 
 ![Git Repository Contents](image/lecture1/contenu_git.png)
 
@@ -501,9 +501,9 @@ Object types include:
 ### Before Development
 
 - Define a **developer charter**:
-  - Naming conventions for files, functions, variables.
-  - Standards for technical documentation and comments.
-  - Indentation rules (tabs vs spaces).
+    - Naming conventions for files, functions, variables.
+    - Standards for technical documentation and comments.
+    - Indentation rules (tabs vs spaces).
 
 - Establish a **version control strategy**.
 

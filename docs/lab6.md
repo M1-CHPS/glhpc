@@ -59,8 +59,11 @@ Inside `tests/` you will find `test_runner.c` that contains a starter test harne
 #### b) Add a test in `test_sgemm.c` that checks that `random_matrix` correctly generates matrices with values in the range $[-1.0, 1.0]$. Call the test from `test_runner.c`.
 #### c) Create a `CMakeList.txt` 
 It should:
+
 - build an executable `gemm` from `main.c` and `sgemm.c`.
+
 - build an executable `test_runner` from `test_runner.c` and `sgemm.c` using the `unity` testing framework as shown in previous labs.
+
 - allow changing the build type (Debug/Release) from the command line with different sets of flags.
 
 Check that your code compiles and that the test passes.
@@ -68,7 +71,7 @@ Check that your code compiles and that the test passes.
 ### 2. Naive SGEMM implementation
 
 #### a) Implement the naive version of `sgemm` in `sgemm.c` using three nested loops in the order (i, j, k).
-#### b) Add various tests in `test_sgemm.c` that checks that your `sgemm` implementation correctly computes the product of small matrices with variying sizes and shapes (e.g. 1x1, 2x2, 3x1, 1x3, 3x3).
+#### b) Add various tests in `test_sgemm.c` that checks that your `sgemm` implementation correctly computes the product of small matrices with variying sizes and shapes (e.g. 2x2, 3x1, 1x3, 3x3).
 #### c) Check that your tests pass.
 
 Now that you have a working implementation, you can call `sgemm` from `main.c` with random matrices of different sizes passed as command line arguments.

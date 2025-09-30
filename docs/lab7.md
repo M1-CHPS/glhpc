@@ -33,7 +33,7 @@ Here are the contents of the project starting directory:
 
     - `image_0.ubyte` to `image_99.ubyte`: 100 test images of handwritten digits in binary format; extracted from the [MNIST](https://en.wikipedia.org/wiki/MNIST_database) database. Each file contains 784 bytes (28x28 pixels) representing a grayscale image.
 
-    - `labels.txt`: Text file containing the expected labels for the test images separated by commas. Each value corresponds to the label of the image with the same index (e.g., the first label is the label for image_0.ubyte).
+    - `labels.csv`: Text file containing the expected labels for the test images separated by commas. Each value corresponds to the label of the image with the same index (e.g., the first label is the label for image_0.ubyte).
 
 - `external/onnx/`: Directory containing an ONNX protobuf low-level parser. We use this auto-generated parser to read the ONNX format. You don't need to modify anything in this directory.
 
@@ -135,7 +135,7 @@ Some hints:
 
 - Add and Relu can be implemented using simple loops. You can optimize them using techniques like loop unrolling or SIMD intrinsics.
 
-- For Gemm, you can use the optimized sgemm library you implemented in the previous lab.
+- For Gemm, you can use the optimized sgemm library you implemented in the previous lab. You should copy the relevant files and modify the CMakeLists.txt to build and link against the sgemm library.
 
 !!! Tip
     Make sure to add relevant unit tests for each operation in the `tests/` directory.
