@@ -201,7 +201,7 @@ for (i = 0; i < M; i++) {
 ```
 
 - FLOPS: $2 \times M \times N \times K$
-- Memory: $4 \times (M \times K + K \times N + M \times N)$ bytes
+- min. Memory: $4$ bytes $\times (M \times K + K \times N + M \times N)$
 
 ## Locality issues in naive SGEMM
 
