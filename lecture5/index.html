@@ -1314,11 +1314,11 @@
 <p>Temporal locality analysis:</p>
 <ul>
 <li><strong>GOOD</strong>: <span class="arithmatex">\(A[i][k]\)</span> reused in the inner loop, reuse distance <span class="arithmatex">\(1\)</span>.</li>
-<li><strong>MEDIUM</strong> : For a fixed <span class="arithmatex">\((i,j)\)</span>, each <span class="arithmatex">\(RES[i][j]\)</span> revisited once per k. So reuse distance <span class="arithmatex">\(K\)</span> (one full row).<ul>
+<li><strong>MEDIUM</strong> : For a given <span class="arithmatex">\((i,j)\)</span>, each <span class="arithmatex">\(RES[i][j]\)</span> revisited once per k. So reuse distance <span class="arithmatex">\(K\)</span> (one full row).<ul>
 <li>To keep RES in cache between uses you would need cache <span class="arithmatex">\(\ge K \times 4B\)</span></li>
 </ul>
 </li>
-<li><strong>BAD</strong> : For a fixed <span class="arithmatex">\((k,j)\)</span>, <span class="arithmatex">\(B[k][j]\)</span> used once per i. So reuse distance <span class="arithmatex">\(K \times N\)</span> (entire B matrix).<ul>
+<li><strong>BAD</strong> : For a given <span class="arithmatex">\((k,j)\)</span>, <span class="arithmatex">\(B[k][j]\)</span> used once per i. So reuse distance <span class="arithmatex">\(K \times N\)</span> (entire B matrix).<ul>
 <li>To keep B in cache between uses you would need cache <span class="arithmatex">\(\ge K \times N \times 4B\)</span></li>
 </ul>
 </li>
