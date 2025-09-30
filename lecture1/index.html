@@ -1082,10 +1082,14 @@
 <ul>
 <li>For <span class="arithmatex">\(n=3\)</span> or more, no practical analytical solution exists.</li>
 <li>Even advanced mathematical solutions (e.g., Sundman, 1909) are too slow for real use.</li>
-<li><strong>Computer simulations</strong> allow us to study the motion of many interacting particles.</li>
+<li><strong>Computer simulations</strong> allow us to study the motion of many interacting particles.<ul>
 <li>Efficient algorithms (e.g., Barnes-Hut, Fast Multipole) make large-scale simulations possible.</li>
-<li><strong>HPC is essential</strong> to simulate realistic systems in physics, astronomy, and AI.</li>
+</ul>
+</li>
+<li><strong>HPC is essential</strong> to simulate realistic systems in physics, astronomy, and AI.<ul>
 <li>Simulation + HPC = understanding complex systems!</li>
+</ul>
+</li>
 </ul>
 <h2 id="naive-n-body-simulation-in-c">Naive n-Body Simulation in C<a class="headerlink" href="#naive-n-body-simulation-in-c" title="Permanent link">&para;</a></h2>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Compute accelerations based on gravitational forces</span>
@@ -1128,8 +1132,10 @@
 </ul>
 <p><strong>How to achieve such performance?</strong></p>
 <ul>
-<li>Algorithmic improvements:</li>
+<li>Algorithmic improvements:<ul>
 <li>Use tree-based methods (Barnes-Hut) to reduce complexity from <span class="arithmatex">\(O(n^2)\)</span> to <span class="arithmatex">\(O(n \log n)\)</span> or better.</li>
+</ul>
+</li>
 <li>Parallelization: distribute computation accross many cores.</li>
 <li>Vectorization: use SIMD instructions to process multiple data points in parallel.</li>
 <li>Data locality: optimize data access patterns to minimize memory latency and maximize cache usage.</li>
@@ -1139,16 +1145,20 @@
 <h2 id="cpu-instruction-set-isa-quick-review">CPU &amp; Instruction Set (ISA) — quick review<a class="headerlink" href="#cpu-instruction-set-isa-quick-review" title="Permanent link">&para;</a></h2>
 <ul>
 <li>CPU core executes instructions; machine state = registers, program counter and flags.</li>
-<li>Assembly encodes the instructions; compilers translate high-level code into the ISA.</li>
+<li>Assembly encodes the instructions; compilers translate high-level code into the ISA.<ul>
 <li>types: arithmetic/logical, load/store (memory), control flow (branches, calls), system calls</li>
+</ul>
+</li>
 <li>Registers are the fastest storage; register pressure influence performance.</li>
 </ul>
 <h2 id="example-intel-core2-architecture">Example: Intel Core2 Architecture<a class="headerlink" href="#example-intel-core2-architecture" title="Permanent link">&para;</a></h2>
 <p><img alt="Intel Core2 Architecture (CC-by-SA, Wikipedia)" src="../image/lecture1/Intel_Core2_arch.svg" /></p>
 <h2 id="pipeline-memory-hierarchy-interrupts">Pipeline, Memory Hierarchy &amp; Interrupts<a class="headerlink" href="#pipeline-memory-hierarchy-interrupts" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Pipeline</strong> increases instruction throughput, classic 5-stages:</li>
+<li><strong>Pipeline</strong> increases instruction throughput, classic 5-stages:<ul>
 <li>Fetch → Decode → Execute → Memory → Write-back</li>
+</ul>
+</li>
 <li><strong>Hazards</strong>: data hazards (dependencies), control hazards (branch prediction), resource conflicts.</li>
 <li><strong>Memory hierarchy</strong>: registers → L1/L2/L3 caches → DRAM → persistent storage; spatial and temporal locality drive cache effectiveness.</li>
 <li>Buses, <strong>coherence and NUMA</strong>: cross-socket memory access has higher latency; cache coherence and memory bandwidth limit scalability.</li>
@@ -1191,53 +1201,71 @@
 <li><strong>Definition</strong>: A shell is a command-line interface to interact with the operating system.</li>
 <li><strong>Purpose</strong>: Execute commands, run programs, and automate tasks.</li>
 <li><strong>Common Shells</strong>: <code>bash</code>, <code>zsh</code>, <code>fish</code>, <code>sh</code>.</li>
-<li><strong>Why Learn It?</strong></li>
+<li><strong>Why Learn It?</strong><ul>
 <li>Essential for HPC environments.</li>
 <li>Enables automation and efficient system interaction.</li>
 </ul>
+</li>
+</ul>
 <h2 id="basic-shell-commands">Basic Shell Commands<a class="headerlink" href="#basic-shell-commands" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>File and Directory Management</strong>:</li>
+<li><strong>File and Directory Management</strong>:<ul>
 <li><code>ls</code>: List files and directories.</li>
 <li><code>cd &lt;directory&gt;</code>: Change directory.</li>
 <li><code>pwd</code>: Print current working directory.</li>
 <li><code>mkdir &lt;directory&gt;</code>: Create a new directory.</li>
 <li><code>rm &lt;file&gt;</code>: Remove a file.</li>
-<li><strong>File Viewing</strong>:</li>
+</ul>
+</li>
+<li><strong>File Viewing</strong>:<ul>
 <li><code>cat &lt;file&gt;</code>: Display file contents.</li>
 <li><code>less &lt;file&gt;</code>: View file contents interactively.</li>
 <li><code>head &lt;file&gt;</code>: Show the first 10 lines.</li>
 <li><code>tail &lt;file&gt;</code>: Show the last 10 lines.</li>
 </ul>
+</li>
+</ul>
 <h2 id="redirections">Redirections<a class="headerlink" href="#redirections" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Standard Input/Output</strong>:</li>
+<li><strong>Standard Input/Output</strong>:<ul>
 <li><code>&lt;</code>: Redirect input from a file.</li>
 <li><code>&gt;</code>: Redirect output to a file (overwrite).</li>
 <li><code>&gt;&gt;</code>: Append output to a file.</li>
-<li><strong>Examples</strong>:</li>
+</ul>
+</li>
+<li><strong>Examples</strong>:<ul>
 <li><code>cat file.txt &gt; output.txt</code>: Save contents of <code>file.txt</code> to <code>output.txt</code>.</li>
 <li><code>grep "error" log.txt &gt;&gt; errors.txt</code>: Append lines containing "error" to <code>errors.txt</code>.</li>
+</ul>
+</li>
 </ul>
 <h2 id="pipes">Pipes<a class="headerlink" href="#pipes" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Definition</strong>: Pipes (<code>|</code>) connect the output of one command to the input of another.</li>
-<li><strong>Examples</strong>:</li>
+<li><strong>Examples</strong>:<ul>
 <li><code>ls | grep ".txt"</code>: List <code>.txt</code> files.</li>
 <li><code>cat file.txt | wc -l</code>: Count the number of lines in <code>file.txt</code>.</li>
-<li><strong>Why Use Pipes?</strong></li>
+</ul>
+</li>
+<li><strong>Why Use Pipes?</strong><ul>
 <li>Combine simple commands to perform complex tasks.</li>
 <li>Avoid creating intermediate files.</li>
 </ul>
+</li>
+</ul>
 <h2 id="variables-and-environment">Variables and Environment<a class="headerlink" href="#variables-and-environment" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Variables</strong>:</li>
+<li><strong>Variables</strong>:<ul>
 <li><code>VAR=value</code>: Define a variable.</li>
 <li><code>$VAR</code>: Access the variable's value.</li>
-<li><strong>Environment Variables</strong>:</li>
-<li><code>echo $HOME</code>: Display the home directory.</li>
+</ul>
+</li>
 <li>
-<p><code>export PATH=$PATH:/new/path</code>: Add a directory to the <code>PATH</code>.</p>
+<p><strong>Environment Variables</strong>:</p>
+<ul>
+<li><code>echo $HOME</code>: Display the home directory.</li>
+<li><code>export PATH=$PATH:/new/path</code>: Add a directory to the <code>PATH</code>.</li>
+</ul>
 </li>
 <li>
 <p><strong>Example</strong>:</p>
@@ -1250,9 +1278,13 @@
 </span></code></pre></div>
 <h2 id="writing-a-simple-script">Writing a Simple Script<a class="headerlink" href="#writing-a-simple-script" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>What is a Script?</strong></li>
+<li><strong>What is a Script?</strong><ul>
 <li>A file containing a sequence of shell commands.</li>
-<li><strong>Creating a Script</strong>:</li>
+</ul>
+</li>
+<li>
+<p><strong>Creating a Script</strong>:</p>
+<ol>
 <li>Create a file: <code>vim script.sh</code>.</li>
 <li>
 <p>Add commands:</p>
@@ -1264,6 +1296,8 @@
 <p>Make it executable: <code>chmod +x script.sh</code>.</p>
 </li>
 <li>Run it: <code>./script.sh</code>.</li>
+</ol>
+</li>
 </ul>
 <h2 id="conditional-statements">Conditional Statements<a class="headerlink" href="#conditional-statements" title="Permanent link">&para;</a></h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;config.json&quot;</span><span class="w"> </span><span class="o">]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
@@ -1289,14 +1323,18 @@
 </span></code></pre></div>
 <h2 id="debugging-and-best-practices">Debugging and Best Practices<a class="headerlink" href="#debugging-and-best-practices" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Debugging</strong>:</li>
+<li><strong>Debugging</strong>:<ul>
 <li>Run with <code>bash -x script.sh</code> to trace execution.</li>
 <li>Use <code>set -e</code> to exit on errors as the first command.</li>
-<li><strong>Best Practices</strong>:</li>
+</ul>
+</li>
+<li><strong>Best Practices</strong>:<ul>
 <li>Use comments (<code>#</code>) to explain code.</li>
 <li>Write reusable functions.</li>
 <li>Check for errors (<code>if [ $? -ne 0 ]; then</code>).</li>
 <li>Test scripts on small inputs before scaling up.</li>
+</ul>
+</li>
 </ul>
 <h1 id="package-management">Package Management<a class="headerlink" href="#package-management" title="Permanent link">&para;</a></h1>
 <h2 id="package-management-overview">Package Management: Overview<a class="headerlink" href="#package-management-overview" title="Permanent link">&para;</a></h2>
@@ -1403,10 +1441,12 @@
 <img alt="Commit Structure" src="../image/lecture1/modele_obj2.png" /></p>
 <h2 id="git-repository">Git Repository<a class="headerlink" href="#git-repository" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>.git directory</strong>:  </li>
+<li><strong>.git directory</strong>:  <ul>
 <li>Stores the project's history.  </li>
 <li>Contains metadata for version control.  </li>
 <li>Located at the root of the project.</li>
+</ul>
+</li>
 </ul>
 <p><img alt="Git Repository Contents" src="../image/lecture1/contenu_git.png" /></p>
 <h2 id="working-directory">Working Directory<a class="headerlink" href="#working-directory" title="Permanent link">&para;</a></h2>
@@ -1488,11 +1528,13 @@
 <h2 id="best-practices-for-collaborative-development">Best Practices for Collaborative Development<a class="headerlink" href="#best-practices-for-collaborative-development" title="Permanent link">&para;</a></h2>
 <h3 id="before-development">Before Development<a class="headerlink" href="#before-development" title="Permanent link">&para;</a></h3>
 <ul>
-<li>Define a <strong>developer charter</strong>:</li>
+<li>
+<p>Define a <strong>developer charter</strong>:</p>
+<ul>
 <li>Naming conventions for files, functions, variables.</li>
 <li>Standards for technical documentation and comments.</li>
-<li>
-<p>Indentation rules (tabs vs spaces).</p>
+<li>Indentation rules (tabs vs spaces).</li>
+</ul>
 </li>
 <li>
 <p>Establish a <strong>version control strategy</strong>.</p>

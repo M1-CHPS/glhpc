@@ -1061,20 +1061,20 @@
 <h1 id="introduction-to-ai-applications">Introduction to AI applications<a class="headerlink" href="#introduction-to-ai-applications" title="Permanent link">&para;</a></h1>
 <h2 id="ai-renaissance-neural-networks">AI Renaissance: Neural Networks<a class="headerlink" href="#ai-renaissance-neural-networks" title="Permanent link">&para;</a></h2>
 <ul>
-<li>2012: <strong>AI renaissance</strong> brought by increased data
-    availability and computation ressources</li>
-<li>breakthroughs in multiple domains</li>
 <li>
-<p>many innovations: algorithms, specialized processors, optimizations</p>
+<p>2012: <strong>AI renaissance</strong> brought by increased data
+    availability and computation ressources</p>
+<ul>
+<li>breakthroughs in multiple domains</li>
+<li>many innovations: algorithms, specialized processors, optimizations</li>
+</ul>
 </li>
 <li>
 <p>Most systems use <strong>neural networks</strong>:</p>
-</li>
-<li>
-<p>Training (stochastic gradient descent + backpropagation)</p>
-</li>
-<li>
-<p>Inference (forward pass)</p>
+<ul>
+<li>Training (stochastic gradient descent + backpropagation)</li>
+<li>Inference (forward pass)</li>
+</ul>
 </li>
 <li>
 <p>For both, <strong>the bottleneck is matrix multiplication</strong></p>
@@ -1104,22 +1104,30 @@
 </ul>
 <h2 id="architectures">Architectures<a class="headerlink" href="#architectures" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Different architectures for different tasks:</li>
+<li>
+<p>Different architectures for different tasks:</p>
+<ul>
 <li>Fully connected layers</li>
 <li>Convolutional layers</li>
 <li>Recursive layers</li>
-<li>Transformers (attention mechanism)
-<img alt="Feed-forward NN" src="../image/lecture5/ffn.svg" /></li>
+<li>Transformers (attention mechanism)</li>
+</ul>
+<p><img alt="Feed-forward NN" src="../image/lecture5/ffn.svg" /></p>
+</li>
 </ul>
 <h2 id="inference">Inference<a class="headerlink" href="#inference" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Inference: use the trained model to make predictions on new data</li>
-<li>Forward pass through the network:</li>
+<li>
+<p>Forward pass through the network:</p>
+<ul>
 <li>
 <p>For each layer, compute the weighted sum and apply activation function</p>
 </li>
 <li>
 <p>The weighted sum is a matrix-vector multiplication for fully connected layers and convolutions (often implemented as GEMM).</p>
+</li>
+</ul>
 </li>
 </ul>
 <h2 id="two-layer-network">Two layer network<a class="headerlink" href="#two-layer-network" title="Permanent link">&para;</a></h2>
@@ -1141,7 +1149,7 @@
 </ul>
 <div class="arithmatex">\[Z_1 = W_1 · X + B_1\]</div>
 <ul>
-<li>Layer 1 ctivation - ReLU (elementwise)</li>
+<li>Layer 1 Activation - ReLU (elementwise)</li>
 </ul>
 <div class="arithmatex">\[H = f(Z_1)\]</div>
 <ul>
@@ -1191,8 +1199,12 @@
 <p>The backward pass is also dominated by GEMMs.</p>
 <h2 id="frameworks">Frameworks<a class="headerlink" href="#frameworks" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Popular frameworks: TensorFlow, PyTorch, JAX, ... </li>
-<li>High-level APIs for defining models, automatic differentiation, GPU acceleration</li>
+<li>
+<p>Popular frameworks: TensorFlow, PyTorch, JAX, ...</p>
+</li>
+<li>
+<p>High-level APIs for defining models, automatic differentiation, GPU acceleration</p>
+</li>
 </ul>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Simple 2-layer NN in PyTorch</span>
 </span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
@@ -1245,11 +1257,13 @@
 \end{bmatrix}
 \]</div>
 <ul>
-<li>Stride in accessing B (column-major)</li>
+<li>
+<p>Stride in accessing B (column-major)</p>
+<ul>
 <li>Poor spatial locality</li>
 <li>Difficult to vectorize</li>
-<li>
-<p>Cache misses for large matrices (reuse distance too large)</p>
+<li>Cache misses for large matrices (reuse distance too large)</li>
+</ul>
 </li>
 <li>
 <p><strong>Low arithmetic intensity</strong>: <span class="arithmatex">\(\approx 0.5\)</span> FLOP/byte for large matrices</p>
@@ -1296,16 +1310,18 @@
 </span></code></pre></div>
 <h2 id="problems-with-ikj-ordering">Problems with (i,k,j) ordering<a class="headerlink" href="#problems-with-ikj-ordering" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Temporal locality analysis:</li>
+<li>
+<p>Temporal locality analysis:</p>
+<ul>
 <li><strong>GOOD</strong>: <span class="arithmatex">\(A[i][k]\)</span> reused in the inner loop, reuse distance <span class="arithmatex">\(1\)</span>.</li>
 <li><strong>MEDIUM</strong> : For a fixed <span class="arithmatex">\((i,j)\)</span>, each <span class="arithmatex">\(RES[i][j]\)</span> revisited once per k. So reuse distance <span class="arithmatex">\(K\)</span> (one full row).<ul>
 <li>To keep RES in cache between uses you would need cache <span class="arithmatex">\(\ge K \times 4B\)</span></li>
 </ul>
 </li>
-<li>
-<p><strong>BAD</strong> : For a fixed <span class="arithmatex">\((k,j)\)</span>, <span class="arithmatex">\(B[k][j]\)</span> used once per i. So reuse distance <span class="arithmatex">\(K \times N\)</span> (entire B matrix).</p>
-<ul>
+<li><strong>BAD</strong> : For a fixed <span class="arithmatex">\((k,j)\)</span>, <span class="arithmatex">\(B[k][j]\)</span> used once per i. So reuse distance <span class="arithmatex">\(K \times N\)</span> (entire B matrix).<ul>
 <li>To keep B in cache between uses you would need cache <span class="arithmatex">\(\ge K \times N \times 4B\)</span></li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
@@ -1368,12 +1384,14 @@ A_{21}B_{11} + A_{22}B_{21} &amp; A_{21}B_{12} + A_{22}B_{22} \\
 <ul>
 <li>
 <p>Highly optimized SGEMM implementations exist:</p>
-</li>
+<ul>
 <li>
 <p>OpenBLAS, Intel MKL for CPU</p>
 </li>
 <li>
 <p>NVIDIA cuBLAS for GPU</p>
+</li>
+</ul>
 </li>
 <li>
 <p>Implementations use blocking, vectorization, parallelization, and many architecture-specific optimizations</p>
@@ -1389,13 +1407,11 @@ A_{21}B_{11} + A_{22}B_{21} &amp; A_{21}B_{12} + A_{22}B_{22} \\
 <ul>
 <li>
 <p>Hypothesis: performance is limited by either compute or memory bandwidth</p>
-</li>
-<li>
-<p>performance: FLOP/s (vertical axis)</p>
-</li>
+<ul>
+<li>performance: FLOP/s (vertical axis)</li>
 <li>memory bandwidth: Bytes/s</li>
-<li>
-<p>arithmetic intensity: FLOP/byte (horizontal axis)</p>
+<li>arithmetic intensity: FLOP/byte (horizontal axis)</li>
+</ul>
 </li>
 <li>
 <p>Simple visual model to understand bottlenecks</p>
@@ -1405,8 +1421,10 @@ A_{21}B_{11} + A_{22}B_{21} &amp; A_{21}B_{12} + A_{22}B_{22} \\
 <p><img alt="Roofline SGEMM" src="../image/lecture5/roofline.svg" /></p>
 <ul>
 <li><em>Compute bound</em>: horizontal line at peak FLOP/s</li>
-<li><em>Memory bound</em>: sloped line with slope = memory bandwidth</li>
+<li><em>Memory bound</em>: sloped line with slope = memory bandwidth<ul>
 <li><span class="arithmatex">\(\frac{\text{Flop/s}}{\text{Flop/Byte}} = \text{Byte/s}\)</span> </li>
+</ul>
+</li>
 </ul>
 <h2 id="roofline-model-sgemm-analysis">Roofline model - SGEMM analysis<a class="headerlink" href="#roofline-model-sgemm-analysis" title="Permanent link">&para;</a></h2>
 <p><img alt="Roofline SGEMM" src="../image/lecture5/roofline-sgemm.svg" /></p>
@@ -1432,12 +1450,14 @@ A_{21}B_{11} + A_{22}B_{21} &amp; A_{21}B_{12} + A_{22}B_{22} \\
 <ul>
 <li>
 <p>Frontier system at ORNL</p>
-</li>
+<ul>
 <li>
 <p>More than <span class="arithmatex">\(10^{18}\)</span> floating point operations per second</p>
 </li>
 <li>
 <p>Consumes <strong>21MW</strong>: the energy of a small town (<span class="arithmatex">\(16\,000\)</span> french houses)</p>
+</li>
+</ul>
 </li>
 </ul>
 <p><img alt="image" src="../image/lecture5/frontier.jpg" /></p>
@@ -1449,20 +1469,24 @@ A_{21}B_{11} + A_{22}B_{21} &amp; A_{21}B_{12} + A_{22}B_{22} \\
 </li>
 <li>
 <p>It accounts for <strong>1.8% - 2.8%</strong> of emitted GHG [Freitag, 2021]:</p>
-</li>
+<ul>
 <li>
 <p>Accounts for embodied emissions.</p>
 </li>
 <li>
 <p>Shadow energy during the <strong>whole life-cycle: mining, fabrication, transportation, recycling</strong>.</p>
 </li>
+</ul>
+</li>
 <li>
 <p>GHG emmissions are only one of the sustainability issues</p>
-</li>
+<ul>
 <li>
 <p>rare-earth mining and waste disposal (eg. Agbogbloshie).</p>
 <ul>
 <li>human-right abuses, health issues, pollution.</li>
+</ul>
+</li>
 </ul>
 </li>
 <li>
@@ -1573,16 +1597,16 @@ double number of transistors and frequency increases:</p>
 <li>
 <p>In HPC, efficiency gains contribute to the rising computation
     demand.</p>
-<ol>
+<ul>
 <li><strong>net increase of the total power consumption.</strong></li>
-</ol>
+</ul>
 </li>
 <li>
 <p>Rebound effects for data-centers [Masanet, 2020]</p>
-<ol>
+<ul>
 <li>6% increase in energy consumption from 2010 to 2018\
     (255 % increase in nodes).</li>
-</ol>
+</ul>
 </li>
 <li>
 <p><strong>Indirect rebound effects</strong>: computation advances can

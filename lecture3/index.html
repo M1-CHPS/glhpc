@@ -1062,10 +1062,12 @@
 <ul>
 <li>Build systems: Advanced Makefiles, introduction to CMake for managing multi-file and multi-platform projects.</li>
 <li>Debugging: GDB, Valgrind for detecting memory errors and leaks.</li>
-<li>Software testing:</li>
+<li>Software testing:<ul>
 <li>Principles: Unit testing, integration testing.</li>
 <li>Test frameworks in C (e.g., Unity).</li>
 <li>Importance of testing for regression prevention and validation.</li>
+</ul>
+</li>
 <li>Code documentation: Doxygen.</li>
 </ul>
 <h1 id="makefiles">Makefiles<a class="headerlink" href="#makefiles" title="Permanent link">&para;</a></h1>
@@ -1084,12 +1086,14 @@
 </li>
 <li>
 <p>It is executed by the <code>make</code> command, which allows building different <strong>targets</strong>.</p>
-</li>
+<ul>
 <li>
 <p><code>make</code> uses timestamps to determine which files have changed.</p>
 </li>
 <li>
 <p><code>make</code> evaluates rules recursively to satisfy dependencies.</p>
+</li>
+</ul>
 </li>
 </ul>
 <h2 id="makefile-rule">Makefile Rule<a class="headerlink" href="#makefile-rule" title="Permanent link">&para;</a></h2>
@@ -1190,38 +1194,44 @@
 <h1 id="cmake">CMake<a class="headerlink" href="#cmake" title="Permanent link">&para;</a></h1>
 <h2 id="why-cmake">Why CMake?<a class="headerlink" href="#why-cmake" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Advantages of Makefiles:</strong></li>
+<li>
+<p><strong>Advantages of Makefiles:</strong></p>
+<ul>
 <li>Simplicity and transparency.</li>
 <li>No additional tools required.</li>
-<li>
-<p>Direct control over the build process.</p>
+<li>Direct control over the build process.</li>
+</ul>
 </li>
 <li>
 <p><strong>Advantages of CMake:</strong></p>
-</li>
+<ul>
 <li>Cross-platform support (Linux, Windows, macOS).</li>
 <li>Generates build files for multiple build systems (Make, Ninja, etc.).</li>
 <li>Modular and target-based design.</li>
 <li>Built-in support for testing, installation, and packaging.</li>
 </ul>
+</li>
+</ul>
 <h2 id="general-design-of-cmake">General Design of CMake<a class="headerlink" href="#general-design-of-cmake" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>CMake as a Meta-Build System:</strong></li>
-<li>Generates build files for different generators (e.g., Make, Ninja).</li>
 <li>
-<p>Abstracts platform-specific details.</p>
+<p><strong>CMake as a Meta-Build System:</strong></p>
+<ul>
+<li>Generates build files for different generators (e.g., Make, Ninja).</li>
+<li>Abstracts platform-specific details.</li>
+</ul>
 </li>
 <li>
 <p><strong>Workflow:</strong></p>
-</li>
+<ol>
 <li>Write <code>CMakeLists.txt</code> to define the project.</li>
-<li>
-<p>Configure the project:</p>
+<li>Configure the project:</li>
+</ol>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>cmake<span class="w"> </span>-B<span class="w"> </span>build
 </span></code></pre></div>
-</li>
-<li>
-<p>Build the project:</p>
+<ol>
+<li>Build the project:</li>
+</ol>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>cmake<span class="w"> </span>--build<span class="w"> </span>build
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="c1"># or when using Make as backend</span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>make<span class="w"> </span>-C<span class="w"> </span>build
@@ -1312,16 +1322,20 @@
 </span></code></pre></div>
 <h2 id="debug-vs-release-builds">Debug vs Release Builds<a class="headerlink" href="#debug-vs-release-builds" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Debug Build:</strong></li>
-<li>Includes debug symbols for debugging.</li>
 <li>
-<p>Example flags: <code>-g</code>, <code>-O0</code>.</p>
+<p><strong>Debug Build:</strong></p>
+<ul>
+<li>Includes debug symbols for debugging.</li>
+<li>Example flags: <code>-g</code>, <code>-O0</code>.</li>
+</ul>
 </li>
 <li>
 <p><strong>Release Build:</strong></p>
-</li>
+<ul>
 <li>Optimized for performance.</li>
 <li>Example flags: <code>-O3</code>, <code>-DNDEBUG</code>.</li>
+</ul>
+</li>
 </ul>
 <h2 id="setting-build-types-in-cmake">Setting Build Types in CMake<a class="headerlink" href="#setting-build-types-in-cmake" title="Permanent link">&para;</a></h2>
 <div class="language-cmake highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nb">if</span><span class="p">(</span><span class="s">NOT</span><span class="w"> </span><span class="s">CMAKE_BUILD_TYPE</span><span class="p">)</span>
@@ -1331,12 +1345,12 @@
 <ul>
 <li>
 <p>Build types: <code>Debug</code>, <code>Release</code>, <code>RelWithDebInfo</code>, <code>MinSizeRel</code>.</p>
-</li>
-<li>
-<p>CACHE: Makes the variable persistent across CMake runs. In out-of-source builds <code>CMakeLists.txt</code> is not re-evaluated on subsequent runs.</p>
-</li>
+<ul>
+<li>CACHE: Makes the variable persistent across CMake runs. In out-of-source builds <code>CMakeLists.txt</code> is not re-evaluated on subsequent runs.</li>
 <li>FORCE: Overrides any previous value.</li>
 <li>STRING: "Build type" provides a description in CMake GUI.</li>
+</ul>
+</li>
 </ul>
 <h2 id="adding-compiler-flags">Adding Compiler Flags<a class="headerlink" href="#adding-compiler-flags" title="Permanent link">&para;</a></h2>
 <div class="language-cmake highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="nb">target_compile_options</span><span class="p">(</span><span class="s">my_library</span><span class="w"> </span><span class="s">PRIVATE</span>
@@ -1393,23 +1407,27 @@
 </span></code></pre></div>
 <h2 id="best-practices-for-cmake">Best Practices for CMake<a class="headerlink" href="#best-practices-for-cmake" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Use Target-Based Commands:</strong></li>
-<li>Prefer <code>target_include_directories</code> over <code>include_directories</code>.</li>
 <li>
-<p>Prefer <code>target_link_libraries</code> over global linking.</p>
+<p><strong>Use Target-Based Commands:</strong></p>
+<ul>
+<li>Prefer <code>target_include_directories</code> over <code>include_directories</code>.</li>
+<li>Prefer <code>target_link_libraries</code> over global linking.</li>
+</ul>
 </li>
 <li>
 <p><strong>Organize <code>CMakeLists.txt</code>:</strong></p>
-</li>
+<ul>
 <li>Group related targets together.</li>
-<li>
-<p>Use comments to explain sections.</p>
+<li>Use comments to explain sections.</li>
+</ul>
 </li>
 <li>
 <p><strong>Use Modern CMake Features:</strong></p>
-</li>
+<ul>
 <li>Generator expressions for conditional configurations.</li>
 <li><code>FetchContent</code> for managing external dependencies.</li>
+</ul>
+</li>
 </ul>
 <h1 id="debugging-tools">Debugging Tools<a class="headerlink" href="#debugging-tools" title="Permanent link">&para;</a></h1>
 <h2 id="buggy-program-example">Buggy program example<a class="headerlink" href="#buggy-program-example" title="Permanent link">&para;</a></h2>
@@ -1533,14 +1551,18 @@
 <p><img alt="Software Costs (Nancy Leveson)" src="../image/lecture3/cost-software2.png" /></p>
 <h2 id="verification-and-validation-vv">Verification and Validation (V&amp;V)<a class="headerlink" href="#verification-and-validation-vv" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Validation</strong>: Does the software meet the client's needs?  </li>
 <li>
-<p>"Are we building the right product?"</p>
+<p><strong>Validation</strong>: Does the software meet the client's needs?  </p>
+<ul>
+<li>"Are we building the right product?"</li>
+</ul>
 </li>
 <li>
 <p><strong>Verification</strong>: Does the software work correctly?  </p>
-</li>
+<ul>
 <li>"Are we building the product right?"</li>
+</ul>
+</li>
 </ul>
 <h2 id="approaches-to-verification">Approaches to Verification<a class="headerlink" href="#approaches-to-verification" title="Permanent link">&para;</a></h2>
 <ul>
@@ -1555,35 +1577,39 @@
 <p><img alt="V-Model: Validation followed by Verification" src="../image/lecture3/vcycle.svg" /></p>
 <h2 id="different-types-of-tests">Different Types of Tests<a class="headerlink" href="#different-types-of-tests" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Unit Tests:</strong></li>
-<li>Test individual functions in isolation.</li>
 <li>
-<p>Test-driven development (TDD): Focus on writing maintainable, simple, and decoupled code.</p>
+<p><strong>Unit Tests:</strong></p>
+<ul>
+<li>Test individual functions in isolation.</li>
+<li>Test-driven development (TDD): Focus on writing maintainable, simple, and decoupled code.</li>
+</ul>
 </li>
 <li>
 <p><strong>Integration Tests:</strong></p>
-</li>
+<ul>
 <li>Test the correct behavior when combining modules.</li>
-<li>
-<p>Validate only functional correctness.</p>
+<li>Validate only functional correctness.</li>
+</ul>
 </li>
 <li>
 <p><strong>Validation Tests:</strong></p>
-</li>
+<ul>
 <li>Test compliance with specifications.</li>
-<li>
-<p>Test other characteristics: performance, security, etc.</p>
+<li>Test other characteristics: performance, security, etc.</li>
+</ul>
 </li>
 <li>
 <p><strong>Acceptance Tests:</strong></p>
-</li>
-<li>
-<p>Validate requirements with the client.</p>
+<ul>
+<li>Validate requirements with the client.</li>
+</ul>
 </li>
 <li>
 <p><strong>Regression Tests:</strong></p>
-</li>
+<ul>
 <li>Ensure that fixed bugs do not reappear.</li>
+</ul>
+</li>
 </ul>
 <h2 id="black-box-and-white-box-testing">Black-Box and White-Box Testing<a class="headerlink" href="#black-box-and-white-box-testing" title="Permanent link">&para;</a></h2>
 <h3 id="black-box-testing-functional">Black-Box Testing (Functional)<a class="headerlink" href="#black-box-testing-functional" title="Permanent link">&para;</a></h3>
@@ -1603,12 +1629,14 @@
 <h2 id="what-to-test">What to Test?<a class="headerlink" href="#what-to-test" title="Permanent link">&para;</a></h2>
 <ul>
 <li>Running the program on all possible inputs is too costly.</li>
-<li>Choose a subset of inputs:</li>
+<li>Choose a subset of inputs:<ul>
 <li>Partition inputs into equivalence classes to maximize coverage.</li>
 <li>Test all code branches.</li>
 <li>Test edge cases.</li>
 <li>Test invalid cases.</li>
 <li>Test combinations (experimental design).</li>
+</ul>
+</li>
 </ul>
 <h2 id="example-of-partitioning-13">Example of Partitioning (1/3)<a class="headerlink" href="#example-of-partitioning-13" title="Permanent link">&para;</a></h2>
 <h3 id="specification">Specification<a class="headerlink" href="#specification" title="Permanent link">&para;</a></h3>
