@@ -27,22 +27,23 @@ header-includes:
 
 - 2012: **AI renaissance** brought by increased data
     availability and computation ressources
-  - breakthroughs in multiple domains
-  - many innovations: algorithms, specialized processors, optimizations
+  
+    - breakthroughs in multiple domains
+    - many innovations: algorithms, specialized processors, optimizations
 
 - Most systems use **neural networks**:
 
-  - Training (stochastic gradient descent + backpropagation)
-  - Inference (forward pass)
+    - Training (stochastic gradient descent + backpropagation)
+    - Inference (forward pass)
 
 - For both, **the bottleneck is matrix multiplication**
 
 ## Objectives
 
-* Explain why dense linear algebra (GEMM) dominates NN compute
-* Core SGEMM kernel ideas and common optimizations
-* Use Roofline model to identify bottlenecks
-* Understand mixed precision & quantization tradeoffs for energy/perf
+- Explain why dense linear algebra (GEMM) dominates NN compute
+- Core SGEMM kernel ideas and common optimizations
+- Use Roofline model to identify bottlenecks
+- Understand mixed precision & quantization tradeoffs for energy/perf
 
 ## Short introduction to Neural Networks
 
@@ -60,19 +61,22 @@ $$ y = f\left(\sum_{i} w_i x_i + b\right) $$
 ## Architectures
 
 - Different architectures for different tasks:
-  - Fully connected layers
-  - Convolutional layers
-  - Recursive layers
-  - Transformers (attention mechanism)
-![Feed-forward NN](image/lecture5/ffn.svg)
+
+    - Fully connected layers
+    - Convolutional layers
+    - Recursive layers
+    - Transformers (attention mechanism)
+
+    ![Feed-forward NN](image/lecture5/ffn.svg)
 
 ## Inference
 
 - Inference: use the trained model to make predictions on new data
 - Forward pass through the network:
-- For each layer, compute the weighted sum and apply activation function
+  
+    - For each layer, compute the weighted sum and apply activation function
 
-- The weighted sum is a matrix-vector multiplication for fully connected layers and convolutions (often implemented as GEMM).
+    - The weighted sum is a matrix-vector multiplication for fully connected layers and convolutions (often implemented as GEMM).
 
 ## Two layer network
 
@@ -95,7 +99,7 @@ ReLU $f(x) = max(0,x)$, $f'(x) = 1_{x>0}$
 
 $$Z_1 = W_1 · X + B_1$$
 
-- Layer 1 ctivation - ReLU (elementwise)
+- Layer 1 Activation - ReLU (elementwise)
 
 $$H = f(Z_1)$$
 
@@ -146,7 +150,9 @@ $$ b \leftarrow b - \eta \cdot \frac{\partial L}{\partial b} $$
 The backward pass is also dominated by GEMMs.
 
 ## Frameworks
-- Popular frameworks: TensorFlow, PyTorch, JAX, ... 
+
+- Popular frameworks: TensorFlow, PyTorch, JAX, ...
+
 - High-level APIs for defining models, automatic differentiation, GPU acceleration
 
 ```python
@@ -213,9 +219,9 @@ $$
 $$
 
 - Stride in accessing B (column-major)
-  - Poor spatial locality
-  - Difficult to vectorize
-  - Cache misses for large matrices (reuse distance too large)
+    - Poor spatial locality
+    - Difficult to vectorize
+    - Cache misses for large matrices (reuse distance too large)
 
 - **Low arithmetic intensity**: $\approx 0.5$ FLOP/byte for large matrices
 
@@ -264,11 +270,11 @@ Inner loop assembly for (i,k,j) ordering with AVX (8 `float` in a vector):
 ## Problems with (i,k,j) ordering
 
 - Temporal locality analysis:
-  - **GOOD**: $A[i][k]$ reused in the inner loop, reuse distance $1$.
-  - **MEDIUM** : For a fixed $(i,j)$, each $RES[i][j]$ revisited once per k. So reuse distance $K$ (one full row).
-    - To keep RES in cache between uses you would need cache $\ge K \times 4B$
-  - **BAD** : For a fixed $(k,j)$, $B[k][j]$ used once per i. So reuse distance $K \times N$ (entire B matrix).
-    - To keep B in cache between uses you would need cache $\ge K \times N \times 4B$
+    - **GOOD**: $A[i][k]$ reused in the inner loop, reuse distance $1$.
+    - **MEDIUM** : For a fixed $(i,j)$, each $RES[i][j]$ revisited once per k. So reuse distance $K$ (one full row).
+        - To keep RES in cache between uses you would need cache $\ge K \times 4B$
+    - **BAD** : For a fixed $(k,j)$, $B[k][j]$ used once per i. So reuse distance $K \times N$ (entire B matrix).
+        - To keep B in cache between uses you would need cache $\ge K \times N \times 4B$
 
 - Still poor temporal locality for large matrices 
 
@@ -332,9 +338,9 @@ for (ii = 0; ii < M; ii += BS)
 
 - Highly optimized SGEMM implementations exist:
 
-  - OpenBLAS, Intel MKL for CPU
+    - OpenBLAS, Intel MKL for CPU
 
-  - NVIDIA cuBLAS for GPU
+    - NVIDIA cuBLAS for GPU
 
 - Implementations use blocking, vectorization, parallelization, and many architecture-specific optimizations
 
@@ -346,9 +352,9 @@ for (ii = 0; ii < M; ii += BS)
 
 - Hypothesis: performance is limited by either compute or memory bandwidth
 
-  - performance: FLOP/s (vertical axis)
-  - memory bandwidth: Bytes/s
-  - arithmetic intensity: FLOP/byte (horizontal axis)
+    - performance: FLOP/s (vertical axis)
+    - memory bandwidth: Bytes/s
+    - arithmetic intensity: FLOP/byte (horizontal axis)
 
 - Simple visual model to understand bottlenecks
 
@@ -358,7 +364,7 @@ for (ii = 0; ii < M; ii += BS)
 
 - *Compute bound*: horizontal line at peak FLOP/s
 - *Memory bound*: sloped line with slope = memory bandwidth
-  - $\frac{\text{Flop/s}}{\text{Flop/Byte}} = \text{Byte/s}$ 
+    - $\frac{\text{Flop/s}}{\text{Flop/Byte}} = \text{Byte/s}$ 
 
 ## Roofline model - SGEMM analysis
 
@@ -382,9 +388,9 @@ for (ii = 0; ii < M; ii += BS)
 
 - Frontier system at ORNL
 
-  - More than $10^{18}$ floating point operations per second
+    - More than $10^{18}$ floating point operations per second
 
-  - Consumes **21MW**: the energy of a small town ($16\,000$ french houses)
+    - Consumes **21MW**: the energy of a small town ($16\,000$ french houses)
 
 ![image](image/lecture5/frontier.jpg)
 
@@ -395,15 +401,15 @@ for (ii = 0; ii < M; ii += BS)
 
 - It accounts for **1.8% - 2.8%** of emitted GHG \[Freitag, 2021\]:
 
-  - Accounts for embodied emissions.
+    - Accounts for embodied emissions.
 
-  - Shadow energy during the **whole life-cycle: mining, fabrication, transportation, recycling**.
+    - Shadow energy during the **whole life-cycle: mining, fabrication, transportation, recycling**.
 
 - GHG emmissions are only one of the sustainability issues
 
-  - rare-earth mining and waste disposal (eg. Agbogbloshie).
+    - rare-earth mining and waste disposal (eg. Agbogbloshie).
 
-    - human-right abuses, health issues, pollution.
+        - human-right abuses, health issues, pollution.
 
 - **This presentation focus on energy consumption of HPC**
 
@@ -493,11 +499,11 @@ double number of transistors and frequency increases:
 - In HPC, efficiency gains contribute to the rising computation
     demand.
 
-    1.  **net increase of the total power consumption.**
+    -  **net increase of the total power consumption.**
 
 - Rebound effects for data-centers \[Masanet, 2020\]
 
-    1.  6% increase in energy consumption from 2010 to 2018\
+    -  6% increase in energy consumption from 2010 to 2018\
         (255 % increase in nodes).
 
 - **Indirect rebound effects**: computation advances can
