@@ -1063,8 +1063,10 @@
   </figcaption>
 </figure>
 <p>Kepler generates relatively simple datasets: a photon flux (the intensity of the received light) at specific dates for a particular stars. However, by carefully preprocessing this data and using specialized signal analysis techniques, we can make major discoveries.</p>
-<h2 id="report">Report<a class="headerlink" href="#report" title="Permanent link">&para;</a></h2>
-<p>You should keep all images and results produced during this lab. You should progressively build a report (in markdown, latex, typst or other) following this structure:</p>
+<hr class="gradient" />
+
+<h2 id="0-report">0 - Report<a class="headerlink" href="#0-report" title="Permanent link">&para;</a></h2>
+<p>Take a look at <code>report.md</code>. You should complete this report as you go along the lab. Below is a short description on what is expected in each section:</p>
 <ul>
 <li>1) Environment and context<ul>
 <li>Give details on the machine you used for the experiments: CPU/Memory specifications, compiler version, python version, OS name and version, and any other details that helps characterize your setup.<ul>
@@ -1078,12 +1080,13 @@
 <p>2) Kepler result</p>
 <ul>
 <li>Include both a lightcurve plot and a phase-folding plot for Kepler 8.</li>
-<li>The periodogram plot built at the end of this lab.</li>
+<li>A single figure that includes a periodogram for all the provided Kepler datasets.</li>
 </ul>
 </li>
 <li>
 <p>3) Profiling results</p>
 <ul>
+<li>Generate stability plots using <code>./scripts/stability.py</code> and include them in the report.</li>
 <li><strong>If your machine supports RAPL measurement</strong>: Give the approximate energy consumption of the BLS algorithm on the Kepler 8 dataset. </li>
 <li><strong>If your machine does not support RAPL measurement</strong>:<ul>
 <li>State this explicity in your report.</li>
@@ -1092,8 +1095,6 @@
 </ul>
 </li>
 <li>Give the perf results for <code>instructions,cycles,cache-references,cache-misses</code> of <code>bls(...)</code> on the Kepler-8 dataset.</li>
-<li>Generate stability plots using <code>./scripts/stability.py</code> and include them in the report.</li>
-<li>Include the flamegraph</li>
 <li>Include the strong scaling plot</li>
 </ul>
 </li>
@@ -1168,7 +1169,7 @@
 <li>The plot includes a title, legend, and uses a <code>tight</code> or <code>constrained</code> layout.</li>
 <li>The figure has an appropriate aspect ratio (width to height)</li>
 </ul>
-<p>The final plot should look something like this:</p>
+<p>The final plot could look something like this:</p>
 <figure>
   <img alt="Kepler 8 Light curve" src="../image/lab5/luminosity_Kepler-8.png" style="max-width: 80%; height: auto;" />
 <br />
@@ -1178,20 +1179,28 @@
 <h4 id="e-give-a-possible-explanation-for-the-periodic-dips-in-luminosity">e) Give a possible explanation for the periodic dips in luminosity<a class="headerlink" href="#e-give-a-possible-explanation-for-the-periodic-dips-in-luminosity" title="Permanent link">&para;</a></h4>
 <p>On the previous light curve, we observe that the luminosity appears to "dip" sharply at regular intervals.
 What could cause this periodic phenomenon ?</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Remember that the "flux" variable is the observed light intensity for a given star, from the telescope point of view.</p>
+</div>
 <h4 id="f-implement-phase-folding-light-curve">f) Implement phase folding light curve<a class="headerlink" href="#f-implement-phase-folding-light-curve" title="Permanent link">&para;</a></h4>
 <p>Phase folding is a simple technique to visualize periodic signals: we fold the data over a given period so that the signals overlap, highlighting patterns.</p>
-<div class="language-python highlight"><span class="filename">Phase Folding</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># ... Load data here</span>
+<div class="language-python highlight"><span class="filename">Phase Folding</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># Load the data here using pandas, store in a `data` variable</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Period to fold over</span>
 </span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">period</span> <span class="o">=</span> <span class="mf">0.8</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a> <span class="c1"># We phase by the period, and divide by period to go in the [0, 1] range</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">phase</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">%</span> <span class="n">period</span><span class="p">)</span> <span class="o">/</span> <span class="n">period</span>
-</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="c1"># Center the phase</span>
-</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">phase</span><span class="p">)</span>
-</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">phase_sorted</span> <span class="o">=</span> <span class="n">phase</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
-</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">flux_sorted</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
-</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
-</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">phase_sorted</span><span class="p">,</span> <span class="n">phase_sorted</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># Double plotting to improve visualization</span>
-</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">flux_sorted</span><span class="p">,</span> <span class="n">flux_sorted</span><span class="p">])</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a> <span class="c1"># We phase by the period, and divide by period to go in the [0, 1] range</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="n">phase</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">%</span> <span class="n">period</span><span class="p">)</span> <span class="o">/</span> <span class="n">period</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="n">phase</span> <span class="o">=</span> <span class="n">phase</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="c1"># Center the phase</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="n">sort_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">phase</span><span class="p">)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="n">phase_sorted</span> <span class="o">=</span> <span class="n">phase</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="n">flux_sorted</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;flux&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">sort_idx</span><span class="p">]</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="n">phase</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">phase_sorted</span><span class="p">,</span> <span class="n">phase_sorted</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># Double plotting to improve visualization</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">flux</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">flux_sorted</span><span class="p">,</span> <span class="n">flux_sorted</span><span class="p">])</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># Combine everying back to a DataFrame for plotting !</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;phase&quot;</span><span class="p">:</span> <span class="n">phase</span><span class="p">,</span> <span class="s2">&quot;flux&quot;</span><span class="p">:</span> <span class="n">flux</span><span class="p">})</span>
 </span></code></pre></div>
 <p>Implement a <code>scripts/phase_folding.py</code> script that plots the phase-folded light curve (x: phase, y: flux). </p>
 <p>It should be used like so:
@@ -1199,16 +1208,23 @@ What could cause this periodic phenomenon ?</p>
 <p>Optionally, you can also plot a binned mean on top of the phase-folded light curve:</p>
 <div class="language-python highlight"><span class="filename">Phase folding: Binning</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">bins</span> <span class="o">=</span> <span class="mi">200</span>
-</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">bin_means</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic</span><span class="p">(</span><span class="n">phase_sorted</span><span class="p">,</span> <span class="n">flux_sorted</span><span class="p">,</span> <span class="n">statistic</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
-</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">bin_centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
-</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">bin_means</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Here, we bin the data using 200 bins. In each bin, we compute the mean flux.</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="n">bin_means</span><span class="p">,</span> <span class="n">bin_edges</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">binned_statistic</span><span class="p">(</span><span class="n">phase</span><span class="p">,</span> <span class="n">flux</span><span class="p">,</span> <span class="n">statistic</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># We compute the x coordinate of each bins, by taking the center point</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="n">bin_centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">bin_means</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 </span></code></pre></div>
-<h4 id="h-check-the-file-datakepler-8_known_planetsjson">h) Check the file <code>data/kepler-8_known_planets.json</code><a class="headerlink" href="#h-check-the-file-datakepler-8_known_planetsjson" title="Permanent link">&para;</a></h4>
-<p>Run the previous script by phase folding over the Kepler 8b Period. </p>
+<h4 id="h-run-the-previous-script-by-phase-folding-over-the-kepler-8b-period-koi_period">h) Run the previous script by phase folding over the Kepler 8b Period (<code>koi_period</code>).<a class="headerlink" href="#h-run-the-previous-script-by-phase-folding-over-the-kepler-8b-period-koi_period" title="Permanent link">&para;</a></h4>
+<p>Check the file <code>data/kepler-8_known_planets.json</code>. This json contains information about the lonely Kepler 8b exoplanet, in the Kepler 8 star system. This exoplanet orbits its parent star
+every 3.52 days.</p>
 <ul>
 <li>What do you observe ? </li>
-<li>Does the light "dip" overlap or is your plot noisy?</li>
-<li>What can we say about the relationship between the light "dip" and Kepler 8b orbit ?</li>
+<li>Does the light "dips" overlap or is your plot noisy?</li>
+<li>What can we say about the relationship between the light "dips" and Kepler 8b orbit ?</li>
+<li>Draw a simple diagram describing what's happening during the light dips.<ul>
+<li>(Optionnal) Draw a sad emoji face on Kepler 8b, because she's alone, in a vast, vast universe.</li>
+</ul>
+</li>
 </ul>
 <figure>
   <img alt="Phase folded Kepler 8 Light curve" src="../image/lab5/phase_folding_Kepler-8.png" style="max-width: 80%; height: auto;" />
@@ -1230,8 +1246,18 @@ What could cause this periodic phenomenon ?</p>
 </span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="mf">1.0</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </span></code></pre></div>
 BLS is very sensitive to the hyperparameters, so you <strong>must use the ones provided here</strong>.</p>
-<p>Ensure that your script can be called with <code>scripts/run_bls.py kepler-*</code> and that it reports the match found.
+<p>Ensure that your script can be called with <code>scripts/run_bls.py kepler-*</code> where * is an id (i.e., kepler-8, kepler-17, etc.), and that it reports the BLS match.
 Check that the BLS output is consistent with the characteristics of the Kepler 8b exoplanet.</p>
+<h4 id="c-build-a-periodogram">c) Build a periodogram<a class="headerlink" href="#c-build-a-periodogram" title="Permanent link">&para;</a></h4>
+<p>The BLS algorithm scans through a range of Orbital Periods, and computes a <em>Power</em> score for each candidates. The higher the power, the better the candidate. </p>
+<p>The function <code>bls.bls_periodogram(...)</code> returns a 2D array containing all the scores, which allows us to build a <strong>Periodogram</strong>. Pairs are stored as (Power, Period).</p>
+<ul>
+<li>Take a look at <code>scripts/periodogram.py</code> and understand the provided code snippets</li>
+<li>Plot a periodogram for Kepler 8, 17, 45 and 785. <strong>You are required to use subplots</strong> so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results.</li>
+<li>Note that you should use the same arguments for <code>bls.bls_periodogram(...)</code> that the ones used for <code>bls.bls(...)</code>.</li>
+<li>Save the resulting plots as <code>results/all_periodograms.png</code></li>
+</ul>
+<hr />
 <figure>
   <img alt="Principle behind the Kepler exoplanet detection system." src="../image/lab5/kepler_principle.png" style="max-width: 80%; height: auto;" />
 <br />
@@ -1242,43 +1268,116 @@ Check that the BLS output is consistent with the characteristics of the Kepler 8
   <a href="https://arxiv.org/abs/2506.22839">Characterizing the Dynamics and Chemistry of Transiting Exoplanets with the Habitable World Observatory (2025)</a>
   </figcaption>
 </figure>
+<div class="goingfurther-section box-section">
+<h4 id="d-look-at-libblssrcpyblsc-and-try-to-understand-how-we-are-interfacing-python-with-c-code">d) Look at <code>libbls/src/pybls.c</code> and try to understand how we are interfacing Python with C code<a class="headerlink" href="#d-look-at-libblssrcpyblsc-and-try-to-understand-how-we-are-interfacing-python-with-c-code" title="Permanent link">&para;</a></h4>
+<div class="language-C highlight"><span class="filename">py_bls interface</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">static</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="nf">py_bls</span><span class="p">(</span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">self</span><span class="p">,</span><span class="w"> </span><span class="n">PyObject</span><span class="w"> </span><span class="o">*</span><span class="n">args</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="n">PyArrayObject</span><span class="w"> </span><span class="o">*</span><span class="n">t_arr</span><span class="p">,</span><span class="w"> </span><span class="o">*</span><span class="n">f_arr</span><span class="p">;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="n">Pmin</span><span class="p">,</span><span class="w"> </span><span class="n">Pmax</span><span class="p">,</span><span class="w"> </span><span class="n">qmin</span><span class="p">,</span><span class="w"> </span><span class="n">qmax</span><span class="p">;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">Np</span><span class="p">,</span><span class="w"> </span><span class="n">Nq</span><span class="p">;</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="n">PyArg_ParseTuple</span><span class="p">(</span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;O!O!ddiddi&quot;</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">PyArray_Type</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">t_arr</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">PyArray_Type</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">f_arr</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Pmin</span><span class="p">,</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">                        </span><span class="o">&amp;</span><span class="n">Pmax</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Np</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">qmin</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">qmax</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">Nq</span><span class="p">))</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nb">NULL</span><span class="p">;</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="kt">int</span><span class="w"> </span><span class="n">N</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">PyArray_DIM</span><span class="p">(</span><span class="n">t_arr</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">PyArray_DATA</span><span class="p">(</span><span class="n">t_arr</span><span class="p">);</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="n">f</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">double</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">PyArray_DATA</span><span class="p">(</span><span class="n">f_arr</span><span class="p">);</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span><span class="n">BLSResult</span><span class="w"> </span><span class="n">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bls</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">Pmin</span><span class="p">,</span><span class="w"> </span><span class="n">Pmax</span><span class="p">,</span><span class="w"> </span><span class="n">Np</span><span class="p">,</span><span class="w"> </span><span class="n">qmin</span><span class="p">,</span><span class="w"> </span><span class="n">qmax</span><span class="p">,</span><span class="w"> </span><span class="n">Nq</span><span class="p">);</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">Py_BuildValue</span><span class="p">(</span><span class="s">&quot;{s:d,s:d,s:d,s:d,s:d}&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;period&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p">.</span><span class="n">period</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;duration&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p">.</span><span class="n">duration</span><span class="p">,</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">                       </span><span class="s">&quot;phase&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p">.</span><span class="n">phase</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;depth&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p">.</span><span class="n">depth</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;power&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">res</span><span class="p">.</span><span class="n">power</span><span class="p">);</span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>When we call <code>bls.bls(...)</code> from Python, all arguments are redirected to this C function. The <code>PyObject</code> self and args pointers
+are structures containing the arguments of the function.</p>
+<p>The <code>PyArg_ParseTuple(...)</code> call is used to "unfold" the Python arguments into C variables. The string <code>O!O!ddiddi</code> defines how the arguments should be interpreted:</p>
+<ul>
+<li><code>d</code> for double</li>
+<li><code>i</code> for integers (32bits <code>int</code>)</li>
+<li><code>O!</code> for objects (Here numpy arrays). Note that the <code>!</code> qualifiers adds a type check: the runtime would raise an error if the received object wasn't a <code>PyArray_Type</code>.</li>
+</ul>
+<p><code>PyArray_DIM</code> and <code>PyArray_DATA</code> are used to convert Python/Numpy arrays to C usable pointers and size pairs.</p>
+<p>The <code>Py_BuildValue(...)</code> call does the exact inverse process and builds Python values from C variables.</p>
+<p>Finally:</p>
+<div class="language-C highlight"><span class="filename">Hooking up C with Python</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">static</span><span class="w"> </span><span class="n">PyMethodDef</span><span class="w"> </span><span class="n">BlsMethods</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="p">{</span><span class="s">&quot;bls&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">py_bls</span><span class="p">,</span><span class="w"> </span><span class="n">METH_VARARGS</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Run the BLS algorithm.&quot;</span><span class="p">},</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="p">{</span><span class="s">&quot;bls_periodogram&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">py_periodogram_bls</span><span class="p">,</span><span class="w"> </span><span class="n">METH_VARARGS</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Compute the BLS periodogram.&quot;</span><span class="p">},</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="p">{</span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">}};</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="k">static</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">PyModuleDef</span><span class="w"> </span><span class="n">blsmodule</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="n">PyModuleDef_HEAD_INIT</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pybls&quot;</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">,</span><span class="w"> </span><span class="mi">-1</span><span class="p">,</span><span class="w"> </span><span class="n">BlsMethods</span><span class="p">};</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="n">PyMODINIT_FUNC</span><span class="w"> </span><span class="nf">PyInit_bls</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="n">import_array</span><span class="p">();</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">PyModule_Create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">blsmodule</span><span class="p">);</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Here, we create an array containing all the functions we want to make available from python. We then declare a Python module and a 
+<code>PyInit_bls(void)</code> function, that will be called by Python to load/initialize the module at runtime.</p>
+</div>
 <hr class="gradient" />
 
 <h2 id="3-profiling-for-energy-and-performance-characterization">3 - Profiling for energy and performance characterization<a class="headerlink" href="#3-profiling-for-energy-and-performance-characterization" title="Permanent link">&para;</a></h2>
 <h3 id="1-measuring-energy">1. Measuring Energy<a class="headerlink" href="#1-measuring-energy" title="Permanent link">&para;</a></h3>
-<h4 id="a-disable-perf-event-paranoid">a) Disable perf event paranoid<a class="headerlink" href="#a-disable-perf-event-paranoid" title="Permanent link">&para;</a></h4>
+<h4 id="a-check-the-value-of-perf-event-paranoid">a) Check the value of perf event paranoid<a class="headerlink" href="#a-check-the-value-of-perf-event-paranoid" title="Permanent link">&para;</a></h4>
 <p>By default, the Linux kernel restricts access to some perf counters to prevent malicious usage.
-You can disable these restrictions by running:</p>
-<div class="language-bash highlight"><span class="filename">Perf event paranoid</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo -1 &gt; /proc/sys/kernel/perf_event_paranoid&#39;</span>
+Check the value of the paranoid flag:</p>
+<div class="language-bash highlight"><span class="filename">Perf event paranoid</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>cat<span class="w"> </span>/proc/sys/kernel/perf_event_paranoid
 </span></code></pre></div>
-<p>Run this command now.</p>
-<h4 id="b-first-energy-measure">b) First energy measure<a class="headerlink" href="#b-first-energy-measure" title="Permanent link">&para;</a></h4>
+<p>Possible values are:</p>
+<ul>
+<li>-1 -&gt; unrestricted. All counters can be used system-wise.</li>
+<li>0 -&gt; All counters can be used on your own processes</li>
+<li>1 -&gt; Limited access to CPU counters</li>
+<li>2 -&gt; Only basic access</li>
+</ul>
+<p>For this lab, we want <code>perf_event_paranoid</code> to be set to -1 so we can access the RAPL counters.</p>
+<h4 id="b-disable-perf-event-paranoid">b) Disable perf event paranoid<a class="headerlink" href="#b-disable-perf-event-paranoid" title="Permanent link">&para;</a></h4>
+<p>The following command will set <code>perf_event_paranoid</code> to be set to -1.</p>
+<p>However, you need <code>sudo</code> (admin rights) on your machine.</p>
+<div class="language-bash highlight"><span class="filename">Perf event paranoid</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>sudo<span class="w"> </span>sh<span class="w"> </span>-c<span class="w"> </span><span class="s1">&#39;echo -1 &gt; /proc/sys/kernel/perf_event_paranoid&#39;</span>
+</span></code></pre></div>
+<p>If the command fails (because you don't have sudo permissions) and <code>perf_event_paranoid</code> is not set to -1, you will not be able to proceed in this section. <strong>Skip to section 3.2 (Measuring performance metrics)</strong>.</p>
+<h4 id="c-checking-availability-of-rapl-counters">c) Checking availability of RAPL counters<a class="headerlink" href="#c-checking-availability-of-rapl-counters" title="Permanent link">&para;</a></h4>
+<p>Run the following:
+<div class="language-sh highlight"><span class="filename">Checking for RAPL perf events</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>perf<span class="w"> </span>list<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;energy-pkg&quot;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>power/energy-pkg/<span class="w">                                  </span><span class="o">[</span>Kernel<span class="w"> </span>PMU<span class="w"> </span>event<span class="o">]</span>
+</span></code></pre></div></p>
+<p>If you don't see the <code>power/energy-pkg</code> line, this probably means that RAPL energy measurement isn't supported on your machine.
+ <strong>Skip to section 3.2 (Measuring performance metrics)</strong>.</p>
+<h4 id="c-first-energy-measure">c) First energy measure<a class="headerlink" href="#c-first-energy-measure" title="Permanent link">&para;</a></h4>
 <p>What does the following command do ?
-<div class="language-sh highlight"><span class="filename">Idle Energy Consumption</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span>sleep<span class="w"> </span><span class="m">60</span>
+<div class="language-sh highlight"><span class="filename">Idle Energy Consumption</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>perf<span class="w"> </span>stat<span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span>sleep<span class="w"> </span><span class="m">60</span>
 </span></code></pre></div></p>
 <p>Ensure your machine is mostly idle and execute this command.</p>
-<h4 id="c-what-does-energy-pkg-measure-and-whats-the-unit-what-about-the-other-events">c) What does <code>energy-pkg</code> measure, and what's the unit ? What about the other events ?<a class="headerlink" href="#c-what-does-energy-pkg-measure-and-whats-the-unit-what-about-the-other-events" title="Permanent link">&para;</a></h4>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Classical hardware counters, like <code>instructions</code>, are <strong>per-process</strong>, whereas RAPL is <strong>system-wide</strong>: RAPL captures energy consumption for all processes currently running, not specifically by our application !</p>
+</div>
+<h4 id="d-what-does-energy-pkg-measure-and-whats-the-unit-what-about-the-other-events">d) What does <code>energy-pkg</code> measure, and what's the unit ? What about the other event(s) ?<a class="headerlink" href="#d-what-does-energy-pkg-measure-and-whats-the-unit-what-about-the-other-events" title="Permanent link">&para;</a></h4>
 <p>Compute your machine idle power consumption: </p>
 <div class="arithmatex">\[
-P_{idle} = \frac{\text{energy-pkg}_{idle}}{t}
+P_{idle} = \frac{\mathrm{energy{\text -}pkg}_{idle}}{t}
 \]</div>
-<h4 id="b-measure-the-bls-algorithm-energy-consumption">b) Measure the BLS algorithm energy consumption<a class="headerlink" href="#b-measure-the-bls-algorithm-energy-consumption" title="Permanent link">&para;</a></h4>
-<div class="language-sh highlight"><span class="filename">Workload Consumption</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
+<p>Where <span class="arithmatex">\(\mathrm{energy{\text -}pkg}_{idle}\)</span> is in Joules, and <span class="arithmatex">\(t\)</span> is in seconds.
+This is the average power consumed by the CPU package while the machine is idle, in watts</p>
+<h4 id="e-measure-the-bls-algorithm-energy-consumption">e) Measure the BLS algorithm energy consumption<a class="headerlink" href="#e-measure-the-bls-algorithm-energy-consumption" title="Permanent link">&para;</a></h4>
+<div class="language-sh highlight"><span class="filename">Workload Consumption</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-a<span class="w"> </span>-j<span class="w"> </span>-e<span class="w"> </span>power/energy-pkg/,power/energy-cores/<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
 </span></code></pre></div>
-<p>Note that the <code>-r 5</code> flag causes <code>perf</code> to perform five repetitions. The <code>time</code> command reports the sum of the timings for all runs.
+<p>Note that the <code>-r 5</code> flag causes <code>perf</code> to perform five meta-repetitions. The <code>time</code> command reports the sum of the timings for all runs.
 Calculate the effective power and energy consumption for BLS.</p>
 <div class="arithmatex">\[
-P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
+P_{effective} = \frac{\mathrm{energy{\text -}pkg_{BLS}}}{t_{BLS}} - P_{idle}
 \]</div>
 <hr />
 <h3 id="2-measuring-performance-metrics">2. Measuring performance metrics<a class="headerlink" href="#2-measuring-performance-metrics" title="Permanent link">&para;</a></h3>
 <p>What does the following command do ?
-<div class="language-sh highlight"><span class="filename">Measuring performance</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-e<span class="w"> </span>instructions,cycles,cache-references,cache-misses<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
+<div class="language-sh highlight"><span class="filename">Measuring performance</span><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nb">time</span><span class="w"> </span>perf<span class="w"> </span>stat<span class="w"> </span>-r<span class="w"> </span><span class="m">5</span><span class="w"> </span>-e<span class="w"> </span>instructions,cycles,cache-references,cache-misses<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
 </span></code></pre></div></p>
 <p>Execute this command and answer the following questions.</p>
-<h4 id="a-whats-the-observed-variance-in-the-execution-time">a) What's the observed variance in the execution time ?<a class="headerlink" href="#a-whats-the-observed-variance-in-the-execution-time" title="Permanent link">&para;</a></h4>
+<h4 id="a-whats-the-observed-variability-in-the-execution-time">a) What's the observed variability in the execution time ?<a class="headerlink" href="#a-whats-the-observed-variability-in-the-execution-time" title="Permanent link">&para;</a></h4>
 <h4 id="b-whats-the-mean-instructions-cycle">b) What's the mean instructions / cycle ?<a class="headerlink" href="#b-whats-the-mean-instructions-cycle" title="Permanent link">&para;</a></h4>
 <h4 id="c-is-the-application-compute-or-memory-intensive">c) Is the application compute or memory intensive ?<a class="headerlink" href="#c-is-the-application-compute-or-memory-intensive" title="Permanent link">&para;</a></h4>
 <p>In summary:</p>
@@ -1289,40 +1388,12 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 </ul>
 <h4 id="d-what-is-costlier-running-the-bls-algorithm-or-loading-the-dataset">d) What is costlier: running the BLS algorithm, or loading the dataset ?<a class="headerlink" href="#d-what-is-costlier-running-the-bls-algorithm-or-loading-the-dataset" title="Permanent link">&para;</a></h4>
 <p>Run the following:
-<div class="language-sh highlight"><span class="filename">Perf Record</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>perf<span class="w"> </span>record<span class="w"> </span>-g<span class="w"> </span>--<span class="w"> </span>python3<span class="w"> </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>perf<span class="w"> </span>report
+<div class="language-sh highlight"><span class="filename">Perf Record</span><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>perf<span class="w"> </span>record<span class="w"> </span>-g<span class="w"> </span>--<span class="w"> </span>python3<span class="w"> </span>./scripts/run_bls.py<span class="w"> </span>kepler-8
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>perf<span class="w"> </span>report
 </span></code></pre></div></p>
 <p>You can move around the perf report using the arrow keys, and you can press <code>+</code> to expand a particular call tree.</p>
 <p>How much time is spent in the BLS algorithm ?</p>
 <p>Which would be more time-efficient for an engineer: optimizing the data loading process or optimizing the BLS algorithm?</p>
-<h4 id="e-build-a-flamegraph-for-bls">e) Build a flamegraph for bls<a class="headerlink" href="#e-build-a-flamegraph-for-bls" title="Permanent link">&para;</a></h4>
-<p>Run the following commands
-<div class="language-sh highlight"><span class="filename">Flamegraph</span><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Download the Flamegraph tool suite</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/brendangregg/FlameGraph
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># Convert perf output to a flamegraph-readable format</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>perf<span class="w"> </span>script<span class="w"> </span>&gt;<span class="w"> </span>out.perf
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="c1"># Preprocess the perf data</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>./FlameGraph/stackcollapse-perf.pl<span class="w"> </span>./out.perf<span class="w"> </span>&gt;<span class="w"> </span>out.folded
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="c1"># Generate a flame graph</span>
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>./FlameGraph/flamegraph.pl<span class="w"> </span>--minwidth<span class="w"> </span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">    </span>--bgcolors<span class="o">=</span><span class="s2">&quot;#ffffff&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">    </span>--title<span class="w"> </span><span class="s2">&quot;FlameGraph for BLS algorithm&quot;</span><span class="w"> </span>out.folded<span class="w"> </span>&gt;<span class="w"> </span>flamegraph.svg
-</span></code></pre></div></p>
-<p>Examine the generated <code>flamegraph.svg</code>. Does the flamegraph match the previous perf results?</p>
-<hr />
-<figure>
-  <img alt="FlameGraph Example" src="../image/lab5/flamegraph.svg" style="max-width: 100%; height: auto;" />
-<br />
-<figcaption>FlameGraph Example
-  </figcaption>
-</figure>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Its unusual to measure a python application with <code>perf</code>. We used python for this lab because it was easier to build the data analysis pipeline in python. </p>
-<p>However, the same tools can be used to directly measure a C application, and precisely profile in which functions is the time spent using <code>perf record</code> and <code>perf report</code>.</p>
-</div>
 <h3 id="3-strong-scaling-analysis">3. Strong scaling analysis<a class="headerlink" href="#3-strong-scaling-analysis" title="Permanent link">&para;</a></h3>
 <p>Take a look at <code>scripts/strong_scaling.py</code>. It contains a code snippet for running the <code>scripts/run_bls.py</code> script with a given number of threads. Our goal is now to build a strong scaling plot.</p>
 <h4 id="a-look-and-try-to-understand-the-purpose-of-the-scriptsstabilitypy-script">a) Look and try to understand the purpose of the <code>scripts/stability.py</code> script<a class="headerlink" href="#a-look-and-try-to-understand-the-purpose-of-the-scriptsstabilitypy-script" title="Permanent link">&para;</a></h4>
@@ -1353,18 +1424,10 @@ P_{effective} = \frac{\mathrm{energy-pkg_{BLS}}}{t_{BLS}} - P_{idle}
 <hr />
 <h4 id="c-modify-scriptsstrong_scalingpy-to-build-a-strong-scaling-plot">c) Modify <code>scripts/strong_scaling.py</code> to build a strong scaling plot<a class="headerlink" href="#c-modify-scriptsstrong_scalingpy-to-build-a-strong-scaling-plot" title="Permanent link">&para;</a></h4>
 <p>Save the plot to <code>results/&lt;date&gt;/strong_scaling.png</code> where date is obtained via:
-<div class="language-python highlight"><span class="filename">Formatting a timestamp</span><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="n">date</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y_%m_</span><span class="si">%d</span><span class="s2">-%H_%M_%S&quot;</span><span class="p">)</span> <span class="c1"># e.g. 2025_08_28-12_08_40</span>
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results/</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="language-python highlight"><span class="filename">Formatting a timestamp</span><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="n">date</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y_%m_</span><span class="si">%d</span><span class="s2">-%H_%M_%S&quot;</span><span class="p">)</span> <span class="c1"># e.g. 2025_08_28-12_08_40</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;results/</span><span class="si">{</span><span class="n">date</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </span></code></pre></div></p>
-<h4 id="d-build-a-periodogram">d) Build a periodogram<a class="headerlink" href="#d-build-a-periodogram" title="Permanent link">&para;</a></h4>
-<p>The BLS algorithm scans through a range of Orbital Periods, and computes a <em>Power</em> score for each candidates. The higher the power, the better the candidate. </p>
-<p>The function <code>bls.bls_periodogram(...)</code> returns a 2D array containing all the scores, which allows us to build a <strong>Periodogram</strong>. Pairs are stored as (Power, Period).</p>
-<ul>
-<li>Take a look at <code>scripts/periodogram.py</code> and understand the provided code snippets</li>
-<li>Plot a periodogram for Kepler 8, 17, 45 and 785. <strong>You are required to use subplots</strong> so that all periodograms are on the same figure. Feel free to lookup "BLS Periodogram" online to get an idea of the target results.</li>
-<li>Note that you should use the same arguments for <code>bls.bls_periodogram(...)</code> that the ones used for <code>bls.bls(...)</code> earlier in the lab.</li>
-</ul>
 <hr class="gradient" />
 
 <div class="summary-section box-section">
