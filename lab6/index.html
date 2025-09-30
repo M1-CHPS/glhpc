@@ -1096,14 +1096,22 @@ Inside <code>tests/</code> you will find <code>test_runner.c</code> that contain
 <h4 id="a-implement-random_matrix-inside-sgemmc-to-generate-random-matrices">a) Implement <code>random_matrix</code> inside <code>sgemm.c</code> to generate random matrices.<a class="headerlink" href="#a-implement-random_matrix-inside-sgemmc-to-generate-random-matrices" title="Permanent link">&para;</a></h4>
 <h4 id="b-add-a-test-in-test_sgemmc-that-checks-that-random_matrix-correctly-generates-matrices-with-values-in-the-range-10-10-call-the-test-from-test_runnerc">b) Add a test in <code>test_sgemm.c</code> that checks that <code>random_matrix</code> correctly generates matrices with values in the range <span class="arithmatex">\([-1.0, 1.0]\)</span>. Call the test from <code>test_runner.c</code>.<a class="headerlink" href="#b-add-a-test-in-test_sgemmc-that-checks-that-random_matrix-correctly-generates-matrices-with-values-in-the-range-10-10-call-the-test-from-test_runnerc" title="Permanent link">&para;</a></h4>
 <h4 id="c-create-a-cmakelisttxt">c) Create a <code>CMakeList.txt</code><a class="headerlink" href="#c-create-a-cmakelisttxt" title="Permanent link">&para;</a></h4>
-<p>It should:
-- build an executable <code>gemm</code> from <code>main.c</code> and <code>sgemm.c</code>.
-- build an executable <code>test_runner</code> from <code>test_runner.c</code> and <code>sgemm.c</code> using the <code>unity</code> testing framework as shown in previous labs.
-- allow changing the build type (Debug/Release) from the command line with different sets of flags.</p>
+<p>It should:</p>
+<ul>
+<li>
+<p>build an executable <code>gemm</code> from <code>main.c</code> and <code>sgemm.c</code>.</p>
+</li>
+<li>
+<p>build an executable <code>test_runner</code> from <code>test_runner.c</code> and <code>sgemm.c</code> using the <code>unity</code> testing framework as shown in previous labs.</p>
+</li>
+<li>
+<p>allow changing the build type (Debug/Release) from the command line with different sets of flags.</p>
+</li>
+</ul>
 <p>Check that your code compiles and that the test passes.</p>
 <h3 id="2-naive-sgemm-implementation">2. Naive SGEMM implementation<a class="headerlink" href="#2-naive-sgemm-implementation" title="Permanent link">&para;</a></h3>
 <h4 id="a-implement-the-naive-version-of-sgemm-in-sgemmc-using-three-nested-loops-in-the-order-i-j-k">a) Implement the naive version of <code>sgemm</code> in <code>sgemm.c</code> using three nested loops in the order (i, j, k).<a class="headerlink" href="#a-implement-the-naive-version-of-sgemm-in-sgemmc-using-three-nested-loops-in-the-order-i-j-k" title="Permanent link">&para;</a></h4>
-<h4 id="b-add-various-tests-in-test_sgemmc-that-checks-that-your-sgemm-implementation-correctly-computes-the-product-of-small-matrices-with-variying-sizes-and-shapes-eg-1x1-2x2-3x1-1x3-3x3">b) Add various tests in <code>test_sgemm.c</code> that checks that your <code>sgemm</code> implementation correctly computes the product of small matrices with variying sizes and shapes (e.g. 1x1, 2x2, 3x1, 1x3, 3x3).<a class="headerlink" href="#b-add-various-tests-in-test_sgemmc-that-checks-that-your-sgemm-implementation-correctly-computes-the-product-of-small-matrices-with-variying-sizes-and-shapes-eg-1x1-2x2-3x1-1x3-3x3" title="Permanent link">&para;</a></h4>
+<h4 id="b-add-various-tests-in-test_sgemmc-that-checks-that-your-sgemm-implementation-correctly-computes-the-product-of-small-matrices-with-variying-sizes-and-shapes-eg-2x2-3x1-1x3-3x3">b) Add various tests in <code>test_sgemm.c</code> that checks that your <code>sgemm</code> implementation correctly computes the product of small matrices with variying sizes and shapes (e.g. 2x2, 3x1, 1x3, 3x3).<a class="headerlink" href="#b-add-various-tests-in-test_sgemmc-that-checks-that-your-sgemm-implementation-correctly-computes-the-product-of-small-matrices-with-variying-sizes-and-shapes-eg-2x2-3x1-1x3-3x3" title="Permanent link">&para;</a></h4>
 <h4 id="c-check-that-your-tests-pass">c) Check that your tests pass.<a class="headerlink" href="#c-check-that-your-tests-pass" title="Permanent link">&para;</a></h4>
 <p>Now that you have a working implementation, you can call <code>sgemm</code> from <code>main.c</code> with random matrices of different sizes passed as command line arguments.</p>
 <h2 id="2-performance-measurement-harness">2 - Performance measurement harness<a class="headerlink" href="#2-performance-measurement-harness" title="Permanent link">&para;</a></h2>
