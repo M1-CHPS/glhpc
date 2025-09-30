@@ -115,7 +115,7 @@ $$Y = f(Z_2)$$
 
 ## Training
 
-- Training: adjust weights $W$ and biases $b$ to minimize a loss function $L$ over a training datase
+- Training: adjust weights $W$ and biases $b$ to minimize a loss function $L$ over a training dataset
 - Use **backpropagation** to compute gradients on each layer (chain rule)
 
 - Example with one neuron and MSE loss:
