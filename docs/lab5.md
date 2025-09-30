@@ -47,9 +47,7 @@ Take a look at `report.md`. You should complete this report as you go along the 
 |---------------------|-----------------------------------------------------------------------------|
 | `data/`             | Pre-processed Kepler dataset for this lab                                   |
 | `libbls/`           | Box Least Square (BLS) Python library for transit detection. (CMake)        |
-| `scripts/`          | Python/bash scripts for plotting and data analysis                          |
-| `scripts/stability.py`  | Monitors the system usage for 5 minutes to assess measurements stability    |
-| `scripts/strong_scaling.py`      | Draft for a strong scaling analysis you will have to complete      |
+| `scripts/`          | Python/bash scripts for plotting and data analysis that you will have to complete during the lab |
 | `setup_env.sh`      | Helper script to setup the python environment and various env. variables    |
 | `build_library.sh`  | Helper script to run CMake for the BLS library                              |
 
@@ -156,6 +154,8 @@ every 3.52 days.
 - What can we say about the relationship between the light "dips" and Kepler 8b orbit ?
 - Draw a simple diagram describing what's happening during the light dips.
     - (Optionnal) Draw a sad emoji face on Kepler 8b, because she's alone, in a vast, vast universe.
+
+---
 
 <figure markdown="span">
   ![Phase folded Kepler 8 Light curve](image/lab5/phase_folding_Kepler-8.png){ style="max-width: 80%; height: auto;" }
