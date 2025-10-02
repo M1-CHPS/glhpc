@@ -43,7 +43,6 @@ header-includes:
 - Explain why dense linear algebra (GEMM) dominates NN compute
 - Core SGEMM kernel ideas and common optimizations
 - Use Roofline model to identify bottlenecks
-- Understand mixed precision & quantization tradeoffs for energy/perf
 
 ## Short introduction to Neural Networks
 
@@ -272,7 +271,7 @@ Inner loop assembly for (i,k,j) ordering with AVX (8 `float` in a vector):
 - Temporal locality analysis:
     - **GOOD**: $A[i][k]$ reused in the inner loop, reuse distance $1$.
     - **MEDIUM** : For a given $(i,j)$, each $RES[i][j]$ revisited once per k. So reuse distance $K$ (one full row).
-        - To keep RES in cache between uses you would need cache $\ge K \times 4B$
+        - To keep RES in cache between uses you would need cache $\ge N \times 4B$
     - **BAD** : For a given $(k,j)$, $B[k][j]$ used once per i. So reuse distance $K \times N$ (entire B matrix).
         - To keep B in cache between uses you would need cache $\ge K \times N \times 4B$
 
