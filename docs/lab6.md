@@ -87,7 +87,7 @@ We will use `perf` to measure the elapsed time and energy consumption of our SGE
 
 Example command to measure duration_time and energy consumption of a run of `sgemm` with M=512, K=512, N=512:
 ```sh
-perf stat -r 3 -a -e duration_time,power/energy-pkg/ ./sgemm sgemm 512 512 512
+perf stat -r 3 -a -e duration_time,power/energy-pkg/ ./sgemm naive 512 512 512
 ```
 
 The `-r 3` option tells `perf` to repeat the measurement 3 times and report the mean and variance.
