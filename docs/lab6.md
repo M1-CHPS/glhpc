@@ -78,7 +78,7 @@ Now that you have a working implementation, you can call `sgemm` from `main.c` w
 
 ## 2 - Performance measurement harness
 
-Create a new directory `performance/` and add two files: `performance.sh` and `plot.py`.
+Create a new directory `performance/` and add two files: `compare-sizes.sh` and `plot-sizes.py`.
 For both the measurement harness and plotting script follow best practices taught in [lecture 4](lecture4.md).
 
 ### 1. Measure performance and energy consumption
