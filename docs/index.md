@@ -1,18 +1,52 @@
-# GLHPC - Introduction
+---
+title: Home
+template: home.html
+hero:
+  title: "Crash-course on C programming and HPC tools"
+  subtitle: "Refresher on Linux, the shell, C programming, and software engineering."
+  suptitle: "M2 CHPS"
+  image: assets/homepage_logo.png
+  buttons:
+    - label: "Start Course"
+      href: lecture1/
+      primary: true
+    - label: "First Lab"
+      href: lab1/
+  authors:
+    - Pablo de Oliveira Castro
+    - Mathys E. Jam
+---
 
-This course is intended for M1 Calcul Haute Performance et simulation (M1CHPS)
-students as a crash course for software engineering targetting High Performance
-Computing and Artificial Intelligence applications.
+<hr class="gradient" />
 
-This course will cover programming basics in C and shell, software engineering
-best practices, and will gradually move on to more complex notions such as
-parallelism, performance profiling, experimental design, and the implementation
-of a Neural Network inference engince from scratch.
+# Course content
 
-## Advanced optional tasks
+The **GLHPC** course is a refresher on essential concepts you’ll use throughout the M2CHPS program. Its goal is to help students from physics, chemistry, or math backgrounds acquire core programming and computational skills.
 
-This course starts from the basics as some of the students come from applied
-maths and physics backgrounds. For those of you, who already have a good
-programming background, we have included optional advanced tasks in each lab to
-deepen your knowledge. You are not required to do them, but you are strongly
-encouraged.
+We will cover:
+
+- C programming for high-performance computing
+- Version control: Git & GitHub
+- Debugging: GDB & Valgrind
+- Data analysis and plotting: Python, Matplotlib & Seaborn
+
+For students with a CS background, the course provides a refresher on C programming and introduces key concepts of High Performance Computing: parallelism, vectorization, compilers, and optimized compute kernels.
+
+---
+
+
+## Course Format
+
+The course combines **lectures and lab sessions**:
+
+- **Lectures**:
+    - The first three focus on core concepts and essential tools.
+    - The last two cover data visualization (a core skill for all engineers) and High Performance Computing for AI applications.
+- **Labs**:
+    - Lab 1: Set up a Linux programming environment.
+    - Following labs: Dive into C programming for high performance.
+
+At the end of the course, you will put these skills to use by implementing a high-performance linear algebra kernel, which you will then leverage to build AI algorithms.
+
+<hr class="gradient" />
+

@@ -1,0 +1,92 @@
+.lab-section {
+    margin-top: 2rem;
+}
+
+.lab-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* push button to bottom */
+}
+
+.lab-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    align-items: stretch; /* ensure cards have equal height */
+}
+
+.lab-card {
+    background: var(--md-primary-bg-color);
+    filter: brightness(0.95);
+    max-width: 320px;
+    border: 1px solid var(--md-default-fg-color--lightest, rgba(0,0,0,0.08));
+    border-radius: 6px;
+    padding: 1.2rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+}
+
+[data-md-color-scheme="slate"] .lab-card {
+    background: var(--md-default-bg-color);
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+
+.lab-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    cursor: pointer;
+}
+
+[data-md-color-scheme="slate"] .lab-card:hover {
+    box-shadow: 0 4px 10px rgba(255,255,255,0.1);
+}
+
+.lab-card h3 {
+    margin-top: 0;
+    color: var(--md-primary-fg-color);
+}
+
+.lab-card p {
+    color: var(--md-default-fg-color); /* default text color */
+    font-size: 0.95em;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+
+.gradient-section {
+    position: relative;
+    padding: 2rem 1rem;
+    border-radius: 8px;
+    overflow: hidden; /* ensures pseudo-element stays inside */
+    /* Text stays fully opaque */
+    color: var(--md-default-bg-color);
+}
+
+.gradient-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 8px; /* match parent */
+    background: linear-gradient(135deg, var(--md-primary-bg-color) 0%, var(--md-primary-fg-color) 50%, var(--md-primary-bg-color) 100%);
+    opacity: 0.3; /* controls background transparency */
+    z-index: 0; /* behind content */
+}
+
+[data-md-color-scheme="slate"] .gradient-section::before {
+    background: linear-gradient(135deg, var(--md-default-bg-color) 0%, var(--md-primary-fg-color) 50%, var(--md-default-bg-color) 100%);
+}
+
+.gradient-section > * {
+    position: relative;
+    z-index: 1; /* bring text/content above background */
+}
+

@@ -1,6 +1,7 @@
 site_name: GLHPC - Génie Logiciel pour le Calcul Haute Performance et l'Intelligence Artificielle
 theme:
   name: material
+  custom_dir: course_theme
   palette:
     # Palette toggle for light mode
     - scheme: default
@@ -44,7 +45,8 @@ markdown_extensions:
       toc_depth: 0
   - pymdownx.superfences
   - pymdownx.details
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.snippets
@@ -59,6 +61,9 @@ markdown_extensions:
       generic: true
   - pymdownx.tasklist:
       custom_checkbox: true
+  
+plugins:
+  - mkdocs-pdf
 
 extra_javascript:
   - javascripts/mathjax.js

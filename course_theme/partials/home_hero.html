@@ -1,0 +1,49 @@
+{% macro home_hero_from_page(page, default_image="assets/homepage_logo.png", fallback_buttons=[]) %}
+{# Require page to be defined (call this only when page exists) #}
+{% set hero = page.meta.hero if page and page.meta and page.meta.hero is defined else {} %}
+{% set title = hero.title if hero.title is defined else page.title if page and page.title else "Welcome" %}
+{% set subtitle = hero.subtitle if hero.subtitle is defined else "" %}
+{% set image = hero.image if hero.image is defined else default_image %}
+{% set buttons = hero.buttons if hero.buttons is defined else fallback_buttons %}
+{% set suptitle = hero.suptitle if hero.suptitle is defined else "" %}
+{% set authors = hero.authors if hero.authors is defined else [] %}
+
+<section class="tx-container">
+  <div class="md-grid md-typeset">
+    <div class="tx-hero">
+      <div class="tx-hero__image">
+        <img src="{{ image }}" draggable="false" alt="{{ title }}">
+      </div>
+      <div class="tx-hero__content">
+        {% if suptitle %}
+            <p class="tx-hero__suptitle">{{ suptitle }}</p>
+        {% endif %}
+
+            <h1 class="tx-hero__title">{{ title }}</h1>
+
+        {% if subtitle %}
+            <p class="tx-hero__subtitle">{{ subtitle }}</p>
+        {% endif %}
+
+        {% for btn in buttons %}
+          {# safety: require label and href #}
+          {% if btn.label and btn.href %}
+            <a href="{{ btn.href }}" class="md-button {% if btn.primary %}md-button--primary{% endif %}">
+              {{ btn.label }}
+            </a>
+          {% endif %}
+        {% endfor %}
+
+        {% if authors %}
+          <p>
+            <strong>Authors:</strong>
+            {% for author in authors %}
+              {{ author }}{% if not loop.last %},{% endif %}
+            {% endfor %}
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endmacro %}

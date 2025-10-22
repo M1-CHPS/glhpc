@@ -1,0 +1,8 @@
+{% macro home_hero_from_page(page, default_image="assets/homepage_logo.png", fallback_buttons=[]) %}
+{# Require page to be defined (call this only when page exists) #}
+{% set description = page.description if page and page.description else "" %}
+
+<section class="tx-container">
+  {{ description | safe }}
+</section>
+{% endmacro %}

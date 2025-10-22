@@ -1,0 +1,31 @@
+{% macro lab_cards(name, items, filter_key="lab", gradient=False) %}
+<section class="lab-section md-grid md-typeset {% if gradient %}gradient-section{% endif %}">
+  <h2 class="text-center" style="color: var(--md-primary-fg-color);">{{ name | capitalize }}</h2>
+  <div class="lab-cards">
+
+    {% macro render_page(item) %}
+      {% if item.meta and item.meta[filter_key] %}
+        <a href="{{ item.url }}" class="lab-card">
+          <h3>{{ item.title }}</h3>
+          {% if item.meta.description %}
+            <p>{{ item.meta.description }}</p>
+          {% endif %}
+        </a>
+      {% endif %}
+    {% endmacro %}
+
+    {% macro render_nav(items) %}
+      {% for item in items %}
+        {% if item.children %}
+          {{ render_nav(item.children) }}
+        {% else %}
+          {{ render_page(item) }}
+        {% endif %}
+      {% endfor %}
+    {% endmacro %}
+
+    {{ render_nav(items) }}
+
+  </div>
+</section>
+{% endmacro %}

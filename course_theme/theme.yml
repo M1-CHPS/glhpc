@@ -1,0 +1,5 @@
+extends: material
+
+# Automatically load this theme’s custom CSS
+extra_css:
+  - assets/stylesheets/course.css
