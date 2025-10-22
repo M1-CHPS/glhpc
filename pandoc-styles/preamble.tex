@@ -1,7 +1,7 @@
 % preamble.tex for Pandoc Beamer (Metropolis) with Comfortaa/Helvetica
 
 % Metropolis tweaks
-\metroset{numbering=fraction}
+\metroset{progressbar=foot, numbering=fraction}
 \setbeamerfont{title}{series=\bfseries}
 \setbeamertemplate{section in toc}[sections numbered]
 
@@ -37,3 +37,18 @@
 \setsansfont{Latin Modern Mono}
 \setmathfont{Latin Modern Math}
 \setmathrm{Latin Modern Math}[Ligatures={Common,TeX}]
+
+\setbeamercolor{background canvas}{bg=white}
+\definecolor{mPurple}{HTML}{7E57C2}
+\setbeamercolor{progress bar in head/foot}{fg=mPurple,bg=black!15}
+\setbeamercolor{section in head/foot}{bg=mPurple, fg=white}
+\setbeamercolor{frametitle}{bg=mPurple!10, fg=mPurple}
+\setbeamercolor{progress bar in section page}{fg=mPurple}
+\setbeamercolor{title separator}{fg=mPurple}
+\setbeamercolor{structure}{fg=mPurple}
+\makeatletter
+\def\metropolis@progressinheadfoot@linewidth{3pt}
+\makeatother
+
+
+\setbeamertemplate{section in toc}[square]
