@@ -1,3 +1,8 @@
+---
+lab: true
+description: Implementing an image transformation pipeline in C.
+---
+
 # Lab 2: Performance Aware C Computing
 <hr class="gradient" />
 
@@ -65,7 +70,7 @@ To get started, you should use `-Og -g -Wall -Wextra` as compilation flags. We w
 
 Execute the following:
 ```sh title="Running a simple pipeline"
-./mytransform ./pipelines/test.pipeline
+./mytransform ./pipelines/all_transform.pipeline
 ```
 
 ```sh title="Expected Output"
@@ -73,11 +78,8 @@ create_image - Not implemented yet
 Could not allocate image for load
 convert_to_grayscale - Not implemented yet
 invert_image - Not implemented yet
-Node 3 requested to save an image from node 2, which did not produce an image
 quantize_image_naive - Not implemented yet
-Node 5 requested to save an image from node 4, which did not produce an image
-invert_image - Not implemented yet
-Node 7 requested to save an image from node 6, which did not produce an image
+Node 4 requested to save an image from node 3, which did not produce an image
 ```
 
 This indicates that your build works correctly and you can continue the lab. If needed, fix your `Makefile` until you obtain the same results.
@@ -201,7 +203,7 @@ You do not need to free the `input` and `output` buffer of any of the nodes: it 
 Test using
 ```sh title="Test grayscale"
 mkdir -p ./output
-./mytransform ./pipelines/test.pipeline
+./mytransform ./pipelines/grayscale.pipeline
 ```
 
 At this stage, `output/test_grayscale.png` should contain the grayscale of `images/test.png`
@@ -217,6 +219,11 @@ C_{out} = 255 - C_{in}
 $$
 
 Where C is one of the input image channels (RGB or Grayscale). Implement this kernel in `transformation.c:invert_image(...)`.
+
+Test using
+```sh title="Test inversion"
+./mytransform ./pipelines/invert.pipeline
+```
 
 ---
 
@@ -234,6 +241,11 @@ Where $\text{levels}$ is the target number of discrete values per component. Thi
 #### a) Implement this transformation using the formula provided above.
 
 You must implement this function in `transformation.c:quantize_image_naive(...)`
+
+Test using
+```sh title="Test Quantization"
+./mytransform ./pipelines/quantize.pipeline
+```
 
 #### b) Optimize using a lookup table
 

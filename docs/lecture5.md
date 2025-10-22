@@ -11,14 +11,25 @@ toc-depth: 2
 slide-level: 2
 header-includes:
   - \metroset{sectionpage=progressbar}
+lecture: true
+description: Introduction to artificial intelligence, linear algebra and neural networks and Environmental considerations.
 ---
 
 # HPC for AI & Environmental impact of computation
 
 <div class="mkdocs-only" markdown>
-  <p align="right" markdown>
-  [Download as slides 📥](slides/lecture5.pdf)
+  ![Alt text](slides/lecture5.pdf#navpanes=0){ type=application/pdf style="min-height:25vh;width:100%;height:800px" }
+  <p align="center" markdown>
+  [Download slides📥](slides/lecture5.pdf)
   </p>
+  <hr class="gradient" />
+
+  <h1 align="center" markdown>
+    Text Version
+  </h1>
+
+  ---
+
 </div>
 
 # Introduction to AI applications

@@ -1,3 +1,8 @@
+---
+lab: true
+description: Explore the use of matplotlib and seaborn for data visualization through a practical example.
+---
+
 # Lab 5: Experimental Methodology and Scientific Reporting
 
 <hr class="gradient" />

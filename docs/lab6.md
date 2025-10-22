@@ -1,3 +1,8 @@
+---
+project: true
+description: Implement an efficient SGEMM kernel using the techniques learned in the course.
+---
+
 # Lab 6 - AI Project (1) SGEMM Kernel Optimization
 <hr class="gradient" />
 

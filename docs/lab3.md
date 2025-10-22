@@ -1,3 +1,8 @@
+---
+lab: true
+description: Use CMake for build automation, write unit tests, and learn how to use gdb and valgrind.
+---
+
 # Lab 3: CMake, Unit Tests, and Debugging
 
 <hr class="gradient" />

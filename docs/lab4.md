@@ -1,3 +1,8 @@
+---
+lab: true
+description: Use Monte-carlo techniques to estimate the value of Pi in C.
+---
+
 # Lab 4: Monte-Carlo Sampling
 
 <hr class="gradient" />
@@ -20,7 +25,8 @@ Since the area of the circle is $\pi \cdot r^2 = \pi$, and the area of the squar
 
 Implement your own version of the $\pi$ estimator inside `src/compute_pi.c` using the Monte-Carlo method. This method receives $n$ the number of Monte-Carlo samples to take as arguments, and must return the approximation of $\pi$ in `double` precision.
 
-You will have to setup a CMake for this lab. The program can be run using:
+You should setup a CMake, and generate a binary named `piestimator`. Make sure that the CMake build directory is named `build/`.
+
 ```bash title="Run the estimator"
 # piestimator <nsamples>
 piestimator 1000000
@@ -38,7 +44,11 @@ You must repeat the measurements `nmeta` times, and record the values of Pi as w
 
 What function did you use to measure time? How accurate is it? Is it monotonic?
 
-#### b) Modify the function `src/main.c:print_results(...)` to print a table with the following values:
+!!! Warning
+    Beware that `clock()` has a resolution of one second: it is not accurate enough for benchmarking!
+    Instead, take a look at [clock_gettime](https://man7.org/linux/man-pages/man3/clock_gettime.3.html).
+
+#### b) Modify the function `src/main.c:print_results(...)` to print the following values:
 
 | Avg. Pi             | Std Pi                   | Avg. Time              | Std Time                             | Min Time           | Max Time           |
 |---------------------|--------------------------|------------------------|--------------------------------------|--------------------|--------------------|
@@ -57,6 +67,9 @@ NMeta,Pi,Time
 ```
 
 Print at least 10 decimals, and ensure that the file is saved in the path provided by the user.
+
+!!! Tip
+    You should use the functions `fopen`, `fprintf`, and `fclose` to respectively open, write to, and close a file.
 
 Check that you can run the following:
 ```sh title="Expected API"
@@ -87,11 +100,15 @@ If needed, fix your program so that the execution time scales linearly with the 
 How are the values of the Pi estimations distributed? Is there any bias, and if so, why?
 If needed, fix your program so that the Pi estimations are normally distributed around 3.14.
 
+
+!!! Warning
+    Beware that `time(NULL)` has a resolution of one second. If you used `srand(time(NULL))` inside the `compute_pi(...)` function, and the function is called twice in the same second, the same random seed will be used! This can bias the Pi estimation distribution.
+
 #### d) Look at the bottom figure: how is the execution time distributed?
 Check whether the timings are stable, and if not, propose an explanation.
 Do you observe any measurement noise? How would you characterize it?
 
-If needed, fix your measurements so that the execution time is mostly normally distributed, and the measurement noise is tolerable.
+In the perfect setup (**which might not be achievable on your machine**) the performance should be normally distributed. If you do not manage to get a normal distribution, do not stay stuck too long and continue with the lab.
 
 
 !!! Tip

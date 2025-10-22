@@ -1,11 +1,11 @@
 /* Base shared layout */
 .box-section {
-    border-top: 2px dashed #ccc;
-    border-bottom: 2px dashed #ccc;
-    background-color: #f9f9f924;
+    border: 2px dashed #ccc;
+    background-color: #f9f9f934;
     margin: 1.5em 0;
+    padding-bottom: 1em;
     border-radius: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.50);
 }
 
 .box-section::before {
@@ -18,11 +18,11 @@
 }
 
 .box-section>*:first-child {
-    margin-top: 1em;
+    margin-top: 0.7em;
 }
 
 .box-section>* {
-    padding: 0.5em 1em 0.1em 1em;
+    padding: 0 1em 0 1em;
     margin-bottom: 0;
 }
 
@@ -38,12 +38,15 @@ This is a workaround to remove the margins around the content when inside a box-
     /* Or adjust as needed */
     margin-top: 0.05em;
 }
-
+.box-section .admonition {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
 
 /* Optional */
 .optional-section {
     border-color: #ccc;
-    background-color: #3d435324;
+    background-color: #42475550;
 }
 
 .optional-section::before {
@@ -149,9 +152,17 @@ hr.gradient {
 
     /* Base gradient line */
     background: linear-gradient(to right,
-            #f9f9f9 0%,
-            #9400FF 50%,
-            #f9f9f9 100%);
+            var(--md-primary-bg-color) 0%,
+            var(--md-primary-fg-color) 50%,
+            var(--md-primary-bg-color) 100%);
+}
+
+/* var(--md-primary-bg-color) 0%, var(--md-primary-fg-color) 50%, var(--md-primary-bg-color) 100%); */
+[data-md-color-scheme="slate"] hr.gradient {
+    background: linear-gradient(to right,
+        var(--md-default-bg-color) 0%,
+        var(--md-primary-fg-color) 50%,
+        var(--md-default-bg-color) 100%);
 }
 
 /* Make the tables full width */

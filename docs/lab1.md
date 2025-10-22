@@ -1,8 +1,13 @@
+---
+lab: true
+description: Setting up linux, the shell, and Git for version control.
+---
+
 # Lab 1 - Prerequisites - Linux, the shell, Git
 
 <hr class="gradient" />
 
-### Objective
+### Objectives
 
 In this lab, you will get familiar with the very basics of using the Linux shell, installing and using a code editor, and setting up git.
 
@@ -10,18 +15,21 @@ The final section of this lab will have you combine all these tools to set up a 
 
 ---
 
-## 0 - Linux
+## 1 - Linux
 
 [Linux](https://en.wikipedia.org/wiki/Linux) is a family of Operating Systems (like Windows or MacOS) that are suited for programming. Most high-performance clusters will run a version of Linux, and as such **it is mandatory that you learn how to use it.**
 
-If you have a personal laptop, I **highly** recommend you set up Linux (or MacOS) on it. Alternatively, you can use [Docker](https://hub.docker.com/_/ubuntu/) or a [virtual machine](https://www.virtualbox.org/) on Windows, but note that this is highly impractical. Lastly, you can set up and use WSL.
+If you have a personal laptop, we **highly** recommend you set up Linux (or MacOS) on it. Alternatively, you can use [Docker](https://hub.docker.com/_/ubuntu/) or a [virtual machine](https://www.virtualbox.org/) on Windows, but note that this is highly impractical. Lastly, you can set up and use WSL.
 
 !!! tip
     The university may be able to lend laptops while you're on-site, but you likely won't be able to bring them home for assignments.
 
+!!! Danger
+    Most of the labs weren't tested on Mac. You will probably encounter OS-related issues, especially on newer ARM-based laptops.
+
 <div class="optional-section box-section" markdown>
 
-## 1 <span class="toc-title"> (Optional) </span> - Installing Fedora
+### 1. <span class="toc-title"> (Optional) </span> Installing Fedora
 
 If you want to install Linux on your personal laptop but aren’t sure where to start, you can follow [these instructions](annex/install_fedora.md).
 
@@ -29,6 +37,7 @@ If you want to install Linux on your personal laptop but aren’t sure where to 
 
 If you're new to Linux and want something simple to use, Fedora is a great place to start.
 
+Otherwise, Ubuntu or Debian are great options.
 </div>
 
 <hr class="gradient" />
@@ -39,11 +48,21 @@ On Windows/MacOS, you most likely use the file manager or other graphical interf
 
 <figure markdown="span">
   ![The Shell](image/lab1/the_shell.png){ style="max-width: 80%; height: auto;" }
-  <figcaption>The Shell
+  <figcaption>The Konsole terminal on a Fedora KDE setup, running a Zsh shell.
   </figcaption>
 </figure>
 
-The shell is a very powerful tool that allows you to interact with your computer in many ways. We will only cover the basics in this lab.
+The shell is a very powerful tool to interact with your computer through **commands** instead of graphical interfaces.
+
+!!! Warning
+    To copy/paste in your terminal you must use `CTRL+SHIFT+C` and `CTRL+SHIFT+V`. Pressing
+    `CTRL+C` will KILL (stop) the current command.
+
+    If you press `CTRL+S`, the terminal is put on hold. Nothing will display anymore. Press `CTRL+Q` to re-enable your terminal
+
+---
+
+### 1. Basic Exercices
 
 #### a) First, try starting a new terminal
 
@@ -52,21 +71,9 @@ Look for an app called `terminal`, `console` or even `konsole`. In some linux di
 - A `terminal` is the graphical application displaying the text.
 - A `shell` is the underlying program that interprets and executes commands that you provide. By default, your shell will probably be `bash`, which is one of the most basic shells available. All shells serve the same function, but some come with plugins and other tools to make your life easier.
 
-!!! Warning
-    To copy/paste in your terminal you must use `CTRL+SHIFT+C` and `CTRL+SHIFT+V`. Pressing
-    `CTRL+C` will KILL (stop) the current command.
+#### b) Try inputing the following commands. What does the `ls` command do ?
 
-    If you press `CTRL+S`, this will put the terminal on hold. Nothing will display anymore. Press `CTRL+Q` to re-enable your terminal
-
----
-
-### 1. Basic Exercices
-
-We will now dive into the very basics of how to use the shell. Note that the exercises presented here are minimal, and there's much to discover.
-Lines starting with a `#` are comments and should not be executed.
-
-#### a) Try inputing the following commands. What does the `ls` command do ?
-```bash
+```bash title="ls"
 # Don't worry about this yet
 cd ~
 ls
@@ -74,8 +81,11 @@ ls -lh
 ls -lah
 ```
 
-#### b) Run the following commands **step-by-step** and try to understand what is happening:
-```bash
+All shell command take the form `<cmd> (<flag>) <argument>`. Flags (starting with either `-` or `--` depending on the command) are used to change the behavior of the command, e.g. add colors, change the output format, etc.
+
+
+#### c) Run the following commands **step-by-step** and try to understand what is happening:
+```bash title="mkdir and moving around the filesystem"
 ls
 mkdir glhpc
 ls
@@ -87,15 +97,15 @@ ls
 ```
 What does `mkdir` do ? `cd` ?
 
-#### c) Based on the previous question, could you give a definition for the term "Current Working Directory" (CWD) ?
+#### d) Based on the previous question, could you give a definition for the term "Current Working Directory" (CWD) ?
 Execute the following to confirm your definition:
 
-```bash
+```bash title="Print Working Directory"
 pwd
 ```
 
-#### d) Execute the following step-by-step:
-```bash
+#### e) Execute the following step-by-step:
+```bash title="Echoing in files"
 echo "Bonjour"
 echo "Bonjour, mon username est $USER et mon home est dans $HOME"
 echo "Bonjour" > bonjour.txt
@@ -109,11 +119,33 @@ cat ./bonjour.txt
 * What does the `>` operator do ? (Tips: Did you see the output of this command in your terminal ?)
 * What does `cat` do ?
 
+#### f) Run the following commands
 
-#### e) Execute the following:
-```bash
-pwd
-cd ..
+`USER` and `HOME` are "environment variables", they are used to store properties/attributes to be reused later.
+For example, the `HOME` environment variable stores the home directory of the user. Environment variables are accesed by prefixing a `$` sign.
+
+```bash title="One time use env. var"
+MY_VAR=test echo "my var is $MY_VAR"
+echo "my var is $MY_VAR"
+```
+The second line should print an empty line: the format `<var>=<value> <cmd> ...` is used to define environment variables that only store their values for the duration of the following command.
+
+```bash title="Exporting env. vars"
+export MY_VAR=test
+echo $MY_VAR
+```
+
+Exported env. variables keep their values for the **lifetime of the current shell session**: closing your terminal will destroy all variables.
+
+!!! Tip
+    When starting a new shell, the file `~/.bashrc` (or `~/.zshrc`) is "sourced" (loaded) to setup the environment. 
+
+    You can append `export` lines at the end of these file, which will then be run everytime you start a new terminal.
+
+#### g) Execute the following:
+```bash title="More moving around the filesystem"
+cd ~/glhpc
+ls -lh
 mkdir lab1
 ```
 
@@ -121,7 +153,8 @@ mkdir lab1
 * What does `cd ..` do ? What does `..` mean ? 
 * Execute these commands: `pwd`, `realpath .`, `realpath ..`, `realpath ~/glhpc/lab1/..`
 
-#### f) Run the following:
+
+#### h) Run the following:
 ```bash
 man mkdir
 ```
@@ -132,9 +165,27 @@ Press the `q` key to exit `man`.
 
 !!! tip
     What you just saw is called a `man page`. `man` is short for `manual`. It's an offline documentation that is always available on all shells. 
-    Some tools also provide `man pages` when installed, so that you can always search for documentation. You can even search `man man` !
+    Some tools also provide `man pages` when installed, so that you can arlways search for documentation. You can even search `man man` !
 
     If you're ever stuck on a problem/bug (and you will), you should always read the documentation, or the man pages, for solutions. Googling a bug or an error message is not cheating. This is commonly referred to as `Read The F*cking Manual` (RTFM).
+
+!!! tip
+    Note that you do not have to `cd` in a directory to interact with it:
+    ```bash title="Running command through directories"
+    mkdir -p ./lab1/test01
+    ls ./lab1/test01
+    echo "Je suis un fichier" > ./lab1/test01/test.txt
+    ```
+
+    This is significantly faster than doing
+    ```bash
+    cd ./lab1
+    cd ./test01
+    ls
+    echo "Je suis un fichier" ./test.txt
+    cd ..
+    cd ..
+    ```
 
 ---
 
@@ -155,29 +206,37 @@ exo7/
         test.txt # With the text "test1"
 ```
 
-Where `exo7/`, `dossier0` and `dossier1` are folders/directories.
+Where `exo7/`, `dossier0/` and `dossier1/` are folders/directories, and the two `test.txt` are textual files.
 This directory should be located inside `~/glhpc/lab1/exo7`.
 
-It should look something like this (the `tree` command may not be available on your shell):
+If the `tree` command is available on your system, you should get the following output:
 
 <figure markdown="span">
   ![Final output](image/lab1/tree_exo7.png){ style="max-width: 80%; height: auto;" }
-  <figcaption>Final output
+  <figcaption>The newly created folders and files.
   </figcaption>
 </figure>
 
 #### c) Finally, run the following from `~/glhpc/lab1`
 
-```bash
+```bash title="Recursive cp of a directory"
 cp -r ./exo7 ./exo7_copy
 ```
 
 What does `cp` do ? Why do we use the `-r` flag ?
 
+#### d) Ensure the copy worked:
+
+```bash title="ls with target"
+ls -lh ./exo7_copy
+```
+
+#### e) Deleting the copied folder
+
 The `rm` command is used to remove files, while the `rmdir` command is used to delete **empty folders**. In order to delete a folder, and all the files it contains, we must use the `--force` and `--recursive` flags, also known as `rm -rf`.
 
 Try the following:
-```bash
+```bash title="Erasing (permanently) the copied folder"
 rm -rf ./exo7_copy
 ```
 
@@ -248,8 +307,7 @@ Go to the [VSCode Website](https://code.visualstudio.com/download) and select th
 Then double click on the downloaded `.rpm` file to automatically install `VSCode`. 
 
 You can achieve the same effect using:
-```bash
-# Replace with the correct file:
+```bash title="Fedora"
 sudo dnf install ./code-1.99.3-1744761644.el8.x86_64.rpm
 ```
 
@@ -257,8 +315,7 @@ sudo dnf install ./code-1.99.3-1744761644.el8.x86_64.rpm
 
 Snap is a very helpful application to automatically install, update, and manage third-party tools (VSCode, pycharm, Spotify, etc.)
 
-```bash
-# For Fedora:
+```bash title="Fedora"
 sudo dnf install snap
 snap install code
 ```
@@ -301,12 +358,19 @@ You may wish to keep this account after the master: you should use your personal
 
 You should setup two factor authentication (2FA) ASAP.
 
-#### b) Follow the [official guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to generate and add an ssh key to your github account.
+#### b) Setting up SSH keys
 
-!!! Note
-    Your github page is your portfolio. Your recruiter may look it up, or you may be able to bring it up during interviews to show projects you worked on previously. 
+!!! Danger
+    **If you are on a laptop lent by the university, skip this question.** 
+    SSH-keys are stored system-wide: other students will be able to access your secret key(s) and you github account if you do this. 
     
-    You should take care of it, and have a few clean projects to show !
+    Instead, you should:
+
+    - Install VSCode and connect to GitHub, then push from github. Disconnect your account before returning your laptop
+    - Generate SSH-keys on a USB-Drive, and use these keys to pull/push from GitHub so that your keys never leave the drive.
+        - Use `GIT_SSH_COMMAND="ssh -i /media/usb/github_key -o IdentitiesOnly=yes" git push` and replace `/media/usb/github_key` by the path to your SSH-Keys on your USB-Drive
+
+You should follow the [official guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to generate and add an ssh key to your github account.
 
 <hr class="gradient" />
 
@@ -314,21 +378,22 @@ You should setup two factor authentication (2FA) ASAP.
 
 ### 0. Pulling from github Classroom
 
-You will receive a link to GitHub classroom during this lab. Accept the invite and click on your name. This will automatically create a glhpc-lab1 repository on GitHub for you.
+You will receive a link to GitHub classroom during the lab session. Accept the invite and click on your name. This will automatically create a `glhpc-<name>-lab1 `repository on GitHub for you.
 
 First, clone this repository:
 
-```bash
-git clone <repo_url> 
+```bash title="Cloning a GitHub repository"
+git clone <ssh_url> 
 ```
 
+**You should use the SSH url of your repo (Click on the green "code" button on GitHub and on SSH).**
 You should see a simple `Readme.md` and `.gitignore` files inside the newly created folder.
 
 ### 1. Creating the project
 
 #### a) Create the following file structure:
 
-```
+```title="Project file structure"
 glhpc-lab1/
     first_c_project/
         build.sh # Empty text file
@@ -338,6 +403,9 @@ glhpc-lab1/
 
 Try to do this only using the shell. If you're using **VSCode** you can `cd` into `first_c_project` and run `code .`
 **Make sure to create this structure inside the cloned repo.**
+
+!!! Tip
+    To create an empty file, you can use the `touch <file>` command instead of `echo`.
 
 
 #### b) Modify `main.c` so that it contains:
@@ -352,6 +420,21 @@ int main(int argc, char** argv) {
 }
 ```
 
+??? "Explanation of the code"
+    The first two lines are preprocessor commands: they import the standard input/output library `stdio.h` as well as the standard C library `stdlib.h`.
+    These two libraries contain the core functions of the C language.
+
+    The line `int main(int argc, char** argv)` defines the `main` function:
+    
+    - It returns an integer (`int`)
+    - `int argc` (The first argument) is the number of arguments/flags passed to the programs
+    - `char** argv` is an array of characters chains (strings) that stores the arguments themselves
+
+    `printf(...)` is used to print to the terminal.
+
+    `return 0;` returns the value `0` at the end of the function. This signals to the shell that everything went well and the program completed succesfully.
+    Returning 1 would signal an error.
+
 ---
 
 ### 2. Setup git
@@ -361,7 +444,7 @@ Please refer to Lecture 1 for all the git commands you will need in this section
 #### a) Run `git status`, then stage all files from `first_c_project` in git.
 #### b) Create a first commit with the message "My first commit"
 
-I recommend you use the command `git commit -m "<message>"` or git may open nano/vim for you to edit the commit message, which may be confusing.
+You should use the command `git commit -m "<message>"` or git may open nano/vim for you to edit the commit message, which may be confusing.
 
 #### c) Ensure the commit worked:
 
@@ -379,14 +462,16 @@ First, we need a *C compiler* to transform the `main.c` file into an executable.
 
 For now, install the following packages:
 
-```sh title="Fedora"
-sudo dnf install gcc glibc-devel make gdb valgrind
-```
-
-```sh title="Ubuntu"
-sudo apt update
-sudo apt install gcc libc6-dev make gdb valgrind
-```
+=== "Fedora"
+    ```sh
+    sudo dnf install gcc glibc-devel make gdb valgrind
+    ```
+    
+=== "Ubuntu"
+    ```sh
+    sudo apt update
+    sudo apt install gcc libc6-dev make gdb valgrind
+    ```
 
 #### b) Check GCC is working
 
@@ -402,11 +487,14 @@ This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 ```
 
+!!! Note
+    Do not worry if you have a different compiler version that the one shown here, it should not matter for this course.
+
 #### c) Compiling `main.c`
 
 You can now compile your first program by running
 
-```
+```bash title="First compilation"
 gcc src/main.c -o main -g 
 ```
 
@@ -422,6 +510,8 @@ Run the program by using `./main`
 
 #### a) Create a `build.sh` script that contains the compilation command.
 
+The `build.sh` script should act as a simple way to run the compiler instead of having to write the command by hand everytime.
+
 #### b) Try to run `./build.sh`. Does it work ?
 
 Linux uses a concept of **file permissions**: some files can be read, written to, executed, or a mix of the previous.
@@ -429,7 +519,7 @@ These permissions are user dependent: you are allowed to read your own files, bu
 
 Run the following:
 
-```sh
+```sh title="Checking permissions"
 ls -lah
 ```
 
@@ -447,7 +537,7 @@ ls -lah
 
 Run the following:
 
-```sh
+```sh title="Adding permissions"
 chmod +x ./build.sh
 ```
 
@@ -460,7 +550,7 @@ You should see that the file now has permissions `rwxr-xr-x`. This can be read a
 - Others can Read and eXecute
 
 
-#### d) Restrict permissions so that only you (the owner) can read, write, and execute build.sh. Neither the group nor others should have any permissions.
+#### d) Restrict permissions so that only you (the user) can read, write, and execute build.sh. Neither the group nor others should have any permissions.
 
 In binary:
 
@@ -487,6 +577,21 @@ The first time you push on the repository, git might:
 
 - Ask you to setup your email/username: Follow git instructions and make sure to use the same as the one you've used on GitHub.
 - Set the upstream branch using `--set-upstream`: Follow git instructions
+
+!!! Danger
+    If you are using a laptop lent by the university, **do not run `git config --global add user.email`** or you will set the GitHub email for the entire laptop. This would allow other students to push using your GitHub account, or you may see other people pushing to your own repository.
+
+    Simply do `git config add user.email <email>` **inside root folder of the git repository**.
+
+<hr class="gradient" />
+
+<div class="optional-section box-section" markdown>
+
+## 3 - <span class="toc-title"> (Optional) </span> NBody 3D
+
+If you finish the lab early and have time left, try implementing a simple 3D N-Body simulation instead of the previous `Hello World!`. For simplicity, assume all particles have the same mass and only consider gravity as the acting force. 
+
+</div>
 
 <hr class="gradient" />
 
