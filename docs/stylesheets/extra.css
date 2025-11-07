@@ -36,7 +36,6 @@ This is a workaround to remove the margins around the content when inside a box-
 .box-section p {
     margin-bottom: 0.05em;
     /* Or adjust as needed */
-    margin-top: 0.05em;
 }
 .box-section .admonition {
     margin-left: 0.5em;

@@ -15,6 +15,7 @@ The final section of this lab will have you combine all these tools to set up a 
 
 ---
 
+
 ## 1 - Linux
 
 [Linux](https://en.wikipedia.org/wiki/Linux) is a family of Operating Systems (like Windows or MacOS) that are suited for programming. Most high-performance clusters will run a version of Linux, and as such **it is mandatory that you learn how to use it.**
@@ -83,6 +84,9 @@ ls -lah
 
 All shell command take the form `<cmd> (<flag>) <argument>`. Flags (starting with either `-` or `--` depending on the command) are used to change the behavior of the command, e.g. add colors, change the output format, etc.
 
+??? "Answer"
+    `ls` is used to list the content of a directory. The flag `-l` will show a long listing format, `-a` will show all files including hidden files, and `-h` makes the the output "human-readable" by using easy-to-understand units for numbers.
+
 
 #### c) Run the following commands **step-by-step** and try to understand what is happening:
 ```bash title="mkdir and moving around the filesystem"
@@ -96,6 +100,9 @@ cd ./lab1
 ls
 ```
 What does `mkdir` do ? `cd` ?
+
+??? "Answer"
+    `mkdir` is used to create a new directory. `cd` stands for "change directory" and allows to move inside the specified folder.
 
 #### d) Based on the previous question, could you give a definition for the term "Current Working Directory" (CWD) ?
 Execute the following to confirm your definition:
@@ -119,6 +126,13 @@ cat ./bonjour.txt
 * What does the `>` operator do ? (Tips: Did you see the output of this command in your terminal ?)
 * What does `cat` do ?
 
+??? "Answer"
+    `echo` is used to display text. It's mainly used to print variables (like `$USER`) or to redirect text to a file / command.
+
+    `cat` is used to print one or more files to the terminal.
+
+    `>` is used to "redirect" the output of a command to a file.
+
 #### f) Run the following commands
 
 `USER` and `HOME` are "environment variables", they are used to store properties/attributes to be reused later.
@@ -140,7 +154,7 @@ Exported env. variables keep their values for the **lifetime of the current shel
 !!! Tip
     When starting a new shell, the file `~/.bashrc` (or `~/.zshrc`) is "sourced" (loaded) to setup the environment. 
 
-    You can append `export` lines at the end of these file, which will then be run everytime you start a new terminal.
+    You can append `export` lines at the end of these files, which will then be run everytime you start a new terminal.
 
 #### g) Execute the following:
 ```bash title="More moving around the filesystem"
@@ -155,7 +169,7 @@ mkdir lab1
 
 
 #### h) Run the following:
-```bash
+```bash title="Using man"
 man mkdir
 ```
 
@@ -192,21 +206,21 @@ Press the `q` key to exit `man`.
 ### 2. More Exercises
 
 #### a) Find what `~` is a shortcut for
-```bash
+```bash title="What is ~ really ?"
 cd ~
 ```
 
 #### b) Create the following file structure using only your terminal:
-```
+```bash title="Final file structure"
 exo7/
-    readme.md # With the text "Bonjour"
-    dossier0/
-        test.txt  # With the text "test0"
-    dossier1/
-        test.txt # With the text "test1"
+├── dossier0/
+│   └── test.txt # With the text "test0"
+├── dossier1/
+│   └── test.txt # With the text "test1"
+└── readme.md # With the text "Bonjour"
 ```
 
-Where `exo7/`, `dossier0/` and `dossier1/` are folders/directories, and the two `test.txt` are textual files.
+Where `exo7/`, `dossier0/` and `dossier1/` are folders, and the two `test.txt` are textual files.
 This directory should be located inside `~/glhpc/lab1/exo7`.
 
 If the `tree` command is available on your system, you should get the following output:
@@ -220,7 +234,7 @@ If the `tree` command is available on your system, you should get the following 
 #### c) Finally, run the following from `~/glhpc/lab1`
 
 ```bash title="Recursive cp of a directory"
-cp -r ./exo7 ./exo7_copy
+cp -r ./exo7 ./exo7_2
 ```
 
 What does `cp` do ? Why do we use the `-r` flag ?
@@ -228,8 +242,17 @@ What does `cp` do ? Why do we use the `-r` flag ?
 #### d) Ensure the copy worked:
 
 ```bash title="ls with target"
-ls -lh ./exo7_copy
+ls -lh ./exo7_2
 ```
+
+#### e) Moving files around:
+
+```bash title="Adding a file to exo7_2/"
+echo "Je suis un fichier" > fichier.txt
+mv ./fichier.txt ./exo7_2/
+```
+
+What does `mv` do ? What's the difference between `mv` and `cp` ?
 
 #### e) Deleting the copied folder
 
@@ -237,7 +260,7 @@ The `rm` command is used to remove files, while the `rmdir` command is used to d
 
 Try the following:
 ```bash title="Erasing (permanently) the copied folder"
-rm -rf ./exo7_copy
+rm -rf ./exo7_2
 ```
 
 !!! Danger
@@ -295,7 +318,7 @@ We are now going to see the second most critical tool you will use during the Ma
   </figcaption>
 </figure>
 
-As a starting point, you should download `VSCode` which will cover most of your needs in the future. Do NOT listen to your obnoxious classmates telling you to "just use vim". They cannot be saved.
+As a starting point, you should download `VSCode` which will cover most of your needs in the future. Do NOT listen to your obnoxious classmates telling you to "just use vim". They cannot be helped.
 
 
 ### 1. Installation:
@@ -307,18 +330,31 @@ Go to the [VSCode Website](https://code.visualstudio.com/download) and select th
 Then double click on the downloaded `.rpm` file to automatically install `VSCode`. 
 
 You can achieve the same effect using:
-```bash title="Fedora"
-sudo dnf install ./code-1.99.3-1744761644.el8.x86_64.rpm
-```
+
+=== "Fedora"
+    ```bash
+    sudo dnf install ./code-1.99.3-1744761644.el8.x86_64.rpm
+    ```
+=== "Ubuntu"
+    ```
+    sudo apt install ./code-1.99.3-1744761644.el8.x86_64.deb
+    ```
 
 #### b) Snap install
 
 Snap is a very helpful application to automatically install, update, and manage third-party tools (VSCode, pycharm, Spotify, etc.)
 
-```bash title="Fedora"
-sudo dnf install snap
-snap install code
-```
+=== "Fedora"
+    ```bash
+    sudo dnf install snap
+    snap install code
+    ```
+=== "Ubuntu"
+    ```
+    sudo apt update
+    sudo apt install snapd
+    snap install code
+    ```
 
 #### c) Usage
 
@@ -366,9 +402,8 @@ You should setup two factor authentication (2FA) ASAP.
     
     Instead, you should:
 
-    - Install VSCode and connect to GitHub, then push from github. Disconnect your account before returning your laptop
+    - Install VSCode and connect to GitHub, then push from VSCode. Disconnect your account before returning your laptop
     - Generate SSH-keys on a USB-Drive, and use these keys to pull/push from GitHub so that your keys never leave the drive.
-        - Use `GIT_SSH_COMMAND="ssh -i /media/usb/github_key -o IdentitiesOnly=yes" git push` and replace `/media/usb/github_key` by the path to your SSH-Keys on your USB-Drive
 
 You should follow the [official guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) on how to generate and add an ssh key to your github account.
 
@@ -376,17 +411,29 @@ You should follow the [official guide](https://docs.github.com/en/authentication
 
 ## 5 - First C Project
 
+During this course, we will use the `C` language (and python to a minor extent). We will now use git, the shell, and vscode to setup a simple `Hello World!` in C.
+
 ### 0. Pulling from github Classroom
 
-You will receive a link to GitHub classroom during the lab session. Accept the invite and click on your name. This will automatically create a `glhpc-<name>-lab1 `repository on GitHub for you.
 
-First, clone this repository:
+
+
+You will receive a link to GitHub classroom during the lab session. Accept the invite and click on your name. 
+This will automatically create a `glhpc-<name>-lab1 ` repository on GitHub for you.
+
+Clone your repository to your machine:
+
+<figure markdown="span">
+  ![Cloning from Github using SSH](image/lab1/github_url_ssh.png){ style="max-width: 80%; height: auto;" }
+  <figcaption markdown>**You should use the SSH url of your repo 
+    <br> (Click on the green "code" button on GitHub and on SSH).**
+  </figcaption>
+</figure>
 
 ```bash title="Cloning a GitHub repository"
 git clone <ssh_url> 
 ```
 
-**You should use the SSH url of your repo (Click on the green "code" button on GitHub and on SSH).**
 You should see a simple `Readme.md` and `.gitignore` files inside the newly created folder.
 
 ### 1. Creating the project
@@ -439,12 +486,12 @@ int main(int argc, char** argv) {
 
 ### 2. Setup git
 
-Please refer to Lecture 1 for all the git commands you will need in this section.
+Please refer to [Lecture 1](lecture1.md) for all the git commands you will need in this section.
 
 #### a) Run `git status`, then stage all files from `first_c_project` in git.
-#### b) Create a first commit with the message "My first commit"
+#### b) Create a first commit
 
-You should use the command `git commit -m "<message>"` or git may open nano/vim for you to edit the commit message, which may be confusing.
+You should use the command `git commit -m "added main.c"` or git may open nano/vim for you to edit the commit message, which may be confusing.
 
 #### c) Ensure the commit worked:
 
@@ -473,11 +520,18 @@ For now, install the following packages:
     sudo apt install gcc libc6-dev make gdb valgrind
     ```
 
+??? "Explanation"
+    - gcc is the `GNU C Compiler`, it's used to transform `C` code to machine code executable by your computer.
+    - glibc is the GNU implementation of the standard `C` library.
+    - `make` is a build tool that we will use in future labs to automate compilation
+    - `gdb` is the GNU Debugger and is used to debug `C` programs
+    - `valgrind` is a debugger specialized in memory analysis.
+
 #### b) Check GCC is working
 
 Run the following:
 
-```sh
+```sh title="Checking gcc works"
 gcc --version
 ```
 ```title="Expected output"
@@ -500,17 +554,36 @@ gcc src/main.c -o main -g
 
 You should see that a `main` file has been created for you.
 
+??? Explanation
+    - The `-o` flag stands for `--output` and specify the path the compiler should compile to.
+    - `-g` tells the compiler to add debugging symbols to the generated binary.
+    - `src/main.c` is the name of the `C` source file we want to compile.
+
 #### d) Run main
 
-Run the program by using `./main`
+Run the program:
+
+```sh title="expected output"
+./main
+Hello World !
+```
 
 ---
 
 ### 4. First compilation script
 
+Manually running `gcc src/main.c -o main -g` everytime we modify `main.c` is cumbersome. We would like something simpler to use. For this, we will write a simple bash script to automate the compilation process. 
+
 #### a) Create a `build.sh` script that contains the compilation command.
 
-The `build.sh` script should act as a simple way to run the compiler instead of having to write the command by hand everytime.
+```sh title="build.sh"
+FILES=(main.c)
+CC=gcc
+CFLAGS=-g
+OUTPUT=main
+
+$(CC) -o "$(OUTPUT)" "$(FILES)" "$(CFLAGS)"
+```
 
 #### b) Try to run `./build.sh`. Does it work ?
 
@@ -582,16 +655,6 @@ The first time you push on the repository, git might:
     If you are using a laptop lent by the university, **do not run `git config --global add user.email`** or you will set the GitHub email for the entire laptop. This would allow other students to push using your GitHub account, or you may see other people pushing to your own repository.
 
     Simply do `git config add user.email <email>` **inside root folder of the git repository**.
-
-<hr class="gradient" />
-
-<div class="optional-section box-section" markdown>
-
-## 3 - <span class="toc-title"> (Optional) </span> NBody 3D
-
-If you finish the lab early and have time left, try implementing a simple 3D N-Body simulation instead of the previous `Hello World!`. For simplicity, assume all particles have the same mass and only consider gravity as the acting force. 
-
-</div>
 
 <hr class="gradient" />
 
