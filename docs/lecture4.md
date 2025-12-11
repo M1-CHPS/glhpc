@@ -17,18 +17,10 @@ description: Why and how to plot data, profiling via perf and hardware counters 
 # Experimental Design, Profiling, and Performance/Energy Optimization
 
 <div class="mkdocs-only" markdown>
-  ![Alt text](slides/lecture4.pdf#navpanes=0){ type=application/pdf style="min-height:25vh;width:100%;height:800px" }
-  <p align="center" markdown>
+  <p align="right" markdown>
   [Download slides📥](slides/lecture4.pdf)
   </p>
-  <hr class="gradient" />
-
-  <h1 align="center" markdown>
-    Text Version
-  </h1>
-
   ---
-
 </div>
 
 

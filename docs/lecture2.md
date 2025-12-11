@@ -15,21 +15,13 @@ lecture: true
 description: Basic C Programming, memory management, compilation and basics of parallelism.
 ---
 
-# C for High Performance
+# Performance Aware C Computing
 
 <div class="mkdocs-only" markdown>
-  ![Alt text](slides/lecture2.pdf#navpanes=0){ type=application/pdf style="min-height:25vh;width:100%;height:800px" }
-  <p align="center" markdown>
+  <p align="right" markdown>
   [Download slides📥](slides/lecture2.pdf)
   </p>
-  <hr class="gradient" />
-
-  <h1 align="center" markdown>
-    Text Version
-  </h1>
-
   ---
-
 </div>
 
 
@@ -108,8 +100,22 @@ int main() {
 ```
 
 
+## C Programming - The While loop
 
-## C Programming - Loops
+Loops are used to repeat the same operation multiple times:
+
+```c
+double pow(double number, size_t n) {
+  double res = 1;
+  while (n != 0) {
+    res *= number;
+    n -= 1;
+  }
+  return res;
+}
+```
+
+## C Programming - The For loop
 
 Implementation C de $\sum_{i=1}^{100}{i}$
 
@@ -137,26 +143,22 @@ int main() {
 
 ## C Programming - Conditions
 
-Numbers of multiple of 3 inside $[0, 99]$ (i.e. $i \mod 3 = 0$)
+Call a function and print conditionally:
 ```c
-void count_multiples_of_three() {
-  unsigned int count = 0;
-  // For i starting at 0; while i < 100; increment i by one
-  for (unsigned int i = 0; i < 100; i++) {
-    // if i % 3 (Remainder of the integer division) is equal to 0
-    if (i % 3 == 0) {
-      count++;
+void compute_all(size_t start, size_t end) {
+  for (size_t i = start; i < end; i++) {
+    double result = f(i);
+    if (result < 0) {
+      // Print the results with 3 decimals
+      printf("Result of f(%d) is negative: %.3f\n", i, result);
+    } else if (result > 0) {
+      printf("Result of f(%d) is positive: %.3f\n", i, result);
+    } else {
+      printf("Resulat f(%d) == 0 !", i);
     }
   }
-  printf("Result: %d\n", count);
 }
 ```
-
-### Note {.example}
-
-Here we could also do `for (unsigned int i = 0; i < 100; i += 3)`
-
-
 
 ## C Programming - Basic Pointers
 
@@ -178,7 +180,6 @@ printf("a: %d; b: %d; c: %d\n", a, b , *c);
 | ...          | ...          | ...      |
 
 
-
 ## C Programming - Arrays
 
 ```c
@@ -192,7 +193,31 @@ int main() {
 
 ![Morpion layout in memory](image/lecture2/morpion_in_memory.png){ width=90% }
 
+## C Programming - Exercise 2
 
+Explain the following program:
+```c
+int fill_array(int *array, size_t n) {
+  char buffer[256];
+  int index = 0;
+  while (index != n) {
+    printf("Enter a number, or 'exit' to stop:\n  ");
+    fgets(buffer, sizeof(buffer), stdin);
+    if (strcmp(buffer, "exit\n") == 0) {
+      break;
+    }
+    int number = atoi(buffer);
+    array[index++] = number;
+  }
+  return index;
+}
+...
+int array[100];
+int filled = fill_array(array, 100);
+for (int i = 0; i < filled; i++) {
+  printf("array[%d] = %d\n", i, array[i]);
+}
+```
 
 ## C Programming - Structures
 
@@ -209,9 +234,9 @@ typedef struct {
 ```
 
 ```c
-Student e1 = {"Dupont", "Pierre", 22, 13, 'm'};
-Student e2 = {"Major", "Major", 22, 13.5, 'a'};
-Student e3 = {"Martin", "Evelynne", 24, 14, 'f'};
+Student e1 = (Student){"Dupont", "Pierre", 22, 13, 'm'};
+Student e2 = (Student){"Major", "Major", 22, 13.5, 'a'};
+Student e3 = (Student){"Martin", "Evelynne", 24, 14, 'f'};
 
 if (e1.mean_grade > 10) {
   printf("(%s %s) is a pretty good student !\n", 
@@ -266,18 +291,20 @@ for (int i = 0; i < 3; i++)
 Consider the following python and C code:
 
 ```Python
-sum = 0
+# Python
+tmp = 0
 for i in range(ub):
-  sum += i
-print(sum)
+  tmp += i
+print(tmp)
 ```
 
 ```c
-unsigned long long sum = 0;
+// C
+unsigned long long tmp = 0;
 for (unsigned int i = 0; i < ub; i++){
-    sum += i;
+    tmp += i;
 }
-printf("Sum of first %llu integers is: %llu\n", ub, sum);
+printf("Sum of first %llu integers is: %llu\n", ub, tmp);
 ```
 
 Where ub is a very large number (100 Millions in this example).
@@ -337,6 +364,23 @@ We can distinguish two types of memory
 The kernel (Linux / Windows) allocates **memory pages** and operates at a coarse grain level.  
 The standard library (`libc`) manipulates pages on a finer scale and provides memory to the user.
 
+## Managing Memory - Allocation
+
+We mainly use two functions:
+
+### malloc(n)
+  `malloc` allocates `n bytes` and returns a pointer to the beggining of the allocated memory.
+
+  If we want to store `400 int`, we need to compute the required size in bytes!
+
+  
+  `int* array = malloc(sizeof(int) * 400)`
+
+  Variants exists like `calloc`, `realloc` or `aligned_alloc`.
+
+### free(ptr)
+  `free` deallocates the memory pointer to by `ptr`
+
 
 
 ## Managing Memory - Allocation
@@ -369,9 +413,80 @@ int do_the_thing(int n) {
 
 ![Results of memory allocation](image/lecture2/malloc_in_memory.png){ height=75% }
 
-**`malloc` returns a pointer to the beginning of the allocated memory range**
+**`malloc` returns a pointer to the beginning of the allocated memory block**
 
 
+## Managing Memory - Exercise (NBody2D)
+
+Consider the following data structures:
+
+```c
+typedef struct {
+  double x, y;
+  double vx, vy;
+  double ax, ay;
+} Particle2D;
+
+typedef struct {
+  Particle2D* p;
+  size_t n;
+} NBody2D;
+```
+
+How do we allocate an NBody2D of size `n` ?
+
+## Managing Memory - Exercise (NBody2D)
+
+```c
+NBody2D* nbody2d_alloc(size_t n) {
+  NBody2D* res = malloc(sizeof(NBody2D));
+  res->n = n;
+  res->p = malloc(sizeof(Particle2D) * n);
+  return res;
+}
+```
+
+Note that we only allocate memory here: the particles positions/velocities/accelerations aren't initialized !
+
+It's safer to use `sizeof(Particle2D)` than to manually compute the size of the structure.
+
+
+## Managing Memory - Exercise (NBody2D)
+
+```c
+NBody2D* nbody2d_alloc(size_t n) {
+  Particle2D* tmp = malloc(sizeof(Particle2D) * n);
+
+  NBody2D res = (NBody2D){tmp, n};
+
+  return &res;
+}
+```
+Would this code work ?
+
+
+## Managing Memory - Exercise (NBody2D)
+
+```c
+NBody2D* nbody2d_alloc(size_t n) {
+  NBody2D* res = malloc(sizeof(NBody2D));
+
+  if (res == NULL) {
+    perror("Allocaiton failed");
+    exit(1);
+  }
+
+  res->n = n;
+  res->p = malloc(sizeof(Particle2D) * n);
+  if (!res->p){
+    perror("Allocaiton failed");
+    exit(1);
+  }
+  return res;
+}
+```
+
+`NULL` is a reserved value (typically 0) to represent an invalid address. `malloc` returns `NULL` on failure (out of memory, etc.).
 
 ## Managing Memory - Deallocation
 
@@ -393,6 +508,24 @@ If memory is not freed (memory leak) the computer can run out:
 - Other applications requesting memory can crash or fail
 
 
+## Managing Memory - Exercise (sizeof)
+
+What will the following program print:
+
+```c
+void f(size_t n) {
+  double* data = malloc(sizeof(double) * n);
+
+  printf("Allocated array of size=%d\n", sizeof(data));
+
+  double buffer[256] = {0};
+  printf("Allocated buffer of size=%d\n", sizeof(buffer));
+  ...
+}
+```
+
+We consider that `sizeof(double) = 8`.
+
 
 ## Virtual And Physical Memory - Problem
 
@@ -400,7 +533,7 @@ If memory is not freed (memory leak) the computer can run out:
 - Can I acess memory from another program and steal their data?
 - How can multiple applications share the same memory?
   - Some variables have hard-coded addresses!
-- How to handle (Internal/External) fragmentation (Empty slot)? 
+- How to handle memory fragmentation ?
 
 
 
@@ -408,12 +541,13 @@ If memory is not freed (memory leak) the computer can run out:
 
 We separate **Physical Addresses** (locations in memory) from **Virtual Addresses** (Logic locations) seen by each program !
 
-- Physical memory is divided into small **fixed-size blocks** called **pages** (typically ~4KB).
-- The CPU includes a **Memory Management Unit** (MMU) that translates virtual addresses into physical addresses.
 - Each program is given its own isolated virtual address space.
-- The kernel maintains a **page table** for each program that tells the MMU how to translate addresses.
+- The CPU includes a **Memory Management Unit** (MMU) that translates virtual addresses into physical addresses.
+  - For example, the program accesses the **virtual address** `0x004`, which the MMU translates to a **physical address** like `0xfde58652`.
+- Physical memory is divided into **fixed-size blocks** called **pages** (typically 4 KB).”
+  - If a program requests 4 GB of memory, it will occupy approximately 1,048,576 pages (4 GB / 4 KB per page).
 
-## The Illusion of contiguity
+### The Illusion of contiguity
 Each process believes it has acces to a large, contiguous block of memory; while it can be physically fragmented or shared.
 
 
@@ -433,9 +567,17 @@ Which memory are we talking about ?
 
 ![Memory Hierarchy (https://www.geeksforgeeks.org/memory-hierarchy-design-and-its-characteristics/)](image/lecture2/memory-hierarchy.png){ width=100% }
 
-Note that GPU(s) also have their own separate memory !
+> Note that GPU(s) also have their own separate memory !
 
+## Memory Hierarchy
 
+RAM behaves as the main memory:
+
+- When doing computations on the CPU (or GPU), we **copy** the data from RAM to caches/registers.
+- Results are then **stored temporarily** in cache.
+- Finally, the data is written back to RAM.
+
+When modifying a file, the file is loaded from the disk to RAM and back.
 
 ## Memory Hierarchy
 
@@ -501,6 +643,18 @@ In practice:
 - The CPU can **prefetch** data: it learns data access patterns and anticipates future memory access.
 - The CPU can execute **out-of-order**; independent instructions are executed while the memory request is in flight.
 
+## CPU Caches - In practice
+
+A few rough figures:
+
+- An L1 Load takes ~1ns
+- An L2 Load takes ~10-16 ns
+- An L3 Load takes ~20-40ns
+- A DRAM Load takes ~100ns
+- An SSD Load takes ~100 $\mu$s
+- An HHD load takes ~10 ms
+
+Note that the exact timings will vary depending on the system
 
 
 ## Caches CPU - Strided Access
@@ -510,20 +664,29 @@ Consider two NBody 3D implementations:
 **Array Of Structure (AoS)**
 
 ```c
-// We allocate N tuples of (x, y, z) positions
-float* positions = malloc(sizeof(float) * N * 3);
+float* alloc_aos(size_t N) {
+  // We allocate N tuples of (x, y, z) positions
+  float* positions = malloc(sizeof(float) * N * 3);
+}
+
 ```
 
 **Structure Of Array (SoA)**
 
 ```c
-// We allocate separate arrays for each components
-float* x = malloc(sizeof(float) * N);
-float* y = malloc(sizeof(float) * N);
-float* z = malloc(sizeof(float) * N);
+float** alloc_soa(size_t N) {
+  // We allocate separate arrays for each components
+  float* x = malloc(sizeof(float) * N);
+  float* y = malloc(sizeof(float) * N);
+  float* z = malloc(sizeof(float) * N);
+
+  float** res = malloc(sizeof(float*) * 3)
+  res[0] = x;
+  res[1] = y;
+  res[2] = z;
+  return res;
+}
 ```
-
-
 
 ## Caches CPU - Strided Access
 
@@ -541,6 +704,7 @@ for (int i = 0; i < N; i += 3)
 **Structure Of Array (SoA)**
 
 ```c
+x = arrays[1];
 for (int i = 0; i < N; i++)
   if (x[i] < 0.5)
     count++;
@@ -578,7 +742,7 @@ Most LLC loads still results in misses, leading to DRAM access.
 
 C is a compiled language: we must translate the source code to assembly for the CPU
 
-`gcc ./main.c -o main (<flags>)`
+`gcc -o main (<flags>) ./main.c`
 
 - Python is interpreted
   - More flexible but **significantly slower**
@@ -586,8 +750,6 @@ C is a compiled language: we must translate the source code to assembly for the 
   - Balances performance and productivity
 - C/C++/Rust are compiled to assembly code
   - Poor portability, but no intermediary.
-
-
 
 ## Compilation & Assembly - Simple Loop
 
@@ -659,36 +821,63 @@ There are several compilers with varying performance and features:
 - GCC and Clang-LLVM (The classics)
 - MSVC (Microsoft), mingw-LLVM, arm-clang (For ARM) and many, many others.
 
+## Makefile Basics - Motivation
 
+What if we need to compile a project with thousands of files ?
+
+```bash
+gcc -O3 -fopenmp -march=native -o main main.c nbody3d.c utils.c ...
+```
+
+- Very easy to break
+- If we modify one file (`main.c`) we must recompile **everything** -> waste of time
+  
+We need something better!
 
 ## Makefile Basics - Introduction
 
-**Make** is a scripting tool to automate complex compilation workflows. It works by defining rules inside **Makefiles**.
+**Make** is a scripting tool to automate compilation. It works by defining rules inside **Makefiles**.
 
 ```makefile
 CC := gcc
 CFLAGS := -g
 
 main: main.c my_library.c my_library.h
-  $(CC) -o $@ $^ $(CFLAGS)
+  $(CC) -o $@ $(CFLAGS) $^ 
 ```
 
 - `main` is the target (What we want to build)
-- `main.c my_library.c my_library.h` are the dependencies: rule reruns if any change
-- `$(CC) -o $@ $< $(CFLAGS)` is the recipe
-- `$@` expands to the target name
-- `$^` expands to all dependency
+- `main.c my_library.c my_library.h` are the dependencies: rule reruns if any of these changes
+- `$(CC) -o $@ $< $(CFLAGS)` is the recipe (what is executed when the rule is run)
+  - `$@` expands to the target name
+  - `$^` expands to all dependency
 
+## Makefile Basics - Introduction
 
+```makefile
+main: main.o my_library.o
+  $(CC) -o $@ $(CFLAGS) $^ 
+
+main.o: main.c
+  $(CC) -c -o $@ $(CFLAGS) $< 
+
+my_library.o: my_library.c my_library.h
+  $(CC) -c -o $@ $(CFLAGS) $< 
+```
+
+The `main` rule combines the object files `main.o` and `my_library.o` into the final executable.
+We use the `-c` flag to let `gcc` know we are producing object files.
 
 ## Makefile Basics - Phony rules
 
 Makefiles expects that a rule `main` produces a file called `main`. However, not all rules produce files:
 
 ```makefile
-.PHONY: all clean
+.PHONY: all re clean
 
-all: main mylibrary
+all: main
+
+re: clean all
 
 ...
 
@@ -698,6 +887,7 @@ clean:
 ```
 
 Here, `make all` will be an alias to build everything, while `make clean` is a custom rule to clean all build artifacts.
+`make re` will first run `clean` (delete everything) then `all` (build everything), which allows us to rebuild our project from scratch.
 Makefile has many, many other functionalities, outside the scope of this course.
 
 

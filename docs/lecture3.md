@@ -18,18 +18,10 @@ description: Build systems, debugging, software testing and code documentation.
 # Building, Testing and Debugging Scientific Software
 
 <div class="mkdocs-only" markdown>
-  ![Alt text](slides/lecture3.pdf#navpanes=0){ type=application/pdf style="min-height:25vh;width:100%;height:800px" }
-  <p align="center" markdown>
+  <p align="right" markdown>
   [Download slides📥](slides/lecture3.pdf)
   </p>
-  <hr class="gradient" />
-
-  <h1 align="center" markdown>
-    Text Version
-  </h1>
-
   ---
-
 </div>
 
 ## Objectives

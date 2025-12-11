@@ -3,7 +3,7 @@ lab: true
 description: Explore the use of matplotlib and seaborn for data visualization through a practical example.
 ---
 
-# Lab 5: Experimental Methodology and Scientific Reporting
+# Lab 5: Leveraging visualization techniques for the Kepler Space Telescope
 
 <hr class="gradient" />
 
@@ -73,12 +73,12 @@ source ./setup_env.sh
 
 Write a `scripts/plot_luminosity.py` script that:
 
-- Can be called with `./scripts/plot_luminosity.py ./results kepler-*` where * is an id (i.e., kepler-8, kepler-17, etc.)
-- Fetches the corresponding dataset in `data/`
+- Can be called with `./scripts/plot_luminosity.py ./results kepler-<n>` where n is an id (i.e., kepler-8, kepler-17, etc.)
+- Fetches the corresponding dataset in `data/` using `pd.read_csv()` from the pandas library.
 - Plots the dataset using `matplotlib` (x: Time (days), y: Flux)
 - Save the plots as `results/luminosity_kepler-*.png`
 
-Ensure the script is executable using `chmod +x <file>` and that the file starts with the shebang `#!/usr/bin/env python3` 
+Ensure the script is executable using `chmod +x <file>` and that the file starts with the shebang `#!/usr/bin/env python3`.
 
 !!! Tip
     Ensure that the `results` folder exists before saving to it. You can use `os.makedirs(<path>, exists_ok=True)` in your script.
@@ -93,13 +93,15 @@ Make sure that:
 - The plot includes a title, legend, and uses a `tight` or `constrained` layout.
 - The figure has an appropriate aspect ratio (width to height)
 
-The final plot could look something like this:
 
-<figure markdown="span">
-  ![Kepler 8 Light curve](image/lab5/luminosity_Kepler-8.png){ style="max-width: 80%; height: auto;" }
-  <figcaption>Kepler 8 Light curve
-  </figcaption>
-</figure>
+??? "Expected Result"
+    The final plot could look something like this:
+
+    <figure markdown="span">
+      ![Kepler 8 Light curve](image/lab5/luminosity_Kepler-8.png){ style="max-width: 100%; height: auto;" }
+      <figcaption>Kepler 8 Light curve
+      </figcaption>
+    </figure>
 
 #### e) Give a possible explanation for the periodic dips in luminosity
 
@@ -114,40 +116,52 @@ What could cause this periodic phenomenon ?
 Phase folding is a simple technique to visualize periodic signals: we fold the data over a given period so that the signals overlap, highlighting patterns.
 
 ```python title="Phase Folding"
-# Load the data here using pandas, store in a `data` variable
-# Period to fold over
-period = 0.8
+def phase_fold(data: pd.DataFrame, period: float) -> pd.DataFrame:
+  # We phase by the period, and divide by period to go in the [0, 1] range
+  phase = (data["time"] % period) / period
+  phase = phase - 0.5 # Center the phase
+  sort_idx = np.argsort(phase)
+  phase_sorted = phase[sort_idx]
+  flux_sorted = data["flux"].iloc[sort_idx]
 
- # We phase by the period, and divide by period to go in the [0, 1] range
-phase = (data["time"] % period) / period
-phase = phase - 0.5 # Center the phase
-sort_idx = np.argsort(phase)
-phase_sorted = phase[sort_idx]
-flux_sorted = data["flux"].iloc[sort_idx]
+  phase = np.concatenate([phase_sorted, phase_sorted+1]) # Double plotting to improve visualization
+  flux = np.concatenate([flux_sorted, flux_sorted])
 
-phase = np.concatenate([phase_sorted, phase_sorted+1]) # Double plotting to improve visualization
-flux = np.concatenate([flux_sorted, flux_sorted])
-
-# Combine everying back to a DataFrame for plotting !
-df = pd.DataFrame({"phase": phase, "flux": flux})
+  # Combine everying back to a DataFrame for plotting !
+  res = pd.DataFrame({"phase": phase, "flux": flux})
+  return res
 ```
 
 Implement a `scripts/phase_folding.py` script that plots the phase-folded light curve (x: phase, y: flux). 
 
 It should be used like so:
-`./scripts/phase_folding.py ./results kepler-* <period>`.
+`./scripts/phase_folding.py ./results kepler-<n> <period>`.
 
-Optionally, you can also plot a binned mean on top of the phase-folded light curve:
+<div class="optional-section box-section" markdown>
+
+You can also plot a binned mean on top of the phase-folded light curve:
 
 ```python title="Phase folding: Binning"
-from scipy import stats
-bins = 200
-# Here, we bin the data using 200 bins. In each bin, we compute the mean flux.
-bin_means, bin_edges, _ = stats.binned_statistic(phase, flux, statistic='mean', bins=bins)
-# We compute the x coordinate of each bins, by taking the center point
-bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-ax.plot(bin_centers, bin_means, color="red", lw=1.5)
+def plot_binning(data: pd.DataFrame, ax: plt.Axes, nbins = 200) -> None:
+
+  from scipy import stats
+
+  # Here, we bin the data using 200 bins. In each bin, we compute the mean flux.
+  bin_means, bin_edges, _ = stats.binned_statistic(data["phase"], data["flux"], 
+                                                    statistic='mean', bins=nbins)
+  # We compute the x coordinate of each bins, by taking the center point
+  bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+  ax.plot(bin_centers, bin_means, color="red", lw=1.5)
 ```
+</div>
+
+??? "Expected Results"
+    <figure markdown="span">
+      ![Phase folded Kepler 8 Light curve](image/lab5/phase_folding_Kepler-8.png){ style="max-width: 80%; height: auto;" }
+      <figcaption>Phase folded Kepler 8 Light curve
+      </figcaption>
+    </figure>
+
 #### h) Run the previous script by phase folding over the Kepler 8b Period (`koi_period`). 
 
 Check the file `data/kepler-8_known_planets.json`. This json contains information about the lonely Kepler 8b exoplanet, in the Kepler 8 star system. This exoplanet orbits its parent star
@@ -160,13 +174,7 @@ every 3.52 days.
 - Draw a simple diagram describing what's happening during the light dips.
     - (Optionnal) Draw a sad emoji face on Kepler 8b, because she's alone, in a vast, vast universe.
 
----
 
-<figure markdown="span">
-  ![Phase folded Kepler 8 Light curve](image/lab5/phase_folding_Kepler-8.png){ style="max-width: 80%; height: auto;" }
-  <figcaption>Phase folded Kepler 8 Light curve
-  </figcaption>
-</figure>
 
 <hr class="gradient" />
 
