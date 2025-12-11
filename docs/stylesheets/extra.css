@@ -1,11 +1,16 @@
 /* Base shared layout */
 .box-section {
-    border: 2px dashed #ccc;
-    background-color: #f9f9f934;
+    border: 2px dashed #5f5f5f;
+    background-color: #9d9d9d34;
     margin: 1.5em 0;
     padding-bottom: 1em;
     border-radius: 0;
     box-shadow: 0 4px 10px rgba(0,0,0,0.50);
+}
+
+[data-md-color-scheme="slate"] .box-section {
+    border-color: #cccccc;
+    background-color: #b9b9b934;
 }
 
 .box-section::before {
@@ -44,8 +49,7 @@ This is a workaround to remove the margins around the content when inside a box-
 
 /* Optional */
 .optional-section {
-    border-color: #ccc;
-    background-color: #42475550;
+    border-color: #575561;
 }
 
 .optional-section::before {
@@ -57,28 +61,33 @@ This is a workaround to remove the margins around the content when inside a box-
 /* Going Further */
 .goingfurther-section {
     border-color: #007acc;
-    background-color: #3d435324;
+}
+
+[data-md-color-scheme="slate"] .goingfurther-section {
+    border-color: #0096ff;
 }
 
 .goingfurther-section::before {
     content: "⚙️ Going Further";
-    background-color: #3d435324;
     border-color: #007acc;
 }
 
 /* Going Further */
 .summary-section {
-    border-top: 1px solid;
-    border-bottom: 1px solid;
-    border-color: #31975124;
-    background-color: #31975124;
+    border-color: #319751;
+    background-color: #3197513c;
     margin-top: 5em;
+}
+
+[data-md-color-scheme="slate"] .summary-section {
+    border-color: #31976b;
+    background-color: #22743734;
 }
 
 .summary-section::before {
     content: "✅ Lab Summary";
-    background-color: #31975124;
     border-color: #31975124;
+    background-color: #39742234;
 }
 
 .summary-section>*:first-child {

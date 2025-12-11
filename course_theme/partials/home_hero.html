@@ -35,7 +35,7 @@
         {% endfor %}
 
         {% if authors %}
-          <p>
+          <p class="tx-hero__authors">>
             <strong>Authors:</strong>
             {% for author in authors %}
               {{ author }}{% if not loop.last %},{% endif %}

@@ -217,6 +217,13 @@
     margin-bottom: 0.3em;
 }
 
+.tx-hero__authors {
+    font-size: 0.7rem;
+    line-height: 1.5em;
+    color: var(--md-default-fg-color);
+    margin-top: 0.5em;
+}
+
 .tx-hero__title {
     font-size: 2.5rem;         /* main hero size */
     font-weight: 700;
