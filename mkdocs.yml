@@ -44,7 +44,8 @@ markdown_extensions:
       toc_depth: 0
   - pymdownx.superfences
   - pymdownx.details
-  - pymdownx.tabbed
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.highlight
   - pymdownx.inlinehilite
   - pymdownx.snippets
