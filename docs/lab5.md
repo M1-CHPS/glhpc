@@ -43,13 +43,13 @@ Take a look at `report.md`. You should complete this report as you go along the 
 
 ### Provided files
 
-| Path                | Description                                                                 |
-|---------------------|-----------------------------------------------------------------------------|
-| `data/`             | Pre-processed Kepler dataset for this lab                                   |
-| `libbls/`           | Box Least Square (BLS) Python library for transit detection. (CMake)        |
-| `scripts/`          | Python/bash scripts for plotting and data analysis that you will have to complete during the lab |
-| `setup_env.sh`      | Helper script to setup the python environment and various env. variables    |
-| `build_library.sh`  | Helper script to run CMake for the BLS library                              |
+| Path               | Description                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------ |
+| `data/`            | Pre-processed Kepler dataset for this lab                                                        |
+| `libbls/`          | Box Least Square (BLS) Python library for transit detection. (CMake)                             |
+| `scripts/`         | Python/bash scripts for plotting and data analysis that you will have to complete during the lab |
+| `setup_env.sh`     | Helper script to setup the python environment and various env. variables                         |
+| `build_library.sh` | Helper script to run CMake for the BLS library                                                   |
 
 <hr class="gradient" />
 
@@ -88,13 +88,15 @@ Make sure that:
 - The plot includes a title, legend, and uses a `tight` or `constrained` layout.
 - The figure has an appropriate aspect ratio (width to height)
 
-The final plot could look something like this:
+??? "Expected Result"
+    The final plot could look something like this:
 
-<figure markdown="span">
-  ![Kepler 8 Light curve](image/lab5/luminosity_Kepler-8.png){ style="max-width: 80%; height: auto;" }
-  <figcaption>Kepler 8 Light curve
-  </figcaption>
-</figure>
+    <figure markdown="span">
+      ![Kepler 8 Light curve](image/lab5/luminosity_Kepler-8.png){ style="max-width: 100%; height: auto;" }
+      <figcaption>Kepler 8 Light curve
+      </figcaption>
+    </figure>
+
 
 #### e) Give a possible explanation for the periodic dips in luminosity
 
@@ -132,17 +134,30 @@ Implement a `scripts/phase_folding.py` script that plots the phase-folded light 
 It should be used like so:
 `./scripts/phase_folding.py ./results kepler-* <period>`.
 
-Optionally, you can also plot a binned mean on top of the phase-folded light curve:
+You can also plot a binned mean on top of the phase-folded light curve:
 
 ```python title="Phase folding: Binning"
-from scipy import stats
-bins = 200
-# Here, we bin the data using 200 bins. In each bin, we compute the mean flux.
-bin_means, bin_edges, _ = stats.binned_statistic(phase, flux, statistic='mean', bins=bins)
-# We compute the x coordinate of each bins, by taking the center point
-bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
-ax.plot(bin_centers, bin_means, color="red", lw=1.5)
+def plot_binning(data: pd.DataFrame, ax: plt.Axes, nbins = 200) -> None:
+
+  from scipy import stats
+
+  # Here, we bin the data using 200 bins. In each bin, we compute the mean flux.
+  bin_means, bin_edges, _ = stats.binned_statistic(data["phase"], data["flux"], 
+                                                    statistic='mean', bins=nbins)
+  # We compute the x coordinate of each bins, by taking the center point
+  bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+  ax.plot(bin_centers, bin_means, color="red", lw=1.5)
 ```
+</div>
+
+??? "Expected Results"
+    <figure markdown="span">
+      ![Phase folded Kepler 8 Light curve](image/lab5/phase_folding_Kepler-8.png){ style="max-width: 80%; height: auto;" }
+      <figcaption>Phase folded Kepler 8 Light curve
+      </figcaption>
+    </figure>
+
+    
 #### h) Run the previous script by phase folding over the Kepler 8b Period (`koi_period`). 
 
 Check the file `data/kepler-8_known_planets.json`. This json contains information about the lonely Kepler 8b exoplanet, in the Kepler 8 star system. This exoplanet orbits its parent star
@@ -154,14 +169,6 @@ every 3.52 days.
 - What can we say about the relationship between the light "dips" and Kepler 8b orbit ?
 - Draw a simple diagram describing what's happening during the light dips.
     - (Optionnal) Draw a sad emoji face on Kepler 8b, because she's alone, in a vast, vast universe.
-
----
-
-<figure markdown="span">
-  ![Phase folded Kepler 8 Light curve](image/lab5/phase_folding_Kepler-8.png){ style="max-width: 80%; height: auto;" }
-  <figcaption>Phase folded Kepler 8 Light curve
-  </figcaption>
-</figure>
 
 <hr class="gradient" />
 

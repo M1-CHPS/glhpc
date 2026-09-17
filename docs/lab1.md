@@ -363,7 +363,7 @@ You should setup two factor authentication (2FA) ASAP.
 
 !!! Danger
     **If you are on a laptop lent by the university, skip this question.** 
-    SSH-keys are stored system-wide: other students will be able to access your secret key(s) and you github account if you do this. 
+    SSH-keys are stored account-wide: other students will be able to access your secret key(s) and you github account if you do this. 
     
     Instead, you should:
 
@@ -541,12 +541,14 @@ Manually running `gcc src/main.c -o main -g` everytime we modify `main.c` is cum
 #### a) Create a `build.sh` script that contains the compilation command.
 
 ```sh title="build.sh"
-FILES=(main.c)
+#!/bin/bash
+
+FILES=src/main.c
 CC=gcc
 CFLAGS=-g
 OUTPUT=main
 
-$(CC) -o "$(OUTPUT)" "$(FILES)" "$(CFLAGS)"
+$CC -o "$OUTPUT" "$FILES" "$CFLAGS"
 ```
 
 #### b) Try to run `./build.sh`. Does it work ?
@@ -616,9 +618,9 @@ The first time you push on the repository, git might:
 - Set the upstream branch using `--set-upstream`: Follow git instructions
 
 !!! Danger
-    If you are using a laptop lent by the university, **do not run `git config --global add user.email`** or you will set the GitHub email for the entire laptop. This would allow other students to push using your GitHub account, or you may see other people pushing to your own repository.
+    If you are using a laptop lent by the university, **do not run `git config --global user.email`** or you will set the GitHub email for the entire laptop. This would allow other students to push using your GitHub account, or you may see other people pushing to your own repository.
 
-    Simply do `git config add user.email <email>` **inside the root folder of the git repository**.
+    Simply do `git config user.email <email>` **inside the root folder of the git repository**.
 
 <hr class="gradient" />
 

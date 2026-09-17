@@ -135,7 +135,7 @@ We would like to be able to run `make clean` to remove all the object files. Bec
 .PHONY: clean
 
 clean:
-    rm -rf ./src/image.o
+    rm -f ./src/image.o
 ```
 
 Implement the clean rule in your makefile so that you can effectively remove all compilation artifacts.
@@ -281,7 +281,7 @@ Compile again and run:
 You should get the following (Exact results may vary depending on your machine):
 ```
 Memory Allocations tests completed in 5 seconds
-Copy Test: 3000x3000x3 image -> 3524.74 MIOPS, 3.52 GB/s
+Copy Test: 3000x3000x3 image -> 3524.74 Melem/s, 3.52 GB/s
 ```
 
 <div class="optional-section box-section" markdown>
