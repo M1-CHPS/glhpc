@@ -415,9 +415,6 @@ During this course, we will use the `C` language (and python to a minor extent).
 
 ### 0. Pulling from github Classroom
 
-
-
-
 You will receive a link to GitHub classroom during the lab session. Accept the invite and click on your name. 
 This will automatically create a `glhpc-<name>-lab1 ` repository on GitHub for you.
 

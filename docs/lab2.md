@@ -186,7 +186,7 @@ We want to implement a rule to **RE**build the entire application from scratch. 
         rm -f src/*.o
 
     # We add an helper "re" rule to RE-build everything (clean and rebuild)
-    re: mytransform mytransform
+    re: clean mytransform
 
     # We make `clean` and `re` phony rules because they don't produce files
     # (Otherwise, `make` will except files named "clean" and "re" to be produced)

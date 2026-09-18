@@ -235,7 +235,7 @@ typedef struct {
 
 ```c
 Student e1 = (Student){"Dupont", "Pierre", 22, 13, 'm'};
-Student e2 = (Student){"Major", "Major", 22, 13.5, 'a'};
+Student e2 = (Student){"Major", "Major", 22, 13.5, 'o'};
 Student e3 = (Student){"Martin", "Evelynne", 24, 14, 'f'};
 
 if (e1.mean_grade > 10) {
