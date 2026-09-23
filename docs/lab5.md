@@ -4,7 +4,6 @@
 
 The [Kepler space telescope](https://en.wikipedia.org/wiki/Kepler_space_telescope) monitors the variation in the luminosity of distant stars using a photometer. The datasets are freely available online, and we will use them as a case study for this lab.
 
-
 <figure markdown="span">
   ![Processing Example](image/lab5/kepler.png)
   <figcaption>Kepler space telescope shortly after the assembly
@@ -148,7 +147,6 @@ def plot_binning(data: pd.DataFrame, ax: plt.Axes, nbins = 200) -> None:
   bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
   ax.plot(bin_centers, bin_means, color="red", lw=1.5)
 ```
-</div>
 
 ??? "Expected Results"
     <figure markdown="span">
@@ -276,7 +274,7 @@ Here, we create an array containing all the functions we want to make available 
 
 </div>
 
-<hr class="gradient" />
+<hr class="gradient"/>
 
 ## 3 - Profiling for energy and performance characterization
 
