@@ -1421,7 +1421,7 @@ What could cause this periodic phenomenon ?</p>
 <p>It should be used like so:
 <code>./scripts/phase_folding.py ./results kepler-* &lt;period&gt;</code>.</p>
 <p>You can also plot a binned mean on top of the phase-folded light curve:</p>
-<p><div class="language-python highlight"><span class="filename">Phase folding: Binning</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">plot_binning</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<div class="language-python highlight"><span class="filename">Phase folding: Binning</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">plot_binning</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">ax</span><span class="p">:</span> <span class="n">plt</span><span class="o">.</span><span class="n">Axes</span><span class="p">,</span> <span class="n">nbins</span> <span class="o">=</span> <span class="mi">200</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
 </span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">stats</span>
 </span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
@@ -1432,7 +1432,6 @@ What could cause this periodic phenomenon ?</p>
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>  <span class="n">bin_centers</span> <span class="o">=</span> <span class="p">(</span><span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">/</span> <span class="mi">2</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bin_centers</span><span class="p">,</span> <span class="n">bin_means</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 </span></code></pre></div>
-</div></p>
 <details>
 <summary>Expected Results</summary>
 <p><figure markdown="span">
@@ -1536,7 +1535,7 @@ are structures containing the arguments of the function.</p>
 <p>Here, we create an array containing all the functions we want to make available from python. We then declare a Python module and a 
 <code>PyInit_bls(void)</code> function, that will be called by Python to load/initialize the module at runtime.</p>
 </div>
-<hr class="gradient" />
+<hr class="gradient"/>
 
 <h2 id="3-profiling-for-energy-and-performance-characterization">3 - Profiling for energy and performance characterization<a class="headerlink" href="#3-profiling-for-energy-and-performance-characterization" title="Permanent link">&para;</a></h2>
 <h3 id="1-measuring-energy">1. Measuring Energy<a class="headerlink" href="#1-measuring-energy" title="Permanent link">&para;</a></h3>
