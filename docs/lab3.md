@@ -49,7 +49,7 @@ In Linux a shared library has the extension `.so` (shared object). The `add_libr
 #### d) Add the executable target
 
 ```cmake title="CMakeLists.txt"
-add_executable(mytransform src/main.c src/transformation.c src/image.c)
+add_executable(mytransform src/main.c src/transformation.c src/parser.c)
 ```
 
 The `add_executable` command builds an executable `mytransform` from the specified source files. Header files were included before.
@@ -322,7 +322,7 @@ target_include_directories(test_runner
     PRIVATE 
         ${PROJECT_SOURCE_DIR}/src
 )
-target_link_libraries(test_runner unity m image)
+target_link_libraries(test_runner PRIVATE unity m image)
 ```
 
 Observe that we link the `test_runner` target against the `unity` library, the math library `m`, and our `image` library.
@@ -422,8 +422,8 @@ Loaded image: images/image0.bmp (259x194, 3 channels)
 
 Program received signal SIGSEGV, Segmentation fault.
 rotate_image_90_clockwise (node=0x5555555802f0)
-    at lab3/src/transformation.c:105
-105 node->output->pixels[c][x * width + (height - y - 1)] = node->input->pixels[c][y * width + x];
+    at lab3/src/transformation.c:120
+120 node->output->pixels[c][x * width + (height - y - 1)] = node->input->pixels[c][y * width + x];
 ```
 
 GDB has caught the segmentation fault and shows you the exact line where the error occurred.
@@ -435,13 +435,13 @@ You can use the `backtrace` command to see the function call stack leading to th
 ```sh
 (gdb) backtrace
 #0  rotate_image_90_clockwise (node=0x5555555802f0)
-    at lab3/src/transformation.c:105
+    at lab3/src/transformation.c:120
 #1  0x0000555555577885 in execute_node (node=0x5555555802f0)
-    at lab3/src/transformation.c:222
-#2  0x00007ffff7fb9c7f in execute_graph (graph=0x5555555802a0)
-    at lab3/src/parser.c:174
+    at lab3/src/transformation.c:168
+#2  0x0000555555578d31 in execute_graph (graph=0x5555555802a0)
+    at lab3/src/parser.c:183
 #3  0x0000555555555e4a in main (argc=2, argv=0x7fffffffdae8)
-    at lab3/src/main.c:165
+    at lab3/src/main.c:163
 
 ```
 
@@ -464,7 +464,7 @@ Print each of the variables, do you see anything suspicious at the point of cras
 #### e) Fix and explain the first bug
 
 !!! Tip
-    The first bug is a logical error in the loop exit condition at line 109.
+    The first bug is a logical error in the loop exit condition at line 123.
 
 Once you have identified and understood the first bug, you can fix it directly in the source code.
 Commit the fix to git and explain the bug and how you fixed it in the commit message.
@@ -504,13 +504,13 @@ warning: 44	./nptl/pthread_kill.c: No such file or directory
 #8  0x00007ffff7cad7f2 in __GI___libc_malloc (bytes=<optimized out>)
     at ./malloc/malloc.c:3328
 #9  0x0000555555576fd3 in save_image (node=0x555555580320)
-    at lab3/src/transformation.c:70
-#10 0x0)
-    at lab3/src/transformation.c:225
-#11 0x0a0)
-    at lab3/src/parser.c:174
-#12 0x0)
-    at lab3/src/main.c:165
+    at lab3/src/transformation.c:82
+#10 0x00005555555778a0 in execute_node (node=0x555555580320)
+    at lab3/src/transformation.c:171
+#11 0x0000555555578d31 in execute_graph (graph=0x5555555802a0)
+    at lab3/src/parser.c:183
+#12 0x0000555555555e4a in main (argc=2, argv=0x7fffffffdae8)
+    at lab3/src/main.c:163
 ```
 
 The program crashes again, but this time with a different error message: `malloc(): corrupted top size`. This indicates a memory corruption issue.
@@ -531,10 +531,10 @@ valgrind build/mytransform pipelines/rotate.pipeline
 ==241843== 
 Loaded image: images/image0.bmp (259x194, 3 channels)
 ==241843== Invalid write of size 1
-==241843==    at 0x12B188: rotate_image_90_clockwise (transformation.c:105)
-==241843==    by 0x12B87D: execute_node (transformation.c:222)
-==241843==    by 0x485BC7E: execute_graph (parser.c:174)
-==241843==    by 0x109E49: main (main.c:165)
+==241843==    at 0x12B188: rotate_image_90_clockwise (transformation.c:120)
+==241843==    by 0x12B87D: execute_node (transformation.c:168)
+==241843==    by 0x485BC7E: execute_graph (parser.c:183)
+==241843==    by 0x109E49: main (main.c:163)
 ==241843==  Address 0x4bf26f7 is 119 bytes inside an unallocated block of size 3,729,760 in arena "client"
 ... [output truncated] ...
 ```
@@ -546,12 +546,12 @@ Here valgrind provides a detailed report of the memory error, including the exac
 #### c) Set a breakpoint at the faulty line
 
 ```sh
-(gdb) break transformation.c:105
+(gdb) break transformation.c:120
 (gdb) run
 ... [output truncated] ...
 Breakpoint 1, rotate_image_90_clockwise (node=0x5555555802f0)
-    at lab3/src/transformation.c:105
-105 node->output->pixels[c][x * width + (height - y - 1)] = node->input->pixels[c][y * width + x];
+    at lab3/src/transformation.c:120
+120 node->output->pixels[c][x * width + (height - y - 1)] = node->input->pixels[c][y * width + x];
 (gdb) 
 ```
 
@@ -573,7 +573,7 @@ GDB allows you to perform arithmetic operations directly in the `print` command,
 We start to suspect that the index calculation is incorrect. To catch the invalid memory write, set a conditional breakpoint that triggers when the computed index is out of bounds. Start gdb again and run the following commands:
 
 ```sh
-(gdb) break transformation.c:105
+(gdb) break transformation.c:120
 (gdb) condition 1 x * width + (height - y - 1) >= height * width
 ```
 
