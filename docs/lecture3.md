@@ -271,7 +271,7 @@ target_link_libraries(my_executable PRIVATE libB)
 
 - `my_executable` is linked to `libB` and also to `libA` because `libB` links to `libA` with `PUBLIC`.
 - If `libB` linked to `libA` with `PRIVATE`, `my_executable` would not be linked to `libA`.
-- If `libB` linked to `libA` with `INTERFACE`, `my_executable` would be linked to `libA` but not `libB`.
+- If `libB` linked to `libA` with `INTERFACE`, `libB` would not be linked to `libA`, but `my_executable` would be linked to both `libB` and `libA`.
 - See [this reference](https://cmake.org/cmake/help/latest/command/target_link_libraries.html) for more details.
 
 ## Global Include Directories
