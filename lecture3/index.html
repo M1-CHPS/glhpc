@@ -1504,7 +1504,7 @@
 <ul>
 <li><code>my_executable</code> is linked to <code>libB</code> and also to <code>libA</code> because <code>libB</code> links to <code>libA</code> with <code>PUBLIC</code>.</li>
 <li>If <code>libB</code> linked to <code>libA</code> with <code>PRIVATE</code>, <code>my_executable</code> would not be linked to <code>libA</code>.</li>
-<li>If <code>libB</code> linked to <code>libA</code> with <code>INTERFACE</code>, <code>my_executable</code> would be linked to <code>libA</code> but not <code>libB</code>.</li>
+<li>If <code>libB</code> linked to <code>libA</code> with <code>INTERFACE</code>, <code>libB</code> would not be linked to <code>libA</code>, but <code>my_executable</code> would be linked to both <code>libB</code> and <code>libA</code>.</li>
 <li>See <a href="https://cmake.org/cmake/help/latest/command/target_link_libraries.html">this reference</a> for more details.</li>
 </ul>
 <h2 id="global-include-directories">Global Include Directories<a class="headerlink" href="#global-include-directories" title="Permanent link">&para;</a></h2>
