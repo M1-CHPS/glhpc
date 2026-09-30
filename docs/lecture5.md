@@ -517,16 +517,18 @@ double number of transistors and frequency increases:
 
 ## Should we study training or inference?
 
-- **Training**: huge cost but done once
+- Early industry rule-of-thumb: **80–90%** of lifecycle cost is inference \[NVIDIA, 2019\]
+    - Assumed a single model trained once and served to billions of queries
 
-    - GPT3, 175 billion parameters, $\approx$ 314 ZettaFLOP
+- Real hyperscaler measurements show **training remains a major fraction**:
+    - **Google** \[Patterson et al., 2022\]: **~40% training vs. ~60% inference** (3:2 ratio) across all ML workloads
+    - **Meta** \[Wu et al., MLSys 2022\]: **29% training**, 40% inference, 31% data processing
 
-    - GPT4, 1.7 trillion parameters
+- **Frontier models keep training compute massive**:
+    - Training is not "done once": thousands of experimentation runs, ablations, synthetic data generation, RLHF
+    - Llama 3.1 405B: $\approx 3.8 \times 10^{25}$ FLOPs ($\approx 39$ GWh on 16k H100 GPUs) \[Meta, 2024\]
 
-- **Inference**: millions of users and requests
-
-    - 80-90% cost of a deployed AI system is spend on inference
-        \[NVIDIA, 2019\]
+- **Both matter**: training drives extreme-scale HPC clusters (10k–100k GPUs, interconnects), while inference dominates continuous 24/7 energy
 
 ## Inference cost - Diminishing returns for computer vision
 
@@ -635,5 +637,9 @@ Treatment of febrile children illnesess in dispensaries.
 - Schwartz, Roy, Dodge, Jesse, Smith, Noah A. and Etzioni, Oren (2019) ‘Green AI’. [arXiv:1907.10597](http://arxiv.org/abs/1907.10597)
 
 - Amodei, Dario, Hernandez, Danny, Sastry, Girish, Clark, Jack, et al. (2018) ‘AI and compute. OpenAI’. [https://openai.com/blog/ai-and-compute/](https://openai.com/blog/ai-and-compute/)
+
+- Patterson, David, et al. (2022) ‘The Carbon Footprint of Machine Learning Training Will Plateau, Then Shrink’. IEEE Computer, 55(7), pp. 18–28.
+
+- Wu, Carole-Jean, et al. (2022) ‘Sustainable AI: Environmental Implications, Challenges and Opportunities’. Proceedings of MLSys 2022.
 
 - D'Acremont presentation: <https://youtu.be/oKcy_cY0QOw>
