@@ -94,17 +94,17 @@ ReLU $f(x) = max(0,x)$, $f'(x) = 1_{x>0}$
 
 ## Forward inference
 
-- Layer 1 Pre-activation hidden (GEMM, H×K × K×B → H×B)
+- Layer 1 Pre-activation hidden (GEMM, H×K × K×B → H×B, $b_1$ broadcasted)
 
-$$Z_1 = W_1 · X + B_1$$
+$$Z_1 = W_1 · X + b_1$$
 
 - Layer 1 Activation - ReLU (elementwise)
 
 $$H = f(Z_1)$$
 
-- Layer 2 Output pre-activation (GEMM, O×H × H×B → O×B)
+- Layer 2 Output pre-activation (GEMM, O×H × H×B → O×B, $b_2$ broadcasted)
 
-$$Z_2 = W_2 · H + B_2$$
+$$Z_2 = W_2 · H + b_2$$
 
 - Layer 2 Activation - ReLU (elementwise)
 
@@ -119,11 +119,11 @@ $$Y = f(Z_2)$$
 
 - Example with one neuron and MSE loss:
 
-$$ y = f(w_1 x_1 + w_2 x_2 + b) $$
+$$ z = w_1 x_1 + w_2 x_2 + b, \quad y = f(z) $$
 
 $$ L = (y - y_{true})^2 $$
 
-$$ \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial w_1} = 2(y - y_{true}) \cdot f'(w_1 x_1 + w_2 x_2 + b) \cdot x_1 $$
+$$ \frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial y} \cdot \frac{\partial y}{\partial z} \cdot \frac{\partial z}{\partial w_1} = 2(y - y_{true}) \cdot f'(z) \cdot x_1 $$
 
 - Backward pass can be efficiently implemented using automatic differentiation and matrix multiplications.
 
@@ -270,7 +270,7 @@ Inner loop assembly for (i,k,j) ordering with AVX (8 `float` in a vector):
 
 - Temporal locality analysis:
     - **GOOD**: $A[i][k]$ reused in the inner loop, reuse distance $1$.
-    - **MEDIUM** : For a given $(i,j)$, each $RES[i][j]$ revisited once per k. So reuse distance $K$ (one full row).
+    - **MEDIUM** : For a given $(i,j)$, each $RES[i][j]$ revisited once per k. So reuse distance $N$ (one full row).
         - To keep RES in cache between uses you would need cache $\ge N \times 4B$
     - **BAD** : For a given $(k,j)$, $B[k][j]$ used once per i. So reuse distance $K \times N$ (entire B matrix).
         - To keep B in cache between uses you would need cache $\ge K \times N \times 4B$
