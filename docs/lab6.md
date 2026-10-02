@@ -57,7 +57,7 @@ Inside `tests/` you will find `test_runner.c` that contains a starter test harne
 
 #### a) Implement `random_matrix` inside `sgemm.c` to generate random matrices.
 #### b) Add a test in `test_sgemm.c` that checks that `random_matrix` correctly generates matrices with values in the range $[-1.0, 1.0]$. Call the test from `test_runner.c`.
-#### c) Create a `CMakeList.txt` 
+#### c) Create a `CMakeLists.txt`
 It should:
 
 - build an executable `gemm` from `main.c` and `sgemm.c`.
